@@ -1,0 +1,47 @@
+//
+//  PrefixHeader.pch
+//  BulletAnalyzer
+//
+//  Created by Zj on 17/6/3.
+//  Copyright © 2017年 Zj. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+//颜色，尺寸相关
+#define BAScreenHeight [UIScreen mainScreen].bounds.size.height//屏幕高度
+#define BAScreenWidth [UIScreen mainScreen].bounds.size.width//屏幕宽度
+#define BAPadding 14 //间隔
+
+#define BAColor(R,G,B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]//自定义颜色
+#define BABackgroundColor [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1]//背景颜色
+#define BAThemeColor [UIColor colorWithRed:248/255.0 green:40/255.0 blue:111/255.0 alpha:1]//常用的主色
+
+//keyWindow
+#define BAKeyWindow [UIApplication sharedApplication].keyWindow
+
+//防止循环引用
+#define WeakObj(obj) __weak typeof(obj) obj##Weak = obj
+
+//通知中心
+#define BANotificationCenter [NSNotificationCenter defaultCenter]
+
+//获取temp
+#define BAPathTemp NSTemporaryDirectory()
+
+//获取沙盒 Document
+#define BAPathDocument [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
+
+//获取沙盒 Cache
+#define BAPathCache [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]
+
+//log
+#ifdef DEBUG
+#define NSLog(...) NSLog(@"%s 第%d行 \n %@\n\n",__func__,__LINE__,[NSString stringWithFormat:__VA_ARGS__])
+#else
+#define NSLog(...)
+
+#endif
+
+#endif /* PrefixHeader_pch */

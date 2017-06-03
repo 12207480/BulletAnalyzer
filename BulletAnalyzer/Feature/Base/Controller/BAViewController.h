@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  BAViewController.h
 //  BulletAnalyzer
 //
 //  Created by Zj on 17/6/1.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface BAViewController : UIViewController
 
 @end
-
