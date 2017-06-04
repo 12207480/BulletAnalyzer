@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "GCDAsyncSocket.h"
 
-#define BAServiceAddress 
-
 /*
  向斗鱼发送的消息
  1.通信协议长度,后四个部分的长度,四个字节
@@ -29,12 +27,11 @@ typedef struct postPack PostPack;
 
 typedef void(^bulletBlock)(NSMutableArray *array);
 
-static const int kReadTimeOut = -1;
-static const unsigned int kMaxBuffer = 1024;
-static const unsigned int kPostCode = 0x2b1;
-static const unsigned int kEnd = 0;
-static const int kServicePort = 8601;
-static NSString *const kServiceAddress = @"openbarrage.douyutv.com";
+static const int BAReadTimeOut = -1;
+static const unsigned int BAPostCode = 0x2b1;
+static const unsigned int BAEndCode = 0;
+static const int BAServicePort = 8601;
+static NSString *const BAServiceAddress = @"openbarrage.douyutv.com";
 
 @interface BASocketTool : NSObject <GCDAsyncSocketDelegate>
 @property (nonatomic, strong) GCDAsyncSocket *socket;

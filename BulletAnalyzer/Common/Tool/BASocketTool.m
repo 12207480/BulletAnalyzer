@@ -30,7 +30,7 @@
     
     // 1. 与服务器的socket链接起来
     NSError *error = nil;
-    BOOL result = [self.socket connectToHost:kServiceAddress onPort:kServicePort error:&error];
+    BOOL result = [self.socket connectToHost:BAServiceAddress onPort:BAServicePort error:&error];
     
     // 2. 判断端口号是否开放成功
     if (result) {
@@ -55,7 +55,7 @@
 - (void)connectRoom{
     
     NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=loginreq/roomid@=%@/", _roomId]];
-    [self.socket writeData:pack withTimeout:kReadTimeOut tag:1];
+    [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
 }
 
 
@@ -65,7 +65,7 @@
 - (void)joinGroup{
     
     NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=joingroup/rid@=%@/gid@=-9999/", _roomId]];
-    [self.socket writeData:pack withTimeout:kReadTimeOut tag:1];
+    [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
 }
 
 
@@ -80,7 +80,7 @@
     _heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval:45 repeats:YES block:^(NSTimer * _Nonnull timer) {
         
         NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=keeplive/tick@=%@/", [self timeString]]];
-        [self.socket writeData:pack withTimeout:kReadTimeOut tag:1];
+        [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
     }];
     [_heartbeatTimer fire];
 }
@@ -92,7 +92,7 @@
 - (void)cutOff{
     
     NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=logout/"]];
-    [self.socket writeData:pack withTimeout:kReadTimeOut tag:1];
+    [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
     
     [_heartbeatTimer invalidate];
     [_socket disconnect];
@@ -106,11 +106,11 @@
     
     NSMutableData *stringData = [NSData HexDataWithString:string];
     unsigned int hexLength = (int)string.length + 9;
-    PostPack pack = {hexLength, hexLength, kPostCode};
+    PostPack pack = {hexLength, hexLength, BAPostCode};
     
     NSMutableData *postDate = [NSData dataWithBytes:&pack length:sizeof(pack)].mutableCopy;
     [postDate appendData:stringData];
-    [postDate appendBytes:&kEnd length:1];
+    [postDate appendBytes:&BAEndCode length:1];
     
     return postDate;
 }
@@ -196,11 +196,15 @@
                 
                 if (modelType == BAModelTypeBullet) {
                     
-                    _bullet(array);
+                    if (_bullet) {
+                        _bullet(array);
+                    }
                     
                 } else if (modelType == BAModelTypeGift) {
                     
-                    [self handleServiceReply:[array firstObject]];
+                    if (_gift) {
+                        _gift(array);
+                    }
                     
                 } else if (modelType == BAModelTypeReply) {
                     
@@ -213,7 +217,7 @@
         }
     }
     
-    [self.socket readDataWithTimeout:kReadTimeOut tag:0];
+    [self.socket readDataWithTimeout:BAReadTimeOut tag:0];
 }
 
 
@@ -226,7 +230,7 @@
 - (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag{
     //NSLog(@"数据发送成功");
     //发送完数据手动读取，-1不设置超时
-    [sock readDataWithTimeout:kReadTimeOut tag:tag];
+    [sock readDataWithTimeout:BAReadTimeOut tag:tag];
 }
 
 

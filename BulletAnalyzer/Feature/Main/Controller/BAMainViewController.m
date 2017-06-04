@@ -2,16 +2,15 @@
 //  BAMainViewController.m
 //  BulletAnalyzer
 //
-//  Created by Zj on 17/6/1.
+//  Created by Zj on 17/6/4.
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
 #import "BAMainViewController.h"
-#import "BASocketTool.h"
-#import "BABulletModel.h"
+#import "MMDrawerBarButtonItem.h"
+#import "UIViewController+MMDrawerController.h"
 
 @interface BAMainViewController ()
-@property (nonatomic, assign, getter=isConnected) BOOL connected;
 
 @end
 
@@ -20,32 +19,33 @@
 #pragma mark - lifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor greenColor];
-    
-    [BASocketTool defaultSocket].bullet = ^(NSArray *bulletModelArray){
-        BABulletModel *bulletModel = [bulletModelArray firstObject];
-        NSLog(@"%@: %@", bulletModel.nn, bulletModel.txt);
-    };
-}
 
-
-#pragma mark - private
-- (void)setConnected:(BOOL)connected{
-    _connected = connected;
+    self.view.backgroundColor = BAThemeColor;
     
-    if (connected) {
-        [[BASocketTool defaultSocket] connectSocketWithRoomId:@"58428"];
-    } else {
-        [[BASocketTool defaultSocket] cutOff];
-    }
+    [self setupNavigation];
+    
+    [self setupDrawer];
 }
 
 
 #pragma mark - userInteraction
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    self.connected = !self.connected;
+- (void)roomBtnClicked{
+    [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
+
+
+#pragma mark - private
+- (void)setupNavigation{
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"房间" target:self action:@selector(roomBtnClicked)];
+}
+
+
+- (void)setupDrawer{
+    
+}
+
+
+
 
 
 @end

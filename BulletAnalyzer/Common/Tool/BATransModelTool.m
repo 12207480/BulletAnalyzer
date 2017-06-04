@@ -10,10 +10,20 @@
 #import "BABulletModel.h"
 #import "BAReplyModel.h"
 #import "BAGiftModel.h"
+#import "BARoomModel.h"
 #import "MJExtension.h"
 
 @implementation BATransModelTool
 
+#pragma mark - http数据解析
++ (void)transModelWithRoomDicArray:(NSArray *)array compete:(transArrayCompleteBlock)complete{
+    
+    NSMutableArray *roomModelArray = [BARoomModel mj_objectArrayWithKeyValuesArray:array];
+    complete(roomModelArray);
+}
+
+
+#pragma mark - socket数据解析
 + (void)transModelWithData:(NSData *)data complete:(transCompleteBlock)complete{
    
     NSMutableArray *contents = [NSMutableArray array];

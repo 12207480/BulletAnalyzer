@@ -8,20 +8,41 @@
 
 #import "AppDelegate.h"
 #import "BAMainViewController.h"
+#import "BARoomListTableViewController.h"
+#import "BANavigationViewController.h"
+#import "MMDrawerController.h"
 
 @interface AppDelegate ()
+@property(nonatomic,strong) MMDrawerController *drawerController;
 
 @end
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    BAMainViewController *mainVC = [[BAMainViewController alloc] init];
-    _window.rootViewController = mainVC;
+    //1、初始化控制器
+    UIViewController *centerVC = [[BAMainViewController alloc] init];
+    UIViewController *leftVC = [[BARoomListTableViewController alloc] init];
     
+    //2、初始化导航控制器
+    BANavigationViewController *centerNvaVC = [[BANavigationViewController alloc] initWithRootViewController:centerVC];
+    BANavigationViewController *leftNvaVC = [[BANavigationViewController alloc] initWithRootViewController:leftVC];
+    
+    //3、使用MMDrawerController
+    _drawerController = [[MMDrawerController alloc] initWithCenterViewController:centerNvaVC leftDrawerViewController:leftNvaVC];
+    _drawerController.showsShadow = NO;
+    
+    //4、设置打开/关闭抽屉的手势
+    _drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
+    _drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
+    
+    //5、设置左右两边抽屉显示的多少
+    _drawerController.maximumLeftDrawerWidth = 200.0;
+    
+    //6、初始化窗口、设置根控制器、显示窗口
+    _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [_window setRootViewController:_drawerController];
     [_window makeKeyAndVisible];
     
     return YES;
