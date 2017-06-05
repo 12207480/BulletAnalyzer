@@ -19,6 +19,7 @@
     
     self.tableView.backgroundColor = BABackgroundColor;
     self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 @end

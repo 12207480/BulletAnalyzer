@@ -12,34 +12,55 @@
 //头文件
 #import "BATool.h"
 #import "BAHttpTool.h"
+#import "Masonry.h"
+#import "UIImageView+WebCache.h"
 #import "UIBarButtonItem+ZJExtension.h"
+#import "UIView+ZJExtension.h"
+#import "NSObject+ZJUIExtension.h"
 
-//字符串
-#define BAStringWithInteger(integer) [NSString stringWithFormat:@"%zd", integer]
 
-//颜色，尺寸相关
+//尺寸
 #define BAScreenHeight [UIScreen mainScreen].bounds.size.height//屏幕高度
 #define BAScreenWidth [UIScreen mainScreen].bounds.size.width//屏幕宽度
-#define BAPadding 14 //间隔
+#define BAPadding 10 //间隔
+#define BARadius 6 //圆角
 
+#define BARoomListViewWidth 200
+#define BARoomListScreenShotImgWidth 160
+#define BARoomListScreenShotImgHeight 90
+
+//颜色
 #define BAColor(R, G, B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]//自定义颜色
-#define BABackgroundColor BAColor(240, 240, 240)//背景颜色
-#define BAThemeColor BAColor(248, 40, 111)//常用的主色
+#define BABackgroundColor BAColor(240, 243, 246)//背景颜色
+#define BADarkBackgroundColor BAColor(220, 226, 232)//背景颜色
+#define BAThemeColor BAColor(0, 204, 203) //常用的主色
+#define BAHighlightThemeColor LTColor(0, 179, 179) //高亮主题色
 #define BAWhiteColor [UIColor whiteColor]
 #define BABlackColor [UIColor blackColor]
-#define BACommonTextColor [UIColor blackColor]
-#define BALightTextColor [UIColor lightGrayColor]
-#define BAAssistColor [UIColor redColor]
-#define BADisabledColor [UIColor yellowColor]
+#define BACommonTextColor BAColor(51, 51, 51) //一般文字颜色
+#define BALightTextColor BAColor(153, 153, 153) //浅说明性文字
+#define BAAssistColor BAColor(255, 127, 102)
+#define BAAssist2Color BAColor(115, 210, 230) //辅助色(蓝)
+#define BADisabledColor BAColor(204, 204, 204) //不可选颜色
 
 //字体
-#define BAThinFont(size) [UIFont systemFontOfSize:size weight:UIFontWeightThin]
+#define BAThinFont(size) [UIFont systemFontOfSize:size weight:UIFontWeightUltraLight]
 #define BACommonFont(size) [UIFont systemFontOfSize:size weight:UIFontWeightThin]
 #define BABlodFont(size) [UIFont systemFontOfSize:size weight:UIFontWeightBold]
 
 #define BACommonTextFontSize 14
-#define BALargeTextFontSize 18
+#define BALargeTextFontSize 20
 #define BASmallTextFontSize 12
+
+//通知
+#define BANotificationRoomListCellClicked @"BANotificationRoomListCellClicked"
+
+
+//字符串
+#define BAStringWithInteger(integer) [NSString stringWithFormat:@"%zd", integer]
+
+//占位图
+#define BAPlaceHolderImg nil
 
 //keyWindow
 #define BAKeyWindow [UIApplication sharedApplication].keyWindow
@@ -61,10 +82,9 @@
 
 //log
 #ifdef DEBUG
-#define NSLog(...) NSLog(@"%s 第%d行 \n %@\n\n",__func__,__LINE__,[NSString stringWithFormat:__VA_ARGS__])
+#define NSLog(format, ...) printf("\n[%s] %s [第%d行] %s\n", __TIME__, __FUNCTION__, __LINE__, [[NSString stringWithFormat:format, ## __VA_ARGS__] UTF8String]);
 #else
-#define NSLog(...)
-
+#define NSLog(format, ...)
 #endif
 
 #endif /* PrefixHeader_pch */

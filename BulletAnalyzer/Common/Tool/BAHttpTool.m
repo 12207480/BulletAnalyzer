@@ -17,7 +17,7 @@ static NSString *const BANetworkError = @"上帝关了门窗, 还顺便断了网
 
 + (void)getAllRoomListWithParams:(BAHttpParams *)params success:(successBlock)success fail:(failBlock)fail{
     
-    NSString *url = @"http://open.douyucdn.cn/api/RoomApi/live";
+    NSString *url = @"http://open.douyucdn.cn/api/RoomApi/live/";
     
     [ZJAFNetworking GET:url params:params.mj_keyValues success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
 

@@ -80,4 +80,9 @@
  */
 @property (nonatomic, copy) NSString *isVertical;
 
+/**
+ 保存首页截图Y值
+ */
+@property (nonatomic, assign) CGFloat screenShotViewY;
+
 @end

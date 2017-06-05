@@ -9,6 +9,9 @@
 #import "BAMainViewController.h"
 #import "MMDrawerBarButtonItem.h"
 #import "UIViewController+MMDrawerController.h"
+#import "BASocketTool.h"
+#import "BARoomModel.h"
+#import "BABulletModel.h"
 
 @interface BAMainViewController ()
 
@@ -25,6 +28,13 @@
     [self setupNavigation];
     
     [self setupDrawer];
+    
+    [self addNotificationObserver];
+}
+
+
+- (void)dealloc{
+    [BANotificationCenter removeObserver:self];
 }
 
 
@@ -45,6 +55,22 @@
 }
 
 
+- (void)addNotificationObserver{
+    [BANotificationCenter addObserver:self selector:@selector(roomSelected:) name:BANotificationRoomListCellClicked object:nil];
+}
+
+
+#pragma mark - userInteraction
+- (void)roomSelected:(NSNotification *)sender{
+    BARoomModel *roomModel = sender.userInfo[@"roomModel"];
+    
+    [[BASocketTool defaultSocket] connectSocketWithRoomId:roomModel.room_id];
+    [BASocketTool defaultSocket].bullet = ^(NSArray *array) {
+        [array enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSLog(@"%@:%@", bulletModel.nn, bulletModel.txt);
+        }];
+    };
+}
 
 
 

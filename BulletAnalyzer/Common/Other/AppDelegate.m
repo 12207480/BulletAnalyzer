@@ -38,7 +38,7 @@
     _drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
     
     //5、设置左右两边抽屉显示的多少
-    _drawerController.maximumLeftDrawerWidth = 200.0;
+    _drawerController.maximumLeftDrawerWidth = BARoomListViewWidth + 2 * BAPadding;
     
     //6、初始化窗口、设置根控制器、显示窗口
     _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
