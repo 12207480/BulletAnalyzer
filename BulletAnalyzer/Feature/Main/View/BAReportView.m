@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
+
 #import "BAReportView.h"
 #import "BAReportCell.h"
 #import "BAReplyModel.h"
@@ -15,6 +16,7 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
 @interface BAReportView()<UICollectionViewDelegate, UICollectionViewDataSource>
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, assign) NSInteger currentIndex;
+@property (nonatomic, strong) UILabel *indicatorLabel;
 
 @end
 
@@ -27,6 +29,8 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
         self.backgroundColor = [UIColor clearColor];
         
         [self setupCollectionView];
+        
+        [self setupIndicator];
     }
     return self;
 }
@@ -39,7 +43,10 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
     if (reportModelArray.count) {
         [_collectionView reloadData];
         [_collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:500 * reportModelArray.count inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionCenteredHorizontally];
-        _currentIndex = 500 * reportModelArray.count - 1;
+        self.currentIndex = 500 * reportModelArray.count - 1;
+        _indicatorLabel.hidden = NO;
+    } else {
+        _indicatorLabel.hidden = YES;
     }
 }
 
@@ -48,8 +55,9 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
 - (void)setupCollectionView{
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    layout.minimumLineSpacing = 0;
     
-    _collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:layout];
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, BAScreenWidth, BAReportCellHeight) collectionViewLayout:layout];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     _collectionView.bounces = NO;
@@ -63,18 +71,25 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
 }
 
 
+- (void)setupIndicator{
+    _indicatorLabel = [UILabel lableWithFrame:CGRectMake(0, _collectionView.bottom + 4 * BAPadding, BAScreenWidth, BASmallTextFontSize) text:@"" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    
+    [self addSubview:_indicatorLabel];
+}
+
+
 - (void)adjustImgTransformWithOffsetY:(CGFloat)offsetY{
-    CGFloat index = (offsetY + 3 * BAPadding) / (BAScreenWidth - 6 * BAPadding);
+    CGFloat index = (offsetY + 4 * BAPadding) / BAReportCellWidth;
     CGFloat deltaIndex = index - _currentIndex;
-    CGFloat zoomScale = 1 - fabs(deltaIndex - 1) * 0.15;
+    CGFloat zoomScale = 1.1 - fabs(deltaIndex - 1) * 0.2;
     
-    CGFloat leftIndex = (offsetY + 3 * BAPadding - (BAScreenWidth - 6 * BAPadding)) / (BAScreenWidth - 6 * BAPadding);
+    CGFloat leftIndex = (offsetY + 4 * BAPadding - BAReportCellWidth) / BAReportCellWidth;
     CGFloat leftDeltaIndex = leftIndex - _currentIndex;
-    CGFloat leftZoomScale = fabs(leftDeltaIndex) * 0.15 + 0.85;
+    CGFloat leftZoomScale = fabs(leftDeltaIndex) * 0.2 + 0.9;
     
-    CGFloat rightIndex = (offsetY + 3 * BAPadding + (BAScreenWidth - 6 * BAPadding)) / (BAScreenWidth - 6 * BAPadding);
+    CGFloat rightIndex = (offsetY + 4 * BAPadding + BAReportCellWidth) / BAReportCellWidth;
     CGFloat rightDeltaIndex = rightIndex - _currentIndex;
-    CGFloat rightZoomScale = fabs(rightDeltaIndex - 2) * 0.15 + 0.85;
+    CGFloat rightZoomScale = fabs(rightDeltaIndex - 2) * 0.2 + 0.9;
     
     [_collectionView.visibleCells enumerateObjectsUsingBlock:^(__kindof UICollectionViewCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
@@ -83,11 +98,18 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
             obj.transform = CGAffineTransformMakeScale(zoomScale, zoomScale);
         } else if (item == _currentIndex) { // 左边一个
             obj.transform = CGAffineTransformMakeScale(leftZoomScale, leftZoomScale);
-            NSLog(@"%f", leftDeltaIndex);
         } else if (item == _currentIndex + 2){ // 右边一个
             obj.transform = CGAffineTransformMakeScale(rightZoomScale, rightZoomScale);
         }
     }];
+}
+
+
+- (void)setCurrentIndex:(NSInteger)currentIndex{
+    _currentIndex = currentIndex;
+    
+    NSInteger realIndex = (_currentIndex + 1) % _reportModelArray.count;
+    _indicatorLabel.text = [NSString stringWithFormat:@"%zd of %zd", realIndex + 1, _reportModelArray.count];
 }
 
 
@@ -101,20 +123,15 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
     
     BAReportCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BAReportCellReusedId forIndexPath:indexPath];
     cell.reportModel = _reportModelArray[indexPath.item % _reportModelArray.count];
-    cell.transform = indexPath.item == _reportModelArray.count * 500 ? CGAffineTransformMakeScale(1, 1) : CGAffineTransformMakeScale(0.85, 0.85);
+    cell.transform = indexPath.item == _reportModelArray.count * 500 ? CGAffineTransformMakeScale(1.1, 1.1) : CGAffineTransformMakeScale(0.9, 0.9);
     
     return cell;
 }
 
 //item大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(BAScreenWidth - 6 * BAPadding, BAScreenHeight * 2 / 3);
-}
 
-
-//纵向间距
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
-    return 0;
+    return CGSizeMake(BAReportCellWidth, BAReportCellHeight);
 }
 
 
@@ -129,13 +146,13 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
 //手动分页
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset{
     
-    float pageWidth = BAScreenWidth - 6 * BAPadding; // width + space
+    float pageWidth = BAReportCellWidth; // width + space
     
     float currentOffset = scrollView.contentOffset.x;
     float targetOffset = targetContentOffset->x;
     float newTargetOffset = 0;
     
-    if (targetOffset > currentOffset - 3 * BAPadding) {
+    if (targetOffset > currentOffset - 4 * BAPadding) {
         newTargetOffset = ceilf(currentOffset / pageWidth) * pageWidth; //向上取整
     } else {
         newTargetOffset = floorf(currentOffset / pageWidth) * pageWidth; //向下取整
@@ -149,10 +166,10 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
     
     targetContentOffset->x = currentOffset;
     
-    newTargetOffset = newTargetOffset - 3 * BAPadding;
+    newTargetOffset = newTargetOffset - 4 * BAPadding;
     [scrollView setContentOffset:CGPointMake(newTargetOffset, 0) animated:YES];
     
-    _currentIndex = newTargetOffset / pageWidth;
+    self.currentIndex = newTargetOffset / pageWidth;
 }
 
 @end

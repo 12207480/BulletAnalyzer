@@ -29,6 +29,8 @@
 #define BARoomListViewHeight 120
 #define BARoomListScreenShotImgWidth 160
 #define BARoomListScreenShotImgHeight 90
+#define BAReportCellWidth (BAScreenWidth - 8 * BAPadding)
+#define BAReportCellHeight (BAScreenHeight * 3 / 5)
 
 //颜色
 #define BAColor(R, G, B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]//自定义颜色
@@ -57,7 +59,6 @@
 
 //通知
 #define BANotificationRoomListCellClicked @"BANotificationRoomListCellClicked"
-
 
 //字符串
 #define BAStringWithInteger(integer) [NSString stringWithFormat:@"%zd", integer]

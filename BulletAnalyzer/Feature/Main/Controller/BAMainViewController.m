@@ -56,14 +56,27 @@
     
     [self.view addSubview:_titleLabel];
         
-    _timeLabel = [UILabel lableWithFrame:CGRectMake(0, _titleLabel.bottom + BAPadding, BAScreenWidth, BASuperLargeTextFontSize) text:[self getNowTimeWithFomatterEng] color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _timeLabel = [UILabel lableWithFrame:CGRectMake(0, _titleLabel.bottom + BAPadding, BAScreenWidth, BALargeTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    
+    NSTextAttachment *calenderImg = [[NSTextAttachment alloc] init];
+    calenderImg.image = [UIImage imageNamed:@"Calender"];
+    calenderImg.bounds = CGRectMake(0, 0, 15, 15);
+    NSAttributedString *calenderAttr = [NSAttributedString attributedStringWithAttachment:calenderImg];
+    NSAttributedString *timeStr = [[NSAttributedString alloc] initWithString:[self getNowTimeWithFomatterEng]];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] init];
+    [string appendAttributedString:calenderAttr];
+    [string appendAttributedString:timeStr];
+    [string addAttribute:NSBaselineOffsetAttributeName value:@(1.5) range:NSMakeRange(1, string.length - 1)];
+    
+    _timeLabel.attributedText = string;
     
     [self.view addSubview:_timeLabel];
 }
 
 
 - (void)setupReportView{
-    _reportView = [[BAReportView alloc] initWithFrame:CGRectMake(0, _timeLabel.bottom + 2 * BAPadding, BAScreenWidth, BAScreenHeight * 2 / 3)];
+    _reportView = [[BAReportView alloc] initWithFrame:CGRectMake(0, _timeLabel.bottom + 4 * BAPadding, BAScreenWidth, BAScreenHeight * 4 / 5)];
     _reportView.reportModelArray = @[[BAReportModel new], [BAReportModel new], [BAReportModel new], [BAReportModel new], [BAReportModel new]].mutableCopy;
     
     [self.view addSubview:_reportView];
@@ -84,7 +97,7 @@
     NSDateFormatter *formatter = [NSDateFormatter new];
     NSLocale *EngLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     formatter.locale = EngLocale;
-    formatter.dateFormat = @"d MMMM - EEEE";
+    formatter.dateFormat = @" d MMMM - EEEE";
     
     return [formatter stringFromDate:[NSDate date]];
 }
