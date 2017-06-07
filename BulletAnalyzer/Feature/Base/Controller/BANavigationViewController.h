@@ -10,4 +10,9 @@
 
 @interface BANavigationViewController : UINavigationController
 
+/**
+ 是否允许右滑返回
+ */
+@property (nonatomic, assign, getter=isBackGestureEnable) BOOL backGestureEnable;
+
 @end

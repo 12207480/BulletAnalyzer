@@ -33,8 +33,15 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
     [self setupTableView];
     
     [self getStatus];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     
-    [self addNotificationObserver];
+    CGPoint contentOffset = self.tableView.contentOffset;
+    [self.tableView setContentOffset:CGPointMake(contentOffset.x, contentOffset.y - 10) animated:YES];
+    [self.tableView setContentOffset:CGPointMake(contentOffset.x, contentOffset.y) animated:YES];
 }
 
 
@@ -52,6 +59,7 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
     }];
     
     [self.tableView registerClass:[BARoomListCell class] forCellReuseIdentifier:BARoomListCellReusedId];
+    self.tableView.contentInset = UIEdgeInsetsMake(BAPadding, 0, 0, 0);
     
     _roomModelArray = [NSMutableArray array];
 }
@@ -63,21 +71,10 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
         
         if (obj.count) {
             
-            [obj enumerateObjectsUsingBlock:^(BARoomModel *roomModel1, NSUInteger idx, BOOL * _Nonnull stop) {
-                
-                [_roomModelArray enumerateObjectsUsingBlock:^(BARoomModel *roomModel2, NSUInteger idx, BOOL * _Nonnull stop) {
-                    
-                    if (roomModel1.room_id.integerValue == roomModel2.room_id.integerValue) {
-                        [obj removeObject:roomModel1];
-                        *stop = YES;
-                    }
-                }];
-            }];
-            
             [_roomModelArray addObjectsFromArray:obj];
             
             [self.tableView.mj_footer endRefreshing];
-            self.params.offset = BAStringWithInteger(self.params.offset.integerValue + 1);
+            self.params.offset = BAStringWithInteger(self.params.offset.integerValue + obj.count + 1);
         } else {
             [self.tableView.mj_footer endRefreshingWithNoMoreData];
         }
@@ -102,14 +99,21 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
 }
 
 
-- (void)addNotificationObserver{
-    [BANotificationCenter addObserver:self selector:@selector(roomSelected:) name:BANotificationRoomListCellClicked object:nil];
-}
-
-
-#pragma mark - userInteraction
-- (void)roomSelected:(NSNotification *)sender{
-    [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+- (void)maskCell{
+    
+    [self.tableView.visibleCells enumerateObjectsUsingBlock:^(__kindof BARoomListCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:obj];
+        CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:indexPath];
+        
+        CGRect rect = [self.tableView convertRect:rectInTableView toView:self.tableView.superview];
+        
+        if (rect.origin.y > BAScreenHeight / 2 - BARoomListViewHeight && rect.origin.y < BAScreenHeight / 2 + BAPadding) {
+            obj.effectHidden = YES;
+        } else {
+            obj.effectHidden = NO;
+        }
+    }];
 }
 
 
@@ -133,7 +137,7 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return BARoomListScreenShotImgHeight;
+    return BARoomListViewHeight;
 }
 
 
@@ -144,6 +148,19 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     return [UIView new];
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+    
+    BARoomModel *roomModel = _roomModelArray[indexPath.section];
+    [BANotificationCenter postNotificationName:BANotificationRoomListCellClicked object:nil userInfo:@{@"roomModel" : roomModel}];
+}
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self maskCell];
 }
 
 

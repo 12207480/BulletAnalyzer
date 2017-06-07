@@ -28,6 +28,10 @@
     
     _roomId = roomId;
     
+    if (_socket.isConnected) {
+        [self cutOff];
+    }
+    
     // 1. 与服务器的socket链接起来
     NSError *error = nil;
     BOOL result = [self.socket connectToHost:BAServiceAddress onPort:BAServicePort error:&error];

@@ -17,4 +17,9 @@
  */
 @property (nonatomic, strong) BARoomModel *roomModel;
 
+/**
+ 特效是否显示
+ */
+@property (nonatomic, assign, getter=isEffectHidden) BOOL effectHidden;
+
 @end

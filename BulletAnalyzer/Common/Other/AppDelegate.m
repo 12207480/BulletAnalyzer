@@ -25,6 +25,9 @@
     UIViewController *centerVC = [[BAMainViewController alloc] init];
     UIViewController *leftVC = [[BARoomListTableViewController alloc] init];
     
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    
     //2、初始化导航控制器
     BANavigationViewController *centerNvaVC = [[BANavigationViewController alloc] initWithRootViewController:centerVC];
     BANavigationViewController *leftNvaVC = [[BANavigationViewController alloc] initWithRootViewController:leftVC];
@@ -38,7 +41,7 @@
     _drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
     
     //5、设置左右两边抽屉显示的多少
-    _drawerController.maximumLeftDrawerWidth = BARoomListViewWidth + 2 * BAPadding;
+    _drawerController.maximumLeftDrawerWidth = BARoomListViewWidth;
     
     //6、初始化窗口、设置根控制器、显示窗口
     _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

@@ -25,15 +25,17 @@
 #define BAPadding 10 //间隔
 #define BARadius 6 //圆角
 
-#define BARoomListViewWidth 200
+#define BARoomListViewWidth 180
+#define BARoomListViewHeight 120
 #define BARoomListScreenShotImgWidth 160
 #define BARoomListScreenShotImgHeight 90
 
 //颜色
 #define BAColor(R, G, B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]//自定义颜色
+#define BARandomColor BAColor(arc4random_uniform(255), arc4random_uniform(255), arc4random_uniform(255)) //随机色
 #define BABackgroundColor BAColor(240, 243, 246)//背景颜色
-#define BADarkBackgroundColor BAColor(220, 226, 232)//背景颜色
-#define BAThemeColor BAColor(0, 204, 203) //常用的主色
+#define BADarkBackgroundColor BAColor(28, 31, 39)//背景颜色
+#define BAThemeColor BAColor(25, 180, 177) //常用的主色
 #define BAHighlightThemeColor LTColor(0, 179, 179) //高亮主题色
 #define BAWhiteColor [UIColor whiteColor]
 #define BABlackColor [UIColor blackColor]
@@ -49,6 +51,7 @@
 #define BABlodFont(size) [UIFont systemFontOfSize:size weight:UIFontWeightBold]
 
 #define BACommonTextFontSize 14
+#define BASuperLargeTextFontSize 30
 #define BALargeTextFontSize 20
 #define BASmallTextFontSize 12
 

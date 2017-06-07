@@ -10,13 +10,13 @@
 #import "BARoomModel.h"
 
 @interface BARoomListCell()
+@property (nonatomic, strong) UIView *bgView;
+@property (nonatomic, strong) UIImageView *titileBgView;
 @property (nonatomic, strong) UIImageView *screenShotImgView;
 @property (nonatomic, strong) UILabel *anchorNameLabel;
 @property (nonatomic, strong) UILabel *roomNameLabel;
 @property (nonatomic, strong) UILabel *roomTypeLabel;
-@property (nonatomic, strong) UIButton *connectBtn;
 @property (nonatomic, strong) UIVisualEffectView *beffectView;
-@property (nonatomic, assign, getter=isEffectHidden) BOOL effectHidden;
 
 @end
 
@@ -40,71 +40,54 @@
     _roomModel = roomModel;
     
     [_screenShotImgView sd_setImageWithURL:[NSURL URLWithString:roomModel.room_src] placeholderImage:BAPlaceHolderImg];
-    _anchorNameLabel.text = roomModel.nickname;
-    _roomNameLabel.text = roomModel.room_name;
+    _anchorNameLabel.text = [NSString stringWithFormat:@"%@ | %@", roomModel.online, roomModel.nickname];
     _roomTypeLabel.text = roomModel.game_name;
-}
-
-
-#pragma mark - userInteraction
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    self.effectHidden = YES;
-}
-
-
-- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    self.effectHidden = NO;
-}
-
-
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    self.effectHidden = NO;
-}
-
-
-- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    self.effectHidden = NO;
-}
-
-
-- (void)selectedBtnClicked{
-    [BANotificationCenter postNotificationName:BANotificationRoomListCellClicked object:nil userInfo:@{@"roomModel" : _roomModel}];
+    
+    _roomNameLabel.text = roomModel.room_name;
+    _roomNameLabel.center = _screenShotImgView.center;
 }
 
 
 #pragma mark - private
 - (void)setupSubViews{
-    _screenShotImgView = [[UIImageView alloc] initWithFrame:CGRectMake(BAPadding, 0, BARoomListScreenShotImgWidth, BARoomListScreenShotImgHeight)];
-    _screenShotImgView.layer.cornerRadius = BARadius;
-    _screenShotImgView.layer.masksToBounds = YES;
-
-    [self.contentView addSubview:_screenShotImgView];
+    _bgView = [[UIView alloc] initWithFrame:CGRectMake(BAPadding, 0, BARoomListScreenShotImgWidth, BARoomListViewHeight)];
+    _bgView.layer.cornerRadius = BARadius;
+    _bgView.backgroundColor = BAWhiteColor;
+    _bgView.layer.borderColor = [BABlackColor colorWithAlphaComponent:0.2].CGColor;
+    _bgView.layer.borderWidth = 0.8;
+    _bgView.layer.masksToBounds = YES;
     
-    UIBlurEffect *beffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    [self.contentView addSubview:_bgView];
+    
+    _screenShotImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, BARoomListScreenShotImgWidth, BARoomListScreenShotImgHeight)];
+
+    [_bgView addSubview:_screenShotImgView];
+    
+    UIBlurEffect *beffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
     _beffectView = [[UIVisualEffectView alloc] initWithEffect:beffect];
     _beffectView.frame = _screenShotImgView.frame;
-    _beffectView.layer.cornerRadius = BARadius;
-    _beffectView.layer.masksToBounds = YES;
+
+    [_bgView addSubview:_beffectView];
     
-    [self.contentView addSubview:_beffectView];
-    
-    _anchorNameLabel = [UILabel lableWithFrame:CGRectMake(BAPadding, _screenShotImgView.bottom - BACommonTextFontSize - BAPadding, BARoomListScreenShotImgWidth - 2 * BAPadding, BALargeTextFontSize) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentRight];
+    _anchorNameLabel = [UILabel lableWithFrame:CGRectMake(BAPadding, _bgView.bottom - BAPadding / 2 - BALargeTextFontSize, BARoomListScreenShotImgWidth - 2 * BAPadding, BALargeTextFontSize) text:nil color:BACommonTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentRight];
    
-    [_beffectView addSubview:_anchorNameLabel];
+    [_bgView addSubview:_anchorNameLabel];
     
-    _roomNameLabel = [UILabel lableWithFrame:CGRectMake(BAPadding, _screenShotImgView.centerY - BALargeTextFontSize / 2, BARoomListScreenShotImgWidth - 2 * BAPadding, BALargeTextFontSize) text:nil color:BAWhiteColor font:BAThinFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _roomNameLabel = [UILabel lableWithFrame:_screenShotImgView.bounds text:nil color:BAWhiteColor font:BAThinFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _roomNameLabel.numberOfLines = 2;
     
     [_beffectView addSubview:_roomNameLabel];
     
-    _roomTypeLabel = [UILabel lableWithFrame:CGRectMake(BAPadding, BAPadding, BARoomListScreenShotImgWidth - 2 * BAPadding, BASmallTextFontSize) text:nil color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _titileBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 15)];
+    _titileBgView.tintColor = BAThemeColor;
+    _titileBgView.image = [[UIImage imageNamed:@"titileBgView"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _titileBgView.alpha = 1;
     
-    [_beffectView addSubview:_roomTypeLabel];
+    [_bgView addSubview:_titileBgView];
     
-    _connectBtn = [UIButton buttonWithFrame:CGRectMake(BARoomListViewWidth - BAPadding - 10, 0, 30, BARoomListScreenShotImgHeight) title:@"选择" color:BABlackColor font:BAThinFont(BASmallTextFontSize) backgroundImage:[UIImage imageWithColor:BAThemeColor] target:self action:@selector(selectedBtnClicked)];
-    _connectBtn.layer.cornerRadius = BARadius;
-    _connectBtn.layer.masksToBounds = YES;
+    _roomTypeLabel = [UILabel lableWithFrame:CGRectMake(0, 0, 70, 15) text:nil color:BAWhiteColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
-    [self.contentView addSubview:_connectBtn];
+    [_titileBgView addSubview:_roomTypeLabel];
 }
 
 
@@ -112,7 +95,7 @@
     _effectHidden = effectHidden;
     
     CGFloat alpha = effectHidden ? 0 : 1;
-    [UIView animateWithDuration:1.f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration:0.8f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _beffectView.alpha = alpha;
     } completion:nil];
 }

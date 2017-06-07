@@ -103,6 +103,9 @@
 		38A5A0EF1EE2C6C000CFF645 /* BABasicInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A5A0EE1EE2C6C000CFF645 /* BABasicInfoModel.m */; };
 		38AD54D81EE0366A00D310A5 /* BulletAnalyzerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38AD54D71EE0366A00D310A5 /* BulletAnalyzerTests.m */; };
 		38AD54E31EE0366A00D310A5 /* BulletAnalyzerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38AD54E21EE0366A00D310A5 /* BulletAnalyzerUITests.m */; };
+		F21BD41D1EE7F6DE0079312C /* BAReportView.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD41C1EE7F6DE0079312C /* BAReportView.m */; };
+		F21BD4201EE7F7200079312C /* BAReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD41F1EE7F7200079312C /* BAReportCell.m */; };
+		F21BD4231EE7F77C0079312C /* BAReportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD4221EE7F77C0079312C /* BAReportModel.m */; };
 		F231C7891EE5097200EB0F79 /* UIView+ZJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C7881EE5097200EB0F79 /* UIView+ZJExtension.m */; };
 		F231C7AC1EE509F700EB0F79 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C78C1EE509F700EB0F79 /* MKAnnotationView+WebCache.m */; };
 		F231C7AD1EE509F700EB0F79 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C78E1EE509F700EB0F79 /* NSData+ImageContentType.m */; };
@@ -340,6 +343,12 @@
 		38AD54DE1EE0366A00D310A5 /* BulletAnalyzerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BulletAnalyzerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		38AD54E21EE0366A00D310A5 /* BulletAnalyzerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BulletAnalyzerUITests.m; sourceTree = "<group>"; };
 		38AD54E41EE0366A00D310A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F21BD41B1EE7F6DE0079312C /* BAReportView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAReportView.h; sourceTree = "<group>"; };
+		F21BD41C1EE7F6DE0079312C /* BAReportView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAReportView.m; sourceTree = "<group>"; };
+		F21BD41E1EE7F7200079312C /* BAReportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAReportCell.h; sourceTree = "<group>"; };
+		F21BD41F1EE7F7200079312C /* BAReportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAReportCell.m; sourceTree = "<group>"; };
+		F21BD4211EE7F77C0079312C /* BAReportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAReportModel.h; sourceTree = "<group>"; };
+		F21BD4221EE7F77C0079312C /* BAReportModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAReportModel.m; sourceTree = "<group>"; };
 		F231C7871EE5097200EB0F79 /* UIView+ZJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZJExtension.h"; sourceTree = "<group>"; };
 		F231C7881EE5097200EB0F79 /* UIView+ZJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZJExtension.m"; sourceTree = "<group>"; };
 		F231C78B1EE509F700EB0F79 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
@@ -539,6 +548,8 @@
 		388A85F91EE4179F00A0BC5B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F21BD4211EE7F77C0079312C /* BAReportModel.h */,
+				F21BD4221EE7F77C0079312C /* BAReportModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -546,6 +557,10 @@
 		388A85FA1EE4179F00A0BC5B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F21BD41B1EE7F6DE0079312C /* BAReportView.h */,
+				F21BD41C1EE7F6DE0079312C /* BAReportView.m */,
+				F21BD41E1EE7F7200079312C /* BAReportCell.h */,
+				F21BD41F1EE7F7200079312C /* BAReportCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1236,6 +1251,8 @@
 				388A86C61EE4424600A0BC5B /* UIScrollView+MJExtension.m in Sources */,
 				F2DF79D21EE5022D00927776 /* BARoomListCell.m in Sources */,
 				388A86C51EE4424600A0BC5B /* NSBundle+MJRefresh.m in Sources */,
+				F21BD4201EE7F7200079312C /* BAReportCell.m in Sources */,
+				F21BD41D1EE7F6DE0079312C /* BAReportView.m in Sources */,
 				388A86C01EE4424600A0BC5B /* MJRefreshGifHeader.m in Sources */,
 				388A86401EE43EA400A0BC5B /* MASViewAttribute.m in Sources */,
 				388A85D31EE40D5700A0BC5B /* BAHttpTool.m in Sources */,
@@ -1303,6 +1320,7 @@
 				388A85FE1EE417BA00A0BC5B /* BANavigationViewController.m in Sources */,
 				388AFFE81EE045F90031DE53 /* DDContextFilterLogFormatter.m in Sources */,
 				388AFFE61EE045F90031DE53 /* DDLog.m in Sources */,
+				F21BD4231EE7F77C0079312C /* BAReportModel.m in Sources */,
 				38A5A0DE1EE2AA6800CFF645 /* MJProperty.m in Sources */,
 				38A5A0DC1EE2AA6800CFF645 /* MJExtensionConst.m in Sources */,
 				388A86441EE43EA400A0BC5B /* View+MASAdditions.m in Sources */,
