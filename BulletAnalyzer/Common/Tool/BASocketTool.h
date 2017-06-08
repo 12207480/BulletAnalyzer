@@ -25,8 +25,6 @@ struct postPack {
 };
 typedef struct postPack PostPack;
 
-typedef void(^bulletBlock)(NSMutableArray *array);
-
 static const int BAReadTimeOut = -1;
 static const unsigned int BAPostCode = 0x2b1;
 static const unsigned int BAEndCode = 0;
@@ -35,8 +33,6 @@ static NSString *const BAServiceAddress = @"openbarrage.douyutv.com";
 
 @interface BASocketTool : NSObject <GCDAsyncSocketDelegate>
 @property (nonatomic, strong) GCDAsyncSocket *socket;
-@property (nonatomic, copy) bulletBlock bullet;
-@property (nonatomic, copy) bulletBlock gift;
 
 /**
  创建单粒对象

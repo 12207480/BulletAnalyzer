@@ -9,6 +9,7 @@
 #import "BASocketTool.h"
 #import "BAReplyModel.h"
 #import "BATransModelTool.h"
+#import "BAAnalyzerCenter.h"
 #import "NSData+HexExtension.h"
 
 
@@ -97,7 +98,7 @@
     
     NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=logout/"]];
     [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
-    
+    [[BAAnalyzerCenter defaultCenter] endAnalyzing];
     [_heartbeatTimer invalidate];
     [_socket disconnect];
 }
@@ -127,6 +128,7 @@
     
     if ([replayModel.type isEqualToString:BAInfoTypeLoginReplay]) { //登录消息则入组 并开启心跳包
         [self joinGroup];
+        [[BAAnalyzerCenter defaultCenter] beginAnalyzing];
         [self startHeartbeat];
     } 
 }
@@ -200,15 +202,11 @@
                 
                 if (modelType == BAModelTypeBullet) {
                     
-                    if (_bullet) {
-                        _bullet(array);
-                    }
+                    [BANotificationCenter postNotificationName:BANotificationBullet object:nil userInfo:@{BAUserInfoKeyBullet : array}];
                     
                 } else if (modelType == BAModelTypeGift) {
                     
-                    if (_gift) {
-                        _gift(array);
-                    }
+                    [BANotificationCenter postNotificationName:BANotificationGift object:nil userInfo:@{BAUserInfoKeyGift : array}];
                     
                 } else if (modelType == BAModelTypeReply) {
                     

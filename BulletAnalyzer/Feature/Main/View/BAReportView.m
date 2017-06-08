@@ -95,11 +95,14 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
         
         NSInteger item = [[_collectionView indexPathForCell:obj] item];
         if (item == _currentIndex + 1) { // 中间一个
-            obj.transform = CGAffineTransformMakeScale(zoomScale, zoomScale);
+            CGAffineTransform transform = CGAffineTransformMakeTranslation(0, fabs(deltaIndex - 1) * 2 * BAPadding);
+            obj.transform = CGAffineTransformScale(transform, zoomScale, zoomScale);
         } else if (item == _currentIndex) { // 左边一个
-            obj.transform = CGAffineTransformMakeScale(leftZoomScale, leftZoomScale);
+            CGAffineTransform transform = CGAffineTransformMakeTranslation(0, (1 - fabs(deltaIndex - 1)) * 2 * BAPadding);
+            obj.transform = CGAffineTransformScale(transform, leftZoomScale, leftZoomScale);
         } else if (item == _currentIndex + 2){ // 右边一个
-            obj.transform = CGAffineTransformMakeScale(rightZoomScale, rightZoomScale);
+            CGAffineTransform transform = CGAffineTransformMakeTranslation(0, (1 - fabs(deltaIndex - 1)) * 2 * BAPadding);
+            obj.transform = CGAffineTransformScale(transform, rightZoomScale, rightZoomScale);
         }
     }];
 }
@@ -123,7 +126,7 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
     
     BAReportCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BAReportCellReusedId forIndexPath:indexPath];
     cell.reportModel = _reportModelArray[indexPath.item % _reportModelArray.count];
-    cell.transform = indexPath.item == _reportModelArray.count * 500 ? CGAffineTransformMakeScale(1.1, 1.1) : CGAffineTransformMakeScale(0.9, 0.9);
+    cell.transform = indexPath.item == _reportModelArray.count * 500 ? CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 0), 1.1, 1.1) : CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 2 * BAPadding), 0.9, 0.9);
     
     return cell;
 }

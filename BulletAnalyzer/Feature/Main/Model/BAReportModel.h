@@ -46,6 +46,16 @@
 @property (nonatomic, strong) NSDate *end;
 
 /**
+ 继续进行时间
+ */
+@property (nonatomic, strong) NSDate *proceed;
+
+/**
+ 打断分析时间
+ */
+@property (nonatomic, strong) NSDate *interrupt;
+
+/**
  分析时长
  */
 @property (nonatomic, copy) NSString *duration;
@@ -59,5 +69,20 @@
  粉丝数量
  */
 @property (nonatomic, copy) NSString *fansCount;
+
+/**
+ 弹幕数组
+ */
+@property (nonatomic, strong) NSMutableArray *bulletsArray;
+
+/**
+ 新增报告
+ */
+@property (nonatomic, assign, getter=isAddNewReport) BOOL addNewReport;
+
+/**
+ 是否被异常中断分析
+ */
+@property (nonatomic, assign, getter=isInterruptAnalyzing) BOOL interruptAnalyzing;
 
 @end

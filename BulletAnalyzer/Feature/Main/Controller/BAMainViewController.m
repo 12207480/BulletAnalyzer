@@ -50,6 +50,21 @@
 }
 
 
+- (void)openBtnClicked:(NSNotification *)sender{
+    BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellClicked];
+    
+    
+    NSLog(@"%@", reportModel);
+}
+
+
+- (void)roomSelected:(NSNotification *)sender{
+    BARoomModel *roomModel = sender.userInfo[BAUserInfoKeyRoomListCellClicked];
+    
+    [[BASocketTool defaultSocket] connectSocketWithRoomId:roomModel.room_id];
+}
+
+
 #pragma mark - private
 - (void)setupTitleView{
     _titleLabel = [UILabel lableWithFrame:CGRectMake(0, 60, BAScreenWidth, BASuperLargeTextFontSize) text:@"ANALYZER" color:[UIColor whiteColor] font:BABlodFont(BASuperLargeTextFontSize) textAlignment:NSTextAlignmentCenter];
@@ -77,7 +92,9 @@
 
 - (void)setupReportView{
     _reportView = [[BAReportView alloc] initWithFrame:CGRectMake(0, _timeLabel.bottom + 4 * BAPadding, BAScreenWidth, BAScreenHeight * 4 / 5)];
-    _reportView.reportModelArray = @[[BAReportModel new], [BAReportModel new], [BAReportModel new], [BAReportModel new], [BAReportModel new]].mutableCopy;
+    BAReportModel *reportModel = [BAReportModel new];
+    reportModel.addNewReport = YES;
+    _reportView.reportModelArray = @[[BAReportModel new], [BAReportModel new], [BAReportModel new], [BAReportModel new], [BAReportModel new], reportModel].mutableCopy;
     
     [self.view addSubview:_reportView];
 }
@@ -90,6 +107,7 @@
 
 - (void)addNotificationObserver{
     [BANotificationCenter addObserver:self selector:@selector(roomSelected:) name:BANotificationRoomListCellClicked object:nil];
+    [BANotificationCenter addObserver:self selector:@selector(openBtnClicked:) name:BANotificationMainCellClicked object:nil];
 }
 
 
@@ -101,20 +119,5 @@
     
     return [formatter stringFromDate:[NSDate date]];
 }
-
-
-#pragma mark - userInteraction
-- (void)roomSelected:(NSNotification *)sender{
-    BARoomModel *roomModel = sender.userInfo[@"roomModel"];
-    
-    [[BASocketTool defaultSocket] connectSocketWithRoomId:roomModel.room_id];
-    [BASocketTool defaultSocket].bullet = ^(NSArray *array) {
-        [array enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSLog(@"%@:%@", bulletModel.nn, bulletModel.txt);
-        }];
-    };
-}
-
-
 
 @end

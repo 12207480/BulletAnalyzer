@@ -58,7 +58,14 @@
 #define BASmallTextFontSize 12
 
 //通知
-#define BANotificationRoomListCellClicked @"BANotificationRoomListCellClicked"
+static NSString *const BANotificationRoomListCellClicked = @"BANotificationRoomListCellClicked";
+static NSString *const BAUserInfoKeyRoomListCellClicked = @"RoomModel";
+static NSString *const BANotificationMainCellClicked = @"BANotificationMainCellClicked";
+static NSString *const BAUserInfoKeyMainCellClicked = @"ReportModel";
+static NSString *const BANotificationBullet = @"BANotificationBullet";
+static NSString *const BAUserInfoKeyBullet = @"Bullet";
+static NSString *const BANotificationGift = @"BANotificationGift";
+static NSString *const BAUserInfoKeyGift = @"Gift";
 
 //字符串
 #define BAStringWithInteger(integer) [NSString stringWithFormat:@"%zd", integer]
@@ -80,6 +87,7 @@
 
 //获取沙盒 Document
 #define BAPathDocument [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
+#define BAReportDatabase @"report.db"
 
 //获取沙盒 Cache
 #define BAPathCache [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]

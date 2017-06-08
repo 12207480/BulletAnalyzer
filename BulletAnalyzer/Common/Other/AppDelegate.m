@@ -11,6 +11,7 @@
 #import "BARoomListTableViewController.h"
 #import "BANavigationViewController.h"
 #import "MMDrawerController.h"
+#import "BAAnalyzerCenter.h"
 
 @interface AppDelegate ()
 @property(nonatomic,strong) MMDrawerController *drawerController;
@@ -47,6 +48,9 @@
     _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [_window setRootViewController:_drawerController];
     [_window makeKeyAndVisible];
+    
+    //7、初始化分析库
+    [BAAnalyzerCenter defaultCenter];
     
     return YES;
 }

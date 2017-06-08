@@ -37,16 +37,19 @@
         [subData getBytes:&_length range:NSMakeRange(0, 4)];
         _length -= 8;
         //截取相对应的数据
-        NSData *contentData = [subData subdataWithRange:NSMakeRange(12, _length)];
-        NSString *content = [[NSString alloc] initWithData:contentData encoding:NSUTF8StringEncoding];
-        //截取余下的数据
-        subData = [data subdataWithRange:NSMakeRange(_length + _loction, data.length - _length - _loction)];
-        
-        if (content.length) {
-            [contents addObject:content];
+        if (_length <= subData.length - 12) {
+           
+            NSData *contentData = [subData subdataWithRange:NSMakeRange(12, _length)];
+            NSString *content = [[NSString alloc] initWithData:contentData encoding:NSUTF8StringEncoding];
+            //截取余下的数据
+            subData = [data subdataWithRange:NSMakeRange(_length + _loction, data.length - _length - _loction)];
+            
+            if (content.length) {
+                [contents addObject:content];
+            }
+            
+            _loction += _length;
         }
-        
-        _loction += _length;
         
     } while (_loction < data.length && subData.length > 12);
 

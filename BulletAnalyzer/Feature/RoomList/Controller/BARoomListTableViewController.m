@@ -155,7 +155,7 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
     [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
     
     BARoomModel *roomModel = _roomModelArray[indexPath.section];
-    [BANotificationCenter postNotificationName:BANotificationRoomListCellClicked object:nil userInfo:@{@"roomModel" : roomModel}];
+    [BANotificationCenter postNotificationName:BANotificationRoomListCellClicked object:nil userInfo:@{BAUserInfoKeyRoomListCellClicked : roomModel}];
 }
 
 
