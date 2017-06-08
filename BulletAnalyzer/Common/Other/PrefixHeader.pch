@@ -67,9 +67,14 @@ static NSString *const BAUserInfoKeyBullet = @"Bullet";
 static NSString *const BANotificationGift = @"BANotificationGift";
 static NSString *const BAUserInfoKeyGift = @"Gift";
 
+//url
+static NSString *const BADouyuImgBaicUrl = @"https://apic.douyucdn.cn/upload/";
+static NSString *const BADouyuImgMiddleSuffix = @"_middle.jpg";
+static NSString *const BADouyuImgBigSuffix = @"_big.jpg";
+static NSString *const BADouyuImgSmallSuffix = @"_small.jpg";
+
 //字符串
 #define BAStringWithInteger(integer) [NSString stringWithFormat:@"%zd", integer]
-
 //占位图
 #define BAPlaceHolderImg nil
 

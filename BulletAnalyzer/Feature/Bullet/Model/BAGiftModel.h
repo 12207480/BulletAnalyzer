@@ -95,4 +95,19 @@
  */
 @property (nonatomic, copy) NSString *es;
 
+/**
+ 用户头像小
+ */
+@property (nonatomic, copy) NSString *iconSmall;
+
+/**
+ 用户头像中
+ */
+@property (nonatomic, copy) NSString *iconMiddle;
+
+/**
+ 用户头像大
+ */
+@property (nonatomic, copy) NSString *iconBig;
+
 @end

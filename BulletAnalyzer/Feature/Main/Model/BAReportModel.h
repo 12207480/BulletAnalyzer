@@ -8,12 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BAReportModel : NSObject
-
-/**
- 自增ID
- */
-@property (nonatomic, copy) NSString *ID;
+@interface BAReportModel : NSObject <NSCoding>
 
 /**
  主播姓名
@@ -61,19 +56,19 @@
 @property (nonatomic, copy) NSString *duration;
 
 /**
- 弹幕数量
- */
-@property (nonatomic, copy) NSString *bulletCount;
-
-/**
  粉丝数量
  */
 @property (nonatomic, copy) NSString *fansCount;
 
 /**
- 弹幕数组
+ 弹幕数组 , 不要操作其中的元素!!!
  */
 @property (nonatomic, strong) NSMutableArray *bulletsArray;
+
+/**
+ 词数组
+ */
+@property (nonatomic, strong) NSMutableArray *wordsArray;
 
 /**
  新增报告
@@ -84,5 +79,10 @@
  是否被异常中断分析
  */
 @property (nonatomic, assign, getter=isInterruptAnalyzing) BOOL interruptAnalyzing;
+
+/**
+ 弹幕数组中添加弹幕
+ */
+- (void)addBullets:(NSArray *)bulletsArray;
 
 @end

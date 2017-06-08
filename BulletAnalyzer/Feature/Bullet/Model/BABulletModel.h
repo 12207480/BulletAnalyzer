@@ -8,7 +8,7 @@
 
 #import "BABasicInfoModel.h"
 
-@interface BABulletModel : BABasicInfoModel
+@interface BABulletModel : BABasicInfoModel <NSCoding>
 
 /**
  弹幕组 id
@@ -59,5 +59,20 @@
  用户头像(猜想)
  */
 @property (nonatomic, copy) NSString *ic;
+
+/**
+ 用户头像小
+ */
+@property (nonatomic, copy) NSString *iconSmall;
+
+/**
+ 用户头像中
+ */
+@property (nonatomic, copy) NSString *iconMiddle;
+
+/**
+ 用户头像大
+ */
+@property (nonatomic, copy) NSString *iconBig;
 
 @end

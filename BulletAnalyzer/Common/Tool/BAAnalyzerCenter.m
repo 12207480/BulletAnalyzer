@@ -12,13 +12,14 @@
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
 
+static NSString *const BACompletedReport = @"completedReport"; //完成表
+static NSString *const BAAnalyzingReport = @"AnalyzingReport"; //进行表
+static NSString *const BAReportID = @"ID";  //ID
+static NSString *const BAReportData = @"reportData"; //数据
+
 @interface BAAnalyzerCenter()
 @property (nonatomic, strong) BAReportModel *analyzingReportModel;
 @property (nonatomic, strong) FMDatabaseQueue *queue;
-
-//弹幕数据
-@property (nonatomic, strong) NSMutableArray *bulletsArray;
-@property (nonatomic, strong) NSMutableArray *wordsArray;
 
 @end
 
@@ -26,24 +27,19 @@
 
 #pragma mark - public
 - (void)beginAnalyzing{
+    _analyzing = YES;
     
     //传入报告则接着分析
     if (!_proceedReportModel) {
         _analyzingReportModel = [BAReportModel new];
-        
-        BAReportModel *reportModel = [_reportModelArray lastObject];
-        NSString *lastID = reportModel.ID;
-        
-        _analyzingReportModel.ID = [NSString stringWithFormat:@"%zd", lastID.integerValue + 1];
+        _analyzingReportModel.bulletsArray = [NSMutableArray array];
         _analyzingReportModel.begin = [NSDate date];
     } else {
         _analyzingReportModel = _proceedReportModel;
-        _analyzingReportModel.proceed = [NSDate date];
         _analyzingReportModel.interruptAnalyzing = NO;
+        _analyzingReportModel.proceed = [NSDate date];
         _proceedReportModel = nil;
     }
-    
-    _analyzing = YES;
     
     [self beginObserving];
 }
@@ -54,8 +50,8 @@
     [self endObserving];
     
     if (_analyzingReportModel) {
-        _analyzingReportModel.interrupt = [NSDate date];
         _analyzingReportModel.interruptAnalyzing = YES;
+        _analyzingReportModel.interrupt = [NSDate date];
         [_reportModelArray addObject:_analyzingReportModel];
         
         //存入本地
@@ -69,8 +65,8 @@
     [self endObserving];
 
     if (_analyzingReportModel) {
-        _analyzingReportModel.end = [NSDate date];
         _analyzingReportModel.interruptAnalyzing = NO;
+        _analyzingReportModel.end = [NSDate date];
         [_reportModelArray addObject:_analyzingReportModel];
         
         //存入本地
@@ -91,9 +87,9 @@
 
 
 - (void)bullet:(NSNotification *)sender{
-    BABulletModel *bulletModel = sender.userInfo[BAUserInfoKeyBullet];
+    NSArray *bulletModelArray = sender.userInfo[BAUserInfoKeyBullet];
     
-    //开始分析弹幕...
+    [_analyzingReportModel addBullets:bulletModelArray];
 }
 
 
@@ -105,21 +101,41 @@
         NSMutableArray *tempArray = [NSMutableArray array];
         BOOL open = [db open];
         if (open) {
-            //创表
-            BOOL createTable = [db executeUpdate:@"CREATE TABLE IF NOT EXISTS report (ID text, interruptanalyzing bool)"];
-            if (createTable) {
-                NSLog(@"创表成功");
+            //创表(若无) 1.完成分析表
+            NSString *execute1 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ integer primary key autoincrement, %@ Blob)", BACompletedReport, BAReportID, BAReportData];
+            BOOL createCompletedReportTable = [db executeUpdate:execute1];
+            if (createCompletedReportTable) {
+                NSLog(@"completedReport创表成功");
             } else {
-                NSLog(@"创表失败");
+                NSLog(@"completedReport创表失败");
             }
             
-            NSString *select = @"SELECT * FROM report ORDER BY ID DESC";
-            FMResultSet *result = [db executeQuery:select];
-            while (result.next) {
-                BAReportModel *reportModel = [[BAReportModel alloc] init];
+            //未完成分析表
+            NSString *execute2 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ integer primary key autoincrement, %@ Blob)", BAAnalyzingReport, BAReportID, BAReportData];
+            BOOL createAnalyzingReportTable = [db executeUpdate:execute2];
+            if (createAnalyzingReportTable) {
+                NSLog(@"AnalyzingReportTable创表成功");
+            } else {
+                NSLog(@"AnalyzingReportTable创表失败");
+            }
+            
+            //先取出完成表来里的数据解档
+            NSString *select1 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY %@ DESC", BACompletedReport, BAReportID];
+            FMResultSet *result1 = [db executeQuery:select1];
+            while (result1.next) {
+                NSData *reportData = [result1 dataForColumn:BAReportData];
+                BAReportModel *reportModel = [NSKeyedUnarchiver unarchiveObjectWithData:reportData];
                 
-                reportModel.ID = [result stringForColumn:@"ID"];
-                reportModel.interruptAnalyzing = [result boolForColumn:@"interruptAnalyzing"];
+                [tempArray addObject:reportModel];
+            }
+            
+            //再取出未完成表来里的数据解档
+            NSString *select2 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY %@ DESC", BAAnalyzingReport, BAReportID];
+            FMResultSet *result2 = [db executeQuery:select2];
+            while (result2.next) {
+                
+                NSData *reportData = [result2 dataForColumn:BAReportData];
+                BAReportModel *reportModel = [NSKeyedUnarchiver unarchiveObjectWithData:reportData];
                 
                 [tempArray addObject:reportModel];
             }
@@ -136,9 +152,16 @@
         
         BOOL open = [db open];
         if (open) {
-    
-            NSString *select = @"INSERT INTO report (ID,interruptanalyzing) VALUES (?,?)";
-            BOOL success = [db executeUpdate:select, _analyzingReportModel.ID, _analyzingReportModel.interruptAnalyzing];
+            
+            //判断是否为未完成分析表分别存入表单
+            NSString *insert;
+            if (_analyzingReportModel.isInterruptAnalyzing) {
+                insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BAAnalyzingReport, BAReportData];
+            } else {
+                insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BACompletedReport, BAReportData];
+            }
+            NSData *reportData = [NSKeyedArchiver archivedDataWithRootObject:_analyzingReportModel];
+            BOOL success = [db executeUpdate:insert, reportData];
             if (!success) {
                 NSLog(@"储存失败");
             }

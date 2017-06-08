@@ -53,7 +53,6 @@
 - (void)openBtnClicked:(NSNotification *)sender{
     BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellClicked];
     
-    
     NSLog(@"%@", reportModel);
 }
 
