@@ -59,6 +59,8 @@
  */
 - (void)connectRoom{
     
+    NSLog(@"链接服务器");
+    
     NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=loginreq/roomid@=%@/", _roomId]];
     [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
 }
@@ -68,6 +70,8 @@
  入组
  */
 - (void)joinGroup{
+    
+    NSLog(@"发送入组消息");
     
     NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=joingroup/rid@=%@/gid@=-9999/", _roomId]];
     [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
@@ -82,7 +86,9 @@
     [_heartbeatTimer invalidate];
     _heartbeatTimer = nil;
     
-    _heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval:45 repeats:YES block:^(NSTimer * _Nonnull timer) {
+    _heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval:40 repeats:YES block:^(NSTimer * _Nonnull timer) {
+        
+        NSLog(@"发送心跳包");
         
         NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=keeplive/tick@=%@/", [self timeString]]];
         [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
@@ -95,6 +101,8 @@
  用户切断链接
  */
 - (void)cutOff{
+    
+    NSLog(@"断开链接");
     
     NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=logout/"]];
     [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
@@ -168,6 +176,10 @@
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err{
     if (err) {
         NSLog(@"连接失败:%@", err.description);
+        if ([err.description containsString:@"Code=7"]) { //服务器认为心跳包问题断开, 重连
+            [self connectSocketWithRoomId:_roomId];
+        }
+        
     }else{
         NSLog(@"正常断开");
     }

@@ -61,14 +61,14 @@
 @property (nonatomic, copy) NSString *fansCount;
 
 /**
- 弹幕数组 , 不要操作其中的元素!!!
+ 正在分析的弹幕数组
  */
-@property (nonatomic, strong) NSMutableArray *bulletsArray;
+@property (nonatomic, strong) NSMutableArray *analzingBulletsArray;
 
 /**
- 词数组
+ 正在分析的词语数组
  */
-@property (nonatomic, strong) NSMutableArray *wordsArray;
+@property (nonatomic, strong) NSMutableArray *analzingWordsArray;
 
 /**
  新增报告
@@ -79,10 +79,5 @@
  是否被异常中断分析
  */
 @property (nonatomic, assign, getter=isInterruptAnalyzing) BOOL interruptAnalyzing;
-
-/**
- 弹幕数组中添加弹幕
- */
-- (void)addBullets:(NSArray *)bulletsArray;
 
 @end

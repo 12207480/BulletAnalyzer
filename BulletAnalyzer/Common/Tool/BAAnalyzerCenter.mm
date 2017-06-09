@@ -9,8 +9,10 @@
 #import "BAAnalyzerCenter.h"
 #import "BAReportModel.h"
 #import "BABulletModel.h"
+#import "BAWordsModel.h"
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
+#import "Segmentor.h"
 
 static NSString *const BACompletedReport = @"completedReport"; //完成表
 static NSString *const BAAnalyzingReport = @"AnalyzingReport"; //进行表
@@ -20,6 +22,10 @@ static NSString *const BAReportData = @"reportData"; //数据
 @interface BAAnalyzerCenter()
 @property (nonatomic, strong) BAReportModel *analyzingReportModel;
 @property (nonatomic, strong) FMDatabaseQueue *queue;
+@property (nonatomic, assign) dispatch_queue_t analyzingQueue;
+
+@property (nonatomic, strong) NSMutableArray *bulletsArray;
+@property (nonatomic, strong) NSMutableArray *wordsArray;
 
 @end
 
@@ -31,14 +37,22 @@ static NSString *const BAReportData = @"reportData"; //数据
     
     //传入报告则接着分析
     if (!_proceedReportModel) {
+        _bulletsArray = [NSMutableArray array];
+        _wordsArray = [NSMutableArray array];
         _analyzingReportModel = [BAReportModel new];
-        _analyzingReportModel.bulletsArray = [NSMutableArray array];
         _analyzingReportModel.begin = [NSDate date];
     } else {
         _analyzingReportModel = _proceedReportModel;
         _analyzingReportModel.interruptAnalyzing = NO;
         _analyzingReportModel.proceed = [NSDate date];
         _proceedReportModel = nil;
+       
+        //接着分析
+        _bulletsArray = _analyzingReportModel.analzingBulletsArray;
+        _wordsArray = _analyzingReportModel.analzingWordsArray;
+       
+        _analyzingReportModel.analzingBulletsArray = nil;
+        _analyzingReportModel.analzingWordsArray = nil;
     }
     
     [self beginObserving];
@@ -52,6 +66,8 @@ static NSString *const BAReportData = @"reportData"; //数据
     if (_analyzingReportModel) {
         _analyzingReportModel.interruptAnalyzing = YES;
         _analyzingReportModel.interrupt = [NSDate date];
+        _analyzingReportModel.analzingBulletsArray = _bulletsArray;
+        _analyzingReportModel.analzingWordsArray = _wordsArray;
         [_reportModelArray addObject:_analyzingReportModel];
         
         //存入本地
@@ -78,18 +94,141 @@ static NSString *const BAReportData = @"reportData"; //数据
 #pragma mark - private
 - (void)beginObserving{
     [BANotificationCenter addObserver:self selector:@selector(bullet:) name:BANotificationBullet object:nil];
+    
+    [_cleanTimer invalidate];
+    _cleanTimer = nil;
+    if (!_repeatTime) {
+        _repeatTime = 5.f; //默认5秒释放一次弹幕
+    }
+
+    _cleanTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatTime repeats:YES block:^(NSTimer * _Nonnull timer) {
+        [self cleanMemory];
+    }];
 }
 
 
 - (void)endObserving{
     [BANotificationCenter removeObserver:self];
+    
+    [_cleanTimer invalidate];
+    _cleanTimer = nil;
 }
 
 
 - (void)bullet:(NSNotification *)sender{
     NSArray *bulletModelArray = sender.userInfo[BAUserInfoKeyBullet];
     
-    [_analyzingReportModel addBullets:bulletModelArray];
+    [self caculate:bulletModelArray];
+    [_bulletsArray addObjectsFromArray:bulletModelArray];
+}
+
+
+- (void)cleanMemory{
+    
+    if (_bulletsArray.count > 100) {
+        [_bulletsArray removeObjectsInRange:NSMakeRange(0, _bulletsArray.count - 100)];
+    }
+    
+    [_wordsArray sortUsingComparator:^NSComparisonResult(BAWordsModel *wordsModel1, BAWordsModel *wordsModel2) {
+        return [wordsModel2.count compare:wordsModel1.count];
+    }];
+    if (_wordsArray.count > 500) {
+        [_wordsArray removeObjectsInRange:NSMakeRange(500, _wordsArray.count - 500)];
+    }
+}
+
+
+- (void)caculate:(NSArray *)bulletsArray{
+    
+    dispatch_async(self.analyzingQueue, ^{
+        [bulletsArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop1) {
+            
+            //分析单词
+            [self analyzingWords:bulletModel];
+            
+            
+            
+        }];
+    });
+}
+
+
+- (void)analyzingWords:(BABulletModel *)bulletModel{
+    
+    NSArray *wordsArray = [self stringCutByJieba:bulletModel.txt];
+    [wordsArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop2) {
+        
+        if (words.length > 1) { //筛选1个字的词
+            
+            __block BOOL contained = NO;
+            [_wordsArray enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+                
+                contained = [wordsModel.words isEqualToString:words];
+                if (contained) {
+                    *stop3 = YES;
+                    wordsModel.count = BAStringWithInteger(wordsModel.count.integerValue + 1);
+                }
+            }];
+            if (!contained) {
+                BAWordsModel *newWordsModel = [BAWordsModel new];
+                newWordsModel.words = words;
+                newWordsModel.count = BAStringWithInteger(1);
+                
+                [_wordsArray addObject:newWordsModel];
+            }
+        }
+    }];
+}
+
+
+- (NSArray *)stringCutByJieba:(NSString *)string{
+    
+    const char* sentence = [string UTF8String];
+    std::vector<std::string> words;
+    JiebaCut(sentence, words);
+    std::string result;
+    result << words;
+    
+    NSString *relustString = [NSString stringWithUTF8String:result.c_str()].copy;
+    
+    relustString = [relustString stringByReplacingOccurrencesOfString:@"[" withString:@""];
+    relustString = [relustString stringByReplacingOccurrencesOfString:@"]" withString:@""];
+    relustString = [relustString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    relustString = [relustString stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+    NSArray *wordsArray = [relustString componentsSeparatedByString:@","];
+    
+    return wordsArray;
+}
+
+
+//        系统分词, 不好用
+//- (NSArray *)stringTokenizerWithWord:(NSString *)word{
+//
+//    NSMutableArray *keyWords = [NSMutableArray new];
+//    CFStringTokenizerRef ref = CFStringTokenizerCreate(NULL,  (__bridge CFStringRef)word, CFRangeMake(0, word.length), kCFStringTokenizerUnitWord, NULL);
+//    CFRange range;
+//    CFStringTokenizerAdvanceToNextToken(ref);
+//    range = CFStringTokenizerGetCurrentTokenRange(ref);
+//    
+//    NSString *keyWord;
+//    while (range.length > 0)  {
+//        keyWord = [word substringWithRange:NSMakeRange(range.location, range.length)];
+//        if (keyWord.length > 1) { //一个字一下的词全部过滤
+//            [keyWords addObject:keyWord];
+//        }
+//        CFStringTokenizerAdvanceToNextToken(ref);
+//        range = CFStringTokenizerGetCurrentTokenRange(ref);
+//    }
+//    
+//    return keyWords;
+//}
+
+
+- (dispatch_queue_t)analyzingQueue{
+    if (!_analyzingQueue) {
+        _analyzingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    }
+    return _analyzingQueue;
 }
 
 
@@ -188,6 +327,20 @@ static BAAnalyzerCenter *defaultCenter = nil;
             NSString *filePath = [BAPathDocument stringByAppendingPathComponent:BAReportDatabase];
             defaultCenter.queue = [FMDatabaseQueue databaseQueueWithPath:filePath];
             [defaultCenter updateReportLocolized];
+            
+            NSString *dictPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"iosjieba.bundle/dict/jieba.dict.small.utf8"];
+            NSString *hmmPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"iosjieba.bundle/dict/hmm_model.utf8"];
+            NSString *userDictPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"iosjieba.bundle/dict/user.dict.utf8"];
+            
+            NSLog(@"%@",dictPath);
+            NSLog(@"%@",hmmPath);
+            NSLog(@"%@",hmmPath);
+            
+            const char *cDictPath = [dictPath UTF8String];
+            const char *cHmmPath = [hmmPath UTF8String];
+            const char *cUserDictPath = [userDictPath UTF8String];
+            
+            JiebaInit(cDictPath, cHmmPath, cUserDictPath);
         }
     });
     return defaultCenter;

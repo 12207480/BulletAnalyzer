@@ -28,6 +28,16 @@
 @property (nonatomic, strong) BAReportModel *proceedReportModel;
 
 /**
+ 清理内存计时器
+ */
+@property (nonatomic, strong) NSTimer *cleanTimer;
+
+/**
+ 定时器时间
+ */
+@property (nonatomic, assign) CGFloat repeatTime;
+
+/**
  创建单粒对象
  */
 + (BAAnalyzerCenter *)defaultCenter;
