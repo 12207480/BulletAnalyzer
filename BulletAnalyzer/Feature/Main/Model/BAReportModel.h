@@ -61,14 +61,29 @@
 @property (nonatomic, copy) NSString *fansCount;
 
 /**
- 正在分析的弹幕数组
+ 弹幕数组
  */
-@property (nonatomic, strong) NSMutableArray *analzingBulletsArray;
+@property (nonatomic, strong) NSMutableArray *bulletsArray;
 
 /**
- 正在分析的词语数组
+ 词语数组
  */
-@property (nonatomic, strong) NSMutableArray *analzingWordsArray;
+@property (nonatomic, strong) NSMutableArray *wordsArray;
+
+/**
+ 用户数组/弹幕数量排序
+ */
+@property (nonatomic, strong) NSMutableArray *userArraySortedByCount;
+
+/**
+ 用户数据/等级排序
+ */
+@property (nonatomic, strong) NSMutableArray *userArraySortedByLevel;
+
+/**
+ 弹幕数量与时间的排序
+ */
+@property (nonatomic, strong) NSMutableArray *countTimeArray;
 
 /**
  新增报告

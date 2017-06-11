@@ -87,6 +87,8 @@
 		388AFFF11EE0461E0031DE53 /* BATableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 388AFFF01EE0461E0031DE53 /* BATableViewController.m */; };
 		388AFFFD1EE049EA0031DE53 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 388AFFFA1EE049EA0031DE53 /* AppDelegate.m */; };
 		388AFFFE1EE049EA0031DE53 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 388AFFFB1EE049EA0031DE53 /* main.m */; };
+		388EF8361EED55130013CDC1 /* BAUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 388EF8351EED55130013CDC1 /* BAUserModel.m */; };
+		388EF8391EED6A590013CDC1 /* BACountTimeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 388EF8381EED6A590013CDC1 /* BACountTimeModel.m */; };
 		38A5A0B81EE2542400CFF645 /* BATransModelTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A5A0B71EE2542400CFF645 /* BATransModelTool.m */; };
 		38A5A0C01EE2615A00CFF645 /* NSData+HexExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A5A0BF1EE2615A00CFF645 /* NSData+HexExtension.m */; };
 		38A5A0DB1EE2AA6800CFF645 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38A5A0C51EE2AA6800CFF645 /* Info.plist */; };
@@ -319,6 +321,10 @@
 		388AFFFA1EE049EA0031DE53 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		388AFFFB1EE049EA0031DE53 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		388AFFFF1EE04A030031DE53 /* BASocketTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASocketTool.h; sourceTree = "<group>"; };
+		388EF8341EED55130013CDC1 /* BAUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAUserModel.h; sourceTree = "<group>"; };
+		388EF8351EED55130013CDC1 /* BAUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAUserModel.m; sourceTree = "<group>"; };
+		388EF8371EED6A590013CDC1 /* BACountTimeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACountTimeModel.h; sourceTree = "<group>"; };
+		388EF8381EED6A590013CDC1 /* BACountTimeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountTimeModel.m; sourceTree = "<group>"; };
 		38A5A0B61EE2542400CFF645 /* BATransModelTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATransModelTool.h; sourceTree = "<group>"; };
 		38A5A0B71EE2542400CFF645 /* BATransModelTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATransModelTool.m; sourceTree = "<group>"; };
 		38A5A0BE1EE2615A00CFF645 /* NSData+HexExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+HexExtension.h"; sourceTree = "<group>"; };
@@ -542,6 +548,10 @@
 				388A85DC1EE4108C00A0BC5B /* BAReplyModel.m */,
 				385204161EE98534006139FB /* BAWordsModel.h */,
 				385204171EE98534006139FB /* BAWordsModel.m */,
+				388EF8341EED55130013CDC1 /* BAUserModel.h */,
+				388EF8351EED55130013CDC1 /* BAUserModel.m */,
+				388EF8371EED6A590013CDC1 /* BACountTimeModel.h */,
+				388EF8381EED6A590013CDC1 /* BACountTimeModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1402,6 +1412,7 @@
 				388A86C01EE4424600A0BC5B /* MJRefreshGifHeader.m in Sources */,
 				388A86401EE43EA400A0BC5B /* MASViewAttribute.m in Sources */,
 				388A85D31EE40D5700A0BC5B /* BAHttpTool.m in Sources */,
+				388EF8391EED6A590013CDC1 /* BACountTimeModel.m in Sources */,
 				388A86C71EE4424600A0BC5B /* UIScrollView+MJRefresh.m in Sources */,
 				388AFFE11EE045F90031DE53 /* GCDAsyncUdpSocket.m in Sources */,
 				388A86B51EE4424600A0BC5B /* MJRefreshAutoFooter.m in Sources */,
@@ -1420,6 +1431,7 @@
 				38A5A0E01EE2AA6800CFF645 /* MJPropertyType.m in Sources */,
 				388A86C41EE4424600A0BC5B /* MJRefreshConst.m in Sources */,
 				388A85E61EE4108C00A0BC5B /* BAReplyModel.m in Sources */,
+				388EF8361EED55130013CDC1 /* BAUserModel.m in Sources */,
 				388A85C61EE40C2B00A0BC5B /* AFSecurityPolicy.m in Sources */,
 				F231C7B31EE509F700EB0F79 /* SDWebImageManager.m in Sources */,
 				388A85F41EE4163200A0BC5B /* MMDrawerController.m in Sources */,

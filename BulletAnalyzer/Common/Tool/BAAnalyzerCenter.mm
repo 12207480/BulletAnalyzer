@@ -10,6 +10,8 @@
 #import "BAReportModel.h"
 #import "BABulletModel.h"
 #import "BAWordsModel.h"
+#import "BAUserModel.h"
+#import "BACountTimeModel.h"
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
 #import "Segmentor.h"
@@ -20,12 +22,20 @@ static NSString *const BAReportID = @"ID";  //ID
 static NSString *const BAReportData = @"reportData"; //数据
 
 @interface BAAnalyzerCenter()
-@property (nonatomic, strong) BAReportModel *analyzingReportModel;
-@property (nonatomic, strong) FMDatabaseQueue *queue;
-@property (nonatomic, assign) dispatch_queue_t analyzingQueue;
+@property (nonatomic, strong) BAReportModel *analyzingReportModel; //正在分析的报告
+@property (nonatomic, strong) FMDatabaseQueue *queue;   //子线程中操作数据库
+@property (nonatomic, assign) dispatch_queue_t analyzingQueue; //用于计算的子线程
 
-@property (nonatomic, strong) NSMutableArray *bulletsArray;
-@property (nonatomic, strong) NSMutableArray *wordsArray;
+
+@property (nonatomic, strong) NSMutableArray *bulletsArray; //弹幕数组 只保留前100个
+@property (nonatomic, strong) NSMutableArray *wordsArray;   //单词数组 保留500个 频次低的不保留
+@property (nonatomic, strong) NSMutableArray *userArraySortedByCount;   //根据发言次数排序的用户数组 保留100个
+@property (nonatomic, strong) NSMutableArray *userArraySortedByLevel;   //用户等级与数量关系的数组
+@property (nonatomic, strong) NSMutableArray *countTimeArray;   //弹幕数量与时间关系的数组
+
+
+@property (nonatomic, assign) NSInteger timeRepeatCount; //时钟重复次数
+@property (nonatomic, assign) NSInteger bulletsCount;   //弹幕次数/在采样时间内
 
 @end
 
@@ -39,8 +49,19 @@ static NSString *const BAReportData = @"reportData"; //数据
     if (!_proceedReportModel) {
         _bulletsArray = [NSMutableArray array];
         _wordsArray = [NSMutableArray array];
+        _userArraySortedByCount = [NSMutableArray array];
+        _userArraySortedByLevel = [NSMutableArray array];
+        _countTimeArray = [NSMutableArray array];
+        
+        _analyzingReportModel.bulletsArray = _bulletsArray;
+        _analyzingReportModel.wordsArray = _wordsArray;
+        _analyzingReportModel.userArraySortedByCount = _userArraySortedByCount;
+        _analyzingReportModel.userArraySortedByLevel = _userArraySortedByLevel;
+        
         _analyzingReportModel = [BAReportModel new];
         _analyzingReportModel.begin = [NSDate date];
+        
+        
     } else {
         _analyzingReportModel = _proceedReportModel;
         _analyzingReportModel.interruptAnalyzing = NO;
@@ -48,11 +69,11 @@ static NSString *const BAReportData = @"reportData"; //数据
         _proceedReportModel = nil;
        
         //接着分析
-        _bulletsArray = _analyzingReportModel.analzingBulletsArray;
-        _wordsArray = _analyzingReportModel.analzingWordsArray;
-       
-        _analyzingReportModel.analzingBulletsArray = nil;
-        _analyzingReportModel.analzingWordsArray = nil;
+        _bulletsArray = _analyzingReportModel.bulletsArray;
+        _wordsArray = _analyzingReportModel.wordsArray;
+        _userArraySortedByCount = _analyzingReportModel.userArraySortedByCount;
+        _userArraySortedByLevel = _analyzingReportModel.userArraySortedByLevel;
+        _countTimeArray = _analyzingReportModel.countTimeArray;
     }
     
     [self beginObserving];
@@ -66,8 +87,6 @@ static NSString *const BAReportData = @"reportData"; //数据
     if (_analyzingReportModel) {
         _analyzingReportModel.interruptAnalyzing = YES;
         _analyzingReportModel.interrupt = [NSDate date];
-        _analyzingReportModel.analzingBulletsArray = _bulletsArray;
-        _analyzingReportModel.analzingWordsArray = _wordsArray;
         [_reportModelArray addObject:_analyzingReportModel];
         
         //存入本地
@@ -103,7 +122,10 @@ static NSString *const BAReportData = @"reportData"; //数据
 
     _cleanTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatTime repeats:YES block:^(NSTimer * _Nonnull timer) {
         [self cleanMemory];
+        _timeRepeatCount += 1;
     }];
+    
+    [[NSRunLoop currentRunLoop] addTimer:_cleanTimer forMode:NSRunLoopCommonModes];
 }
 
 
@@ -120,21 +142,66 @@ static NSString *const BAReportData = @"reportData"; //数据
     
     [self caculate:bulletModelArray];
     [_bulletsArray addObjectsFromArray:bulletModelArray];
+    _bulletsCount += 1;
 }
 
 
 - (void)cleanMemory{
     
-    if (_bulletsArray.count > 100) {
-        [_bulletsArray removeObjectsInRange:NSMakeRange(0, _bulletsArray.count - 100)];
-    }
-    
-    [_wordsArray sortUsingComparator:^NSComparisonResult(BAWordsModel *wordsModel1, BAWordsModel *wordsModel2) {
-        return [wordsModel2.count compare:wordsModel1.count];
-    }];
-    if (_wordsArray.count > 500) {
-        [_wordsArray removeObjectsInRange:NSMakeRange(500, _wordsArray.count - 500)];
-    }
+    dispatch_async(self.analyzingQueue, ^{
+      
+        //只保留最新100个弹幕
+        if (_bulletsArray.count > 100) {
+            [_bulletsArray removeObjectsInRange:NSMakeRange(0, _bulletsArray.count - 100)];
+        }
+        
+        //根据词出现的频次排序
+        [_wordsArray sortUsingComparator:^NSComparisonResult(BAWordsModel *wordsModel1, BAWordsModel *wordsModel2) {
+            return [wordsModel2.count compare:wordsModel1.count];
+        }];
+        //去掉排序500之后的词
+        if (_wordsArray.count > 500) {
+            [_wordsArray removeObjectsInRange:NSMakeRange(500, _wordsArray.count - 500)];
+        }
+        
+        //根据用户发言的次数排序
+        NSInteger params = 4;
+        if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //10秒处理一次用户/用户等级
+            [_userArraySortedByCount sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
+                return [userModel2.count compare:userModel1.count];
+            }];
+            
+            //去掉发言数排名100名之后的人
+            if (_userArraySortedByCount.count > 100) {
+                [_userArraySortedByCount removeObjectsInRange:NSMakeRange(100, _userArraySortedByCount.count - 100)];
+            }
+            
+            [_userArraySortedByCount sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
+                return [userModel2.count compare:userModel1.count];
+            }];
+            
+            //去掉发言数排名100名之后的人
+            if (_userArraySortedByCount.count > 100) {
+                [_userArraySortedByCount removeObjectsInRange:NSMakeRange(100, _userArraySortedByCount.count - 100)];
+            }
+            
+            //根据等级排序, 次数组仅记录等级与数量之间的关系
+            [_userArraySortedByLevel sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
+                return [userModel2.level compare:userModel1.level];
+            }];
+        }
+        
+        params = 6;
+        if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //30秒处理弹幕数量
+            
+            BACountTimeModel *countTimeModel = [BACountTimeModel new];
+            countTimeModel.count = BAStringWithInteger(_bulletsCount);
+            countTimeModel.time = [NSDate date];
+            
+            [_countTimeArray addObject:countTimeModel];
+            _bulletsCount = 0;
+        }
+    });
 }
 
 
@@ -146,8 +213,8 @@ static NSString *const BAReportData = @"reportData"; //数据
             //分析单词
             [self analyzingWords:bulletModel];
             
-            
-            
+            //分析发送人
+            [self analyzingUser:bulletModel];
         }];
     });
 }
@@ -178,6 +245,38 @@ static NSString *const BAReportData = @"reportData"; //数据
             }
         }
     }];
+}
+
+
+- (void)analyzingUser:(BABulletModel *)bulletModel{
+    
+    __block BOOL contained1 = NO;
+    [_userArraySortedByCount enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
+       
+        contained1 = [bulletModel.uid isEqualToString:userModel.uid];
+        if (contained1) {
+            *stop = YES;
+            userModel.count = BAStringWithInteger(userModel.count.integerValue + 1);
+        }
+    }];
+    
+    if (!contained1) {
+        [_userArraySortedByCount addObject:[BAUserModel userModelWithBullet:bulletModel]];
+    }
+    
+    __block BOOL contained2 = NO;
+    [_userArraySortedByLevel enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
+    
+        contained2 = [bulletModel.level isEqualToString:userModel.level];
+        if (contained2) {
+            *stop = YES;
+            userModel.count = BAStringWithInteger(userModel.count.integerValue + 1);
+        }
+    }];
+    
+    if (!contained2) {
+        [_userArraySortedByLevel addObject:[BAUserModel userModelWithBullet:bulletModel]];
+    }
 }
 
 
