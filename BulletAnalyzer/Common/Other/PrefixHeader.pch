@@ -31,6 +31,8 @@
 #define BARoomListScreenShotImgHeight 90
 #define BAReportCellWidth (BAScreenWidth - 8 * BAPadding)
 #define BAReportCellHeight (BAScreenHeight * 3 / 5)
+#define BABulletListCellHeight 60
+#define BABulletContollerHeight (BAScreenHeight / 3)
 
 //颜色
 #define BAColor(R, G, B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]//自定义颜色
@@ -66,6 +68,10 @@ static NSString *const BANotificationBullet = @"BANotificationBullet";
 static NSString *const BAUserInfoKeyBullet = @"Bullet";
 static NSString *const BANotificationGift = @"BANotificationGift";
 static NSString *const BAUserInfoKeyGift = @"Gift";
+static NSString *const BANotificationBeginAnalyzing = @"BANotificationBeginAnalyzing";
+static NSString *const BANotificationEndAnalyzing = @"BANotificationEndAnalyzing";
+static NSString *const BANotificationInterrupAnalyzing = @"BANotificationInterrupAnalyzing";
+static NSString *const BAUserInfoKeyReportModel = @"ReportModel";
 
 //url
 static NSString *const BADouyuImgBaicUrl = @"https://apic.douyucdn.cn/upload/";

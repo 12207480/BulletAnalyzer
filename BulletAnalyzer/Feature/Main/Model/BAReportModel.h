@@ -18,17 +18,32 @@
 /**
  主播头像
  */
-@property (nonatomic, copy) NSString *icon;
+@property (nonatomic, copy) NSString *avatar;
 
 /**
  直播间标题
  */
-@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *roomName;
+
+/**
+ 直播间id
+ */
+@property (nonatomic, copy) NSString *roomId;
 
 /**
  直播间截图
  */
 @property (nonatomic, copy) NSString *photo;
+
+/**
+ 粉丝数量
+ */
+@property (nonatomic, copy) NSString *fansCount;
+
+/**
+ 主播体重
+ */
+@property (nonatomic, copy) NSString *weight;
 
 /**
  开始分析时间
@@ -54,11 +69,6 @@
  分析时长
  */
 @property (nonatomic, copy) NSString *duration;
-
-/**
- 粉丝数量
- */
-@property (nonatomic, copy) NSString *fansCount;
 
 /**
  弹幕数组

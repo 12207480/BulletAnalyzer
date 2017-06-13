@@ -21,4 +21,10 @@
  */
 @property (nonatomic, copy) NSString *limit;
 
+#pragma mark - 获取房间详情
+/**
+ 房屋id
+ */
+@property (nonatomic, copy) NSString *roomId;
+
 @end

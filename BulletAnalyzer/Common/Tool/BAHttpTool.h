@@ -22,4 +22,12 @@ typedef void(^failBlock)(NSString *error);
  */
 + (void)getAllRoomListWithParams:(BAHttpParams *)params success:(successBlock)success fail:(failBlock)fail;
 
+/**
+ 获取房间详情
+ 
+ @param success 成功回调 RoomModel
+ @param fail 失败回调 返回原因
+ */
++ (void)getRoomInfoWithParams:(BAHttpParams *)params success:(successBlock)success fail:(failBlock)fail;
+
 @end

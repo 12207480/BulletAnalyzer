@@ -16,16 +16,26 @@ typedef NS_ENUM(NSUInteger, BAModelType) {
 
 typedef void(^transCompleteBlock)(NSMutableArray *array, BAModelType modelType);
 typedef void(^transArrayCompleteBlock)(NSMutableArray *array);
+typedef void(^transModelCompleteBlock)(id obj);
 
 @interface BATransModelTool : NSObject
 
 /**
  服务器传回的数据解析
-
+ 
  @param data 服务器返回的数据
  @param complete 解析回调
  */
 + (void)transModelWithData:(NSData *)data complete:(transCompleteBlock)complete;
+
+
+/**
+ 房屋字典数组转模型数组
+ 
+ @param dic 传入字典
+ @param complete 返回房屋模型数组
+ */
++ (void)transModelWithRoomDic:(NSDictionary *)dic compete:(transModelCompleteBlock)complete;
 
 
 /**

@@ -12,6 +12,7 @@
 #import "BAWordsModel.h"
 #import "BAUserModel.h"
 #import "BACountTimeModel.h"
+#import "BARoomModel.h"
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
 #import "Segmentor.h"
@@ -22,10 +23,10 @@ static NSString *const BAReportID = @"ID";  //ID
 static NSString *const BAReportData = @"reportData"; //数据
 
 @interface BAAnalyzerCenter()
-@property (nonatomic, strong) BAReportModel *analyzingReportModel; //正在分析的报告
 @property (nonatomic, strong) FMDatabaseQueue *queue;   //子线程中操作数据库
 @property (nonatomic, assign) dispatch_queue_t analyzingQueue; //用于计算的子线程
 
+@property (nonatomic, strong) BAReportModel *analyzingReportModel; //正在分析的报告
 
 @property (nonatomic, strong) NSMutableArray *bulletsArray; //弹幕数组 只保留前100个
 @property (nonatomic, strong) NSMutableArray *wordsArray;   //单词数组 保留500个 频次低的不保留
@@ -53,15 +54,13 @@ static NSString *const BAReportData = @"reportData"; //数据
         _userArraySortedByLevel = [NSMutableArray array];
         _countTimeArray = [NSMutableArray array];
         
+        _analyzingReportModel = [BAReportModel new];
         _analyzingReportModel.bulletsArray = _bulletsArray;
         _analyzingReportModel.wordsArray = _wordsArray;
         _analyzingReportModel.userArraySortedByCount = _userArraySortedByCount;
         _analyzingReportModel.userArraySortedByLevel = _userArraySortedByLevel;
         
-        _analyzingReportModel = [BAReportModel new];
         _analyzingReportModel.begin = [NSDate date];
-        
-        
     } else {
         _analyzingReportModel = _proceedReportModel;
         _analyzingReportModel.interruptAnalyzing = NO;
@@ -77,6 +76,8 @@ static NSString *const BAReportData = @"reportData"; //数据
     }
     
     [self beginObserving];
+
+    [BANotificationCenter postNotificationName:BANotificationBeginAnalyzing object:nil userInfo:@{BAUserInfoKeyReportModel : _analyzingReportModel}];
 }
 
 
@@ -92,6 +93,8 @@ static NSString *const BAReportData = @"reportData"; //数据
         //存入本地
         [self saveReportLocolized];
     }
+    
+    [BANotificationCenter postNotificationName:BANotificationInterrupAnalyzing object:nil userInfo:@{BAUserInfoKeyReportModel : _analyzingReportModel}];
 }
 
 
@@ -107,6 +110,8 @@ static NSString *const BAReportData = @"reportData"; //数据
         //存入本地
         [self saveReportLocolized];
     }
+    
+    [BANotificationCenter postNotificationName:BANotificationEndAnalyzing object:nil userInfo:@{BAUserInfoKeyReportModel : _analyzingReportModel}];
 }
 
 
@@ -137,6 +142,25 @@ static NSString *const BAReportData = @"reportData"; //数据
 }
 
 
+- (void)getRoomInfo{
+    BAHttpParams *params = [BAHttpParams new];
+    params.roomId = _analyzingReportModel.roomId;
+    
+    [BAHttpTool getRoomInfoWithParams:params success:^(BARoomModel *roomModel) {
+        
+        _analyzingReportModel.fansCount = roomModel.fans_num;
+        _analyzingReportModel.weight = roomModel.owner_weight;
+        _analyzingReportModel.roomName = roomModel.room_name;
+        _analyzingReportModel.name = roomModel.owner_name;
+        _analyzingReportModel.avatar = roomModel.avatar;
+        _analyzingReportModel.photo = roomModel.room_src;
+        
+    } fail:^(NSString *error) {
+        NSLog(@"获取直播间详情失败");
+    }];
+}
+
+
 - (void)bullet:(NSNotification *)sender{
     NSArray *bulletModelArray = sender.userInfo[BAUserInfoKeyBullet];
     
@@ -157,7 +181,7 @@ static NSString *const BAReportData = @"reportData"; //数据
         
         //根据词出现的频次排序
         [_wordsArray sortUsingComparator:^NSComparisonResult(BAWordsModel *wordsModel1, BAWordsModel *wordsModel2) {
-            return [wordsModel2.count compare:wordsModel1.count];
+            return wordsModel1.count.integerValue > wordsModel2.count.integerValue ? NSOrderedAscending : NSOrderedDescending;
         }];
         //去掉排序500之后的词
         if (_wordsArray.count > 500) {
@@ -167,8 +191,9 @@ static NSString *const BAReportData = @"reportData"; //数据
         //根据用户发言的次数排序
         NSInteger params = 4;
         if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //10秒处理一次用户/用户等级
+            
             [_userArraySortedByCount sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
-                return [userModel2.count compare:userModel1.count];
+                return userModel1.count.integerValue > userModel2.count.integerValue ? NSOrderedAscending : NSOrderedDescending;
             }];
             
             //去掉发言数排名100名之后的人
@@ -176,18 +201,9 @@ static NSString *const BAReportData = @"reportData"; //数据
                 [_userArraySortedByCount removeObjectsInRange:NSMakeRange(100, _userArraySortedByCount.count - 100)];
             }
             
-            [_userArraySortedByCount sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
-                return [userModel2.count compare:userModel1.count];
-            }];
-            
-            //去掉发言数排名100名之后的人
-            if (_userArraySortedByCount.count > 100) {
-                [_userArraySortedByCount removeObjectsInRange:NSMakeRange(100, _userArraySortedByCount.count - 100)];
-            }
-            
-            //根据等级排序, 次数组仅记录等级与数量之间的关系
+            //根据等级排序, 此数组仅记录等级与数量之间的关系
             [_userArraySortedByLevel sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
-                return [userModel2.level compare:userModel1.level];
+                return userModel1.level.integerValue > userModel2.level.integerValue ? NSOrderedAscending : NSOrderedDescending;
             }];
         }
         
@@ -209,6 +225,11 @@ static NSString *const BAReportData = @"reportData"; //数据
     
     dispatch_async(self.analyzingQueue, ^{
         [bulletsArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop1) {
+            
+            if (!_analyzingReportModel.roomId.length) {
+                _analyzingReportModel.roomId = bulletModel.rid;
+                [self getRoomInfo];
+            }
             
             //分析单词
             [self analyzingWords:bulletModel];

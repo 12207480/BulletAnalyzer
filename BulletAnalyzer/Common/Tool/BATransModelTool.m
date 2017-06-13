@@ -23,6 +23,13 @@
 }
 
 
++ (void)transModelWithRoomDic:(NSDictionary *)dic compete:(transModelCompleteBlock)complete{
+    
+    BARoomModel *roomModel = [BARoomModel mj_objectWithKeyValues:dic];
+    complete(roomModel);
+}
+
+
 #pragma mark - socket数据解析
 + (void)transModelWithData:(NSData *)data complete:(transCompleteBlock)complete{
    
@@ -72,21 +79,22 @@
             
             BABulletModel *bulletModel = [BABulletModel mj_objectWithKeyValues:dic];
             [bulletArray addObject:bulletModel];
-            complete(bulletArray, BAModelTypeBullet);
             
         } else if ([dic[@"type"] isEqualToString:BAInfoTypeSmallGift] || [dic[@"type"] isEqualToString:BAInfoTypeDeserveGift] || [dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
             
             BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
             [giftArray addObject:giftModel];
-            complete(giftArray, BAModelTypeGift);
         
         } else if ([dic[@"type"] isEqualToString:BAInfoTypeLoginReplay]) { //登录返回数据
            
             BAReplyModel *replayModel = [BAReplyModel mj_objectWithKeyValues:dic];
             [replayArray addObject:replayModel];
-            complete(replayArray, BAModelTypeReply);
         }
     }];
+    
+    complete(bulletArray, BAModelTypeBullet);
+    complete(giftArray, BAModelTypeGift);
+    complete(replayArray, BAModelTypeReply);
 }
 
 

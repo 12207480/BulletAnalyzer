@@ -7,9 +7,11 @@
 //
 
 #import "BAMainViewController.h"
+#import "BABulletViewController.h"
 #import "BAReportView.h"
 #import "UIViewController+MMDrawerController.h"
 #import "BASocketTool.h"
+#import "BAAnalyzerCenter.h"
 #import "BARoomModel.h"
 #import "BABulletModel.h"
 #import "BAReportModel.h"
@@ -39,6 +41,13 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [UIApplication sharedApplication].statusBarHidden = NO;
+}
+
+
 - (void)dealloc{
     [BANotificationCenter removeObserver:self];
 }
@@ -61,6 +70,16 @@
     BARoomModel *roomModel = sender.userInfo[BAUserInfoKeyRoomListCellClicked];
     
     [[BASocketTool defaultSocket] connectSocketWithRoomId:roomModel.room_id];
+}
+
+
+- (void)beginAnalyzing:(NSNotification *)sender{
+    BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyReportModel];
+    
+    BABulletViewController *bulletsVC = [[BABulletViewController alloc] init];
+    bulletsVC.reportModel = reportModel;
+    
+    [self presentViewController:bulletsVC animated:YES completion:nil];
 }
 
 
@@ -107,6 +126,7 @@
 - (void)addNotificationObserver{
     [BANotificationCenter addObserver:self selector:@selector(roomSelected:) name:BANotificationRoomListCellClicked object:nil];
     [BANotificationCenter addObserver:self selector:@selector(openBtnClicked:) name:BANotificationMainCellClicked object:nil];
+    [BANotificationCenter addObserver:self selector:@selector(beginAnalyzing:) name:BANotificationBeginAnalyzing object:nil];
 }
 
 

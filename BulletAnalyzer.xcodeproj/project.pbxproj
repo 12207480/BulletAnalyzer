@@ -119,6 +119,10 @@
 		F21BD4381EE91DFD0079312C /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD4321EE91DFD0079312C /* FMResultSet.m */; };
 		F21BD4391EE91DFD0079312C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F21BD4331EE91DFD0079312C /* Info.plist */; };
 		F21BD43B1EE91E320079312C /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F21BD43A1EE91E320079312C /* libsqlite3.0.tbd */; };
+		F21BD4401EEF77490079312C /* BABulletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD43F1EEF77490079312C /* BABulletViewController.m */; };
+		F21BD4481EEF7B080079312C /* BAScrollIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD4471EEF7B080079312C /* BAScrollIndicator.m */; };
+		F21BD44B1EEF7D150079312C /* BABulletListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD44A1EEF7D150079312C /* BABulletListCell.m */; };
+		F21BD44F1EEFC7D00079312C /* BABulletController.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD44E1EEFC7D00079312C /* BABulletController.m */; };
 		F231C7891EE5097200EB0F79 /* UIView+ZJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C7881EE5097200EB0F79 /* UIView+ZJExtension.m */; };
 		F231C7AC1EE509F700EB0F79 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C78C1EE509F700EB0F79 /* MKAnnotationView+WebCache.m */; };
 		F231C7AD1EE509F700EB0F79 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C78E1EE509F700EB0F79 /* NSData+ImageContentType.m */; };
@@ -416,6 +420,14 @@
 		F21BD4321EE91DFD0079312C /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		F21BD4331EE91DFD0079312C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F21BD43A1EE91E320079312C /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		F21BD43E1EEF77490079312C /* BABulletViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletViewController.h; sourceTree = "<group>"; };
+		F21BD43F1EEF77490079312C /* BABulletViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletViewController.m; sourceTree = "<group>"; };
+		F21BD4461EEF7B080079312C /* BAScrollIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAScrollIndicator.h; sourceTree = "<group>"; };
+		F21BD4471EEF7B080079312C /* BAScrollIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAScrollIndicator.m; sourceTree = "<group>"; };
+		F21BD4491EEF7D150079312C /* BABulletListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletListCell.h; sourceTree = "<group>"; };
+		F21BD44A1EEF7D150079312C /* BABulletListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletListCell.m; sourceTree = "<group>"; };
+		F21BD44D1EEFC7D00079312C /* BABulletController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletController.h; sourceTree = "<group>"; };
+		F21BD44E1EEFC7D00079312C /* BABulletController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletController.m; sourceTree = "<group>"; };
 		F231C7871EE5097200EB0F79 /* UIView+ZJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZJExtension.h"; sourceTree = "<group>"; };
 		F231C7881EE5097200EB0F79 /* UIView+ZJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZJExtension.m"; sourceTree = "<group>"; };
 		F231C78B1EE509F700EB0F79 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
@@ -533,6 +545,8 @@
 		388A85D51EE4108C00A0BC5B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				F21BD43E1EEF77490079312C /* BABulletViewController.h */,
+				F21BD43F1EEF77490079312C /* BABulletViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -559,6 +573,8 @@
 		388A85DD1EE4108C00A0BC5B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F21BD44C1EEFC7AB0079312C /* BulletController */,
+				F21BD4451EEF7AFA0079312C /* ScrollIndicator */,
 				388A85DE1EE4108C00A0BC5B /* BulletCycle */,
 				388A85E11EE4108C00A0BC5B /* BulletList */,
 			);
@@ -579,6 +595,8 @@
 			children = (
 				388A85E21EE4108C00A0BC5B /* BABulletListView.h */,
 				388A85E31EE4108C00A0BC5B /* BABulletListView.m */,
+				F21BD4491EEF7D150079312C /* BABulletListCell.h */,
+				F21BD44A1EEF7D150079312C /* BABulletListCell.m */,
 			);
 			path = BulletList;
 			sourceTree = "<group>";
@@ -1197,6 +1215,24 @@
 			path = FMDB;
 			sourceTree = "<group>";
 		};
+		F21BD4451EEF7AFA0079312C /* ScrollIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				F21BD4461EEF7B080079312C /* BAScrollIndicator.h */,
+				F21BD4471EEF7B080079312C /* BAScrollIndicator.m */,
+			);
+			path = ScrollIndicator;
+			sourceTree = "<group>";
+		};
+		F21BD44C1EEFC7AB0079312C /* BulletController */ = {
+			isa = PBXGroup;
+			children = (
+				F21BD44D1EEFC7D00079312C /* BABulletController.h */,
+				F21BD44E1EEFC7D00079312C /* BABulletController.m */,
+			);
+			path = BulletController;
+			sourceTree = "<group>";
+		};
 		F231C78A1EE509F700EB0F79 /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1439,9 +1475,11 @@
 				F231C7B11EE509F700EB0F79 /* SDWebImageDownloader.m in Sources */,
 				388A86C81EE4424600A0BC5B /* UIView+MJExtension.m in Sources */,
 				F231C7B81EE509F700EB0F79 /* UIImage+WebP.m in Sources */,
+				F21BD4481EEF7B080079312C /* BAScrollIndicator.m in Sources */,
 				388A86451EE43EA400A0BC5B /* ViewController+MASAdditions.m in Sources */,
 				F21BD4381EE91DFD0079312C /* FMResultSet.m in Sources */,
 				388AFFE91EE045F90031DE53 /* DDDispatchQueueLogFormatter.m in Sources */,
+				F21BD44B1EEF7D150079312C /* BABulletListCell.m in Sources */,
 				38A5A0E51EE2AA6800CFF645 /* NSString+MJExtension.m in Sources */,
 				388A85F61EE4163200A0BC5B /* UIViewController+MMDrawerController.m in Sources */,
 				F231C7B21EE509F700EB0F79 /* SDWebImageDownloaderOperation.m in Sources */,
@@ -1494,6 +1532,7 @@
 				38A5A0E21EE2AA6800CFF645 /* NSObject+MJCoding.m in Sources */,
 				38A5A0E31EE2AA6800CFF645 /* NSObject+MJKeyValue.m in Sources */,
 				388A86BD1EE4424600A0BC5B /* MJRefreshBackGifFooter.m in Sources */,
+				F21BD44F1EEFC7D00079312C /* BABulletController.m in Sources */,
 				388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */,
 				388A86BF1EE4424600A0BC5B /* MJRefreshBackStateFooter.m in Sources */,
 				F231C7BB1EE509F700EB0F79 /* UIView+WebCacheOperation.m in Sources */,
@@ -1502,6 +1541,7 @@
 				388A861C1EE42F0500A0BC5B /* GiFHUD.m in Sources */,
 				F231C7AC1EE509F700EB0F79 /* MKAnnotationView+WebCache.m in Sources */,
 				38A5A0C01EE2615A00CFF645 /* NSData+HexExtension.m in Sources */,
+				F21BD4401EEF77490079312C /* BABulletViewController.m in Sources */,
 				F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */,
 				388A863C1EE43EA400A0BC5B /* MASCompositeConstraint.m in Sources */,
 				388A85E71EE4108C00A0BC5B /* BABulletCycle.m in Sources */,

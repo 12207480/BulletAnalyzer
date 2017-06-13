@@ -81,8 +81,39 @@
 @property (nonatomic, copy) NSString *isVertical;
 
 /**
- 保存首页截图Y值
+ 房间图片
  */
-@property (nonatomic, assign) CGFloat screenShotViewY;
+@property (nonatomic, copy) NSString *room_thumb;
+
+/**
+ 开播时间
+ */
+@property (nonatomic, copy) NSString *start_time;
+
+/**
+ 主播体重
+ */
+@property (nonatomic, copy) NSString *owner_weight;
+
+/**
+ 主播名称
+ */
+@property (nonatomic, copy) NSString *owner_name;
+
+/**
+ 主播名称
+ */
+@property (nonatomic, copy) NSString *owner_avatar;
+
+/**
+ 关注人数
+ */
+@property (nonatomic, copy) NSString *fans_num;
+
+/**
+ 关注人数
+ */
+@property (nonatomic, copy) NSString *cate_name;
 
 @end
+

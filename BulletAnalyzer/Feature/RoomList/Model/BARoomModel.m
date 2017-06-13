@@ -1,4 +1,3 @@
-
 //
 //  BARoomModel.m
 //  BulletAnalyzer
@@ -10,5 +9,26 @@
 #import "BARoomModel.h"
 
 @implementation BARoomModel
+
+- (void)setRoom_thumb:(NSString *)room_thumb{
+    _room_thumb = room_thumb;
+    
+    _room_src = room_thumb;
+}
+
+
+- (void)setOwner_avatar:(NSString *)owner_avatar{
+    _owner_avatar = owner_avatar;
+    
+    _avatar = owner_avatar;
+}
+
+
+- (void)setCate_name:(NSString *)cate_name{
+    _cate_name = cate_name;
+    
+    _game_name = cate_name;
+}
+
 
 @end

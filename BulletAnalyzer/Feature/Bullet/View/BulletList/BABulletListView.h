@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BABulletListView : UIView
+@interface BABulletListView : UITableView
+
+/**
+ 传入新的弹幕
+ */
+- (void)addBullets:(NSArray *)bulletsArray;
 
 @end

@@ -32,7 +32,7 @@ MJExtensionCodingImplementation
     _ic = ic;
     
     if (_ic.length) {
-        NSString *urlStr = [ic stringByReplacingOccurrencesOfString:@"%@" withString:@"/"];
+        NSString *urlStr = [ic stringByReplacingOccurrencesOfString:@"@S" withString:@"/"];
         urlStr = [BADouyuImgBaicUrl stringByAppendingString:urlStr];
         _iconSmall = [urlStr stringByAppendingString:BADouyuImgSmallSuffix];
         _iconMiddle = [urlStr stringByAppendingString:BADouyuImgMiddleSuffix];

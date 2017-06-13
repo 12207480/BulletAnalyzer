@@ -35,4 +35,27 @@ static NSString *const BANetworkError = @"上帝关了门窗, 还顺便断了网
 }
 
 
++ (void)getRoomInfoWithParams:(BAHttpParams *)params success:(successBlock)success fail:(failBlock)fail{
+    
+    NSString *url = @"http://open.douyucdn.cn/api/RoomApi/room/";
+    
+    NSString *roomId = params.roomId;
+    
+    [ZJAFNetworking GET:[url stringByAppendingString:roomId] params:nil success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
+        
+        if ([responseObject[@"error"] integerValue] == 0) {
+            
+            [BATransModelTool transModelWithRoomDic:responseObject[@"data"] compete:^(id obj) {
+                
+                success(obj);
+            }];
+        }
+        
+    } fail:^(NSURLSessionDataTask *task, NSError *error) {
+        
+        fail(BANetworkError);
+    }];
+}
+
+
 @end
