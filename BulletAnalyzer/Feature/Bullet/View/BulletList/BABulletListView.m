@@ -70,7 +70,7 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
     
     _bulletArray = [NSMutableArray array];
     
-    self.backgroundColor = BABackgroundColor;
+    self.backgroundColor = [UIColor clearColor];
     self.showsVerticalScrollIndicator = NO;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.delegate = self;

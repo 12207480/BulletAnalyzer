@@ -143,6 +143,8 @@
 		F231C7BD1EE52E8400EB0F79 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F231C7BC1EE52E8300EB0F79 /* Reveal.framework */; };
 		F231C7C01EE52F0D00EB0F79 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F231C7BF1EE52F0D00EB0F79 /* libz.tbd */; };
 		F231C7C61EE541ED00EB0F79 /* NSObject+ZJUIExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C7C51EE541ED00EB0F79 /* NSObject+ZJUIExtension.m */; };
+		F2382DF91EF2756E00BE5446 /* BABulletMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382DF81EF2756E00BE5446 /* BABulletMenu.m */; };
+		F2382DFF1EF27D3300BE5446 /* BABulletSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382DFE1EF27D3300BE5446 /* BABulletSetting.m */; };
 		F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79CE1EE501F200927776 /* BATableViewCell.m */; };
 		F2DF79D21EE5022D00927776 /* BARoomListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79D11EE5022D00927776 /* BARoomListCell.m */; };
 /* End PBXBuildFile section */
@@ -467,6 +469,10 @@
 		F231C7BF1EE52F0D00EB0F79 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		F231C7C41EE541ED00EB0F79 /* NSObject+ZJUIExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ZJUIExtension.h"; sourceTree = "<group>"; };
 		F231C7C51EE541ED00EB0F79 /* NSObject+ZJUIExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ZJUIExtension.m"; sourceTree = "<group>"; };
+		F2382DF71EF2756E00BE5446 /* BABulletMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletMenu.h; sourceTree = "<group>"; };
+		F2382DF81EF2756E00BE5446 /* BABulletMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletMenu.m; sourceTree = "<group>"; };
+		F2382DFD1EF27D3300BE5446 /* BABulletSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletSetting.h; sourceTree = "<group>"; };
+		F2382DFE1EF27D3300BE5446 /* BABulletSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletSetting.m; sourceTree = "<group>"; };
 		F2DF79CD1EE501F200927776 /* BATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATableViewCell.h; sourceTree = "<group>"; };
 		F2DF79CE1EE501F200927776 /* BATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATableViewCell.m; sourceTree = "<group>"; };
 		F2DF79D01EE5022D00927776 /* BARoomListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARoomListCell.h; sourceTree = "<group>"; };
@@ -1229,6 +1235,10 @@
 			children = (
 				F21BD44D1EEFC7D00079312C /* BABulletController.h */,
 				F21BD44E1EEFC7D00079312C /* BABulletController.m */,
+				F2382DF71EF2756E00BE5446 /* BABulletMenu.h */,
+				F2382DF81EF2756E00BE5446 /* BABulletMenu.m */,
+				F2382DFD1EF27D3300BE5446 /* BABulletSetting.h */,
+				F2382DFE1EF27D3300BE5446 /* BABulletSetting.m */,
 			);
 			path = BulletController;
 			sourceTree = "<group>";
@@ -1458,6 +1468,7 @@
 				388A86011EE417D200A0BC5B /* BAMainViewController.m in Sources */,
 				388A85C91EE40C2B00A0BC5B /* AFURLSessionManager.m in Sources */,
 				F21BD4351EE91DFD0079312C /* FMDatabaseAdditions.m in Sources */,
+				F2382DF91EF2756E00BE5446 /* BABulletMenu.m in Sources */,
 				388A863E1EE43EA400A0BC5B /* MASConstraintMaker.m in Sources */,
 				388A85C71EE40C2B00A0BC5B /* AFURLRequestSerialization.m in Sources */,
 				F21BD4341EE91DFD0079312C /* FMDatabase.m in Sources */,
@@ -1522,6 +1533,7 @@
 				388A85F51EE4163200A0BC5B /* MMDrawerVisualState.m in Sources */,
 				38A5A0E41EE2AA6800CFF645 /* NSObject+MJProperty.m in Sources */,
 				388A85FE1EE417BA00A0BC5B /* BANavigationViewController.m in Sources */,
+				F2382DFF1EF27D3300BE5446 /* BABulletSetting.m in Sources */,
 				388AFFE81EE045F90031DE53 /* DDContextFilterLogFormatter.m in Sources */,
 				388AFFE61EE045F90031DE53 /* DDLog.m in Sources */,
 				F21BD4231EE7F77C0079312C /* BAReportModel.m in Sources */,
