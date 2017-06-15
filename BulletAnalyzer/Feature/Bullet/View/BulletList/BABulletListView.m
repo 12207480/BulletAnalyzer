@@ -52,14 +52,12 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
     [addBulletsArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
         [_bulletArray addObject:bulletModel];
-        if (_bulletArray.count > 100) {
+        if (_bulletArray.count > 200) {
             [_bulletArray removeObjectsInRange:NSMakeRange(0, _bulletArray.count - 100)];
         }
         
         [self reloadData];
         [self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_bulletArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-        
-        //[NSThread sleepForTimeInterval:0.05];
     }];
 }
 

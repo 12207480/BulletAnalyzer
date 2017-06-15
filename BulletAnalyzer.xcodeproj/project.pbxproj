@@ -89,6 +89,7 @@
 		388AFFFE1EE049EA0031DE53 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 388AFFFB1EE049EA0031DE53 /* main.m */; };
 		388EF8361EED55130013CDC1 /* BAUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 388EF8351EED55130013CDC1 /* BAUserModel.m */; };
 		388EF8391EED6A590013CDC1 /* BACountTimeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 388EF8381EED6A590013CDC1 /* BACountTimeModel.m */; };
+		3894FDE51EF2BD180013A4E0 /* BASlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3894FDE41EF2BD180013A4E0 /* BASlider.m */; };
 		38A5A0B81EE2542400CFF645 /* BATransModelTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A5A0B71EE2542400CFF645 /* BATransModelTool.m */; };
 		38A5A0C01EE2615A00CFF645 /* NSData+HexExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A5A0BF1EE2615A00CFF645 /* NSData+HexExtension.m */; };
 		38A5A0DB1EE2AA6800CFF645 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38A5A0C51EE2AA6800CFF645 /* Info.plist */; };
@@ -331,6 +332,8 @@
 		388EF8351EED55130013CDC1 /* BAUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAUserModel.m; sourceTree = "<group>"; };
 		388EF8371EED6A590013CDC1 /* BACountTimeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACountTimeModel.h; sourceTree = "<group>"; };
 		388EF8381EED6A590013CDC1 /* BACountTimeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountTimeModel.m; sourceTree = "<group>"; };
+		3894FDE31EF2BD180013A4E0 /* BASlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASlider.h; sourceTree = "<group>"; };
+		3894FDE41EF2BD180013A4E0 /* BASlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASlider.m; sourceTree = "<group>"; };
 		38A5A0B61EE2542400CFF645 /* BATransModelTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATransModelTool.h; sourceTree = "<group>"; };
 		38A5A0B71EE2542400CFF645 /* BATransModelTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATransModelTool.m; sourceTree = "<group>"; };
 		38A5A0BE1EE2615A00CFF645 /* NSData+HexExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+HexExtension.h"; sourceTree = "<group>"; };
@@ -1239,6 +1242,8 @@
 				F2382DF81EF2756E00BE5446 /* BABulletMenu.m */,
 				F2382DFD1EF27D3300BE5446 /* BABulletSetting.h */,
 				F2382DFE1EF27D3300BE5446 /* BABulletSetting.m */,
+				3894FDE31EF2BD180013A4E0 /* BASlider.h */,
+				3894FDE41EF2BD180013A4E0 /* BASlider.m */,
 			);
 			path = BulletController;
 			sourceTree = "<group>";
@@ -1524,6 +1529,7 @@
 				38A5A0B81EE2542400CFF645 /* BATransModelTool.m in Sources */,
 				F231C7AE1EE509F700EB0F79 /* SDImageCache.m in Sources */,
 				F231C7BA1EE509F700EB0F79 /* UIImageView+WebCache.m in Sources */,
+				3894FDE51EF2BD180013A4E0 /* BASlider.m in Sources */,
 				388A860A1EE419D000A0BC5B /* UIBarButtonItem+ZJExtension.m in Sources */,
 				388A86B81EE4424600A0BC5B /* MJRefreshFooter.m in Sources */,
 				F231C7AF1EE509F700EB0F79 /* SDWebImageCompat.m in Sources */,

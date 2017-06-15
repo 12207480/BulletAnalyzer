@@ -111,7 +111,9 @@ static NSString *const BAReportData = @"reportData"; //数据
         [self saveReportLocolized];
     }
     
-    [BANotificationCenter postNotificationName:BANotificationEndAnalyzing object:nil userInfo:@{BAUserInfoKeyReportModel : _analyzingReportModel}];
+    if (_analyzingReportModel) {
+        [BANotificationCenter postNotificationName:BANotificationEndAnalyzing object:nil userInfo:@{BAUserInfoKeyReportModel : _analyzingReportModel}];
+    }
 }
 
 

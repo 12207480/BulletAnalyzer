@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef void(^returnBlock)();
+typedef void(^speedChangedBlock)(CGFloat speed);
 
 @interface BABulletSetting : UIView
 
@@ -16,5 +17,10 @@ typedef void(^returnBlock)();
  菜单被触碰
  */
 @property (nonatomic, copy) returnBlock settingTouched;
+
+/**
+ 速度改变回调
+ */
+@property (nonatomic, copy) speedChangedBlock speedChanged;
 
 @end

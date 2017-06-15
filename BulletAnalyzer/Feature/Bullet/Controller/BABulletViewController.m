@@ -53,7 +53,7 @@
     
     [self setupNavigationBar];
     
-    self.getSpeed = 0.3;
+    self.getSpeed = 0.5;
 }
 
 
@@ -145,13 +145,18 @@
     WeakObj(self);
     _bulletMenu = [[BABulletMenu alloc] initWithFrame:CGRectMake(0, BAScreenHeight - BABulletMenuHeight + 20, BAScreenWidth, BABulletMenuHeight - 20)];
     _bulletMenu.menuTouched = ^{
-        [selfWeak larger];
+        if (selfWeak.bulletMenu.height == BABulletMenuHeight) {
+            [selfWeak smaller];
+        } else {
+            [selfWeak larger];
+        }
     };
     _bulletMenu.moreBtnClicked = ^{
         if (selfWeak.bulletMenu.height == BABulletMenuHeight) {
             selfWeak.bulletSetting.hidden = !selfWeak.bulletSetting.isHidden;
             selfWeak.bulletSetting.tag = selfWeak.bulletSetting.isHidden ? 0 : 1;
         } else {
+            [selfWeak larger];
             selfWeak.bulletSetting.tag = 1;
         }
     };
@@ -168,6 +173,9 @@
     _bulletSetting.hidden = YES;
     _bulletSetting.settingTouched = ^{
         [selfWeak larger];
+    };
+    _bulletSetting.speedChanged = ^(CGFloat speed){
+        selfWeak.getSpeed = speed;
     };
     
     [_scrollView addSubview:_bulletSetting];
@@ -213,12 +221,35 @@
 - (void)setGetSpeed:(CGFloat)getSpeed{
     _getSpeed = getSpeed;
     
-    if (getSpeed > 1) {
+    if (getSpeed > 1) { //设为1为最快速度 预留
+        
         self.getDuration = 0.05;
         self.getCount = 50;
+        
+    } else if (getSpeed > 0.8) {
+        
+        _getDuration = 0.05;
+        _getCount = 30;
+        
+    } else if (getSpeed > 0.6) {
+        
+        _getDuration = 0.1;
+        _getCount = 5;
+        
+    } else if (getSpeed > 0.4) {
+        
+        _getDuration = 0.1;
+        _getCount = 2;
+        
+    } else if (getSpeed > 0.2) {
+        
+        _getDuration = 0.2;
+        _getCount = 1;
+        
     } else {
-        self.getDuration = 0.1 / getSpeed;
-        self.getCount = 10 * getSpeed;
+        
+        _getDuration = 0.5;
+        _getCount = 1;
     }
     
     [self setupTimer];

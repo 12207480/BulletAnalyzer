@@ -34,26 +34,17 @@
             if (_moreBtnClicked) {
                 _moreBtnClicked();
             }
-            if (_menuTouched) {
-                _menuTouched();
-            }
             break;
             
         case 1:
             if (_endBtnClicked) {
                 _endBtnClicked();
             }
-            if (_menuTouched) {
-                _menuTouched();
-            }
             break;
             
         case 2:
             if (_reportBtnClicked) {
                 _reportBtnClicked();
-            }
-            if (_menuTouched) {
-                _menuTouched();
             }
             break;
             
@@ -71,22 +62,32 @@
 }
 
 
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    if (_menuTouched) {
+        _menuTouched();
+    }
+}
+
+
 #pragma mark - private
 - (void)setupSubViews{
     
-    _moreBtn = [UIButton buttonWithFrame:CGRectMake(BAPadding, 0, 50, 50) title:@"..." color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
+    _moreBtn = [UIButton buttonWithFrame:CGRectMake(BAPadding, 10, 30, 30) title:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
     _moreBtn.tag = 0;
+    [_moreBtn setImage:[UIImage imageNamed:@"moreImg"] forState:UIControlStateNormal];
     
     [self addSubview:_moreBtn];
     
     
-    _endBtn = [UIButton buttonWithFrame:CGRectMake(BAScreenWidth / 2 - 30, 0, 50, 50) title:@"结" color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
+    _endBtn = [UIButton buttonWithFrame:CGRectMake(BAScreenWidth / 2 - 20, 5, 40, 40) title:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
     _endBtn.tag = 1;
+    [_endBtn setImage:[UIImage imageNamed:@"endImg"] forState:UIControlStateNormal];
     
     [self addSubview:_endBtn];
     
-    _reportBtn = [UIButton buttonWithFrame:CGRectMake(BAScreenWidth - BAPadding - 60, 0, 50, 50) title:@"!!!" color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
+    _reportBtn = [UIButton buttonWithFrame:CGRectMake(BAScreenWidth - BAPadding - 30, 10, 30, 30) title:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
     _reportBtn.tag = 2;
+    [_reportBtn setImage:[UIImage imageNamed:@"reportImg"] forState:UIControlStateNormal];
     
     [self addSubview:_reportBtn];
 }
