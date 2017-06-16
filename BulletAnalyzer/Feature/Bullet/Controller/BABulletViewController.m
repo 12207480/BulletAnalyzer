@@ -11,13 +11,14 @@
 #import "BABulletListView.h"
 #import "BABulletMenu.h"
 #import "BABulletSetting.h"
+#import "BACountReport.h"
 #import "BAReportModel.h"
 #import "BAAnalyzerCenter.h"
 
 @interface BABulletViewController () <UIScrollViewDelegate>
+//弹幕列表
 @property (nonatomic, strong) UIView *navigationBar;
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) BABulletListView *bulletListView;
 @property (nonatomic, strong) BABulletMenu *bulletMenu;
 @property (nonatomic, strong) BABulletSetting *bulletSetting;
@@ -25,8 +26,14 @@
 @property (nonatomic, strong) NSTimer *hideTimer;
 @property (nonatomic, assign) CGFloat repeatDuration;
 
+//分析报告
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, assign) NSInteger page;
+@property (nonatomic, strong) UILabel *tipsLabel;
+@property (nonatomic, strong) BACountReport *countReport;
+
 //控制速度
-@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) NSTimer *timer; //抓取弹幕
 @property (nonatomic, assign) CGFloat getSpeed; //0-1之间 频率
 @property (nonatomic, assign) CGFloat getDuration;
 @property (nonatomic, assign) NSInteger getCount;
@@ -45,13 +52,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setupScrollView];
-    
     [self setupBulletListView];
     
     [self setupBulletConroller];
     
     [self setupNavigationBar];
+    
+    [self setupScrollView];
+    
+    [self setupCountReport];
     
     self.getSpeed = 0.5;
 }
@@ -111,20 +120,22 @@
 
 
 - (void)setupScrollView{
-    _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    _scrollView.contentSize = CGSizeMake(BAScreenWidth, BAScreenHeight * 5);
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, BAScreenHeight, BAScreenWidth, BAScreenHeight)];
+    _scrollView.contentSize = CGSizeMake(BAScreenWidth, BAScreenHeight * 4);
     _scrollView.pagingEnabled = YES;
     _scrollView.showsVerticalScrollIndicator = NO;
-    _scrollView.scrollEnabled = NO;
     _scrollView.delegate = self;
+    _scrollView.backgroundColor = BABackgroundColor;
     
+    _tipsLabel = [UILabel lableWithFrame:CGRectMake(0, -20, BAScreenWidth, 20) text:@"下拉回到弹幕列表" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    
+    [_scrollView addSubview:_tipsLabel];
     [self.view addSubview:_scrollView];
 }
 
 
 - (void)setupBulletListView{
     _bulletListView = [[BABulletListView alloc] initWithFrame:CGRectMake(0, 0, BAScreenWidth, BAScreenHeight - 50)];
-    _bulletListView.scrollEnabled = NO;
     
     _bgImgView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     _bgImgView.contentMode = UIViewContentModeScaleAspectFill;
@@ -136,8 +147,8 @@
     beffectView.frame = _bgImgView.bounds;
     [_bgImgView addSubview:beffectView];
     
-    [_scrollView addSubview:_bgImgView];
-    [_scrollView addSubview:_bulletListView];
+    [self.view addSubview:_bgImgView];
+    [self.view addSubview:_bulletListView];
 }
 
 
@@ -161,13 +172,38 @@
         }
     };
     _bulletMenu.endBtnClicked = ^{
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否结束分析?" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"结束" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            
+            [UIView animateWithDuration:1 delay:0 usingSpringWithDamping:0.9 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+               
+                selfWeak.scrollView.y = 0;
+                
+            } completion:nil];
     
+            [[BAAnalyzerCenter defaultCenter] endAnalyzing];
+            selfWeak.tipsLabel.hidden = YES;
+        }];
+        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        
+        [alert addAction:action1];
+        [alert addAction:action2];
+        
+        [selfWeak presentViewController:alert animated:YES completion:nil];
     };
     _bulletMenu.reportBtnClicked = ^{
-    
+        
+        [UIView animateWithDuration:1 delay:0 usingSpringWithDamping:0.9 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut animations:^{
+           
+            selfWeak.scrollView.y = 0;
+            
+        } completion:nil];
+        selfWeak.page = 1;
     };
     
-    [_scrollView addSubview:_bulletMenu];
+    [self.view addSubview:_bulletMenu];
 
     _bulletSetting = [[BABulletSetting alloc] initWithFrame:CGRectMake(0, BAScreenHeight - BABulletMenuHeight - BABulletSettingHeight, BAScreenWidth, BABulletSettingHeight)];
     _bulletSetting.hidden = YES;
@@ -178,7 +214,7 @@
         selfWeak.getSpeed = speed;
     };
     
-    [_scrollView addSubview:_bulletSetting];
+    [self.view addSubview:_bulletSetting];
 }
 
 
@@ -256,8 +292,54 @@
 }
 
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    _bgImgView.y = scrollView.contentOffset.y;
+- (void)setupCountReport{
+    CGFloat width = BAScreenWidth;
+    CGFloat height = width;
+    _countReport = [[BACountReport alloc] initWithFrame:CGRectMake(0, BAScreenHeight - height, width, height)];
+    _countReport.backgroundColor = BADarkBackgroundColor;
+    
+    [_scrollView addSubview:_countReport];
 }
+
+
+- (void)setPage:(NSInteger)page{
+  
+    if (_page != page) {
+        
+        switch (page) {
+            case 1:
+                _countReport.reportModel = _reportModel;
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    _page = page;
+}
+
+
+#pragma mark - scrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    //下拉隐藏
+    if (scrollView.contentOffset.y < -50 && !_reportModel.end) {
+        
+        [UIView animateWithDuration:1 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.9 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            
+            scrollView.y = BAScreenHeight;
+            
+        } completion:^(BOOL finished) {
+    
+            _scrollView.contentOffset = CGPointMake(0, 0);
+            self.page = 0;
+        }];
+    }
+    
+    //划到每一页
+    self.page = (NSInteger)(scrollView.contentOffset.y + BAScreenHeight / 2) / BAScreenHeight + 1;
+}
+
 
 @end

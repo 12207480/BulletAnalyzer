@@ -20,4 +20,19 @@
  */
 @property (nonatomic, strong) NSDate *time;
 
+/**
+ 在线人数
+ */
+@property (nonatomic, copy) NSString *online;
+
+/**
+ 体重
+ */
+@property (nonatomic, copy) NSString *weight;
+
+/**
+ 关注数
+ */
+@property (nonatomic, copy) NSString *fansCount;
+
 @end

@@ -36,6 +36,11 @@
 @property (nonatomic, copy) NSString *photo;
 
 /**
+ 直播间截图数组 元素为image
+ */
+@property (nonatomic, strong) NSMutableArray *photoArray;
+
+/**
  粉丝数量
  */
 @property (nonatomic, copy) NSString *fansCount;
@@ -66,9 +71,9 @@
 @property (nonatomic, strong) NSDate *interrupt;
 
 /**
- 分析时长
+ 分析时长 分
  */
-@property (nonatomic, copy) NSString *duration;
+@property (nonatomic, assign) NSInteger duration;
 
 /**
  弹幕数组
@@ -94,6 +99,16 @@
  弹幕数量与时间的排序
  */
 @property (nonatomic, strong) NSMutableArray *countTimeArray;
+
+/**
+ 最大弹幕数组
+ */
+@property (nonatomic, assign) NSInteger maxBulletCount;
+
+/**
+ countTimeArray转换为做标数组
+ */
+@property (nonatomic, strong) NSMutableArray *countTimePointArray;
 
 /**
  新增报告

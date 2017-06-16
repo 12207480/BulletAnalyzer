@@ -123,7 +123,6 @@
 		F21BD4401EEF77490079312C /* BABulletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD43F1EEF77490079312C /* BABulletViewController.m */; };
 		F21BD4481EEF7B080079312C /* BAScrollIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD4471EEF7B080079312C /* BAScrollIndicator.m */; };
 		F21BD44B1EEF7D150079312C /* BABulletListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD44A1EEF7D150079312C /* BABulletListCell.m */; };
-		F21BD44F1EEFC7D00079312C /* BABulletController.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD44E1EEFC7D00079312C /* BABulletController.m */; };
 		F231C7891EE5097200EB0F79 /* UIView+ZJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C7881EE5097200EB0F79 /* UIView+ZJExtension.m */; };
 		F231C7AC1EE509F700EB0F79 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C78C1EE509F700EB0F79 /* MKAnnotationView+WebCache.m */; };
 		F231C7AD1EE509F700EB0F79 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C78E1EE509F700EB0F79 /* NSData+ImageContentType.m */; };
@@ -146,6 +145,10 @@
 		F231C7C61EE541ED00EB0F79 /* NSObject+ZJUIExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C7C51EE541ED00EB0F79 /* NSObject+ZJUIExtension.m */; };
 		F2382DF91EF2756E00BE5446 /* BABulletMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382DF81EF2756E00BE5446 /* BABulletMenu.m */; };
 		F2382DFF1EF27D3300BE5446 /* BABulletSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382DFE1EF27D3300BE5446 /* BABulletSetting.m */; };
+		F2382E091EF3783300BE5446 /* BABezierChart.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E081EF3783300BE5446 /* BABezierChart.m */; };
+		F2382E0C1EF3870500BE5446 /* BACountReport.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E0B1EF3870500BE5446 /* BACountReport.m */; };
+		F2382E0F1EF3ADE600BE5446 /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E0E1EF3ADE600BE5446 /* NSDate+Category.m */; };
+		F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */; };
 		F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79CE1EE501F200927776 /* BATableViewCell.m */; };
 		F2DF79D21EE5022D00927776 /* BARoomListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79D11EE5022D00927776 /* BARoomListCell.m */; };
 /* End PBXBuildFile section */
@@ -431,8 +434,6 @@
 		F21BD4471EEF7B080079312C /* BAScrollIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAScrollIndicator.m; sourceTree = "<group>"; };
 		F21BD4491EEF7D150079312C /* BABulletListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletListCell.h; sourceTree = "<group>"; };
 		F21BD44A1EEF7D150079312C /* BABulletListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletListCell.m; sourceTree = "<group>"; };
-		F21BD44D1EEFC7D00079312C /* BABulletController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletController.h; sourceTree = "<group>"; };
-		F21BD44E1EEFC7D00079312C /* BABulletController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletController.m; sourceTree = "<group>"; };
 		F231C7871EE5097200EB0F79 /* UIView+ZJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZJExtension.h"; sourceTree = "<group>"; };
 		F231C7881EE5097200EB0F79 /* UIView+ZJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZJExtension.m"; sourceTree = "<group>"; };
 		F231C78B1EE509F700EB0F79 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
@@ -476,6 +477,14 @@
 		F2382DF81EF2756E00BE5446 /* BABulletMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletMenu.m; sourceTree = "<group>"; };
 		F2382DFD1EF27D3300BE5446 /* BABulletSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletSetting.h; sourceTree = "<group>"; };
 		F2382DFE1EF27D3300BE5446 /* BABulletSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletSetting.m; sourceTree = "<group>"; };
+		F2382E071EF3783300BE5446 /* BABezierChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABezierChart.h; sourceTree = "<group>"; };
+		F2382E081EF3783300BE5446 /* BABezierChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABezierChart.m; sourceTree = "<group>"; };
+		F2382E0A1EF3870500BE5446 /* BACountReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACountReport.h; sourceTree = "<group>"; };
+		F2382E0B1EF3870500BE5446 /* BACountReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountReport.m; sourceTree = "<group>"; tabWidth = 3; };
+		F2382E0D1EF3ADE600BE5446 /* NSDate+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Category.h"; sourceTree = "<group>"; };
+		F2382E0E1EF3ADE600BE5446 /* NSDate+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Category.m"; sourceTree = "<group>"; };
+		F2382E101EF3AFE300BE5446 /* NSDateFormatter+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+Category.h"; sourceTree = "<group>"; };
+		F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+Category.m"; sourceTree = "<group>"; };
 		F2DF79CD1EE501F200927776 /* BATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATableViewCell.h; sourceTree = "<group>"; };
 		F2DF79CE1EE501F200927776 /* BATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATableViewCell.m; sourceTree = "<group>"; };
 		F2DF79D01EE5022D00927776 /* BARoomListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARoomListCell.h; sourceTree = "<group>"; };
@@ -582,6 +591,10 @@
 		388A85DD1EE4108C00A0BC5B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F2382E001EF375DD00BE5446 /* ActivityReport */,
+				F2382E011EF375DD00BE5446 /* CountReport */,
+				F2382E021EF375DD00BE5446 /* LevelReport */,
+				F2382E031EF375DD00BE5446 /* WordsReport */,
 				F21BD44C1EEFC7AB0079312C /* BulletController */,
 				F21BD4451EEF7AFA0079312C /* ScrollIndicator */,
 				388A85DE1EE4108C00A0BC5B /* BulletCycle */,
@@ -1029,6 +1042,8 @@
 				388A86161EE42DAC00A0BC5B /* BATool.m */,
 				F21BD4241EE915660079312C /* BAAnalyzerCenter.h */,
 				F21BD4251EE915660079312C /* BAAnalyzerCenter.mm */,
+				F2382E071EF3783300BE5446 /* BABezierChart.h */,
+				F2382E081EF3783300BE5446 /* BABezierChart.m */,
 			);
 			name = "Tool(工具类)";
 			path = Tool;
@@ -1047,6 +1062,10 @@
 		38A5A0BD1EE2614900CFF645 /* Category(分类) */ = {
 			isa = PBXGroup;
 			children = (
+				F2382E101EF3AFE300BE5446 /* NSDateFormatter+Category.h */,
+				F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */,
+				F2382E0D1EF3ADE600BE5446 /* NSDate+Category.h */,
+				F2382E0E1EF3ADE600BE5446 /* NSDate+Category.m */,
 				F231C7871EE5097200EB0F79 /* UIView+ZJExtension.h */,
 				F231C7881EE5097200EB0F79 /* UIView+ZJExtension.m */,
 				388A86081EE419D000A0BC5B /* UIBarButtonItem+ZJExtension.h */,
@@ -1236,8 +1255,6 @@
 		F21BD44C1EEFC7AB0079312C /* BulletController */ = {
 			isa = PBXGroup;
 			children = (
-				F21BD44D1EEFC7D00079312C /* BABulletController.h */,
-				F21BD44E1EEFC7D00079312C /* BABulletController.m */,
 				F2382DF71EF2756E00BE5446 /* BABulletMenu.h */,
 				F2382DF81EF2756E00BE5446 /* BABulletMenu.m */,
 				F2382DFD1EF27D3300BE5446 /* BABulletSetting.h */,
@@ -1295,6 +1312,36 @@
 				F231C7BF1EE52F0D00EB0F79 /* libz.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F2382E001EF375DD00BE5446 /* ActivityReport */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ActivityReport;
+			sourceTree = "<group>";
+		};
+		F2382E011EF375DD00BE5446 /* CountReport */ = {
+			isa = PBXGroup;
+			children = (
+				F2382E0A1EF3870500BE5446 /* BACountReport.h */,
+				F2382E0B1EF3870500BE5446 /* BACountReport.m */,
+			);
+			path = CountReport;
+			sourceTree = "<group>";
+		};
+		F2382E021EF375DD00BE5446 /* LevelReport */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LevelReport;
+			sourceTree = "<group>";
+		};
+		F2382E031EF375DD00BE5446 /* WordsReport */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = WordsReport;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1486,6 +1533,7 @@
 				388EF8361EED55130013CDC1 /* BAUserModel.m in Sources */,
 				388A85C61EE40C2B00A0BC5B /* AFSecurityPolicy.m in Sources */,
 				F231C7B31EE509F700EB0F79 /* SDWebImageManager.m in Sources */,
+				F2382E0F1EF3ADE600BE5446 /* NSDate+Category.m in Sources */,
 				388A85F41EE4163200A0BC5B /* MMDrawerController.m in Sources */,
 				F231C7C61EE541ED00EB0F79 /* NSObject+ZJUIExtension.m in Sources */,
 				F231C7B11EE509F700EB0F79 /* SDWebImageDownloader.m in Sources */,
@@ -1507,10 +1555,12 @@
 				388A85D01EE40D0B00A0BC5B /* ZJAFNetworking.m in Sources */,
 				385204181EE98534006139FB /* BAWordsModel.m in Sources */,
 				F231C7B51EE509F700EB0F79 /* UIButton+WebCache.m in Sources */,
+				F2382E0C1EF3870500BE5446 /* BACountReport.m in Sources */,
 				388A86141EE42D7100A0BC5B /* MBProgressHUD.m in Sources */,
 				388A85E51EE4108C00A0BC5B /* BAGiftModel.m in Sources */,
 				388A86171EE42DAC00A0BC5B /* BATool.m in Sources */,
 				388A85C81EE40C2B00A0BC5B /* AFURLResponseSerialization.m in Sources */,
+				F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */,
 				388A85E41EE4108C00A0BC5B /* BABulletModel.m in Sources */,
 				38A5A0DF1EE2AA6800CFF645 /* MJPropertyKey.m in Sources */,
 				388A86C11EE4424600A0BC5B /* MJRefreshNormalHeader.m in Sources */,
@@ -1550,8 +1600,8 @@
 				38A5A0E21EE2AA6800CFF645 /* NSObject+MJCoding.m in Sources */,
 				38A5A0E31EE2AA6800CFF645 /* NSObject+MJKeyValue.m in Sources */,
 				388A86BD1EE4424600A0BC5B /* MJRefreshBackGifFooter.m in Sources */,
-				F21BD44F1EEFC7D00079312C /* BABulletController.m in Sources */,
 				388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */,
+				F2382E091EF3783300BE5446 /* BABezierChart.m in Sources */,
 				388A86BF1EE4424600A0BC5B /* MJRefreshBackStateFooter.m in Sources */,
 				F231C7BB1EE509F700EB0F79 /* UIView+WebCacheOperation.m in Sources */,
 				388A86C21EE4424600A0BC5B /* MJRefreshStateHeader.m in Sources */,

@@ -33,7 +33,8 @@ static NSString *const BAReportData = @"reportData"; //数据
 @property (nonatomic, strong) NSMutableArray *userArraySortedByCount;   //根据发言次数排序的用户数组 保留100个
 @property (nonatomic, strong) NSMutableArray *userArraySortedByLevel;   //用户等级与数量关系的数组
 @property (nonatomic, strong) NSMutableArray *countTimeArray;   //弹幕数量与时间关系的数组
-
+@property (nonatomic, strong) BACountTimeModel *timeCountModel; //当前处理的时间有关模型
+@property (nonatomic, strong) NSMutableArray *countTimePointArray; //弹幕数量与时间坐标数组
 
 @property (nonatomic, assign) NSInteger timeRepeatCount; //时钟重复次数
 @property (nonatomic, assign) NSInteger bulletsCount;   //弹幕次数/在采样时间内
@@ -53,12 +54,14 @@ static NSString *const BAReportData = @"reportData"; //数据
         _userArraySortedByCount = [NSMutableArray array];
         _userArraySortedByLevel = [NSMutableArray array];
         _countTimeArray = [NSMutableArray array];
+        _countTimePointArray = [NSMutableArray array];
         
         _analyzingReportModel = [BAReportModel new];
         _analyzingReportModel.bulletsArray = _bulletsArray;
         _analyzingReportModel.wordsArray = _wordsArray;
         _analyzingReportModel.userArraySortedByCount = _userArraySortedByCount;
         _analyzingReportModel.userArraySortedByLevel = _userArraySortedByLevel;
+        _analyzingReportModel.countTimePointArray = _countTimePointArray;
         
         _analyzingReportModel.begin = [NSDate date];
     } else {
@@ -73,6 +76,7 @@ static NSString *const BAReportData = @"reportData"; //数据
         _userArraySortedByCount = _analyzingReportModel.userArraySortedByCount;
         _userArraySortedByLevel = _analyzingReportModel.userArraySortedByLevel;
         _countTimeArray = _analyzingReportModel.countTimeArray;
+        _countTimePointArray = _analyzingReportModel.countTimePointArray;
     }
     
     [self beginObserving];
@@ -156,6 +160,12 @@ static NSString *const BAReportData = @"reportData"; //数据
         _analyzingReportModel.name = roomModel.owner_name;
         _analyzingReportModel.avatar = roomModel.avatar;
         _analyzingReportModel.photo = roomModel.room_src;
+        if (_timeCountModel) {
+            _timeCountModel.fansCount = roomModel.fans_num;
+            _timeCountModel.weight = roomModel.owner_weight;
+            _timeCountModel.online = roomModel.online;
+            _timeCountModel = nil;
+        }
         
     } fail:^(NSString *error) {
         NSLog(@"获取直播间详情失败");
@@ -174,10 +184,10 @@ static NSString *const BAReportData = @"reportData"; //数据
 
 - (void)cleanMemory{
     
-    dispatch_async(self.analyzingQueue, ^{
+    dispatch_sync(self.analyzingQueue, ^{
       
         //只保留最新100个弹幕
-        if (_bulletsArray.count > 100) {
+        if (_bulletsArray.count > 200) {
             [_bulletsArray removeObjectsInRange:NSMakeRange(0, _bulletsArray.count - 100)];
         }
         
@@ -185,9 +195,9 @@ static NSString *const BAReportData = @"reportData"; //数据
         [_wordsArray sortUsingComparator:^NSComparisonResult(BAWordsModel *wordsModel1, BAWordsModel *wordsModel2) {
             return wordsModel1.count.integerValue > wordsModel2.count.integerValue ? NSOrderedAscending : NSOrderedDescending;
         }];
-        //去掉排序500之后的词
-        if (_wordsArray.count > 500) {
-            [_wordsArray removeObjectsInRange:NSMakeRange(500, _wordsArray.count - 500)];
+        //去掉排序400之后的词
+        if (_wordsArray.count > 700) {
+            [_wordsArray removeObjectsInRange:NSMakeRange(400, _wordsArray.count - 400)];
         }
         
         //根据用户发言的次数排序
@@ -199,7 +209,7 @@ static NSString *const BAReportData = @"reportData"; //数据
             }];
             
             //去掉发言数排名100名之后的人
-            if (_userArraySortedByCount.count > 100) {
+            if (_userArraySortedByCount.count > 200) {
                 [_userArraySortedByCount removeObjectsInRange:NSMakeRange(100, _userArraySortedByCount.count - 100)];
             }
             
@@ -210,13 +220,31 @@ static NSString *const BAReportData = @"reportData"; //数据
         }
         
         params = 6;
-        if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //30秒处理弹幕数量
+        if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //30秒处理弹幕数量 以及当前观看人数 主播体重
             
             BACountTimeModel *countTimeModel = [BACountTimeModel new];
             countTimeModel.count = BAStringWithInteger(_bulletsCount);
             countTimeModel.time = [NSDate date];
             
+            _timeCountModel = countTimeModel;
+            [self getRoomInfo];
+            
             [_countTimeArray addObject:countTimeModel];
+            
+            //记录最大弹幕数字
+            _analyzingReportModel.maxBulletCount = _bulletsCount > _analyzingReportModel.maxBulletCount ? _bulletsCount : _analyzingReportModel.maxBulletCount;
+        
+            //计算坐标
+            CGFloat width = BAScreenWidth;
+            CGFloat height = width;
+            
+            [_countTimePointArray removeAllObjects];
+            [_countTimeArray enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                
+                CGPoint point = CGPointMake(width * idx / _countTimeArray.count, obj.count.integerValue * height / _analyzingReportModel.maxBulletCount);
+                [_countTimePointArray addObject:[NSValue valueWithCGPoint:point]];
+            }];
+            
             _bulletsCount = 0;
         }
     });

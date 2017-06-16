@@ -73,6 +73,7 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.delegate = self;
     self.dataSource = self;
+    self.contentInset = UIEdgeInsetsMake(0, 0, 5, 0);
 }
 
 
