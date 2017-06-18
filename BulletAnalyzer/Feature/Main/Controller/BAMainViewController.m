@@ -45,6 +45,8 @@
     [super viewWillAppear:animated];
     
     [UIApplication sharedApplication].statusBarHidden = NO;
+    
+    _reportView.reportModelArray = [BAAnalyzerCenter defaultCenter].reportModelArray;
 }
 
 
@@ -61,8 +63,11 @@
 
 - (void)openBtnClicked:(NSNotification *)sender{
     BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellClicked];
+
+    BABulletViewController *bulletVC = [[BABulletViewController alloc] init];
+    bulletVC.reportModel = reportModel;
     
-    NSLog(@"%@", reportModel);
+    [self presentViewController:bulletVC animated:YES completion:nil];
 }
 
 
@@ -80,6 +85,13 @@
     bulletsVC.reportModel = reportModel;
     
     [self presentViewController:bulletsVC animated:YES completion:nil];
+}
+
+
+- (void)reportModelArrayUpdated:(NSNotification *)sender{
+    NSMutableArray *array = sender.userInfo[BAUserInfoKeyReportModelArray];
+    
+    _reportView.reportModelArray = array;
 }
 
 
@@ -110,9 +122,6 @@
 
 - (void)setupReportView{
     _reportView = [[BAReportView alloc] initWithFrame:CGRectMake(0, _timeLabel.bottom + 4 * BAPadding, BAScreenWidth, BAScreenHeight * 4 / 5)];
-    BAReportModel *reportModel = [BAReportModel new];
-    reportModel.addNewReport = YES;
-    _reportView.reportModelArray = @[[BAReportModel new], [BAReportModel new], [BAReportModel new], [BAReportModel new], [BAReportModel new], reportModel].mutableCopy;
     
     [self.view addSubview:_reportView];
 }
@@ -127,6 +136,7 @@
     [BANotificationCenter addObserver:self selector:@selector(roomSelected:) name:BANotificationRoomListCellClicked object:nil];
     [BANotificationCenter addObserver:self selector:@selector(openBtnClicked:) name:BANotificationMainCellClicked object:nil];
     [BANotificationCenter addObserver:self selector:@selector(beginAnalyzing:) name:BANotificationBeginAnalyzing object:nil];
+    [BANotificationCenter addObserver:self selector:@selector(reportModelArrayUpdated:) name:BANotificationUpdateReporsComplete object:nil];
 }
 
 

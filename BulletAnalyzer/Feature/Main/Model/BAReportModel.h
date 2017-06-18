@@ -88,12 +88,12 @@
 /**
  用户数组/弹幕数量排序
  */
-@property (nonatomic, strong) NSMutableArray *userArraySortedByCount;
+@property (nonatomic, strong) NSMutableArray *userBulletCountArray;
 
 /**
  用户数据/等级排序
  */
-@property (nonatomic, strong) NSMutableArray *userArraySortedByLevel;
+@property (nonatomic, strong) NSMutableArray *levelCountArray;
 
 /**
  弹幕数量与时间的排序
@@ -106,9 +106,24 @@
 @property (nonatomic, assign) NSInteger maxBulletCount;
 
 /**
+ 最大弹幕数组
+ */
+@property (nonatomic, assign) NSInteger maxOnlineCount;
+
+/**
+ 最大发言数
+ */
+@property (nonatomic, assign) NSInteger maxActiveCount;
+
+/**
  countTimeArray转换为做标数组
  */
 @property (nonatomic, strong) NSMutableArray *countTimePointArray;
+
+/**
+ countTimeArray转换为做标数组
+ */
+@property (nonatomic, strong) NSMutableArray *onlineTimePointArray;
 
 /**
  新增报告

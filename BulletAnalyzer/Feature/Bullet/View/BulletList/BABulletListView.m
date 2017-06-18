@@ -32,32 +32,18 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
 #pragma mark - public
 - (void)addBullets:(NSArray *)bulletsArray{
     if (!bulletsArray.count) return;
-    
-    NSArray *addBulletsArray;
-    
-    //去重
-    BABulletModel *lastBullet = [_bulletArray lastObject];
-    __block BOOL contained = NO;
-    __block NSInteger index = 0;
+
     [bulletsArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        contained = [lastBullet.cid isEqualToString:obj.cid];
-        if (contained) {
-            *stop = YES;
-            index = idx;
-        }
-    }];
-    
-    addBulletsArray = contained ? [bulletsArray subarrayWithRange:NSMakeRange(index + 1, bulletsArray.count - index - 1)] : bulletsArray;
-    
-    [addBulletsArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        [_bulletArray addObject:bulletModel];
-        if (_bulletArray.count > 200) {
-            [_bulletArray removeObjectsInRange:NSMakeRange(0, _bulletArray.count - 100)];
+        if (![_bulletArray containsObject:obj]) {
+            [_bulletArray addObject:obj];
+            if (_bulletArray.count > 200) {
+                [_bulletArray removeObjectsInRange:NSMakeRange(0, _bulletArray.count - 100)];
+            }
+            
+            [self reloadData];
+            [self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_bulletArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
-        
-        [self reloadData];
-        [self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_bulletArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }];
 }
 

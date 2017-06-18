@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		385204181EE98534006139FB /* BAWordsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 385204171EE98534006139FB /* BAWordsModel.m */; };
+		3858D7791EF62EF900763822 /* BALevelReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D7771EF62EF900763822 /* BALevelReport.m */; };
+		3858D77C1EF62F0300763822 /* BAActiveReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D77B1EF62F0300763822 /* BAActiveReport.m */; };
+		3858D7801EF62F1F00763822 /* BAWordsReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D77F1EF62F1F00763822 /* BAWordsReport.m */; };
+		3858D7861EF6719B00763822 /* BAActiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D7851EF6719B00763822 /* BAActiveCell.m */; };
+		3858D7891EF673BD00763822 /* BAAcitveSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D7881EF673BD00763822 /* BAAcitveSlider.m */; };
 		388A00011EE04A030031DE53 /* BASocketTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A00001EE04A030031DE53 /* BASocketTool.m */; };
 		388A85C41EE40C2B00A0BC5B /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85B81EE40C2B00A0BC5B /* AFHTTPSessionManager.m */; };
 		388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85BB1EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m */; };
@@ -173,6 +178,16 @@
 /* Begin PBXFileReference section */
 		385204161EE98534006139FB /* BAWordsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsModel.h; sourceTree = "<group>"; };
 		385204171EE98534006139FB /* BAWordsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAWordsModel.m; sourceTree = "<group>"; };
+		3858D7761EF62EF900763822 /* BALevelReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BALevelReport.h; sourceTree = "<group>"; };
+		3858D7771EF62EF900763822 /* BALevelReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BALevelReport.m; sourceTree = "<group>"; };
+		3858D77A1EF62F0300763822 /* BAActiveReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAActiveReport.h; sourceTree = "<group>"; };
+		3858D77B1EF62F0300763822 /* BAActiveReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAActiveReport.m; sourceTree = "<group>"; };
+		3858D77E1EF62F1F00763822 /* BAWordsReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsReport.h; sourceTree = "<group>"; };
+		3858D77F1EF62F1F00763822 /* BAWordsReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAWordsReport.m; sourceTree = "<group>"; };
+		3858D7841EF6719B00763822 /* BAActiveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAActiveCell.h; sourceTree = "<group>"; };
+		3858D7851EF6719B00763822 /* BAActiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAActiveCell.m; sourceTree = "<group>"; };
+		3858D7871EF673BD00763822 /* BAAcitveSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAAcitveSlider.h; sourceTree = "<group>"; };
+		3858D7881EF673BD00763822 /* BAAcitveSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAAcitveSlider.m; sourceTree = "<group>"; };
 		388A00001EE04A030031DE53 /* BASocketTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASocketTool.m; sourceTree = "<group>"; };
 		388A85B71EE40C2B00A0BC5B /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		388A85B81EE40C2B00A0BC5B /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPSessionManager.m; sourceTree = "<group>"; };
@@ -519,6 +534,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3858D7711EF62EF900763822 /* ActiveReport */ = {
+			isa = PBXGroup;
+			children = (
+				3858D77A1EF62F0300763822 /* BAActiveReport.h */,
+				3858D77B1EF62F0300763822 /* BAActiveReport.m */,
+				3858D7841EF6719B00763822 /* BAActiveCell.h */,
+				3858D7851EF6719B00763822 /* BAActiveCell.m */,
+				3858D7871EF673BD00763822 /* BAAcitveSlider.h */,
+				3858D7881EF673BD00763822 /* BAAcitveSlider.m */,
+			);
+			path = ActiveReport;
+			sourceTree = "<group>";
+		};
+		3858D7751EF62EF900763822 /* LevelReport */ = {
+			isa = PBXGroup;
+			children = (
+				3858D7761EF62EF900763822 /* BALevelReport.h */,
+				3858D7771EF62EF900763822 /* BALevelReport.m */,
+			);
+			path = LevelReport;
+			sourceTree = "<group>";
+		};
+		3858D77D1EF62F1F00763822 /* WordsReport */ = {
+			isa = PBXGroup;
+			children = (
+				3858D77E1EF62F1F00763822 /* BAWordsReport.h */,
+				3858D77F1EF62F1F00763822 /* BAWordsReport.m */,
+			);
+			path = WordsReport;
+			sourceTree = "<group>";
+		};
 		388A85B61EE40C2B00A0BC5B /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
@@ -591,10 +637,10 @@
 		388A85DD1EE4108C00A0BC5B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				F2382E001EF375DD00BE5446 /* ActivityReport */,
+				3858D77D1EF62F1F00763822 /* WordsReport */,
+				3858D7711EF62EF900763822 /* ActiveReport */,
+				3858D7751EF62EF900763822 /* LevelReport */,
 				F2382E011EF375DD00BE5446 /* CountReport */,
-				F2382E021EF375DD00BE5446 /* LevelReport */,
-				F2382E031EF375DD00BE5446 /* WordsReport */,
 				F21BD44C1EEFC7AB0079312C /* BulletController */,
 				F21BD4451EEF7AFA0079312C /* ScrollIndicator */,
 				388A85DE1EE4108C00A0BC5B /* BulletCycle */,
@@ -1314,13 +1360,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F2382E001EF375DD00BE5446 /* ActivityReport */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ActivityReport;
-			sourceTree = "<group>";
-		};
 		F2382E011EF375DD00BE5446 /* CountReport */ = {
 			isa = PBXGroup;
 			children = (
@@ -1328,20 +1367,6 @@
 				F2382E0B1EF3870500BE5446 /* BACountReport.m */,
 			);
 			path = CountReport;
-			sourceTree = "<group>";
-		};
-		F2382E021EF375DD00BE5446 /* LevelReport */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = LevelReport;
-			sourceTree = "<group>";
-		};
-		F2382E031EF375DD00BE5446 /* WordsReport */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = WordsReport;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1511,6 +1536,7 @@
 				388A86401EE43EA400A0BC5B /* MASViewAttribute.m in Sources */,
 				388A85D31EE40D5700A0BC5B /* BAHttpTool.m in Sources */,
 				388EF8391EED6A590013CDC1 /* BACountTimeModel.m in Sources */,
+				3858D7861EF6719B00763822 /* BAActiveCell.m in Sources */,
 				388A86C71EE4424600A0BC5B /* UIScrollView+MJRefresh.m in Sources */,
 				388AFFE11EE045F90031DE53 /* GCDAsyncUdpSocket.m in Sources */,
 				388A86B51EE4424600A0BC5B /* MJRefreshAutoFooter.m in Sources */,
@@ -1563,6 +1589,7 @@
 				F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */,
 				388A85E41EE4108C00A0BC5B /* BABulletModel.m in Sources */,
 				38A5A0DF1EE2AA6800CFF645 /* MJPropertyKey.m in Sources */,
+				3858D7791EF62EF900763822 /* BALevelReport.m in Sources */,
 				388A86C11EE4424600A0BC5B /* MJRefreshNormalHeader.m in Sources */,
 				388A86421EE43EA400A0BC5B /* NSArray+MASAdditions.m in Sources */,
 				388A86101EE4231300A0BC5B /* BAHttpParams.m in Sources */,
@@ -1584,6 +1611,7 @@
 				388A86B81EE4424600A0BC5B /* MJRefreshFooter.m in Sources */,
 				F231C7AF1EE509F700EB0F79 /* SDWebImageCompat.m in Sources */,
 				F231C7B71EE509F700EB0F79 /* UIImage+MultiFormat.m in Sources */,
+				3858D7801EF62F1F00763822 /* BAWordsReport.m in Sources */,
 				388AFFE51EE045F90031DE53 /* DDFileLogger.m in Sources */,
 				388A863D1EE43EA400A0BC5B /* MASConstraint.m in Sources */,
 				388A85F51EE4163200A0BC5B /* MMDrawerVisualState.m in Sources */,
@@ -1601,6 +1629,7 @@
 				38A5A0E31EE2AA6800CFF645 /* NSObject+MJKeyValue.m in Sources */,
 				388A86BD1EE4424600A0BC5B /* MJRefreshBackGifFooter.m in Sources */,
 				388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */,
+				3858D77C1EF62F0300763822 /* BAActiveReport.m in Sources */,
 				F2382E091EF3783300BE5446 /* BABezierChart.m in Sources */,
 				388A86BF1EE4424600A0BC5B /* MJRefreshBackStateFooter.m in Sources */,
 				F231C7BB1EE509F700EB0F79 /* UIView+WebCacheOperation.m in Sources */,
@@ -1610,6 +1639,7 @@
 				F231C7AC1EE509F700EB0F79 /* MKAnnotationView+WebCache.m in Sources */,
 				38A5A0C01EE2615A00CFF645 /* NSData+HexExtension.m in Sources */,
 				F21BD4401EEF77490079312C /* BABulletViewController.m in Sources */,
+				3858D7891EF673BD00763822 /* BAAcitveSlider.m in Sources */,
 				F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */,
 				388A863C1EE43EA400A0BC5B /* MASCompositeConstraint.m in Sources */,
 				388A85E71EE4108C00A0BC5B /* BABulletCycle.m in Sources */,

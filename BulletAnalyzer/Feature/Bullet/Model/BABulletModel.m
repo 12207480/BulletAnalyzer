@@ -25,4 +25,11 @@ MJExtensionCodingImplementation
     }
 }
 
+
+- (BOOL)isEqual:(id)object{
+    
+    BABulletModel *bulletModel = (BABulletModel *)object;
+    return [self.ic isEqualToString:bulletModel.ic];
+}
+
 @end

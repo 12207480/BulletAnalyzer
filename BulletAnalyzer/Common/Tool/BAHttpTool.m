@@ -40,6 +40,7 @@ static NSString *const BANetworkError = @"上帝关了门窗, 还顺便断了网
     NSString *url = @"http://open.douyucdn.cn/api/RoomApi/room/";
     
     NSString *roomId = params.roomId;
+    if (!roomId.length) return;
     
     [ZJAFNetworking GET:[url stringByAppendingString:roomId] params:nil success:^(NSURLSessionDataTask *task, NSDictionary *responseObject) {
         

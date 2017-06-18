@@ -34,13 +34,14 @@
 #define BABulletListCellHeight 60
 #define BABulletSettingHeight 150
 #define BABulletMenuHeight 70
+#define BABulletActiveCellHeight (BAScreenHeight - 2 * BAPadding) / 10
 
 //颜色
 #define BAColor(R, G, B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]//自定义颜色
 #define BARandomColor BAColor(arc4random_uniform(255), arc4random_uniform(255), arc4random_uniform(255)) //随机色
 #define BABackgroundColor BAColor(240, 243, 246)//背景颜色
-#define BADarkBackgroundColor BAColor(28, 31, 39)//背景颜色
-#define BALightDarkBackgroundColor BAColor(48, 51, 59)//背景颜色
+#define BADarkBackgroundColor BAColor(39, 41, 59)//背景颜色
+#define BALightDarkBackgroundColor BAColor(36, 37, 54)//背景颜色
 #define BAThemeColor BAColor(25, 180, 177) //常用的主色
 #define BAHighlightThemeColor BAColor(0, 179, 179) //高亮主题色
 #define BAWhiteColor [UIColor whiteColor]
@@ -50,6 +51,11 @@
 #define BAAssistColor BAColor(255, 127, 102)
 #define BAAssist2Color BAColor(115, 210, 230) //辅助色(蓝)
 #define BADisabledColor BAColor(204, 204, 204) //不可选颜色
+
+#define BALineColor1 BAColor(253, 81, 217) //粉红
+#define BALineColor2 BAColor(141, 77, 232) //紫色
+#define BALineColor3 BAColor(244, 162, 86) //红色
+#define BALineColor4 BAColor(249, 52, 52)  //橙色
 
 //字体
 #define BAThinFont(size) [UIFont systemFontOfSize:size weight:UIFontWeightUltraLight]
@@ -74,6 +80,8 @@ static NSString *const BANotificationBeginAnalyzing = @"BANotificationBeginAnaly
 static NSString *const BANotificationEndAnalyzing = @"BANotificationEndAnalyzing";
 static NSString *const BANotificationInterrupAnalyzing = @"BANotificationInterrupAnalyzing";
 static NSString *const BAUserInfoKeyReportModel = @"ReportModel";
+static NSString *const BANotificationUpdateReporsComplete = @"BANotificationUpdateReporsComplete";
+static NSString *const BAUserInfoKeyReportModelArray = @"ReportModelArray";
 
 //url
 static NSString *const BADouyuImgBaicUrl = @"https://apic.douyucdn.cn/upload/";

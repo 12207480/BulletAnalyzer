@@ -11,14 +11,14 @@
 @interface BACountTimeModel : NSObject
 
 /**
- 此刻弹幕数量
- */
-@property (nonatomic, copy) NSString *count;
-
-/**
  此刻时间
  */
 @property (nonatomic, strong) NSDate *time;
+
+/**
+ 此刻弹幕数量
+ */
+@property (nonatomic, copy) NSString *count;
 
 /**
  在线人数

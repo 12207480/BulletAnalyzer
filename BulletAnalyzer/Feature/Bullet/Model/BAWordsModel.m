@@ -14,4 +14,20 @@
 
 MJExtensionCodingImplementation
 
+- (BOOL)isEqual:(id)object{
+    
+    NSString *string = (NSString *)object;
+    
+    NSString *regex = @"(.)\\1+";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    if ([pred evaluateWithObject:self.words]) {
+        if ([pred evaluateWithObject:string]) {
+            //666/66666为相同词
+            return [[self.words substringToIndex:1] isEqualToString:[string substringToIndex:1]];
+        }
+    }
+    
+    return [self.words isEqualToString:string];
+}
+
 @end

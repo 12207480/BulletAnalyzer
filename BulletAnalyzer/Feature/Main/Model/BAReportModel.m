@@ -23,7 +23,7 @@ MJExtensionCodingImplementation
     if (photo.length && ![photo isEqualToString:_photo]) {
         
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
-        dispatch_async(queue, ^{
+        dispatch_sync(queue, ^{
             
             NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:photo]];
             UIImage *screenShot = [UIImage imageWithData:data];
@@ -34,7 +34,7 @@ MJExtensionCodingImplementation
             [_photoArray addObject:screenShot];
         });
     }
-    
+
     _photo = photo;
 }
 
@@ -44,5 +44,6 @@ MJExtensionCodingImplementation
     
     _duration = [end minutesAfterDate:_begin];
 }
+
 
 @end

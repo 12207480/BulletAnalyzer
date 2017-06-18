@@ -1,8 +1,8 @@
 //
-//  BACountReport.h
+//  BAWordsReport.h
 //  BulletAnalyzer
 //
-//  Created by 张骏 on 17/6/16.
+//  Created by Zj on 17/6/17.
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 @class BAReportModel;
 
-@interface BACountReport : UIView
+@interface BAWordsReport : UIView
 
 /**
  传入分析报告

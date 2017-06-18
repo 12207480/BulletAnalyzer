@@ -53,9 +53,19 @@
 @property (nonatomic, copy) NSString *count;
 
 /**
+ 最大发言数
+ */
+@property (nonatomic, assign) NSInteger maxActiveCount;
+
+/**
  用户等级
  */
 @property (nonatomic, copy) NSString *level;
+
+/**
+ 发言活跃度cell是否被选中
+ */
+@property (nonatomic, assign, getter=isActiveCellSelect) BOOL activeCellSelect;
 
 /**
  快速创建用户模型

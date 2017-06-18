@@ -10,6 +10,7 @@
 #import "BAReportView.h"
 #import "BAReportCell.h"
 #import "BAReplyModel.h"
+#import "BAReportModel.h"
 
 static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
 
@@ -38,12 +39,16 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
 
 #pragma mark ---public---
 - (void)setReportModelArray:(NSMutableArray *)reportModelArray{
-    _reportModelArray = reportModelArray;
+    _reportModelArray = reportModelArray.mutableCopy;
     
-    if (reportModelArray.count) {
+    BAReportModel *reportModel = [BAReportModel new];
+    reportModel.addNewReport = YES;
+    [_reportModelArray addObject:reportModel];
+    
+    if (_reportModelArray.count) {
         [_collectionView reloadData];
-        [_collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:500 * reportModelArray.count inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionCenteredHorizontally];
-        self.currentIndex = 500 * reportModelArray.count - 1;
+        [_collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:500 * _reportModelArray.count inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionCenteredHorizontally];
+        self.currentIndex = 500 * _reportModelArray.count - 1;
         _indicatorLabel.hidden = NO;
     } else {
         _indicatorLabel.hidden = YES;
