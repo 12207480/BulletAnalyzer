@@ -12,9 +12,9 @@
 #import "BABulletMenu.h"
 #import "BABulletSetting.h"
 #import "BACountReport.h"
-#import "BALevelReport.h"
 #import "BAWordsReport.h"
 #import "BAActiveReport.h"
+#import "BAFansReport.h"
 #import "BAReportModel.h"
 #import "BAAnalyzerCenter.h"
 
@@ -34,9 +34,9 @@
 @property (nonatomic, assign) NSInteger page;
 @property (nonatomic, strong) UILabel *tipsLabel;
 @property (nonatomic, strong) BACountReport *countReport;
-@property (nonatomic, strong) BALevelReport *levelReport;
 @property (nonatomic, strong) BAWordsReport *wordsReport;
 @property (nonatomic, strong) BAActiveReport *activeReport;
+@property (nonatomic, strong) BAFansReport *fansReport;
 
 //控制速度
 @property (nonatomic, strong) NSTimer *timer; //抓取弹幕
@@ -68,11 +68,11 @@
     
     [self setupCountReport];
     
-    [self setupLevelReport];
-    
     [self setupWordsReport];
     
     [self setupActiceReport];
+    
+    [self setupFansReport];
     
     self.getSpeed = 0.5;
     
@@ -143,7 +143,7 @@
     _scrollView.pagingEnabled = YES;
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.delegate = self;
-    _scrollView.backgroundColor = BALightDarkBackgroundColor;
+    _scrollView.backgroundColor = BADark2BackgroundColor;
     
     _tipsLabel = [UILabel lableWithFrame:CGRectMake(0, -20, BAScreenWidth, 20) text:@"下拉回到弹幕列表" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
@@ -317,13 +317,6 @@
 }
 
 
-- (void)setupLevelReport{
-   // _levelReport = [[BALevelReport alloc] initWithFrame:CGRectMake(0, 2 * BAScreenHeight - 1.5 * BAScreenWidth, BAScreenWidth, 1.5 * BAScreenWidth)];
-    
-    //[_scrollView addSubview:_levelReport];
-}
-
-
 - (void)setupWordsReport{
     _wordsReport = [[BAWordsReport alloc] initWithFrame:CGRectMake(0, 2 * BAScreenHeight - 0.8 * BAScreenWidth, BAScreenWidth, 0.8 * BAScreenWidth)];
     
@@ -336,6 +329,15 @@
 
     [_scrollView addSubview:_activeReport];
 }
+
+
+
+- (void)setupFansReport{
+    _fansReport = [[BAFansReport alloc] initWithFrame:CGRectMake(0, 4 * BAScreenHeight - BAScreenWidth * 0.75, BAScreenWidth, BAScreenWidth * 0.75)];
+    
+    [_scrollView addSubview:_fansReport];
+}
+
 
 
 - (void)setPage:(NSInteger)page{
@@ -353,6 +355,10 @@
                 
             case 3:
                 _activeReport.reportModel = _reportModel;
+                break;
+                
+            case 4:
+                _fansReport.reportModel = _reportModel;
                 break;
                 
             default:
@@ -398,6 +404,8 @@
     if (offsetY >= 3 * BAScreenHeight || offsetY <= 2 * BAScreenWidth) {
         [_activeReport hide];
     }
+    
+    
 
 }
 

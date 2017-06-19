@@ -106,9 +106,14 @@
 @property (nonatomic, assign) NSInteger maxBulletCount;
 
 /**
- 最大弹幕数组
+ 最大在线数
  */
 @property (nonatomic, assign) NSInteger maxOnlineCount;
+
+/**
+ 最小在线数
+ */
+@property (nonatomic, assign) NSInteger minOnlineCount;
 
 /**
  最大发言数

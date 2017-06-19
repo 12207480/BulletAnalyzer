@@ -27,7 +27,7 @@ static NSString *const BAActiveCellReusedId = @"BAActiveCellReusedId";
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         
-        self.backgroundColor = BALightDarkBackgroundColor;
+        self.backgroundColor = BADark2BackgroundColor;
         
         _cellCount = -1;
         
@@ -50,7 +50,10 @@ static NSString *const BAActiveCellReusedId = @"BAActiveCellReusedId";
 
 
 - (void)animation{
-    if (_activeTableView.visibleCells.count != 0) return;
+    if (_activeTableView.visibleCells.count != 0) {
+        _cellCount = -1;
+        [_activeTableView reloadData];
+    };
     for (NSInteger i = 0; i < MIN(_userBulletCountArray.count, 8); i++) {
         [self performSelector:@selector(animatedInsertCell) withObject:nil afterDelay:i * 0.2];
     }
@@ -74,7 +77,7 @@ static NSString *const BAActiveCellReusedId = @"BAActiveCellReusedId";
 
 - (void)setupActiveTableView{
     _activeTableView = [[UITableView alloc] initWithFrame:CGRectMake(BAPadding, BAPadding + BABulletActiveCellHeight * 2, BAScreenWidth - 2 * BAPadding, BAScreenHeight - 2 * BAPadding - BABulletActiveCellHeight * 2) style:UITableViewStylePlain];
-    _activeTableView.backgroundColor = BADarkBackgroundColor;
+    _activeTableView.backgroundColor = BADark1BackgroundColor;
     _activeTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _activeTableView.dataSource = self;
     _activeTableView.delegate = self;

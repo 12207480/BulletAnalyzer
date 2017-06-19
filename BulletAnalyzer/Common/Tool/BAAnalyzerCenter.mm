@@ -180,20 +180,17 @@ static NSString *const BAReportData = @"reportData"; //数据
             _timeCountModel.weight = roomModel.owner_weight;
             _timeCountModel.online = roomModel.online;
             _analyzingReportModel.maxOnlineCount = _analyzingReportModel.maxOnlineCount > roomModel.online.integerValue ? _analyzingReportModel.maxOnlineCount : roomModel.online.integerValue;
+            _analyzingReportModel.minOnlineCount = _analyzingReportModel.minOnlineCount < roomModel.online.integerValue && _analyzingReportModel.minOnlineCount  ? _analyzingReportModel.minOnlineCount : roomModel.online.integerValue;
             
             _timeCountModel = nil;
-            
-            CGFloat width = BAScreenWidth;
-            CGFloat height = width;
             
             [_onlineTimePointArray removeAllObjects];
             [_countTimeArray enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 
-                CGPoint point = CGPointMake(width * (CGFloat)idx / (_countTimeArray.count - 1), height * (1 - ((CGFloat)obj.online.integerValue / _analyzingReportModel.maxOnlineCount)));
+                CGPoint point = CGPointMake(BAFansReportDrawViewWidth * (CGFloat)idx / (_countTimeArray.count - 1), BAFansReportDrawViewHeight * (1 - ((CGFloat)(obj.online.integerValue - _analyzingReportModel.minOnlineCount) / (_analyzingReportModel.maxOnlineCount - _analyzingReportModel.minOnlineCount))));
                 [_onlineTimePointArray addObject:[NSValue valueWithCGPoint:point]];
             }];
         }
-        
     } fail:^(NSString *error) {
         NSLog(@"获取直播间详情失败");
     }];
@@ -306,7 +303,7 @@ static NSString *const BAReportData = @"reportData"; //数据
     NSArray *wordsArray = [self stringCutByJieba:bulletModel.txt];
     [wordsArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop2) {
         
-        if (words.length > 1) { //筛选1个字的词
+        if (![self isIgnore:words]) { //筛选1个字的词
             
             __block BOOL contained = NO;
             [_wordsArray enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
@@ -326,6 +323,12 @@ static NSString *const BAReportData = @"reportData"; //数据
             }
         }
     }];
+}
+
+
+- (BOOL)isIgnore:(NSString *)string{
+    //过滤小于2的词, 过滤表情
+    return string.length < 2 || [string containsString:@"emot"] || [string containsString:@"dy"];
 }
 
 

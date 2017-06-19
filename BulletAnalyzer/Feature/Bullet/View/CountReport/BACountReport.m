@@ -15,13 +15,9 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 @interface BACountReport()
 @property (nonatomic, strong) NSMutableArray *XValues;
 @property (nonatomic, strong) NSMutableArray *YValues;
-@property (nonatomic, strong) NSMutableArray *ZValues;
 @property (nonatomic, strong) CAShapeLayer *bulletBorderLayer;
 @property (nonatomic, strong) CAShapeLayer *bulletLayer;
 @property (nonatomic, strong) CAGradientLayer *bulletGradientLayer;
-@property (nonatomic, strong) CAShapeLayer *onlineBorderLayer;
-@property (nonatomic, strong) CAShapeLayer *onlineLayer;
-@property (nonatomic, strong) CAGradientLayer *onlineGradientLayer;
 
 @end
 
@@ -31,7 +27,7 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         
-        self.backgroundColor = BADarkBackgroundColor;
+        self.backgroundColor = BADark1BackgroundColor;
         
         [self setupBg];
     }
@@ -55,17 +51,13 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     [self setupXYZ];
     
     [self drawBulletLayer];
-    
-    [self drawOnlineLayer];
 }
 
 
 - (void)animation{
 
     _bulletLayer.hidden = NO;
-    _onlineLayer.hidden = NO;
     _bulletBorderLayer.hidden = NO;
-    _onlineBorderLayer.hidden = NO;
     
     CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"transform.scale.y"];
     animation1.fromValue = @(0.0);
@@ -80,17 +72,13 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     animationGroup.animations = @[animation1, animation2];
     
     [_bulletLayer addAnimation:animationGroup forKey:nil];
-    [_onlineLayer addAnimation:animationGroup forKey:nil];
     [_bulletBorderLayer addAnimation:animationGroup forKey:nil];
-    [_onlineBorderLayer addAnimation:animationGroup forKey:nil];
 }
 
 
 - (void)hide{
     _bulletLayer.hidden = YES;
-    _onlineLayer.hidden = YES;
     _bulletBorderLayer.hidden =  YES;
-    _onlineBorderLayer.hidden = YES;
 }
 
 
@@ -100,11 +88,6 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     [_YValues enumerateObjectsUsingBlock:^(UILabel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
 
         obj.text = [NSString stringWithFormat:@"%zd", _reportModel.maxBulletCount / 6 * (5 - idx)];
-    }];
-    
-    [_ZValues enumerateObjectsUsingBlock:^(UILabel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        obj.text = [NSString stringWithFormat:@"%.1fk", ((CGFloat)_reportModel.maxOnlineCount / 6 * (5 - idx)) / 1000];
     }];
     
     NSInteger duration = _reportModel.duration ? _reportModel.duration : [[NSDate date] minutesAfterDate:_reportModel.begin];
@@ -136,25 +119,6 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
         selfWeak.bulletLayer.hidden = YES;
         selfWeak.bulletBorderLayer.hidden = YES;
     }];
-}
-
-
-- (void)drawOnlineLayer{
-    if (_onlineLayer) {
-        [_onlineBorderLayer removeFromSuperlayer];
-        [_onlineLayer removeFromSuperlayer];
-        [_onlineGradientLayer removeFromSuperlayer];
-    }
-    
-    WeakObj(self);
-    [self drawLayerWithPointArray:_reportModel.onlineTimePointArray color:BALineColor2 compete:^(CAShapeLayer *borderShapeLayer, CAShapeLayer *shapeLayer, CAGradientLayer *gradientLayer) {
-        selfWeak.onlineBorderLayer = borderShapeLayer;
-        selfWeak.onlineLayer = shapeLayer;
-        selfWeak.onlineGradientLayer = gradientLayer;
-        selfWeak.onlineLayer.hidden = YES;
-        selfWeak.onlineBorderLayer.hidden = YES;
-    }];
-    
 }
 
 
@@ -221,7 +185,6 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     
     _XValues = [NSMutableArray array];
     _YValues = [NSMutableArray array];
-    _ZValues = [NSMutableArray array];
     
     for (NSInteger i = 0; i < 7; i++) {
         
@@ -235,9 +198,6 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
             
             UILabel *YValue = [self createYValue];
             YValue.y = self.height / 7 * i;
-            
-            UILabel *ZValue = [self createZValue];
-            ZValue.y = self.height / 7 * i;
         }
         
         UILabel *XValue = [self createXValue];
@@ -272,15 +232,5 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     [self addSubview:label];
     return label;
 }
-
-
-- (UILabel *)createZValue{
-    UILabel *label = [UILabel lableWithFrame:CGRectMake(self.width - 6 * BAPadding, 0, 6 * BAPadding, self.height / 7) text:@"" color:BAWhiteColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
-    [_ZValues addObject:label];
-    
-    [self addSubview:label];
-    return label;
-}
-
 
 @end

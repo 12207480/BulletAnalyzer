@@ -27,7 +27,7 @@
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         
-        self.backgroundColor = BADarkBackgroundColor;
+        self.backgroundColor = BADark1BackgroundColor;
         
         [self setupSubViews];
     }

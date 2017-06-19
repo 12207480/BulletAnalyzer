@@ -27,7 +27,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         
-        self.backgroundColor = BADarkBackgroundColor;
+        self.backgroundColor = BADark1BackgroundColor;
         
         self.layer.masksToBounds = NO;
         
@@ -76,7 +76,7 @@
     
     [self.contentView addSubview:_levelLabel];
     
-    _recordBtn = [UIButton buttonWithFrame:CGRectMake(0, BABulletActiveCellHeight, BAScreenWidth - 2 * BAPadding, 30) title:@"查看TA的发言记录" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:BALightDarkBackgroundColor] target:self action:@selector(recordBtnClicked)];
+    _recordBtn = [UIButton buttonWithFrame:CGRectMake(0, BABulletActiveCellHeight, BAScreenWidth - 2 * BAPadding, 30) title:@"查看TA的发言记录" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:BADark2BackgroundColor] target:self action:@selector(recordBtnClicked)];
     _recordBtn.hidden = YES;
     
     [self.contentView addSubview:_recordBtn];
@@ -91,8 +91,7 @@
     _nameLabel.text = _userModel.nn;
     _levelLabel.text = [NSString stringWithFormat:@"%@\nLVL", _userModel.level];
     _recordBtn.hidden = !_userModel.isActiveCellSelect;
-    self.backgroundColor = _userModel.isActiveCellSelect ? BALightDarkBackgroundColor : BADarkBackgroundColor;
+    self.backgroundColor = _userModel.isActiveCellSelect ? BADark2BackgroundColor : BADark1BackgroundColor;
 }
-
 
 @end

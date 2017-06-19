@@ -26,7 +26,7 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         
-        self.backgroundColor = BALightDarkBackgroundColor;
+        self.backgroundColor = BADark2BackgroundColor;
         
         [self setupBg];
         
@@ -161,7 +161,7 @@
 
 - (void)setupBg{
     _bgView = [[UIView alloc] initWithFrame:CGRectMake(BAPadding, 0, BAScreenWidth - 2 * BAPadding, self.height - BAPadding)];
-    _bgView.backgroundColor = BADarkBackgroundColor;
+    _bgView.backgroundColor = BADark1BackgroundColor;
     _bgView.layer.shadowOffset = CGSizeMake(2, 2);
     _bgView.layer.shadowOpacity = 0.5;
     _bgView.layer.shadowColor = BABlackColor.CGColor;

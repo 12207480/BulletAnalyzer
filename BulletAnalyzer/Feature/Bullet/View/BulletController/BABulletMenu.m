@@ -18,7 +18,7 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         
-        self.backgroundColor = BADarkBackgroundColor;
+        self.backgroundColor = BADark1BackgroundColor;
         
         [self setupSubViews];
     }

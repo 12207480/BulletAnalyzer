@@ -29,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = BADarkBackgroundColor;
+    self.view.backgroundColor = BADark1BackgroundColor;
     
     [self setupTitleView];
     

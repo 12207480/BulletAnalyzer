@@ -13,6 +13,8 @@
 		3858D7801EF62F1F00763822 /* BAWordsReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D77F1EF62F1F00763822 /* BAWordsReport.m */; };
 		3858D7861EF6719B00763822 /* BAActiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D7851EF6719B00763822 /* BAActiveCell.m */; };
 		3858D7891EF673BD00763822 /* BAAcitveSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D7881EF673BD00763822 /* BAAcitveSlider.m */; };
+		386A7AE11EF7ED58004AA427 /* BAFansReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 386A7AE01EF7ED58004AA427 /* BAFansReport.m */; };
+		386A7AE41EF7F16A004AA427 /* BAFansCurveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 386A7AE31EF7F16A004AA427 /* BAFansCurveView.m */; };
 		388A00011EE04A030031DE53 /* BASocketTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A00001EE04A030031DE53 /* BASocketTool.m */; };
 		388A85C41EE40C2B00A0BC5B /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85B81EE40C2B00A0BC5B /* AFHTTPSessionManager.m */; };
 		388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85BB1EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m */; };
@@ -188,6 +190,10 @@
 		3858D7851EF6719B00763822 /* BAActiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAActiveCell.m; sourceTree = "<group>"; };
 		3858D7871EF673BD00763822 /* BAAcitveSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAAcitveSlider.h; sourceTree = "<group>"; };
 		3858D7881EF673BD00763822 /* BAAcitveSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAAcitveSlider.m; sourceTree = "<group>"; };
+		386A7ADF1EF7ED58004AA427 /* BAFansReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFansReport.h; sourceTree = "<group>"; };
+		386A7AE01EF7ED58004AA427 /* BAFansReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAFansReport.m; sourceTree = "<group>"; };
+		386A7AE21EF7F16A004AA427 /* BAFansCurveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFansCurveView.h; sourceTree = "<group>"; };
+		386A7AE31EF7F16A004AA427 /* BAFansCurveView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAFansCurveView.m; sourceTree = "<group>"; };
 		388A00001EE04A030031DE53 /* BASocketTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASocketTool.m; sourceTree = "<group>"; };
 		388A85B71EE40C2B00A0BC5B /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		388A85B81EE40C2B00A0BC5B /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPSessionManager.m; sourceTree = "<group>"; };
@@ -565,6 +571,17 @@
 			path = WordsReport;
 			sourceTree = "<group>";
 		};
+		386A7ADE1EF7ED32004AA427 /* FansReport */ = {
+			isa = PBXGroup;
+			children = (
+				386A7ADF1EF7ED58004AA427 /* BAFansReport.h */,
+				386A7AE01EF7ED58004AA427 /* BAFansReport.m */,
+				386A7AE21EF7F16A004AA427 /* BAFansCurveView.h */,
+				386A7AE31EF7F16A004AA427 /* BAFansCurveView.m */,
+			);
+			path = FansReport;
+			sourceTree = "<group>";
+		};
 		388A85B61EE40C2B00A0BC5B /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
@@ -637,6 +654,7 @@
 		388A85DD1EE4108C00A0BC5B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				386A7ADE1EF7ED32004AA427 /* FansReport */,
 				3858D77D1EF62F1F00763822 /* WordsReport */,
 				3858D7711EF62EF900763822 /* ActiveReport */,
 				3858D7751EF62EF900763822 /* LevelReport */,
@@ -1546,8 +1564,10 @@
 				388A86011EE417D200A0BC5B /* BAMainViewController.m in Sources */,
 				388A85C91EE40C2B00A0BC5B /* AFURLSessionManager.m in Sources */,
 				F21BD4351EE91DFD0079312C /* FMDatabaseAdditions.m in Sources */,
+				386A7AE41EF7F16A004AA427 /* BAFansCurveView.m in Sources */,
 				F2382DF91EF2756E00BE5446 /* BABulletMenu.m in Sources */,
 				388A863E1EE43EA400A0BC5B /* MASConstraintMaker.m in Sources */,
+				386A7AE11EF7ED58004AA427 /* BAFansReport.m in Sources */,
 				388A85C71EE40C2B00A0BC5B /* AFURLRequestSerialization.m in Sources */,
 				F21BD4341EE91DFD0079312C /* FMDatabase.m in Sources */,
 				F21BD4261EE915660079312C /* BAAnalyzerCenter.mm in Sources */,

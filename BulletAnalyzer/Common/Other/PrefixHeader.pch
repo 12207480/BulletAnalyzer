@@ -35,13 +35,16 @@
 #define BABulletSettingHeight 150
 #define BABulletMenuHeight 70
 #define BABulletActiveCellHeight (BAScreenHeight - 2 * BAPadding) / 10
+#define BAFansReportDrawViewWidth (BAScreenWidth - 130 - 5 * BAPadding)
+#define BAFansReportDrawViewHeight (130 - 4 * BAPadding)
 
 //颜色
 #define BAColor(R, G, B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]//自定义颜色
 #define BARandomColor BAColor(arc4random_uniform(255), arc4random_uniform(255), arc4random_uniform(255)) //随机色
 #define BABackgroundColor BAColor(240, 243, 246)//背景颜色
-#define BADarkBackgroundColor BAColor(39, 41, 59)//背景颜色
-#define BALightDarkBackgroundColor BAColor(36, 37, 54)//背景颜色
+#define BADark1BackgroundColor BAColor(6, 8, 18)//背景颜色
+#define BADark2BackgroundColor BAColor(14, 15, 26)//背景颜色
+#define BADark3BackgroundColor BAColor(22, 24, 35)//背景颜色
 #define BAThemeColor BAColor(25, 180, 177) //常用的主色
 #define BAHighlightThemeColor BAColor(0, 179, 179) //高亮主题色
 #define BAWhiteColor [UIColor whiteColor]
@@ -56,6 +59,7 @@
 #define BALineColor2 BAColor(141, 77, 232) //紫色
 #define BALineColor3 BAColor(244, 162, 86) //红色
 #define BALineColor4 BAColor(249, 52, 52)  //橙色
+#define BALineColor5 BAColor(11, 120, 227)  //蓝色
 
 //字体
 #define BAThinFont(size) [UIFont systemFontOfSize:size weight:UIFontWeightUltraLight]
