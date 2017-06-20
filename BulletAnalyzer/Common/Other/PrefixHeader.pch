@@ -35,7 +35,7 @@
 #define BABulletSettingHeight 150
 #define BABulletMenuHeight 70
 #define BABulletActiveCellHeight (BAScreenHeight - 2 * BAPadding) / 10
-#define BAFansReportDrawViewWidth (BAScreenWidth - 130 - 5 * BAPadding)
+#define BAFansReportDrawViewWidth (BAScreenWidth - 100 - 5 * BAPadding)
 #define BAFansReportDrawViewHeight (130 - 4 * BAPadding)
 
 //颜色
@@ -60,6 +60,8 @@
 #define BALineColor3 BAColor(244, 162, 86) //红色
 #define BALineColor4 BAColor(249, 52, 52)  //橙色
 #define BALineColor5 BAColor(11, 120, 227)  //蓝色
+#define BALineColor6 BAColor(86, 178, 186)  //浅蓝色
+#define BALineColor7 BAColor(44, 129, 100)  //浅蓝色
 
 //字体
 #define BAThinFont(size) [UIFont systemFontOfSize:size weight:UIFontWeightUltraLight]

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		385204181EE98534006139FB /* BAWordsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 385204171EE98534006139FB /* BAWordsModel.m */; };
-		3858D7791EF62EF900763822 /* BALevelReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D7771EF62EF900763822 /* BALevelReport.m */; };
 		3858D77C1EF62F0300763822 /* BAActiveReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D77B1EF62F0300763822 /* BAActiveReport.m */; };
 		3858D7801EF62F1F00763822 /* BAWordsReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D77F1EF62F1F00763822 /* BAWordsReport.m */; };
 		3858D7861EF6719B00763822 /* BAActiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D7851EF6719B00763822 /* BAActiveCell.m */; };
@@ -180,8 +179,6 @@
 /* Begin PBXFileReference section */
 		385204161EE98534006139FB /* BAWordsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsModel.h; sourceTree = "<group>"; };
 		385204171EE98534006139FB /* BAWordsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAWordsModel.m; sourceTree = "<group>"; };
-		3858D7761EF62EF900763822 /* BALevelReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BALevelReport.h; sourceTree = "<group>"; };
-		3858D7771EF62EF900763822 /* BALevelReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BALevelReport.m; sourceTree = "<group>"; };
 		3858D77A1EF62F0300763822 /* BAActiveReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAActiveReport.h; sourceTree = "<group>"; };
 		3858D77B1EF62F0300763822 /* BAActiveReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAActiveReport.m; sourceTree = "<group>"; };
 		3858D77E1EF62F1F00763822 /* BAWordsReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsReport.h; sourceTree = "<group>"; };
@@ -553,15 +550,6 @@
 			path = ActiveReport;
 			sourceTree = "<group>";
 		};
-		3858D7751EF62EF900763822 /* LevelReport */ = {
-			isa = PBXGroup;
-			children = (
-				3858D7761EF62EF900763822 /* BALevelReport.h */,
-				3858D7771EF62EF900763822 /* BALevelReport.m */,
-			);
-			path = LevelReport;
-			sourceTree = "<group>";
-		};
 		3858D77D1EF62F1F00763822 /* WordsReport */ = {
 			isa = PBXGroup;
 			children = (
@@ -657,7 +645,6 @@
 				386A7ADE1EF7ED32004AA427 /* FansReport */,
 				3858D77D1EF62F1F00763822 /* WordsReport */,
 				3858D7711EF62EF900763822 /* ActiveReport */,
-				3858D7751EF62EF900763822 /* LevelReport */,
 				F2382E011EF375DD00BE5446 /* CountReport */,
 				F21BD44C1EEFC7AB0079312C /* BulletController */,
 				F21BD4451EEF7AFA0079312C /* ScrollIndicator */,
@@ -1609,7 +1596,6 @@
 				F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */,
 				388A85E41EE4108C00A0BC5B /* BABulletModel.m in Sources */,
 				38A5A0DF1EE2AA6800CFF645 /* MJPropertyKey.m in Sources */,
-				3858D7791EF62EF900763822 /* BALevelReport.m in Sources */,
 				388A86C11EE4424600A0BC5B /* MJRefreshNormalHeader.m in Sources */,
 				388A86421EE43EA400A0BC5B /* NSArray+MASAdditions.m in Sources */,
 				388A86101EE4231300A0BC5B /* BAHttpParams.m in Sources */,

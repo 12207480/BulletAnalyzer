@@ -55,13 +55,15 @@
 - (void)setReportModel:(BAReportModel *)reportModel{
     _reportModel = reportModel;
     
+    if (![[_barLayerArray firstObject] isHidden] && _barLayerArray.count) return;
+    
     [self drawBarLayer];
 }
 
 
 - (void)animation{
     
-    if (_barLayerArray.count < 10) return;
+    if (_barLayerArray.count < 10 || ![[_barLayerArray firstObject] isHidden]) return;
     
     for (NSInteger i = 0; i < 10; i++) {
         

@@ -121,6 +121,31 @@
 @property (nonatomic, assign) NSInteger maxActiveCount;
 
 /**
+ 最小关注数
+ */
+@property (nonatomic, assign) NSInteger minFansCount;
+
+/**
+ 最大关注数
+ */
+@property (nonatomic, assign) NSInteger maxFansCount;
+
+/**
+ 粉丝增长
+ */
+@property (nonatomic, assign) NSInteger fansIncrese;
+
+/**
+ 等级和(发言者)
+ */
+@property (nonatomic, assign) NSInteger levelSum;
+
+/**
+ 等级数量(发言者)
+ */
+@property (nonatomic, assign) NSInteger levelCount;
+
+/**
  countTimeArray转换为做标数组
  */
 @property (nonatomic, strong) NSMutableArray *countTimePointArray;
@@ -129,6 +154,16 @@
  countTimeArray转换为做标数组
  */
 @property (nonatomic, strong) NSMutableArray *onlineTimePointArray;
+
+/**
+ 粉丝数量变化坐标数组
+ */
+@property (nonatomic, strong) NSMutableArray *fansTimePointArray;
+
+/**
+ 等级与数量的坐标数组
+ */
+@property (nonatomic, strong) NSMutableArray *levelCountPointArray;
 
 /**
  新增报告

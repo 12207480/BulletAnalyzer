@@ -333,7 +333,7 @@
 
 
 - (void)setupFansReport{
-    _fansReport = [[BAFansReport alloc] initWithFrame:CGRectMake(0, 4 * BAScreenHeight - BAScreenWidth * 0.75, BAScreenWidth, BAScreenWidth * 0.75)];
+    _fansReport = [[BAFansReport alloc] initWithFrame:CGRectMake(0, 4 * BAScreenHeight - BAScreenHeight * 0.75, BAScreenWidth, BAScreenHeight * 0.75)];
     
     [_scrollView addSubview:_fansReport];
 }
@@ -389,24 +389,24 @@
         }];
     }
     
-    //划到每一页
-    self.page = (NSInteger)(offsetY + BAScreenHeight / 2) / BAScreenHeight + 1;
-    
-    
     if (offsetY >= BAScreenHeight) {
         [_countReport hide];
     }
     
-    if (offsetY >= 2 * BAScreenHeight || offsetY <= BAScreenWidth) {
+    if (offsetY >= 2 * BAScreenHeight || offsetY <= 0) {
         [_wordsReport hide];
     }
     
-    if (offsetY >= 3 * BAScreenHeight || offsetY <= 2 * BAScreenWidth) {
+    if (offsetY >= 3 * BAScreenHeight || offsetY <= BAScreenHeight) {
         [_activeReport hide];
     }
     
+    if (offsetY >= 4 * BAScreenHeight || offsetY <= 2 * BAScreenHeight) {
+        [_fansReport hide];
+    }
     
-
+    //划到每一页
+    self.page = (NSInteger)(offsetY + BAScreenHeight / 2) / BAScreenHeight + 1;
 }
 
 

@@ -36,6 +36,8 @@ static NSString *const BAReportData = @"reportData"; //数据
 @property (nonatomic, strong) BACountTimeModel *timeCountModel; //当前处理的时间有关模型
 @property (nonatomic, strong) NSMutableArray *countTimePointArray; //弹幕数量与时间坐标数组
 @property (nonatomic, strong) NSMutableArray *onlineTimePointArray; //在线数量与时间坐标数组
+@property (nonatomic, strong) NSMutableArray *fansTimePointArray; //关注数量与时间坐标数组
+@property (nonatomic, strong) NSMutableArray *levelCountPointArray; //等级与数量的坐标数组
 
 @property (nonatomic, assign) NSInteger timeRepeatCount; //时钟重复次数
 @property (nonatomic, assign) NSInteger bulletsCount;   //弹幕次数/在采样时间内
@@ -56,6 +58,8 @@ static NSString *const BAReportData = @"reportData"; //数据
         _countTimeArray = [NSMutableArray array];
         _countTimePointArray = [NSMutableArray array];
         _onlineTimePointArray = [NSMutableArray array];
+        _fansTimePointArray = [NSMutableArray array];
+        _levelCountPointArray = [NSMutableArray array];
         _levelCountArray = @[
                              @0, //0-10级
                              @0, //11-20级
@@ -75,6 +79,8 @@ static NSString *const BAReportData = @"reportData"; //数据
         _analyzingReportModel.levelCountArray = _levelCountArray;
         _analyzingReportModel.countTimePointArray = _countTimePointArray;
         _analyzingReportModel.onlineTimePointArray = _onlineTimePointArray;
+        _analyzingReportModel.fansTimePointArray = _fansTimePointArray;
+        _analyzingReportModel.levelCountPointArray = _levelCountPointArray;
         _analyzingReportModel.maxActiveCount = 1;
         
         _analyzingReportModel.begin = [NSDate date];
@@ -92,6 +98,8 @@ static NSString *const BAReportData = @"reportData"; //数据
         _countTimeArray = _analyzingReportModel.countTimeArray;
         _countTimePointArray = _analyzingReportModel.countTimePointArray;
         _onlineTimePointArray = _analyzingReportModel.onlineTimePointArray;
+        _fansTimePointArray = _analyzingReportModel.fansTimePointArray;
+        _levelCountPointArray = _analyzingReportModel.levelCountPointArray;
     }
     
     [self beginObserving];
@@ -181,14 +189,20 @@ static NSString *const BAReportData = @"reportData"; //数据
             _timeCountModel.online = roomModel.online;
             _analyzingReportModel.maxOnlineCount = _analyzingReportModel.maxOnlineCount > roomModel.online.integerValue ? _analyzingReportModel.maxOnlineCount : roomModel.online.integerValue;
             _analyzingReportModel.minOnlineCount = _analyzingReportModel.minOnlineCount < roomModel.online.integerValue && _analyzingReportModel.minOnlineCount  ? _analyzingReportModel.minOnlineCount : roomModel.online.integerValue;
-            
+            _analyzingReportModel.maxFansCount = _analyzingReportModel.maxFansCount > roomModel.fans_num.integerValue ? _analyzingReportModel.maxFansCount : roomModel.fans_num.integerValue;
+            _analyzingReportModel.minFansCount = _analyzingReportModel.minFansCount < roomModel.fans_num.integerValue && _analyzingReportModel.minFansCount ? _analyzingReportModel.minFansCount : roomModel.fans_num.integerValue;
+            _analyzingReportModel.fansIncrese = _analyzingReportModel.maxFansCount - _analyzingReportModel.minFansCount;
             _timeCountModel = nil;
             
             [_onlineTimePointArray removeAllObjects];
+            [_fansTimePointArray removeAllObjects];
             [_countTimeArray enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 
-                CGPoint point = CGPointMake(BAFansReportDrawViewWidth * (CGFloat)idx / (_countTimeArray.count - 1), BAFansReportDrawViewHeight * (1 - ((CGFloat)(obj.online.integerValue - _analyzingReportModel.minOnlineCount) / (_analyzingReportModel.maxOnlineCount - _analyzingReportModel.minOnlineCount))));
-                [_onlineTimePointArray addObject:[NSValue valueWithCGPoint:point]];
+                CGPoint point1 = CGPointMake(BAFansReportDrawViewWidth * (CGFloat)idx / (_countTimeArray.count - 1), BAFansReportDrawViewHeight * (1 - ((CGFloat)(obj.online.integerValue - _analyzingReportModel.minOnlineCount) / (_analyzingReportModel.maxOnlineCount - _analyzingReportModel.minOnlineCount))));
+                [_onlineTimePointArray addObject:[NSValue valueWithCGPoint:point1]];
+                
+                CGPoint point2 = CGPointMake(BAFansReportDrawViewWidth * (CGFloat)idx / (_countTimeArray.count - 1), BAFansReportDrawViewHeight * (1 - ((CGFloat)(obj.fansCount.integerValue - _analyzingReportModel.minFansCount) / (_analyzingReportModel.maxFansCount - _analyzingReportModel.minFansCount))));
+                [_fansTimePointArray addObject:[NSValue valueWithCGPoint:point2]];
             }];
         }
     } fail:^(NSString *error) {
@@ -365,6 +379,17 @@ static NSString *const BAReportData = @"reportData"; //数据
     } else {
         _levelCountArray[7] = @([_levelCountArray[7] integerValue] + 1);
     }
+    
+    _analyzingReportModel.levelSum += bulletModel.level.integerValue;
+    _analyzingReportModel.levelCount += 1;
+    
+    [_levelCountPointArray removeAllObjects];
+    NSInteger maxLevelCount = [[_levelCountArray valueForKeyPath:@"@max.integerValue"] integerValue];
+    [_levelCountArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        CGPoint point = CGPointMake(BAFansReportDrawViewWidth * (CGFloat)idx / (_levelCountArray.count - 1), BAFansReportDrawViewHeight * (1 - ((CGFloat)obj.integerValue / maxLevelCount)));
+        [_levelCountPointArray addObject:[NSValue valueWithCGPoint:point]];
+    }];
 }
 
 

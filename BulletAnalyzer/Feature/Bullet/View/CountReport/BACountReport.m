@@ -46,7 +46,7 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 - (void)setReportModel:(BAReportModel *)reportModel{
     _reportModel = reportModel;
     
-    if (_reportModel.countTimePointArray.count < 6) return;
+    if (_reportModel.countTimePointArray.count < 6 || (!_bulletLayer.isHidden && _bulletLayer)) return;
     
     [self setupXYZ];
     
@@ -56,6 +56,8 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 
 - (void)animation{
 
+    if (!_bulletLayer.isHidden) return;
+    
     _bulletLayer.hidden = NO;
     _bulletBorderLayer.hidden = NO;
     

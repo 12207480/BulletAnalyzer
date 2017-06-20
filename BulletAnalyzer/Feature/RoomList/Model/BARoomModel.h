@@ -111,7 +111,7 @@
 @property (nonatomic, copy) NSString *fans_num;
 
 /**
- 关注人数
+ 游戏名称人数
  */
 @property (nonatomic, copy) NSString *cate_name;
 

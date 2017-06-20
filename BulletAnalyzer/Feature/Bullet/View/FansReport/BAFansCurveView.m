@@ -33,34 +33,38 @@
 
 
 #pragma mark - public
-//- (void)animation{
-//    _shapeLayer.hidden = NO;
-//    _borderShapeLayer.hidden = NO;
-//    
-//    CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"transform.scale.y"];
-//    animation1.fromValue = @(0.0);
-//    animation1.toValue = @(1.0);
-//    
-//    CABasicAnimation *animation2 = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
-//    animation2.fromValue = @(_drawView.height);
-//    animation2.toValue = @(0.0);
-//    
-//    CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
-//    animationGroup.duration = 1.0;
-//    animationGroup.animations = @[animation1, animation2];
-//    
-//    [_shapeLayer addAnimation:animationGroup forKey:nil];
-//    [_borderShapeLayer addAnimation:animationGroup forKey:nil];
-//}
-//
-//
-//- (void)hide{
-//    _shapeLayer.hidden = YES;
-//    _borderShapeLayer.hidden = YES;
-//}
+- (void)animation{
+    if (!_shapeLayer.isHidden) return;
+    
+    _shapeLayer.hidden = NO;
+    _borderShapeLayer.hidden = NO;
+    
+    CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"transform.scale.y"];
+    animation1.fromValue = @(0.0);
+    animation1.toValue = @(1.0);
+    
+    CABasicAnimation *animation2 = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
+    animation2.fromValue = @(_drawView.height);
+    animation2.toValue = @(0.0);
+    
+    CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
+    animationGroup.duration = 1.0;
+    animationGroup.animations = @[animation1, animation2];
+    
+    [_shapeLayer addAnimation:animationGroup forKey:nil];
+    [_borderShapeLayer addAnimation:animationGroup forKey:nil];
+}
+
+
+- (void)hide{
+    _shapeLayer.hidden = YES;
+    _borderShapeLayer.hidden = YES;
+}
 
 
 - (void)drawLayerWithPointArray:(NSMutableArray *)pointArray color:(UIColor *)color{
+    
+    if (_shapeLayer && !_shapeLayer.isHidden) return;
     
     if (_shapeLayer) {
         [_shapeLayer removeFromSuperlayer];
@@ -104,6 +108,7 @@
     
     _shapeLayer = [CAShapeLayer layer];
     _shapeLayer.path = fillPath.CGPath;
+    _shapeLayer.hidden = YES;
     [_drawView.layer addSublayer:_shapeLayer];
     
     _borderShapeLayer = [CAShapeLayer layer];
@@ -111,6 +116,7 @@
     _borderShapeLayer.lineWidth = 2.f;
     _borderShapeLayer.strokeColor = color.CGColor;
     _borderShapeLayer.fillColor = [UIColor clearColor].CGColor;
+    _borderShapeLayer.hidden = YES;
     [_drawView.layer addSublayer:_borderShapeLayer];
     
     _gradientLayer = [CAGradientLayer layer];
@@ -128,20 +134,21 @@
     
     self.backgroundColor = BADark1BackgroundColor;
     
-    _leftView = [[UIView alloc] initWithFrame:CGRectMake(BAScreenWidth - self.height, 0, self.height, self.height)];
+    _leftView = [[UIView alloc] initWithFrame:CGRectMake(BAScreenWidth - 100, 0, 100, self.height)];
     _leftView.backgroundColor = BADark2BackgroundColor;
     
     [self addSubview:_leftView];
     
-    _icon = [[UIImageView alloc] initWithFrame:CGRectMake(self.height / 4 - 10, self.centerY - 10, 20, 20)];
+    _icon = [[UIImageView alloc] initWithFrame:CGRectMake(40, self.height / 4 - 10, 20, 20)];
+    _icon.backgroundColor = BARandomColor;
     
     [_leftView addSubview:_icon];
     
-    _countLabel = [UILabel lableWithFrame:CGRectMake(_icon.right + BAPadding, self.centerY - 30, self.height * 3 / 4, 30) text:nil color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _countLabel = [UILabel lableWithFrame:CGRectMake(0, _icon.bottom + BAPadding / 2, 100, 30) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [_leftView addSubview:_countLabel];
     
-    _typeLabel = [UILabel lableWithFrame:CGRectMake(_icon.right + BAPadding, self.centerY, self.height * 3 / 4, 30) text:nil color:BALightTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _typeLabel = [UILabel lableWithFrame:CGRectMake(0, _countLabel.bottom, 100, 30) text:nil color:BALightTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [_leftView addSubview:_typeLabel];
     
@@ -164,7 +171,6 @@
     _maxValueLabel = [UILabel lableWithFrame:CGRectMake(BAPadding / 2, _drawView.y, 50, BACommonTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_maxValueLabel];
-
 }
 
 @end

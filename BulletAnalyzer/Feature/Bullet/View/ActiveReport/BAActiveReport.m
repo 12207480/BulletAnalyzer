@@ -44,14 +44,13 @@ static NSString *const BAActiveCellReusedId = @"BAActiveCellReusedId";
     _userBulletCountArray = reportModel.userBulletCountArray.copy;
     _maxActiveCount = reportModel.maxActiveCount;
     
-    _cellCount = -1;
     [self animation];
 }
 
 
 - (void)animation{
+    _cellCount = -1;
     if (_activeTableView.visibleCells.count != 0) {
-        _cellCount = -1;
         [_activeTableView reloadData];
     };
     for (NSInteger i = 0; i < MIN(_userBulletCountArray.count, 8); i++) {
