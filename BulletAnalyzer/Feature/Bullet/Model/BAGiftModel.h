@@ -27,19 +27,19 @@ typedef NS_ENUM(NSUInteger, BAGiftType) {
 @property (nonatomic, assign) BAGiftType giftType;
 
 /**
- 赠送对象
- */
-@property (nonatomic, copy) NSString *giveTo;
-
-/**
- 赠送对象
+ 昵称(但不确定是谁的)
  */
 @property (nonatomic, copy) NSString *bnn;
 
 /**
- 房间id
+ 接受礼物房间id //火箭飞机则看drid
  */
 @property (nonatomic, copy) NSString *rid;
+
+/**
+ 广播礼物的房间
+ */
+@property (nonatomic, copy) NSString *drid;
 
 /**
  弹幕分组 ID
@@ -72,7 +72,7 @@ typedef NS_ENUM(NSUInteger, BAGiftType) {
 @property (nonatomic, copy) NSString *gs;
 
 /**
- 猜想为道具类型
+ 若为0则不算钱 猜想
  */
 @property (nonatomic, copy) NSString *bl;
 

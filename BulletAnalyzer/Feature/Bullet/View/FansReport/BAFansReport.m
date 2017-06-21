@@ -92,7 +92,7 @@
     
     NSInteger maxLevelCount = [[_reportModel.levelCountArray valueForKeyPath:@"@max.integerValue"] integerValue];
     [_levelCountCurveView drawLayerWithPointArray:_reportModel.levelCountPointArray color:BALineColor7];
-    _levelCountCurveView.countLabel.text = [NSString stringWithFormat:@"%zd", _reportModel.levelSum / _reportModel.levelCount];
+    _levelCountCurveView.countLabel.text = [NSString stringWithFormat:@"%.1f", (CGFloat)_reportModel.levelSum / _reportModel.levelCount];
     _levelCountCurveView.typeLabel.text = @"平均等级";
     _levelCountCurveView.beginTimeLabel.text = @"0";
     _levelCountCurveView.endTimeLabel.text = @"70+";

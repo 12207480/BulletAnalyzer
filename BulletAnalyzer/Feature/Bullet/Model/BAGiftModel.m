@@ -28,28 +28,6 @@
 }
 
 
-- (void)setBnn:(NSString *)bnn{
-    _bnn = bnn;
-    
-    _giveTo = bnn;
-    self.statusReady = (BOOL)_gs && (BOOL)_bl;
-}
-
-
-- (void)setDn:(NSString *)dn{
-    _dn = dn;
-    
-    _giveTo = dn;
-}
-
-
-- (void)setSn:(NSString *)sn{
-    _sn = sn;
-    
-    _nn = sn;
-}
-
-
 - (void)setGs:(NSString *)gs{
     _gs = gs;
     
@@ -59,11 +37,11 @@
             break;
             
         case 2: //怂 稳 呵呵 点赞 粉丝荧光棒 辣眼睛
-            self.statusReady = (BOOL)_bnn && (BOOL)_bl;
+            self.statusReady = (BOOL)_bl;
             break;
             
         case 3: //弱鸡
-            self.statusReady = (BOOL)_bnn && (BOOL)_bl;
+            self.statusReady = (BOOL)_bl;
             break;
             
         case 5: //飞机
@@ -83,16 +61,16 @@
 - (void)setBl:(NSString *)bl{
     _bl = bl;
     
-    self.statusReady = (BOOL)_gs && (BOOL)_bnn;
+    self.statusReady = _gs.integerValue == 2 || _gs.integerValue == 3;
 }
 
 
 - (void)setStatusReady:(BOOL)statusReady{
     _statusReady = statusReady;
     
-    //道具礼物须通过 类型gs 是否有赠送者bnn 等级bl共同判断
+    //道具礼物须通过 类型gs 等级bl共同判断
     if (statusReady) {
-        
+        _giftType = _bl.integerValue ? BAGiftTypeCostGift : BAGiftTypeFreeGift;
     }
 }
 

@@ -82,17 +82,11 @@
             
         } else if ([dic[@"type"] isEqualToString:BAInfoTypeSmallGift] || [dic[@"type"] isEqualToString:BAInfoTypeDeserveGift] || [dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
             
-            if ([dic[@"bl"] integerValue]) {
-                [dic enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL * _Nonnull stop) {
-                    
-                    NSLog(@"%@ = %@", key, obj);
-                }];
-                NSLog(@"------------------------------------------------------------------")
-            }
-            
             BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
-            
-            [giftArray addObject:giftModel];
+
+            if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && giftModel.giftType == BAGiftTypeRocket)) { //别的房间火箭广播消息过滤掉
+                [giftArray addObject:giftModel];
+            }
         
         } else if ([dic[@"type"] isEqualToString:BAInfoTypeLoginReplay]) { //登录返回数据
            

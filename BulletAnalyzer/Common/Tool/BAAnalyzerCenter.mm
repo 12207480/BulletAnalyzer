@@ -52,6 +52,7 @@ static NSString *const BAReportData = @"reportData"; //数据
     
     //传入报告则接着分析
     if (!_proceedReportModel) {
+        //初始化各个数组
         _bulletsArray = [NSMutableArray array];
         _wordsArray = [NSMutableArray array];
         _userBulletCountArray = [NSMutableArray array];
@@ -72,6 +73,7 @@ static NSString *const BAReportData = @"reportData"; //数据
                              ].mutableCopy;
         
         
+        //初始化分析报告
         _analyzingReportModel = [BAReportModel new];
         _analyzingReportModel.bulletsArray = _bulletsArray;
         _analyzingReportModel.wordsArray = _wordsArray;
@@ -83,8 +85,10 @@ static NSString *const BAReportData = @"reportData"; //数据
         _analyzingReportModel.levelCountPointArray = _levelCountPointArray;
         _analyzingReportModel.maxActiveCount = 1;
         
+        //传入开始分析时间
         _analyzingReportModel.begin = [NSDate date];
     } else {
+        //获取继续分析模型
         _analyzingReportModel = _proceedReportModel;
         _analyzingReportModel.interruptAnalyzing = NO;
         _analyzingReportModel.proceed = [NSDate date];
@@ -104,6 +108,7 @@ static NSString *const BAReportData = @"reportData"; //数据
     
     [self beginObserving];
 
+    //发出通知 开始分析
     [BANotificationCenter postNotificationName:BANotificationBeginAnalyzing object:nil userInfo:@{BAUserInfoKeyReportModel : _analyzingReportModel}];
 }
 
@@ -112,6 +117,7 @@ static NSString *const BAReportData = @"reportData"; //数据
     _analyzing = NO;
     [self endObserving];
     
+    //异常打断
     if (_analyzingReportModel) {
         _analyzingReportModel.interruptAnalyzing = YES;
         _analyzingReportModel.interrupt = [NSDate date];
@@ -129,6 +135,7 @@ static NSString *const BAReportData = @"reportData"; //数据
     _analyzing = NO;
     [self endObserving];
 
+    //停止分析
     if (_analyzingReportModel) {
         _analyzingReportModel.interruptAnalyzing = NO;
         _analyzingReportModel.end = [NSDate date];
@@ -147,6 +154,7 @@ static NSString *const BAReportData = @"reportData"; //数据
 #pragma mark - private
 - (void)beginObserving{
     [BANotificationCenter addObserver:self selector:@selector(bullet:) name:BANotificationBullet object:nil];
+    [BANotificationCenter addObserver:self selector:@selector(gift:) name:BANotificationGift object:nil];
     
     [_cleanTimer invalidate];
     _cleanTimer = nil;
@@ -175,6 +183,7 @@ static NSString *const BAReportData = @"reportData"; //数据
     BAHttpParams *params = [BAHttpParams new];
     params.roomId = _analyzingReportModel.roomId;
     
+    //获取房间信息
     [BAHttpTool getRoomInfoWithParams:params success:^(BARoomModel *roomModel) {
         
         _analyzingReportModel.fansCount = roomModel.fans_num;
@@ -184,9 +193,11 @@ static NSString *const BAReportData = @"reportData"; //数据
         _analyzingReportModel.avatar = roomModel.avatar;
         _analyzingReportModel.photo = roomModel.room_src;
         if (_timeCountModel) {
+            //存入当前时刻粉丝数量, 主播体重, 在线人数
             _timeCountModel.fansCount = roomModel.fans_num;
             _timeCountModel.weight = roomModel.owner_weight;
             _timeCountModel.online = roomModel.online;
+            //存入最大在线人数, 最小在线人数, 最大粉丝数量, 最小粉丝数量, 粉丝增长量
             _analyzingReportModel.maxOnlineCount = _analyzingReportModel.maxOnlineCount > roomModel.online.integerValue ? _analyzingReportModel.maxOnlineCount : roomModel.online.integerValue;
             _analyzingReportModel.minOnlineCount = _analyzingReportModel.minOnlineCount < roomModel.online.integerValue && _analyzingReportModel.minOnlineCount  ? _analyzingReportModel.minOnlineCount : roomModel.online.integerValue;
             _analyzingReportModel.maxFansCount = _analyzingReportModel.maxFansCount > roomModel.fans_num.integerValue ? _analyzingReportModel.maxFansCount : roomModel.fans_num.integerValue;
@@ -194,6 +205,7 @@ static NSString *const BAReportData = @"reportData"; //数据
             _analyzingReportModel.fansIncrese = _analyzingReportModel.maxFansCount - _analyzingReportModel.minFansCount;
             _timeCountModel = nil;
             
+            //根据上面的数据计算在线人数, 粉丝数量绘图坐标数组
             [_onlineTimePointArray removeAllObjects];
             [_fansTimePointArray removeAllObjects];
             [_countTimeArray enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -211,18 +223,29 @@ static NSString *const BAReportData = @"reportData"; //数据
 }
 
 
+- (void)gift:(NSNotification *)sender{
+    //取出礼物
+    NSArray *giftModelArray = sender.userInfo[BAUserInfoKeyGift];
+    
+    
+}
+
+
 - (void)bullet:(NSNotification *)sender{
+    //取出弹幕
     NSArray *bulletModelArray = sender.userInfo[BAUserInfoKeyBullet];
     
+    //分析弹幕
     [self caculate:bulletModelArray];
     
+    //将弹幕加入公开的弹幕数组, 去除重复的弹幕
     [bulletModelArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (![_bulletsArray containsObject:obj]) {
-            [_bulletsArray addObjectsFromArray:bulletModelArray];
+            [_bulletsArray addObject:obj];
+            //记录新增弹幕数量
+            _bulletsCount += 1;
         }
     }];
-    
-    _bulletsCount += 1;
 }
 
 
@@ -263,6 +286,7 @@ static NSString *const BAReportData = @"reportData"; //数据
         params = 6;
         if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //30秒处理弹幕数量 以及当前观看人数 主播体重
             
+            //新建弹幕信息与时间关系的模型
             BACountTimeModel *countTimeModel = [BACountTimeModel new];
             countTimeModel.count = BAStringWithInteger(_bulletsCount);
             countTimeModel.time = [NSDate date];
@@ -275,7 +299,7 @@ static NSString *const BAReportData = @"reportData"; //数据
             //记录最大弹幕数字
             _analyzingReportModel.maxBulletCount = _bulletsCount > _analyzingReportModel.maxBulletCount ? _bulletsCount : _analyzingReportModel.maxBulletCount;
             
-            //计算坐标
+            //计算弹幕数量与时间的坐标
             CGFloat width = BAScreenWidth;
             CGFloat height = width;
             
@@ -314,11 +338,13 @@ static NSString *const BAReportData = @"reportData"; //数据
 
 - (void)analyzingWords:(BABulletModel *)bulletModel{
     
+    //结巴分词
     NSArray *wordsArray = [self stringCutByJieba:bulletModel.txt];
     [wordsArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop2) {
         
-        if (![self isIgnore:words]) { //筛选1个字的词
+        if (![self isIgnore:words]) { //筛选
             
+            //记录词的出现频率
             __block BOOL contained = NO;
             [_wordsArray enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
                 
@@ -348,6 +374,7 @@ static NSString *const BAReportData = @"reportData"; //数据
 
 - (void)analyzingUser:(BABulletModel *)bulletModel{
     
+    //记录用户发言次数
     __block BOOL contained1 = NO;
     [_userBulletCountArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
@@ -362,6 +389,7 @@ static NSString *const BAReportData = @"reportData"; //数据
         [_userBulletCountArray addObject:[BAUserModel userModelWithBullet:bulletModel]];
     }
   
+    //记录用户等级分布
     if (bulletModel.level.integerValue <= 10) {
         _levelCountArray[0] = @([_levelCountArray[0] integerValue] + 1);
     } else if (bulletModel.level.integerValue <= 20) {
@@ -380,9 +408,11 @@ static NSString *const BAReportData = @"reportData"; //数据
         _levelCountArray[7] = @([_levelCountArray[7] integerValue] + 1);
     }
     
+    //计算总等级以及总用户量, 用以计算平均等级
     _analyzingReportModel.levelSum += bulletModel.level.integerValue;
     _analyzingReportModel.levelCount += 1;
     
+    //计算等级分布图的坐标
     [_levelCountPointArray removeAllObjects];
     NSInteger maxLevelCount = [[_levelCountArray valueForKeyPath:@"@max.integerValue"] integerValue];
     [_levelCountArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -395,6 +425,7 @@ static NSString *const BAReportData = @"reportData"; //数据
 
 - (NSArray *)stringCutByJieba:(NSString *)string{
     
+    //结巴分词, 转为词数组
     const char* sentence = [string UTF8String];
     std::vector<std::string> words;
     JiebaCut(sentence, words);
@@ -414,6 +445,7 @@ static NSString *const BAReportData = @"reportData"; //数据
 
 
 - (dispatch_queue_t)analyzingQueue{
+    //用来计算的子线程
     if (!_analyzingQueue) {
         _analyzingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     }
@@ -477,7 +509,7 @@ static NSString *const BAReportData = @"reportData"; //数据
 
 
 - (void)saveReportLocolized{
-    
+    //存入本地
     [_queue inDatabase:^(FMDatabase * _Nonnull db) {
         
         BOOL open = [db open];
