@@ -8,7 +8,33 @@
 
 #import "BABasicInfoModel.h"
 
+typedef NS_ENUM(NSUInteger, BAGiftType) {
+    BAGiftTypeFishBall = 0, //鱼丸礼物 增加体重
+    BAGiftTypeFreeGift = 1, //免费道具礼物 免费
+    BAGiftTypeCostGift = 2, //购买道具礼物
+    BAGiftTypeDeserveLevel1 = 3, //低级酬勤 15鱼翅
+    BAGiftTypeDeserveLevel2 = 4, //中级酬勤 30鱼翅
+    BAGiftTypeDeserveLevel3 = 5, //高级酬勤 50鱼翅
+    BAGiftTypePlane = 6,    //飞机 100鱼翅
+    BAGiftTypeRocket = 7    //火箭 500鱼翅
+};
+
 @interface BAGiftModel : BABasicInfoModel
+
+/**
+ 礼物类型
+ */
+@property (nonatomic, assign) BAGiftType giftType;
+
+/**
+ 赠送对象
+ */
+@property (nonatomic, copy) NSString *giveTo;
+
+/**
+ 赠送对象
+ */
+@property (nonatomic, copy) NSString *bnn;
 
 /**
  房间id
@@ -41,9 +67,14 @@
 @property (nonatomic, copy) NSString *gfid;
 
 /**
- 礼物显示样式
+ 礼物显示样式 1:鱼丸 2:怂 稳 呵呵 点赞 粉丝荧光棒 辣眼睛 3:弱鸡 5:飞机 6:火箭   2 3为道具礼物
  */
 @property (nonatomic, copy) NSString *gs;
+
+/**
+ 猜想为道具类型
+ */
+@property (nonatomic, copy) NSString *bl;
 
 /**
  连击
@@ -94,6 +125,11 @@
  1火箭 2飞机
  */
 @property (nonatomic, copy) NSString *es;
+
+/**
+ 酬勤等级 1级 15鱼翅 2级30鱼翅 3级50鱼翅
+ */
+@property (nonatomic, copy) NSString *lev;
 
 /**
  用户头像小

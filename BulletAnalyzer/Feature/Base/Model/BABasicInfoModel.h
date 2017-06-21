@@ -10,7 +10,7 @@
 
 static NSString *const BAInfoTypeBullet = @"chatmsg"; //弹幕
 static NSString *const BAInfoTypeLoginReplay = @"loginres"; //登录
-static NSString *const BAInfoTypeSmallGift = @"dgb"; //小礼物
+static NSString *const BAInfoTypeSmallGift = @"dgb"; //鱼丸
 static NSString *const BAInfoTypeDeserveGift = @"bc_buy_deserve"; //酬勤
 static NSString *const BAInfoTypeSuperGift = @"spbc"; //火箭/飞机
 

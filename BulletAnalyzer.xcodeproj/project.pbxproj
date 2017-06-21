@@ -151,7 +151,6 @@
 		F231C7C61EE541ED00EB0F79 /* NSObject+ZJUIExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C7C51EE541ED00EB0F79 /* NSObject+ZJUIExtension.m */; };
 		F2382DF91EF2756E00BE5446 /* BABulletMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382DF81EF2756E00BE5446 /* BABulletMenu.m */; };
 		F2382DFF1EF27D3300BE5446 /* BABulletSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382DFE1EF27D3300BE5446 /* BABulletSetting.m */; };
-		F2382E091EF3783300BE5446 /* BABezierChart.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E081EF3783300BE5446 /* BABezierChart.m */; };
 		F2382E0C1EF3870500BE5446 /* BACountReport.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E0B1EF3870500BE5446 /* BACountReport.m */; };
 		F2382E0F1EF3ADE600BE5446 /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E0E1EF3ADE600BE5446 /* NSDate+Category.m */; };
 		F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */; };
@@ -495,8 +494,6 @@
 		F2382DF81EF2756E00BE5446 /* BABulletMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletMenu.m; sourceTree = "<group>"; };
 		F2382DFD1EF27D3300BE5446 /* BABulletSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletSetting.h; sourceTree = "<group>"; };
 		F2382DFE1EF27D3300BE5446 /* BABulletSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletSetting.m; sourceTree = "<group>"; };
-		F2382E071EF3783300BE5446 /* BABezierChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABezierChart.h; sourceTree = "<group>"; };
-		F2382E081EF3783300BE5446 /* BABezierChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABezierChart.m; sourceTree = "<group>"; };
 		F2382E0A1EF3870500BE5446 /* BACountReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACountReport.h; sourceTree = "<group>"; };
 		F2382E0B1EF3870500BE5446 /* BACountReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountReport.m; sourceTree = "<group>"; tabWidth = 3; };
 		F2382E0D1EF3ADE600BE5446 /* NSDate+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Category.h"; sourceTree = "<group>"; };
@@ -1093,8 +1090,6 @@
 				388A86161EE42DAC00A0BC5B /* BATool.m */,
 				F21BD4241EE915660079312C /* BAAnalyzerCenter.h */,
 				F21BD4251EE915660079312C /* BAAnalyzerCenter.mm */,
-				F2382E071EF3783300BE5446 /* BABezierChart.h */,
-				F2382E081EF3783300BE5446 /* BABezierChart.m */,
 			);
 			name = "Tool(工具类)";
 			path = Tool;
@@ -1636,7 +1631,6 @@
 				388A86BD1EE4424600A0BC5B /* MJRefreshBackGifFooter.m in Sources */,
 				388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */,
 				3858D77C1EF62F0300763822 /* BAActiveReport.m in Sources */,
-				F2382E091EF3783300BE5446 /* BABezierChart.m in Sources */,
 				388A86BF1EE4424600A0BC5B /* MJRefreshBackStateFooter.m in Sources */,
 				F231C7BB1EE509F700EB0F79 /* UIView+WebCacheOperation.m in Sources */,
 				388A86C21EE4424600A0BC5B /* MJRefreshStateHeader.m in Sources */,
