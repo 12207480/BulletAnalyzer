@@ -154,6 +154,8 @@
 		F2382E0C1EF3870500BE5446 /* BACountReport.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E0B1EF3870500BE5446 /* BACountReport.m */; };
 		F2382E0F1EF3ADE600BE5446 /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E0E1EF3ADE600BE5446 /* NSDate+Category.m */; };
 		F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */; };
+		F2587C091EFB64520026DFF5 /* BAGiftValueModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C081EFB64520026DFF5 /* BAGiftValueModel.m */; };
+		F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */; };
 		F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79CE1EE501F200927776 /* BATableViewCell.m */; };
 		F2DF79D21EE5022D00927776 /* BARoomListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79D11EE5022D00927776 /* BARoomListCell.m */; };
 /* End PBXBuildFile section */
@@ -500,6 +502,10 @@
 		F2382E0E1EF3ADE600BE5446 /* NSDate+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Category.m"; sourceTree = "<group>"; };
 		F2382E101EF3AFE300BE5446 /* NSDateFormatter+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+Category.h"; sourceTree = "<group>"; };
 		F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+Category.m"; sourceTree = "<group>"; };
+		F2587C071EFB64520026DFF5 /* BAGiftValueModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftValueModel.h; sourceTree = "<group>"; };
+		F2587C081EFB64520026DFF5 /* BAGiftValueModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGiftValueModel.m; sourceTree = "<group>"; };
+		F2587C0D1EFB93B00026DFF5 /* BASentenceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceModel.h; sourceTree = "<group>"; };
+		F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceModel.m; sourceTree = "<group>"; };
 		F2DF79CD1EE501F200927776 /* BATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATableViewCell.h; sourceTree = "<group>"; };
 		F2DF79CE1EE501F200927776 /* BATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATableViewCell.m; sourceTree = "<group>"; };
 		F2DF79D01EE5022D00927776 /* BARoomListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARoomListCell.h; sourceTree = "<group>"; };
@@ -632,6 +638,10 @@
 				388EF8351EED55130013CDC1 /* BAUserModel.m */,
 				388EF8371EED6A590013CDC1 /* BACountTimeModel.h */,
 				388EF8381EED6A590013CDC1 /* BACountTimeModel.m */,
+				F2587C071EFB64520026DFF5 /* BAGiftValueModel.h */,
+				F2587C081EFB64520026DFF5 /* BAGiftValueModel.m */,
+				F2587C0D1EFB93B00026DFF5 /* BASentenceModel.h */,
+				F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1561,6 +1571,7 @@
 				388EF8361EED55130013CDC1 /* BAUserModel.m in Sources */,
 				388A85C61EE40C2B00A0BC5B /* AFSecurityPolicy.m in Sources */,
 				F231C7B31EE509F700EB0F79 /* SDWebImageManager.m in Sources */,
+				F2587C091EFB64520026DFF5 /* BAGiftValueModel.m in Sources */,
 				F2382E0F1EF3ADE600BE5446 /* NSDate+Category.m in Sources */,
 				388A85F41EE4163200A0BC5B /* MMDrawerController.m in Sources */,
 				F231C7C61EE541ED00EB0F79 /* NSObject+ZJUIExtension.m in Sources */,
@@ -1608,6 +1619,7 @@
 				F231C7AE1EE509F700EB0F79 /* SDImageCache.m in Sources */,
 				F231C7BA1EE509F700EB0F79 /* UIImageView+WebCache.m in Sources */,
 				3894FDE51EF2BD180013A4E0 /* BASlider.m in Sources */,
+				F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */,
 				388A860A1EE419D000A0BC5B /* UIBarButtonItem+ZJExtension.m in Sources */,
 				388A86B81EE4424600A0BC5B /* MJRefreshFooter.m in Sources */,
 				F231C7AF1EE509F700EB0F79 /* SDWebImageCompat.m in Sources */,

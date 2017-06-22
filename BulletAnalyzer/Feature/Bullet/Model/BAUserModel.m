@@ -8,6 +8,7 @@
 
 #import "BAUserModel.h"
 #import "BABulletModel.h"
+#import "BAGiftModel.h"
 #import "MJExtension.h"
 
 @implementation BAUserModel
@@ -23,6 +24,22 @@ MJExtensionCodingImplementation
     userModel.ic = bulletModel.ic;
     userModel.ct = bulletModel.ct;
     userModel.count = @"1";
+    userModel.bulletArray = [NSMutableArray array];
+    
+    return userModel;
+}
+
+
++ (instancetype)userModelWithGift:(BAGiftModel *)giftModel{
+    
+    BAUserModel *userModel = [BAUserModel new];
+    userModel.nn = giftModel.nn;
+    userModel.uid = giftModel.uid;
+    userModel.level = giftModel.level;
+    userModel.ic = giftModel.ic;
+    userModel.ct = giftModel.ct;
+    userModel.count = @"1";
+    userModel.bulletArray = [NSMutableArray array];
     
     return userModel;
 }

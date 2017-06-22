@@ -11,7 +11,7 @@
 typedef NS_ENUM(NSUInteger, BAGiftType) {
     BAGiftTypeFishBall = 0, //鱼丸礼物 增加体重
     BAGiftTypeFreeGift = 1, //免费道具礼物 免费
-    BAGiftTypeCostGift = 2, //购买道具礼物
+    BAGiftTypeCostGift = 2, //购买道具礼物 0.2鱼翅
     BAGiftTypeDeserveLevel1 = 3, //低级酬勤 15鱼翅
     BAGiftTypeDeserveLevel2 = 4, //中级酬勤 30鱼翅
     BAGiftTypeDeserveLevel3 = 5, //高级酬勤 50鱼翅
@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, BAGiftType) {
     BAGiftTypeRocket = 7    //火箭 500鱼翅
 };
 
-@interface BAGiftModel : BABasicInfoModel
+@interface BAGiftModel : BABasicInfoModel <NSCoding>
 
 /**
  礼物类型

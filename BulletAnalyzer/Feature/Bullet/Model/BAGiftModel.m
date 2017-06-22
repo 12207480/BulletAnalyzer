@@ -7,6 +7,8 @@
 //
 
 #import "BAGiftModel.h"
+#import "BAUserModel.h"
+#import "MJExtension.h"
 
 @interface BAGiftModel()
 @property (nonatomic, assign, getter=isStatusReady) BOOL statusReady;
@@ -14,6 +16,8 @@
 @end
 
 @implementation BAGiftModel
+
+MJCodingImplementation
 
 - (void)setIc:(NSString *)ic{
     _ic = ic;
@@ -94,6 +98,13 @@
         default:
             break;
     }
+}
+
+//重写 用来判断是否包含了这个用户
+- (BOOL)isEqual:(id)object{
+    BAUserModel *userModel = (BAUserModel *)object;
+    
+    return [self.uid isEqual:userModel.uid];
 }
 
 

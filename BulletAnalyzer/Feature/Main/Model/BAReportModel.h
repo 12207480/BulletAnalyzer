@@ -166,6 +166,26 @@
 @property (nonatomic, strong) NSMutableArray *levelCountPointArray;
 
 /**
+ 近似度句子合并
+ */
+@property (nonatomic, strong) NSMutableArray *sentenceArray;
+
+/**
+ 全部礼物数组
+ */
+@property (nonatomic, strong) NSMutableArray *giftsArray;
+
+/**
+ 用户赠送鱼丸排序
+ */
+@property (nonatomic, strong) NSMutableArray *userFishBallCountArray;
+
+/**
+ 用户礼物价值数组
+ */
+@property (nonatomic, strong) NSMutableArray *giftValueArray;
+
+/**
  新增报告
  */
 @property (nonatomic, assign, getter=isAddNewReport) BOOL addNewReport;

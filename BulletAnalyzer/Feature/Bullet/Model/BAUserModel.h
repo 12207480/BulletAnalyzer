@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class BABulletModel;
+@class BABulletModel, BAGiftModel;
 
 @interface BAUserModel : NSObject <NSCoding>
 
@@ -16,6 +16,11 @@
  发送者昵称
  */
 @property (nonatomic, copy) NSString *nn;
+
+/**
+ 这个用户说过的弹幕
+ */
+@property (nonatomic, strong) NSMutableArray *bulletArray;
 
 /**
  发送者 id
@@ -53,6 +58,16 @@
 @property (nonatomic, copy) NSString *count;
 
 /**
+ 该用户赠送鱼丸数
+ */
+@property (nonatomic, copy) NSString *fishBallCount;
+
+/**
+ 礼物数量
+ */
+@property (nonatomic, copy) NSString *giftCount;
+
+/**
  最大发言数
  */
 @property (nonatomic, assign) NSInteger maxActiveCount;
@@ -71,5 +86,10 @@
  快速创建用户模型
  */
 + (instancetype)userModelWithBullet:(BABulletModel *)bulletModel;
+
+/**
+ 快速创建用户模型
+ */
++ (instancetype)userModelWithGift:(BAGiftModel *)giftModel;
 
 @end

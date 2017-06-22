@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BACountTimeModel : NSObject
+@interface BACountTimeModel : NSObject <NSCoding>
 
 /**
  此刻时间
