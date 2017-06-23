@@ -42,7 +42,7 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
             }
             
             [self reloadData];
-            [self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_bulletArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            [self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:_bulletArray.count - 1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
     }];
 }
@@ -59,18 +59,17 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.delegate = self;
     self.dataSource = self;
-    self.contentInset = UIEdgeInsetsMake(0, 0, 5, 0);
 }
 
 
 #pragma mark -tableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return _bulletArray.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _bulletArray.count;
+    return 1;
 }
 
 
@@ -81,9 +80,19 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     BABulletListCell *cell = [tableView dequeueReusableCellWithIdentifier:BABulletListCellReusedId forIndexPath:indexPath];
-    cell.bulletModel = _bulletArray[indexPath.row];
+    cell.bulletModel = _bulletArray[indexPath.section];
     
     return cell;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 6;
+}
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return [UIView new];
 }
 
 @end

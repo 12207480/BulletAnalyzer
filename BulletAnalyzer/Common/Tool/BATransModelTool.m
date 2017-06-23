@@ -82,6 +82,8 @@
             
         } else if ([dic[@"type"] isEqualToString:BAInfoTypeSmallGift] || [dic[@"type"] isEqualToString:BAInfoTypeDeserveGift] || [dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
             
+            //NSLog(@"%@ : %@", dic[@"nn"] ,dic.description);
+            
             BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
             
             if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && giftModel.giftType == BAGiftTypeRocket)) { //别的房间火箭广播消息过滤掉

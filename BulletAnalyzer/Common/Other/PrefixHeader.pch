@@ -17,6 +17,7 @@
 #import "UIBarButtonItem+ZJExtension.h"
 #import "UIView+ZJExtension.h"
 #import "NSObject+ZJUIExtension.h"
+#import "BANavigationViewController.h"
 
 
 //尺寸
@@ -31,7 +32,7 @@
 #define BARoomListScreenShotImgHeight 90
 #define BAReportCellWidth (BAScreenWidth - 8 * BAPadding)
 #define BAReportCellHeight (BAScreenHeight * 3 / 5)
-#define BABulletListCellHeight 60
+#define BABulletListCellHeight 80
 #define BABulletSettingHeight 150
 #define BABulletMenuHeight 70
 #define BABulletActiveCellHeight (BAScreenHeight - 2 * BAPadding) / 10
@@ -45,15 +46,20 @@
 #define BADark1BackgroundColor BAColor(6, 8, 18)//背景颜色
 #define BADark2BackgroundColor BAColor(14, 15, 26)//背景颜色
 #define BADark3BackgroundColor BAColor(22, 24, 35)//背景颜色
-#define BAThemeColor BAColor(25, 180, 177) //常用的主色
+#define BAThemeColor BAColor(83, 202, 227) //常用的主色
 #define BAHighlightThemeColor BAColor(0, 179, 179) //高亮主题色
 #define BAWhiteColor [UIColor whiteColor]
 #define BABlackColor [UIColor blackColor]
 #define BACommonTextColor BAColor(51, 51, 51) //一般文字颜色
-#define BALightTextColor BAColor(153, 153, 153) //浅说明性文字
+#define BALightTextColor BAColor(179, 179, 195) //浅说明性文字
 #define BAAssistColor BAColor(255, 127, 102)
 #define BAAssist2Color BAColor(115, 210, 230) //辅助色(蓝)
 #define BADisabledColor BAColor(204, 204, 204) //不可选颜色
+
+#define BANavigationBarColor BAColor(35, 38, 66) //导航栏背景图
+#define BATabBarColor BAColor(61, 64, 105) //底部栏颜色
+#define BASpratorColor BAColor(75, 80, 119) //分隔线颜色
+#define BACellColor1 BAColor(58, 59, 97) //cell第一种背景色
 
 #define BALineColor1 BAColor(253, 81, 217) //粉红
 #define BALineColor2 BAColor(141, 77, 232) //紫色

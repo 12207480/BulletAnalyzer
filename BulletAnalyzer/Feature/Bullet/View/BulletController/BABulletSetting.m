@@ -158,7 +158,7 @@
     
     [_speedView addSubview:_silder];
     
-    _tipsLabel = [UILabel lableWithFrame:CGRectMake(_silder.x + BAPadding, _silder.bottom + BAPadding, _silder.width, 30) text:@"tip:调整弹幕速度不影响分析报告" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _tipsLabel = [UILabel labelWithFrame:CGRectMake(_silder.x + BAPadding, _silder.bottom + BAPadding, _silder.width, 30) text:@"tip:调整弹幕速度不影响分析报告" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [_speedView addSubview:_tipsLabel];
     

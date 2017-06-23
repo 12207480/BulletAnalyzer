@@ -62,6 +62,11 @@ MJCodingImplementation
 }
 
 
+- (NSString *)nn{
+    return _nn.length ? _nn : _sn;
+}
+
+
 - (void)setBl:(NSString *)bl{
     _bl = bl;
     

@@ -137,19 +137,14 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     [pointArray enumerateObjectsUsingBlock:^(NSValue *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         CGPoint point = obj.CGPointValue;
+
         if (idx == 0) { //第一个点
             
             [fillPath addLineToPoint:point];
             [borderPath moveToPoint:point];
             lastPoint = point;
             lastIdx = idx;
-        } else if (idx == pointArray.count - 1) { //最后一个点
-
-            [fillPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)]; //三次曲线
-            [borderPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)];
-            lastPoint = point;
-            lastIdx = idx;
-        } else if (lastIdx + ignoreSpace + 1 == idx) { //当点数过多时 忽略部分点
+        } else if ((idx == pointArray.count - 1) || (point.y == 0) || (lastIdx + ignoreSpace + 1 == idx)) { //最后一个点最高点要画/当点数过多时 忽略部分点
 
             [fillPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)]; //三次曲线
             [borderPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)];
@@ -218,7 +213,7 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 
 
 - (UILabel *)createXValue{
-    UILabel *label = [UILabel lableWithFrame:CGRectMake(0, self.height * 6 / 7, self.width / 7, self.height / 7) text:@"" color:BAWhiteColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    UILabel *label = [UILabel labelWithFrame:CGRectMake(0, self.height * 6 / 7, self.width / 7, self.height / 7) text:@"" color:BAWhiteColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     label.hidden = !(_XValues.count == 0 || _XValues.count == 3 || _XValues.count == 6);
     [_XValues addObject:label];
     
@@ -228,7 +223,7 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 
 
 - (UILabel *)createYValue{
-    UILabel *label = [UILabel lableWithFrame:CGRectMake(0, 0, 4 * BAPadding, self.height / 7) text:@"" color:BAWhiteColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    UILabel *label = [UILabel labelWithFrame:CGRectMake(0, 0, 4 * BAPadding, self.height / 7) text:@"" color:BAWhiteColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     [_YValues addObject:label];
     
     [self addSubview:label];

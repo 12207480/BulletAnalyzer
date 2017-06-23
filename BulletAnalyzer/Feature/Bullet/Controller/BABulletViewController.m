@@ -20,12 +20,9 @@
 
 @interface BABulletViewController () <UIScrollViewDelegate>
 //弹幕列表
-@property (nonatomic, strong) UIView *navigationBar;
-@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) BABulletListView *bulletListView;
 @property (nonatomic, strong) BABulletMenu *bulletMenu;
 @property (nonatomic, strong) BABulletSetting *bulletSetting;
-@property (nonatomic, strong) UIImageView *bgImgView;
 @property (nonatomic, strong) NSTimer *hideTimer;
 @property (nonatomic, assign) CGFloat repeatDuration;
 
@@ -94,29 +91,36 @@
 #pragma mark - animation
 - (void)smaller{
     _bulletSetting.hidden = YES;
-    [UIView animateWithDuration:0.4 animations:^{
+    _bulletListView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [UIView animateWithDuration:0.3 animations:^{
         _bulletMenu.frame = CGRectMake(0, BAScreenHeight - BABulletMenuHeight + 20, BAScreenWidth, BABulletMenuHeight - 20);
         _bulletMenu.moreBtn.centerY = _bulletMenu.height / 2;
         _bulletMenu.endBtn.centerY = _bulletMenu.height / 2;
         _bulletMenu.reportBtn.centerY = _bulletMenu.height / 2;
         
-        _navigationBar.y = -44;
     }];
 }
 
 
 - (void)larger{
     [self beginTimer];
-    [UIView animateWithDuration:0.4 animations:^{
+    _bulletListView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [UIView animateWithDuration:0.3 animations:^{
         _bulletMenu.frame = CGRectMake(0, BAScreenHeight - BABulletMenuHeight, BAScreenWidth, BABulletMenuHeight);
         _bulletMenu.moreBtn.centerY = _bulletMenu.height / 2;
         _bulletMenu.endBtn.centerY = _bulletMenu.height / 2;
-        _bulletMenu.reportBtn.centerY = _bulletMenu.height / 2;
-        
-        _navigationBar.y = 0;
-    } completion:^(BOOL finished) {
+        _bulletMenu.reportBtn.centerY = _bulletMenu.height / 2;    } completion:^(BOOL finished) {
         _bulletSetting.hidden = !(BOOL)_bulletSetting.tag;
     }];
+}
+
+
+
+#pragma mark - userInteraction
+- (void)roomCollect{
+    NSLog(@"%s", __func__);
 }
 
 
@@ -145,7 +149,7 @@
     _scrollView.delegate = self;
     _scrollView.backgroundColor = BADark2BackgroundColor;
     
-    _tipsLabel = [UILabel lableWithFrame:CGRectMake(0, -20, BAScreenWidth, 20) text:@"下拉回到弹幕列表" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _tipsLabel = [UILabel labelWithFrame:CGRectMake(0, -20, BAScreenWidth, 20) text:@"下拉回到弹幕列表" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [_scrollView addSubview:_tipsLabel];
     [self.view addSubview:_scrollView];
@@ -154,18 +158,7 @@
 
 - (void)setupBulletListView{
     _bulletListView = [[BABulletListView alloc] initWithFrame:CGRectMake(0, 0, BAScreenWidth, BAScreenHeight - 50)];
-    
-    _bgImgView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    _bgImgView.contentMode = UIViewContentModeScaleAspectFill;
-    _bgImgView.image = [UIImage imageNamed:@"bgImg"];
-    _bgImgView.userInteractionEnabled = NO;
-    
-    UIBlurEffect *beffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    UIVisualEffectView *beffectView = [[UIVisualEffectView alloc] initWithEffect:beffect];
-    beffectView.frame = _bgImgView.bounds;
-    [_bgImgView addSubview:beffectView];
-    
-    [self.view addSubview:_bgImgView];
+
     [self.view addSubview:_bulletListView];
 }
 
@@ -237,13 +230,7 @@
 
 
 - (void)setupNavigationBar{
-    _navigationBar = [[UIView alloc] initWithFrame:CGRectMake(0, -44, BAScreenWidth, 44)];
-    _navigationBar.backgroundColor = BAThemeColor;
     
-    _titleLabel = [UILabel lableWithFrame:_navigationBar.bounds text:@"" color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
-    
-    [_navigationBar addSubview:_titleLabel];
-    [self.view addSubview:_navigationBar];
 }
 
 
@@ -253,13 +240,12 @@
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:_getDuration repeats:YES block:^(NSTimer * _Nonnull timer) {
         
-        if (_reportModel.avatar.length && !_bgImgView.tag) {
-            [_bgImgView sd_setImageWithURL:[NSURL URLWithString:_reportModel.avatar] placeholderImage:BAPlaceHolderImg options:SDWebImageTransformAnimatedImage];
-            _bgImgView.tag = 1; //标记已设置背景
-            _titleLabel.text = _reportModel.name;
+        if (!self.title.length) {
+            self.title = _reportModel.name;
+            self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"star" highlightedImg:nil target:self action:@selector(roomCollect)];
             [self larger];
         }
-        
+
         NSArray *subArray;
         if (_reportModel.bulletsArray.count > _getCount) {
             subArray = [_reportModel.bulletsArray subarrayWithRange:NSMakeRange(_reportModel.bulletsArray.count - _getCount, _getCount)];

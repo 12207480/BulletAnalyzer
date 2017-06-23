@@ -181,7 +181,7 @@
 
 
 - (UILabel *)createXValue{
-    UILabel *label = [UILabel lableWithFrame:CGRectMake(0, 0, _bgView.width / 10, BAScreenWidth * 0.2) text:@"" color:BAWhiteColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    UILabel *label = [UILabel labelWithFrame:CGRectMake(0, 0, _bgView.width / 10, BAScreenWidth * 0.2) text:@"" color:BAWhiteColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.numberOfLines = 0;
     [_XValues addObject:label];

@@ -10,8 +10,12 @@
 #import "BABulletModel.h"
 
 @interface BABulletListCell()
+@property (nonatomic, strong) UIView *bgView;
 @property (nonatomic, strong) UIImageView *icon;
+@property (nonatomic, strong) UIImageView *notification;
+@property (nonatomic, strong) UILabel *notificationCount;
 @property (nonatomic, strong) UIView *labelBgView;
+@property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *contentLabel;
 
 @end
@@ -34,34 +38,52 @@
 - (void)setBulletModel:(BABulletModel *)bulletModel{
     _bulletModel = bulletModel;
     
-    [_icon sd_setImageWithURL:[NSURL URLWithString:bulletModel.iconMiddle] placeholderImage:BAPlaceHolderImg];
-    _contentLabel.text = [NSString stringWithFormat:@"%@:\n%@", bulletModel.nn, bulletModel.txt];
+    [_icon sd_setImageWithURL:[NSURL URLWithString:bulletModel.iconSmall] placeholderImage:BAPlaceHolderImg];
+    _nameLabel.text = bulletModel.nn;
+    _contentLabel.text = bulletModel.txt;
 }
 
 
 #pragma mark - private
 - (void)setupSubViews{
     
-    _icon = [[UIImageView alloc] initWithFrame:CGRectMake(BAPadding, BAPadding / 2, BABulletListCellHeight - BAPadding, BABulletListCellHeight - BAPadding)];
+    _bgView = [[UIView alloc] initWithFrame:CGRectMake(2 * BAPadding, 0, BAScreenWidth - 4 * BAPadding, BABulletListCellHeight)];
+    _bgView.backgroundColor = BACellColor1;
+    _bgView.layer.cornerRadius = BARadius;
+    _bgView.layer.shadowOpacity = 0.5;
+    _bgView.layer.shadowColor = BABlackColor.CGColor;
+    _bgView.layer.shadowOffset = CGSizeMake(0, 0.5);
+    _bgView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_bgView.bounds].CGPath;
+    
+    [self.contentView addSubview:_bgView];
+    
+    CGFloat iconHeight = BABulletListCellHeight - 4 * BAPadding;
+    _icon = [[UIImageView alloc] initWithFrame:CGRectMake(4 * BAPadding, 2 * BAPadding, iconHeight, iconHeight)];
     _icon.contentMode = UIViewContentModeScaleAspectFill;
-    _icon.layer.cornerRadius = (BABulletListCellHeight - BAPadding) / 2;
-    _icon.layer.borderColor = [UIColor whiteColor].CGColor;
-    _icon.layer.borderWidth = 2;
-    _icon.layer.masksToBounds =  YES;
-
+    _icon.layer.cornerRadius = iconHeight / 2;
+    _icon.layer.masksToBounds = YES;
+    
     [self.contentView addSubview:_icon];
     
-    _labelBgView = [[UIView alloc] initWithFrame:CGRectMake(_icon.centerX, BAPadding / 2, BAScreenWidth - _icon.centerX - BAPadding, _icon.height)];
-    _labelBgView.backgroundColor = [BABlackColor colorWithAlphaComponent:0.7];
-    _labelBgView.layer.cornerRadius = BARadius;
-    _labelBgView.layer.masksToBounds = YES;
+    _notification = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notification1"]];
+    _notification.centerX = _icon.x + iconHeight / 6;
+    _notification.centerY = _icon.y + iconHeight / 6;
     
-    [self.contentView insertSubview:_labelBgView belowSubview:_icon];
+    [self.contentView addSubview:_notification];
     
-    _contentLabel = [UILabel lableWithFrame:CGRectMake(_icon.right + BAPadding / 2, BAPadding / 2, _labelBgView.width - _icon.right - BAPadding, _icon.height) text:nil color:BAWhiteColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _notificationCount = [UILabel labelWithFrame:_notification.bounds text:@"" color:BAWhiteColor font:[UIFont boldSystemFontOfSize:9] textAlignment:NSTextAlignmentCenter];
+    
+    [_notification addSubview:_notificationCount];
+    
+    CGFloat labelWidth = _bgView.width - _icon.right - 3 * BAPadding;
+    _nameLabel = [UILabel labelWithFrame:CGRectMake(_icon.right + 2 * BAPadding, BAPadding, labelWidth, 15) text:@"" color:BALightTextColor font:BACommonFont(BALargeTextFontSize) textAlignment:NSTextAlignmentLeft];
+    
+    [self.contentView addSubview:_nameLabel];
+    
+    _contentLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, labelWidth, BABulletListCellHeight -  2 * BAPadding - _nameLabel.height) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
     _contentLabel.numberOfLines = 0;
     
-    [self.contentView insertSubview:_contentLabel aboveSubview:_labelBgView];
+    [self.contentView addSubview:_contentLabel];
 }
 
 

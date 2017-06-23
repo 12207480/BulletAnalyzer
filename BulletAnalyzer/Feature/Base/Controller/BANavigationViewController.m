@@ -20,12 +20,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor]] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationBar setBackgroundImage:[UIImage imageWithColor:BANavigationBarColor] forBarMetrics:UIBarMetricsDefault];
     self.navigationBar.contentMode = UIViewContentModeScaleAspectFill;
     self.navigationBar.translucent = YES;
-    self.navigationBar.shadowImage = [[UIImage alloc] init];
-    self.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+    self.navigationBar.shadowImage = [UIImage imageWithColor:BASpratorColor];
+    self.navigationBar.tintColor = BAThemeColor;
+    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : BAWhiteColor};
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 
     //设置全局右滑返回

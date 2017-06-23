@@ -98,7 +98,7 @@
     _levelCountCurveView.endTimeLabel.text = @"70+";
     _levelCountCurveView.maxValueLabel.text = [NSString stringWithFormat:@"%zd", maxLevelCount];
     _levelCountCurveView.minValueLabel.text = [NSString stringWithFormat:@"%zd", 0];
-    UILabel *middleValue = [UILabel lableWithFrame:CGRectMake(_levelCountCurveView.beginTimeLabel.x + BAFansReportDrawViewWidth / 2 - 25, _levelCountCurveView.beginTimeLabel.y, 50, BACommonTextFontSize) text:@"35" color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    UILabel *middleValue = [UILabel labelWithFrame:CGRectMake(_levelCountCurveView.beginTimeLabel.x + BAFansReportDrawViewWidth / 2 - 25, _levelCountCurveView.beginTimeLabel.y, 50, BACommonTextFontSize) text:@"35" color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [_levelCountCurveView addSubview:middleValue];
 }

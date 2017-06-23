@@ -9,6 +9,7 @@
 #import "BABulletMenu.h"
 
 @interface BABulletMenu()
+@property (nonatomic, strong) UIView *sprator;
 
 @end
 
@@ -18,7 +19,7 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         
-        self.backgroundColor = BADark1BackgroundColor;
+        self.backgroundColor = BATabBarColor;
         
         [self setupSubViews];
     }
@@ -71,6 +72,11 @@
 
 #pragma mark - private
 - (void)setupSubViews{
+    
+    _sprator = [[UIView alloc] initWithFrame:CGRectMake(0, -1, BAScreenWidth, 1)];
+    _sprator.backgroundColor = BASpratorColor;
+    
+    [self addSubview:_sprator];
     
     _moreBtn = [UIButton buttonWithFrame:CGRectMake(BAPadding, 10, 30, 30) title:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
     _moreBtn.tag = 0;

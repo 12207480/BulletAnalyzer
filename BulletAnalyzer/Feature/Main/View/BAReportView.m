@@ -77,7 +77,7 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
 
 
 - (void)setupIndicator{
-    _indicatorLabel = [UILabel lableWithFrame:CGRectMake(0, _collectionView.bottom + 4 * BAPadding, BAScreenWidth, BASmallTextFontSize) text:@"" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _indicatorLabel = [UILabel labelWithFrame:CGRectMake(0, _collectionView.bottom + 4 * BAPadding, BAScreenWidth, BASmallTextFontSize) text:@"" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [self addSubview:_indicatorLabel];
 }

@@ -29,8 +29,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = BADark1BackgroundColor;
-    
     [self setupTitleView];
     
     [self setupReportView];
@@ -45,6 +43,7 @@
     [super viewWillAppear:animated];
     
     [UIApplication sharedApplication].statusBarHidden = NO;
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     _reportView.reportModelArray = [BAAnalyzerCenter defaultCenter].reportModelArray;
 }
@@ -66,8 +65,9 @@
 
     BABulletViewController *bulletVC = [[BABulletViewController alloc] init];
     bulletVC.reportModel = reportModel;
-    
-    [self presentViewController:bulletVC animated:YES completion:nil];
+
+    BANavigationViewController *navigationVc = [[BANavigationViewController alloc] initWithRootViewController:bulletVC];
+    [self presentViewController:navigationVc animated:YES completion:nil];
 }
 
 
@@ -81,10 +81,11 @@
 - (void)beginAnalyzing:(NSNotification *)sender{
     BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyReportModel];
     
-    BABulletViewController *bulletsVC = [[BABulletViewController alloc] init];
-    bulletsVC.reportModel = reportModel;
+    BABulletViewController *bulletVC = [[BABulletViewController alloc] init];
+    bulletVC.reportModel = reportModel;
     
-    [self presentViewController:bulletsVC animated:YES completion:nil];
+    BANavigationViewController *navigationVc = [[BANavigationViewController alloc] initWithRootViewController:bulletVC];
+    [self presentViewController:navigationVc animated:YES completion:nil];
 }
 
 
@@ -97,11 +98,11 @@
 
 #pragma mark - private
 - (void)setupTitleView{
-    _titleLabel = [UILabel lableWithFrame:CGRectMake(0, 60, BAScreenWidth, BASuperLargeTextFontSize) text:@"ANALYZER" color:[UIColor whiteColor] font:BABlodFont(BASuperLargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _titleLabel = [UILabel labelWithFrame:CGRectMake(0, 60, BAScreenWidth, BASuperLargeTextFontSize) text:@"ANALYZER" color:[UIColor whiteColor] font:BABlodFont(BASuperLargeTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [self.view addSubview:_titleLabel];
         
-    _timeLabel = [UILabel lableWithFrame:CGRectMake(0, _titleLabel.bottom + BAPadding, BAScreenWidth, BALargeTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _timeLabel = [UILabel labelWithFrame:CGRectMake(0, _titleLabel.bottom + BAPadding, BAScreenWidth, BALargeTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     NSTextAttachment *calenderImg = [[NSTextAttachment alloc] init];
     calenderImg.image = [UIImage imageNamed:@"Calender"];
@@ -129,6 +130,8 @@
 
 - (void)setupNavigation{
     //self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"房间" target:self action:@selector(roomBtnClicked)];
+    
+    
 }
 
 

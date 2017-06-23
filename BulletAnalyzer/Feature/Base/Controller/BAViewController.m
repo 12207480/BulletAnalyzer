@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = BABackgroundColor;
+    self.view.layer.contents = (id)[UIImage imageNamed:@"backgroundView"].CGImage;
 }
 
 

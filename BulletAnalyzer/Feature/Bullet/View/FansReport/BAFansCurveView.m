@@ -144,11 +144,11 @@
     
     [_leftView addSubview:_icon];
     
-    _countLabel = [UILabel lableWithFrame:CGRectMake(0, _icon.bottom + BAPadding / 2, 100, 30) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _countLabel = [UILabel labelWithFrame:CGRectMake(0, _icon.bottom + BAPadding / 2, 100, 30) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [_leftView addSubview:_countLabel];
     
-    _typeLabel = [UILabel lableWithFrame:CGRectMake(0, _countLabel.bottom, 100, 30) text:nil color:BALightTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _typeLabel = [UILabel labelWithFrame:CGRectMake(0, _countLabel.bottom, 100, 30) text:nil color:BALightTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [_leftView addSubview:_typeLabel];
     
@@ -156,19 +156,19 @@
 
     [self addSubview:_drawView];
     
-    _beginTimeLabel = [UILabel lableWithFrame:CGRectMake(_drawView.x, _drawView.bottom + BAPadding / 2, 40, BACommonTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _beginTimeLabel = [UILabel labelWithFrame:CGRectMake(_drawView.x, _drawView.bottom + BAPadding / 2, 40, BACommonTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_beginTimeLabel];
     
-    _endTimeLabel = [UILabel lableWithFrame:CGRectMake(_drawView.right - 40, _drawView.bottom + BAPadding / 2, 40, BACommonTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentRight];
+    _endTimeLabel = [UILabel labelWithFrame:CGRectMake(_drawView.right - 40, _drawView.bottom + BAPadding / 2, 40, BACommonTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentRight];
     
     [self addSubview:_endTimeLabel];
     
-    _minValueLabel = [UILabel lableWithFrame:CGRectMake(BAPadding / 2, _drawView.bottom - BACommonTextFontSize, 50, BACommonTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _minValueLabel = [UILabel labelWithFrame:CGRectMake(BAPadding / 2, _drawView.bottom - BACommonTextFontSize, 50, BACommonTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_minValueLabel];
     
-    _maxValueLabel = [UILabel lableWithFrame:CGRectMake(BAPadding / 2, _drawView.y, 50, BACommonTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _maxValueLabel = [UILabel labelWithFrame:CGRectMake(BAPadding / 2, _drawView.y, 50, BACommonTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_maxValueLabel];
 }

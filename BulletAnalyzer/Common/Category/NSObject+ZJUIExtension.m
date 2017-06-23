@@ -11,7 +11,7 @@
 @implementation NSObject (ZJUIExtension)
 
 //创建UILabel
-+ (UILabel *)lableWithFrame:(CGRect)frame
++ (UILabel *)labelWithFrame:(CGRect)frame
                              text:(NSString *)text
                             color:(UIColor *)color
                              font:(UIFont *)font

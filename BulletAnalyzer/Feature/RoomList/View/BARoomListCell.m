@@ -27,7 +27,7 @@
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         
-        self.backgroundColor = BADark1BackgroundColor;
+        self.backgroundColor = [UIColor clearColor];
         
         [self setupSubViews];
     }
@@ -69,11 +69,11 @@
 
     [_bgView addSubview:_beffectView];
     
-    _anchorNameLabel = [UILabel lableWithFrame:CGRectMake(BAPadding, _bgView.bottom - BAPadding / 2 - BALargeTextFontSize, BARoomListScreenShotImgWidth - 2 * BAPadding, BALargeTextFontSize) text:nil color:BACommonTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentRight];
+    _anchorNameLabel = [UILabel labelWithFrame:CGRectMake(BAPadding, _bgView.bottom - BAPadding / 2 - BALargeTextFontSize, BARoomListScreenShotImgWidth - 2 * BAPadding, BALargeTextFontSize) text:nil color:BACommonTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentRight];
    
     [_bgView addSubview:_anchorNameLabel];
     
-    _roomNameLabel = [UILabel lableWithFrame:_screenShotImgView.bounds text:nil color:BAWhiteColor font:BAThinFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _roomNameLabel = [UILabel labelWithFrame:_screenShotImgView.bounds text:nil color:BAWhiteColor font:BAThinFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
     _roomNameLabel.numberOfLines = 2;
     
     [_beffectView addSubview:_roomNameLabel];
@@ -85,7 +85,7 @@
     
     [_bgView addSubview:_titileBgView];
     
-    _roomTypeLabel = [UILabel lableWithFrame:CGRectMake(0, 0, 70, 15) text:nil color:BAWhiteColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _roomTypeLabel = [UILabel labelWithFrame:CGRectMake(0, 0, 70, 15) text:nil color:BAWhiteColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [_titileBgView addSubview:_roomTypeLabel];
 }

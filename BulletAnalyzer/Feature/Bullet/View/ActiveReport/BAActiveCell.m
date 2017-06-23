@@ -53,7 +53,7 @@
 
 #pragma mark - private
 - (void)setupSubViews{
-    _countLabel = [UILabel lableWithFrame:CGRectMake(0, 0, BABulletActiveCellHeight / 2, BABulletActiveCellHeight) text:@"" color:BAWhiteColor font:BABlodFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _countLabel = [UILabel labelWithFrame:CGRectMake(0, 0, BABulletActiveCellHeight / 2, BABulletActiveCellHeight) text:@"" color:BAWhiteColor font:BABlodFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [self.contentView addSubview:_countLabel];
     
@@ -67,11 +67,11 @@
     
     [self.contentView addSubview:_slider];
     
-    _nameLabel = [UILabel lableWithFrame:CGRectMake(_slider.x + BAPadding / 2, _slider.bottom + BAPadding / 2, _slider.width, BASmallTextFontSize) text:@"" color:BAWhiteColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _nameLabel = [UILabel labelWithFrame:CGRectMake(_slider.x + BAPadding / 2, _slider.bottom + BAPadding / 2, _slider.width, BASmallTextFontSize) text:@"" color:BAWhiteColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self.contentView addSubview:_nameLabel];
     
-    _levelLabel = [UILabel lableWithFrame:CGRectMake(BAScreenWidth - 2 * BAPadding - BABulletActiveCellHeight / 2, 0, BABulletActiveCellHeight / 2, BABulletActiveCellHeight) text:@"" color:BALightTextColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _levelLabel = [UILabel labelWithFrame:CGRectMake(BAScreenWidth - 2 * BAPadding - BABulletActiveCellHeight / 2, 0, BABulletActiveCellHeight / 2, BABulletActiveCellHeight) text:@"" color:BALightTextColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
     _levelLabel.numberOfLines = 0;
     
     [self.contentView addSubview:_levelLabel];
