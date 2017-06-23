@@ -12,6 +12,7 @@
 #import "BAGiftModel.h"
 #import "BARoomModel.h"
 #import "MJExtension.h"
+#import "BAAnalyzerCenter.h"
 
 @implementation BATransModelTool
 
@@ -78,6 +79,13 @@
         if ([dic[@"type"] isEqualToString:BAInfoTypeBullet]) {
             
             BABulletModel *bulletModel = [BABulletModel mj_objectWithKeyValues:dic];
+            
+            [[BAAnalyzerCenter defaultCenter].noticeArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (bulletModel.uid.integerValue == obj.uid.integerValue) {
+                    bulletModel.noticeCount += obj.noticeCount;
+                }
+            }];
+            
             [bulletArray addObject:bulletModel];
             
         } else if ([dic[@"type"] isEqualToString:BAInfoTypeSmallGift] || [dic[@"type"] isEqualToString:BAInfoTypeDeserveGift] || [dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {

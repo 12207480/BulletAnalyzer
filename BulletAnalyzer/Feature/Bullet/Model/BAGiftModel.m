@@ -48,6 +48,10 @@ MJCodingImplementation
             self.statusReady = (BOOL)_bl;
             break;
             
+        case 4: //办卡
+            _giftType = BAGiftTypeCard;
+            break;
+            
         case 5: //飞机
             _giftType = BAGiftTypePlane;
             break;

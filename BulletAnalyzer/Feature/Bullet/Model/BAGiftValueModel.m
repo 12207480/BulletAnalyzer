@@ -23,7 +23,7 @@ MJCodingImplementation
             break;
             
         case BAGiftTypeCostGift:
-            _giftValue = 0.2;
+            _giftValue = 0.15;
             break;
             
         case BAGiftTypeDeserveLevel1:
@@ -36,6 +36,10 @@ MJCodingImplementation
             
         case BAGiftTypeDeserveLevel3:
             _giftValue = 50;
+            break;
+            
+        case BAGiftTypeCard:
+            _giftValue = 6;
             break;
             
         case BAGiftTypePlane:

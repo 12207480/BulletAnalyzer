@@ -16,7 +16,10 @@
 @property (nonatomic, strong) UILabel *notificationCount;
 @property (nonatomic, strong) UIView *labelBgView;
 @property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UILabel *levelLabel;
 @property (nonatomic, strong) UILabel *contentLabel;
+@property (nonatomic, strong) UIButton *noticeBtn;
+@property (nonatomic, strong) UIButton *unNoticeBtn;
 
 @end
 
@@ -34,6 +37,12 @@
 }
 
 
+#pragma mark - userInteraction
+- (void)btnClicked:(UIButton *)sender{
+    _btnClicked(sender.tag);
+}
+
+
 #pragma mark - public
 - (void)setBulletModel:(BABulletModel *)bulletModel{
     _bulletModel = bulletModel;
@@ -41,6 +50,14 @@
     [_icon sd_setImageWithURL:[NSURL URLWithString:bulletModel.iconSmall] placeholderImage:BAPlaceHolderImg];
     _nameLabel.text = bulletModel.nn;
     _contentLabel.text = bulletModel.txt;
+    
+    _noticeBtn.hidden = !bulletModel.isBulletCellSelect;
+    _unNoticeBtn.hidden = !bulletModel.isBulletCellSelect;
+    
+    _notification.hidden = !bulletModel.noticeCount;
+    _notificationCount.text = bulletModel.noticeCount > 1 ? BAStringWithInteger(bulletModel.noticeCount) : nil;
+    
+    _levelLabel.text = [NSString stringWithFormat:@"LEVEL %@", bulletModel.level];
 }
 
 
@@ -66,6 +83,7 @@
     [self.contentView addSubview:_icon];
     
     _notification = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notification1"]];
+    _notification.hidden = YES;
     _notification.centerX = _icon.x + iconHeight / 6;
     _notification.centerY = _icon.y + iconHeight / 6;
     
@@ -80,10 +98,38 @@
     
     [self.contentView addSubview:_nameLabel];
     
+    _levelLabel = [UILabel labelWithFrame:CGRectMake(BAScreenWidth - 4 * BAPadding - 100, _nameLabel.y, 100, _nameLabel.height) text:@"" color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentRight];
+    
+    [self.contentView addSubview:_levelLabel];
+    
     _contentLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, labelWidth, BABulletListCellHeight -  2 * BAPadding - _nameLabel.height) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
     _contentLabel.numberOfLines = 0;
     
     [self.contentView addSubview:_contentLabel];
+    
+    _noticeBtn = [UIButton buttonWithFrame:CGRectMake(_bgView.x, _bgView.bottom + 6, (_bgView.width - 6) / 2, 30) title:@"关注此人发言" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
+    _noticeBtn.tag = 0;
+    _noticeBtn.backgroundColor = BACellColor1;
+    _noticeBtn.layer.cornerRadius = BARadius;
+    _noticeBtn.layer.shadowOpacity = 0.5;
+    _noticeBtn.layer.shadowColor = BABlackColor.CGColor;
+    _noticeBtn.layer.shadowOffset = CGSizeMake(0, 0.5);
+    _noticeBtn.layer.shadowPath = [UIBezierPath bezierPathWithRect:_noticeBtn.bounds].CGPath;
+    _noticeBtn.hidden = YES;
+    
+    [self.contentView addSubview:_noticeBtn];
+    
+    _unNoticeBtn = [UIButton buttonWithFrame:CGRectMake(_noticeBtn.right + 6, _bgView.bottom + 6, (_bgView.width - 6) / 2, 30) title:@"取消关注" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
+    _unNoticeBtn.tag = 1;
+    _unNoticeBtn.backgroundColor = BACellColor1;
+    _unNoticeBtn.layer.cornerRadius = BARadius;
+    _unNoticeBtn.layer.shadowOpacity = 0.5;
+    _unNoticeBtn.layer.shadowColor = BABlackColor.CGColor;
+    _unNoticeBtn.layer.shadowOffset = CGSizeMake(0, 0.5);
+    _unNoticeBtn.layer.shadowPath = [UIBezierPath bezierPathWithRect:_noticeBtn.bounds].CGPath;
+    _unNoticeBtn.hidden = YES;
+    
+    [self.contentView addSubview:_unNoticeBtn];
 }
 
 

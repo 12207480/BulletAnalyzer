@@ -61,13 +61,17 @@
 
 
 - (void)openBtnClicked:(NSNotification *)sender{
-    BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellClicked];
-
-    BABulletViewController *bulletVC = [[BABulletViewController alloc] init];
-    bulletVC.reportModel = reportModel;
-
-    BANavigationViewController *navigationVc = [[BANavigationViewController alloc] initWithRootViewController:bulletVC];
-    [self presentViewController:navigationVc animated:YES completion:nil];
+//    BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellClicked];
+//
+//    BABulletViewController *bulletVC = [[BABulletViewController alloc] init];
+//    bulletVC.reportModel = reportModel;
+//
+//    BANavigationViewController *navigationVc = [[BANavigationViewController alloc] initWithRootViewController:bulletVC];
+//    [self presentViewController:navigationVc animated:YES completion:nil];
+//    
+    
+    [[BAAnalyzerCenter defaultCenter] delReport:sender.userInfo[BAUserInfoKeyReportModel]];
+    
 }
 
 

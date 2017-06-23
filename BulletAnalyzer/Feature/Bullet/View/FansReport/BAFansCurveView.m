@@ -83,24 +83,26 @@
     [pointArray enumerateObjectsUsingBlock:^(NSValue *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         CGPoint point = obj.CGPointValue;
-        if (idx == 0) { //第一个点
-            
-            [fillPath addLineToPoint:point];
-            [borderPath moveToPoint:point];
-            lastPoint = point;
-            lastIdx = idx;
-        } else if (idx == pointArray.count - 1) { //最后一个点
-            
-            [fillPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)]; //三次曲线
-            [borderPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)];
-            lastPoint = point;
-            lastIdx = idx;
-        } else if (lastIdx + ignoreSpace + 1 == idx) { //当点数过多时 忽略部分点
-            
-            [fillPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)]; //三次曲线
-            [borderPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)];
-            lastPoint = point;
-            lastIdx = idx;
+        if (point.y != lastPoint.y) {
+            if (idx == 0) { //第一个点
+                
+                [fillPath addLineToPoint:point];
+                [borderPath moveToPoint:point];
+                lastPoint = point;
+                lastIdx = idx;
+            } else if (idx == pointArray.count - 1) { //最后一个点
+                
+                [fillPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)]; //三次曲线
+                [borderPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)];
+                lastPoint = point;
+                lastIdx = idx;
+            } else if (lastIdx + ignoreSpace + 1 == idx) { //当点数过多时 忽略部分点
+                
+                [fillPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)]; //三次曲线
+                [borderPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)];
+                lastPoint = point;
+                lastIdx = idx;
+            }
         }
     }];
     [fillPath addLineToPoint:CGPointMake(_drawView.width, _drawView.height)];

@@ -16,17 +16,20 @@
 #import "BAUserModel.h"
 #import "BACountTimeModel.h"
 #import "BARoomModel.h"
+#import "Segmentor.h"
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
-#import "Segmentor.h"
 
 static NSString *const BACompletedReport = @"completedReport"; //完成表
 static NSString *const BAAnalyzingReport = @"AnalyzingReport"; //进行表
-static NSString *const BAReportID = @"ID";  //ID
+static NSString *const BAReportID = @"reportID";  //ID
 static NSString *const BAReportData = @"reportData"; //数据
+static NSString *const BANotice = @"notice"; //关注表
+static NSString *const BANoticeID = @"noticeID"; //关注表ID
+static NSString *const BANoticeData = @"noticeData"; //关注表数据
 
 @interface BAAnalyzerCenter()
-@property (nonatomic, strong) FMDatabaseQueue *queue;   //子线程中操作数据库
+@property (nonatomic, strong) FMDatabaseQueue *dataBaseQueue;
 @property (nonatomic, assign) dispatch_queue_t analyzingQueue; //用于计算的子线程
 
 @property (nonatomic, strong) BAReportModel *analyzingReportModel; //正在分析的报告
@@ -109,6 +112,7 @@ static NSString *const BAReportData = @"reportData"; //数据
         _analyzingReportModel.fansTimePointArray = _fansTimePointArray;
         _analyzingReportModel.levelCountPointArray = _levelCountPointArray;
         _analyzingReportModel.maxActiveCount = 1;
+        _analyzingReportModel.timeID = (NSInteger)[[NSDate date] timeIntervalSince1970];
         
         _analyzingReportModel.giftsArray = _giftsArray;
         _analyzingReportModel.userFishBallCountArray = _userFishBallCountArray;
@@ -119,6 +123,9 @@ static NSString *const BAReportData = @"reportData"; //数据
         //传入开始分析时间
         _analyzingReportModel.begin = [NSDate date];
     } else {
+        //从继续分析表中删除
+        [self delReport:_analyzingReportModel];
+        
         //获取继续分析模型
         _analyzingReportModel = _proceedReportModel;
         _analyzingReportModel.interruptAnalyzing = NO;
@@ -418,7 +425,9 @@ static NSString *const BAReportData = @"reportData"; //数据
             }
             
             //句子数量全部减一
-            [_sentenceArray makeObjectsPerformSelector:@selector(decrease)];
+            [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [obj decrease];
+            }];
         }
         
         //根据用户发言的次数排序
@@ -729,13 +738,14 @@ static NSString *const BAReportData = @"reportData"; //数据
 #pragma mark - dataLocolize
 - (void)updateReportLocolized{
     
-    [_queue inDatabase:^(FMDatabase * _Nonnull db) {
+    [_dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         
         NSMutableArray *tempArray = [NSMutableArray array];
+        NSMutableArray *noticeTempArray = [NSMutableArray array];
         BOOL open = [db open];
         if (open) {
             //创表(若无) 1.完成分析表
-            NSString *execute1 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ integer primary key autoincrement, %@ Blob)", BACompletedReport, BAReportID, BAReportData];
+            NSString *execute1 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ integer, %@ Blob)", BACompletedReport, BAReportID, BAReportData];
             BOOL createCompletedReportTable = [db executeUpdate:execute1];
             if (createCompletedReportTable) {
                 NSLog(@"completedReport创表成功");
@@ -744,7 +754,7 @@ static NSString *const BAReportData = @"reportData"; //数据
             }
             
             //未完成分析表
-            NSString *execute2 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ integer primary key autoincrement, %@ Blob)", BAAnalyzingReport, BAReportID, BAReportData];
+            NSString *execute2 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ integer, %@ Blob)", BAAnalyzingReport, BAReportID, BAReportData];
             BOOL createAnalyzingReportTable = [db executeUpdate:execute2];
             if (createAnalyzingReportTable) {
                 NSLog(@"AnalyzingReportTable创表成功");
@@ -753,28 +763,56 @@ static NSString *const BAReportData = @"reportData"; //数据
             }
             
             //先取出完成表来里的数据解档
-            NSString *select1 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY %@ DESC", BACompletedReport, BAReportID];
+            NSString *select1 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID DESC", BACompletedReport];
             FMResultSet *result1 = [db executeQuery:select1];
             while (result1.next) {
                 NSData *reportData = [result1 dataForColumn:BAReportData];
                 BAReportModel *reportModel = [NSKeyedUnarchiver unarchiveObjectWithData:reportData];
                 
-                [tempArray addObject:reportModel];
+                if (reportModel) {
+                    [tempArray addObject:reportModel];
+                }
             }
             
             //再取出未完成表来里的数据解档
-            NSString *select2 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY %@ DESC", BAAnalyzingReport, BAReportID];
+            NSString *select2 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID DESC", BAAnalyzingReport];
             FMResultSet *result2 = [db executeQuery:select2];
             while (result2.next) {
                 
                 NSData *reportData = [result2 dataForColumn:BAReportData];
                 BAReportModel *reportModel = [NSKeyedUnarchiver unarchiveObjectWithData:reportData];
                 
-                [tempArray addObject:reportModel];
+                if (reportModel) {
+                    [tempArray addObject:reportModel];
+                }
             }
+            
+            //关注表
+            NSString *execute3 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ integer, %@ Blob)", BANotice, BANoticeID, BANoticeData];
+            BOOL createNoticeTable = [db executeUpdate:execute3];
+            if (createNoticeTable) {
+                NSLog(@"noticeTable创表成功");
+            } else {
+                NSLog(@"noticeTable创表失败");
+            }
+            
+            //再取出关注表来里的数据解档
+            NSString *select3 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID DESC", BANotice];
+            FMResultSet *result3 = [db executeQuery:select3];
+            while (result3.next) {
+                
+                NSData *noticeData = [result3 dataForColumn:BANoticeData];
+                BABulletModel *bulletModel = [NSKeyedUnarchiver unarchiveObjectWithData:noticeData];
+                
+                if (bulletModel) {
+                    [noticeTempArray addObject:bulletModel];
+                }
+            }
+            
             [db close];
         }
         _reportModelArray = tempArray;
+        _noticeArray = noticeTempArray;
         
         [BANotificationCenter postNotificationName:BANotificationUpdateReporsComplete object:nil userInfo:@{BAUserInfoKeyReportModelArray : _reportModelArray}];
     }];
@@ -783,7 +821,7 @@ static NSString *const BAReportData = @"reportData"; //数据
 
 - (void)saveReportLocolized{
     //存入本地
-    [_queue inDatabase:^(FMDatabase * _Nonnull db) {
+    [_dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         
         BOOL open = [db open];
         if (open) {
@@ -791,14 +829,109 @@ static NSString *const BAReportData = @"reportData"; //数据
             //判断是否为未完成分析表分别存入表单
             NSString *insert;
             if (_analyzingReportModel.isInterruptAnalyzing) {
-                insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BAAnalyzingReport, BAReportData];
+                insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BAAnalyzingReport, BAReportID, BAReportData];
             } else {
-                insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BACompletedReport, BAReportData];
+                insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BACompletedReport, BAReportID, BAReportData];
             }
             NSData *reportData = [NSKeyedArchiver archivedDataWithRootObject:_analyzingReportModel];
-            BOOL success = [db executeUpdate:insert, reportData];
+            BOOL success = [db executeUpdate:insert, @(_analyzingReportModel.timeID), reportData];
             if (!success) {
                 NSLog(@"储存失败");
+            }
+            [db close];
+        }
+    }];
+}
+
+
+- (void)delReport:(BAReportModel *)report{
+    
+    BOOL isInterruptAnalyzing = report.isInterruptAnalyzing;
+    
+    [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        BOOL open = [db open];
+        if (open) {
+            
+            //判断是否为未完成分析表分别存入表单
+            NSString *del;
+            if (isInterruptAnalyzing) {
+                del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?);", BAAnalyzingReport, BAReportID];
+            } else {
+                del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?);", BACompletedReport, BAReportID];
+            }
+            BOOL success = [db executeUpdate:del, @(report.timeID)];
+            if (!success) {
+                NSLog(@"删除失败");
+            } else {
+                if (!isInterruptAnalyzing) {
+                    [_reportModelArray removeObject:report];
+                }
+            }
+            [db close];
+        }
+    }];
+}
+
+
+- (void)addNotice:(BABulletModel *)bulletModel{
+    //先添加入数组
+    [_noticeArray addObject:bulletModel];
+    NSMutableArray *tempArray = [NSMutableArray array];
+    [_noticeArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (bulletModel.uid.integerValue == obj.uid.integerValue) {
+            [tempArray addObject:obj]; //遍历 获取这个用户被标记次数
+        }
+    }];
+    
+    
+    [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        BOOL open = [db open];
+        if (open) {
+
+            //删除这个用户所有的标记
+            NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?);", BANotice, BANoticeID];
+            BOOL success = [db executeUpdate:del, @(bulletModel.uid.integerValue)];
+            if (!success) {
+                NSLog(@"删除失败");
+            } else {
+                //写入这个用户被标记次数并存入表格
+                [tempArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    obj.noticeCount = tempArray.count;
+                    //存入表单
+                    NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BANotice, BANoticeID, BANoticeData];
+                    NSData *noticeData = [NSKeyedArchiver archivedDataWithRootObject:obj];
+                    BOOL success = [db executeUpdate:insert, @(obj.uid.integerValue), noticeData];
+                    if (!success) {
+                        NSLog(@"储存失败");
+                    }
+                }];
+            }
+            
+            [db close];
+        }
+    }];
+}
+
+
+- (void)delNotice:(BABulletModel *)bulletModel{
+    
+    bulletModel.noticeCount = 0;
+
+    [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        BOOL open = [db open];
+        if (open) {
+            
+            //删除
+            NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?);", BANotice, BANoticeID];
+            BOOL success = [db executeUpdate:del, @(bulletModel.uid.integerValue)];
+            if (!success) {
+                NSLog(@"删除失败");
+            } else {
+                [_noticeArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if ([obj.uid isEqualToString:bulletModel.uid]) {
+                        [_noticeArray removeObject:obj];
+                    }
+                }];
             }
             [db close];
         }
@@ -821,7 +954,7 @@ static BAAnalyzerCenter *defaultCenter = nil;
             
             //从本地取出报告
             NSString *filePath = [BAPathDocument stringByAppendingPathComponent:BAReportDatabase];
-            defaultCenter.queue = [FMDatabaseQueue databaseQueueWithPath:filePath];
+            defaultCenter.dataBaseQueue = [FMDatabaseQueue databaseQueueWithPath:filePath];
             [defaultCenter updateReportLocolized];
             defaultCenter.similarity = 0.7f;
             

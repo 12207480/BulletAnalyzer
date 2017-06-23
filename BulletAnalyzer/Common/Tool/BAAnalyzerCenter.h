@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class BAReportModel;
+@class BAReportModel, BABulletModel;
 
 @interface BAAnalyzerCenter : NSObject
 
@@ -26,6 +26,11 @@
  需要继续分析的模型
  */
 @property (nonatomic, strong) BAReportModel *proceedReportModel;
+
+/**
+ 关注对象数组
+ */
+@property (nonatomic, strong) NSMutableArray *noticeArray;
 
 /**
  清理内存计时器
@@ -51,5 +56,20 @@
  结束分析
  */
 - (void)endAnalyzing;
+
+/**
+ 删除报告
+ */
+- (void)delReport:(BAReportModel *)report;
+
+/**
+ 添加关注对象
+ */
+- (void)addNotice:(BABulletModel *)bulletModel;
+
+/**
+ 删除关注对象
+ */
+- (void)delNotice:(BABulletModel *)BABulletModel;
 
 @end

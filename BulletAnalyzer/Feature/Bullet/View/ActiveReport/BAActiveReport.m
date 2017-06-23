@@ -122,7 +122,6 @@ static NSString *const BAActiveCellReusedId = @"BAActiveCellReusedId";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     BAUserModel *userModel = _userBulletCountArray[indexPath.row];
     userModel.activeCellSelect = !userModel.isActiveCellSelect;
-    
     [_activeTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 

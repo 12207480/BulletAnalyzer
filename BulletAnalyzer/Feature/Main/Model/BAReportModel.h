@@ -11,6 +11,11 @@
 @interface BAReportModel : NSObject <NSCoding>
 
 /**
+ 创建时间/同时作为储存的唯一ID
+ */
+@property (nonatomic, assign) NSInteger timeID;
+
+/**
  主播姓名
  */
 @property (nonatomic, copy) NSString *name;
