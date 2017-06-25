@@ -67,10 +67,10 @@
     _bgView = [[UIView alloc] initWithFrame:CGRectMake(2 * BAPadding, 0, BAScreenWidth - 4 * BAPadding, BABulletListCellHeight)];
     _bgView.backgroundColor = BACellColor1;
     _bgView.layer.cornerRadius = BARadius;
-    _bgView.layer.shadowOpacity = 0.5;
-    _bgView.layer.shadowColor = BABlackColor.CGColor;
-    _bgView.layer.shadowOffset = CGSizeMake(0, 0.5);
-    _bgView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_bgView.bounds].CGPath;
+//    _bgView.layer.shadowOpacity = 0.5;
+//    _bgView.layer.shadowColor = BABlackColor.CGColor;
+//    _bgView.layer.shadowOffset = CGSizeMake(0, 0.5);
+//    _bgView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_bgView.bounds].CGPath;
     
     [self.contentView addSubview:_bgView];
     
@@ -107,26 +107,26 @@
     
     [self.contentView addSubview:_contentLabel];
     
-    _noticeBtn = [UIButton buttonWithFrame:CGRectMake(_bgView.x, _bgView.bottom + 6, (_bgView.width - 6) / 2, 30) title:@"关注此人发言" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
+    _noticeBtn = [UIButton buttonWithFrame:CGRectMake(_bgView.x, _bgView.bottom + 6, (_bgView.width - 6) / 2, 30) title:@"标记此用户发言" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
     _noticeBtn.tag = 0;
     _noticeBtn.backgroundColor = BACellColor1;
     _noticeBtn.layer.cornerRadius = BARadius;
-    _noticeBtn.layer.shadowOpacity = 0.5;
-    _noticeBtn.layer.shadowColor = BABlackColor.CGColor;
-    _noticeBtn.layer.shadowOffset = CGSizeMake(0, 0.5);
-    _noticeBtn.layer.shadowPath = [UIBezierPath bezierPathWithRect:_noticeBtn.bounds].CGPath;
+//    _noticeBtn.layer.shadowOpacity = 0.5;
+//    _noticeBtn.layer.shadowColor = BABlackColor.CGColor;
+//    _noticeBtn.layer.shadowOffset = CGSizeMake(0, 0.5);
+//    _noticeBtn.layer.shadowPath = [UIBezierPath bezierPathWithRect:_noticeBtn.bounds].CGPath;
     _noticeBtn.hidden = YES;
     
     [self.contentView addSubview:_noticeBtn];
     
-    _unNoticeBtn = [UIButton buttonWithFrame:CGRectMake(_noticeBtn.right + 6, _bgView.bottom + 6, (_bgView.width - 6) / 2, 30) title:@"取消关注" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
+    _unNoticeBtn = [UIButton buttonWithFrame:CGRectMake(_noticeBtn.right + 6, _bgView.bottom + 6, (_bgView.width - 6) / 2, 30) title:@"取消此用户标记" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
     _unNoticeBtn.tag = 1;
     _unNoticeBtn.backgroundColor = BACellColor1;
     _unNoticeBtn.layer.cornerRadius = BARadius;
-    _unNoticeBtn.layer.shadowOpacity = 0.5;
-    _unNoticeBtn.layer.shadowColor = BABlackColor.CGColor;
-    _unNoticeBtn.layer.shadowOffset = CGSizeMake(0, 0.5);
-    _unNoticeBtn.layer.shadowPath = [UIBezierPath bezierPathWithRect:_noticeBtn.bounds].CGPath;
+//    _unNoticeBtn.layer.shadowOpacity = 0.5;
+//    _unNoticeBtn.layer.shadowColor = BABlackColor.CGColor;
+//    _unNoticeBtn.layer.shadowOffset = CGSizeMake(0, 0.5);
+//    _unNoticeBtn.layer.shadowPath = [UIBezierPath bezierPathWithRect:_noticeBtn.bounds].CGPath;
     _unNoticeBtn.hidden = YES;
     
     [self.contentView addSubview:_unNoticeBtn];

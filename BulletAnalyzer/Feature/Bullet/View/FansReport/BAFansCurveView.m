@@ -83,7 +83,7 @@
     [pointArray enumerateObjectsUsingBlock:^(NSValue *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         CGPoint point = obj.CGPointValue;
-        if (point.y != lastPoint.y) {
+        if (point.y != lastPoint.y || point.y == BAFansReportDrawViewHeight) {
             if (idx == 0) { //第一个点
                 
                 [fillPath addLineToPoint:point];

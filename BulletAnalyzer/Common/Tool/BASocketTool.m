@@ -72,7 +72,7 @@
 - (void)joinGroup{
     
     NSLog(@"发送入组消息");
-    
+    //-9999 海量弹幕
     NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=joingroup/rid@=%@/gid@=-9999/", _roomId]];
     [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
 }

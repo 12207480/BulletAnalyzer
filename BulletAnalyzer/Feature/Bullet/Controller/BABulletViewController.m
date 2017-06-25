@@ -147,7 +147,7 @@
     _scrollView.pagingEnabled = YES;
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.delegate = self;
-    _scrollView.backgroundColor = BADark2BackgroundColor;
+    _scrollView.layer.contents = (id)[UIImage imageNamed:@"backgroundView"].CGImage;
     
     _tipsLabel = [UILabel labelWithFrame:CGRectMake(0, -20, BAScreenWidth, 20) text:@"下拉回到弹幕列表" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     

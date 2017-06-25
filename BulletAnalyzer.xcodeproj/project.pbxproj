@@ -113,6 +113,7 @@
 		38A5A0EF1EE2C6C000CFF645 /* BABasicInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A5A0EE1EE2C6C000CFF645 /* BABasicInfoModel.m */; };
 		38AD54D81EE0366A00D310A5 /* BulletAnalyzerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38AD54D71EE0366A00D310A5 /* BulletAnalyzerTests.m */; };
 		38AD54E31EE0366A00D310A5 /* BulletAnalyzerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38AD54E21EE0366A00D310A5 /* BulletAnalyzerUITests.m */; };
+		38B316731EFDF4A8003C70AA /* BASentenceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38B316721EFDF4A8003C70AA /* BASentenceView.m */; };
 		38B54CDB1EEA94720092C76B /* iosjieba.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 38B54CD81EEA94720092C76B /* iosjieba.bundle */; };
 		38B54CDC1EEA94720092C76B /* Segmentor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 38B54CD91EEA94720092C76B /* Segmentor.mm */; };
 		F21BD41D1EE7F6DE0079312C /* BAReportView.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD41C1EE7F6DE0079312C /* BAReportView.m */; };
@@ -393,6 +394,8 @@
 		38AD54DE1EE0366A00D310A5 /* BulletAnalyzerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BulletAnalyzerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		38AD54E21EE0366A00D310A5 /* BulletAnalyzerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BulletAnalyzerUITests.m; sourceTree = "<group>"; };
 		38AD54E41EE0366A00D310A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		38B316711EFDF4A8003C70AA /* BASentenceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceView.h; sourceTree = "<group>"; };
+		38B316721EFDF4A8003C70AA /* BASentenceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceView.m; sourceTree = "<group>"; };
 		38B54CB91EEA94720092C76B /* DictTrie.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DictTrie.hpp; sourceTree = "<group>"; };
 		38B54CBA1EEA94720092C76B /* FullSegment.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FullSegment.hpp; sourceTree = "<group>"; };
 		38B54CBB1EEA94720092C76B /* HMMSegment.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HMMSegment.hpp; sourceTree = "<group>"; };
@@ -649,6 +652,7 @@
 		388A85DD1EE4108C00A0BC5B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				38B316701EFDF484003C70AA /* SentenceView */,
 				386A7ADE1EF7ED32004AA427 /* FansReport */,
 				3858D77D1EF62F1F00763822 /* WordsReport */,
 				3858D7711EF62EF900763822 /* ActiveReport */,
@@ -1224,6 +1228,15 @@
 			path = BulletAnalyzerUITests;
 			sourceTree = "<group>";
 		};
+		38B316701EFDF484003C70AA /* SentenceView */ = {
+			isa = PBXGroup;
+			children = (
+				38B316711EFDF4A8003C70AA /* BASentenceView.h */,
+				38B316721EFDF4A8003C70AA /* BASentenceView.m */,
+			);
+			path = SentenceView;
+			sourceTree = "<group>";
+		};
 		38B54CB71EEA94720092C76B /* iOSJieba */ = {
 			isa = PBXGroup;
 			children = (
@@ -1625,6 +1638,7 @@
 				F231C7AF1EE509F700EB0F79 /* SDWebImageCompat.m in Sources */,
 				F231C7B71EE509F700EB0F79 /* UIImage+MultiFormat.m in Sources */,
 				3858D7801EF62F1F00763822 /* BAWordsReport.m in Sources */,
+				38B316731EFDF4A8003C70AA /* BASentenceView.m in Sources */,
 				388AFFE51EE045F90031DE53 /* DDFileLogger.m in Sources */,
 				388A863D1EE43EA400A0BC5B /* MASConstraint.m in Sources */,
 				388A85F51EE4163200A0BC5B /* MMDrawerVisualState.m in Sources */,
