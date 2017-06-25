@@ -83,7 +83,7 @@
     [pointArray enumerateObjectsUsingBlock:^(NSValue *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         CGPoint point = obj.CGPointValue;
-        if (point.y != lastPoint.y || point.y == BAFansReportDrawViewHeight) {
+//        if (point.y != lastPoint.y) {
             if (idx == 0) { //第一个点
                 
                 [fillPath addLineToPoint:point];
@@ -103,7 +103,7 @@
                 lastPoint = point;
                 lastIdx = idx;
             }
-        }
+//        }
     }];
     [fillPath addLineToPoint:CGPointMake(_drawView.width, _drawView.height)];
     [fillPath addLineToPoint:CGPointMake(0, _drawView.height)];
@@ -123,7 +123,7 @@
     
     _gradientLayer = [CAGradientLayer layer];
     _gradientLayer.frame = _drawView.bounds;
-    [_gradientLayer setColors:[NSArray arrayWithObjects:(id)[[color colorWithAlphaComponent:0.8] CGColor], (id)[[UIColor clearColor] CGColor], nil]];
+    [_gradientLayer setColors:[NSArray arrayWithObjects:(id)[[color colorWithAlphaComponent:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil]];
     [_gradientLayer setStartPoint:CGPointMake(0.5, 0)];
     [_gradientLayer setEndPoint:CGPointMake(0.5, 1)];
     [_gradientLayer setMask:_shapeLayer];
@@ -134,10 +134,10 @@
 #pragma mark - private
 - (void)setupSubViews{
     
-    self.backgroundColor = BADark1BackgroundColor;
+    self.backgroundColor = BACellColor1;
     
     _leftView = [[UIView alloc] initWithFrame:CGRectMake(BAScreenWidth - 100, 0, 100, self.height)];
-    _leftView.backgroundColor = BADark2BackgroundColor;
+    _leftView.backgroundColor = BACellColor2;
     
     [self addSubview:_leftView];
     

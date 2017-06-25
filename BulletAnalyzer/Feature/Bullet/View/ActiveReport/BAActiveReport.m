@@ -27,8 +27,6 @@ static NSString *const BAActiveCellReusedId = @"BAActiveCellReusedId";
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         
-        self.backgroundColor = BADark2BackgroundColor;
-        
         _cellCount = -1;
         
         [self setupActiveTableView];
@@ -76,15 +74,15 @@ static NSString *const BAActiveCellReusedId = @"BAActiveCellReusedId";
 
 - (void)setupActiveTableView{
     _activeTableView = [[UITableView alloc] initWithFrame:CGRectMake(BAPadding, BAPadding + BABulletActiveCellHeight * 2, BAScreenWidth - 2 * BAPadding, BAScreenHeight - 2 * BAPadding - BABulletActiveCellHeight * 2) style:UITableViewStylePlain];
-    _activeTableView.backgroundColor = BADark1BackgroundColor;
+    _activeTableView.backgroundColor = [UIColor clearColor];
     _activeTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _activeTableView.dataSource = self;
     _activeTableView.delegate = self;
     _activeTableView.scrollEnabled = NO;
-    _activeTableView.layer.shadowOffset = CGSizeMake(2, 2);
-    _activeTableView.layer.shadowOpacity = 0.5;
-    _activeTableView.layer.shadowColor = BABlackColor.CGColor;
-    _activeTableView.layer.masksToBounds = NO;
+//    _activeTableView.layer.shadowOffset = CGSizeMake(2, 2);
+//    _activeTableView.layer.shadowOpacity = 0.5;
+//    _activeTableView.layer.shadowColor = BABlackColor.CGColor;
+//    _activeTableView.layer.masksToBounds = NO;
     
     [_activeTableView registerClass:[BAActiveCell class] forCellReuseIdentifier:BAActiveCellReusedId];
     
@@ -123,6 +121,10 @@ static NSString *const BAActiveCellReusedId = @"BAActiveCellReusedId";
     BAUserModel *userModel = _userBulletCountArray[indexPath.row];
     userModel.activeCellSelect = !userModel.isActiveCellSelect;
     [_activeTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    if (indexPath.row == 7 && userModel.activeCellSelect == YES) {
+        [_activeTableView setContentOffset:CGPointMake(0, 30) animated:YES];
+    }
 }
 
 

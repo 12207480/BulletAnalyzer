@@ -26,7 +26,7 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         
-        self.backgroundColor = BADark2BackgroundColor;
+        self.backgroundColor = BACellColor1;
         
         [self setupBg];
         
@@ -46,9 +46,12 @@
 
 
 #pragma mark - userInteraction
-- (void)labelTapped:(UILabel *)sender{
-    NSLog(@"%zd", sender.tag);
+- (void)labelTapped:(UITapGestureRecognizer *)sender{
+    UILabel *label= (UILabel *)sender.view;
+    
+    NSLog(@"%zd", sender.view.tag);
 }
+
 
 
 #pragma mark - public
@@ -163,10 +166,7 @@
 
 - (void)setupBg{
     _bgView = [[UIView alloc] initWithFrame:CGRectMake(BAPadding, 0, BAScreenWidth - 2 * BAPadding, self.height - BAPadding)];
-    _bgView.backgroundColor = BADark1BackgroundColor;
-    _bgView.layer.shadowOffset = CGSizeMake(2, 2);
-    _bgView.layer.shadowOpacity = 0.5;
-    _bgView.layer.shadowColor = BABlackColor.CGColor;
+    _bgView.backgroundColor = BACellColor1;
     
     [self addSubview:_bgView];
     
@@ -184,9 +184,10 @@
     UILabel *label = [UILabel labelWithFrame:CGRectMake(0, 0, _bgView.width / 10, BAScreenWidth * 0.2) text:@"" color:BAWhiteColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.numberOfLines = 0;
-    [_XValues addObject:label];
+    label.userInteractionEnabled = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelTapped:)];
     [label addGestureRecognizer:tap];
+    [_XValues addObject:label];
     
     [self addSubview:label];
     return label;

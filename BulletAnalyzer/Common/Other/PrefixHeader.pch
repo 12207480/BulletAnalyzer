@@ -60,8 +60,9 @@
 #define BATabBarColor BAColor(61, 64, 105) //底部栏颜色
 #define BASpratorColor BAColor(75, 80, 119) //分隔线颜色
 #define BACellColor1 BAColor(58, 59, 97) //cell第一种背景色
+#define BACellColor2 BAColor(68, 69, 107) //cell第二种背景色
 
-#define BALineColor1 BAColor(253, 81, 217) //粉红
+#define BALineColor1 BAColor(116, 204, 217) //浅蓝色
 #define BALineColor2 BAColor(141, 77, 232) //紫色
 #define BALineColor3 BAColor(244, 162, 86) //红色
 #define BALineColor4 BAColor(249, 52, 52)  //橙色

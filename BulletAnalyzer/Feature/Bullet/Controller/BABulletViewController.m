@@ -27,6 +27,11 @@
 @property (nonatomic, assign) CGFloat repeatDuration;
 
 //分析报告
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UILabel *roomNamelLabel;
+@property (nonatomic, strong) UILabel *countReportTitleLabel;
+@property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, assign) NSInteger page;
 @property (nonatomic, strong) UILabel *tipsLabel;
@@ -70,6 +75,10 @@
     [self setupActiceReport];
     
     [self setupFansReport];
+    
+    
+    
+    [self setupInfo];
     
     self.getSpeed = 0.5;
     
@@ -153,6 +162,34 @@
     
     [_scrollView addSubview:_tipsLabel];
     [self.view addSubview:_scrollView];
+}
+
+
+- (void)setupInfo{
+    _titleLabel = [UILabel labelWithFrame:CGRectMake(0, 0, BAScreenWidth, 100) text:@"分析报告" color:BAWhiteColor font:BACommonFont(30) textAlignment:NSTextAlignmentCenter];
+    
+    [_scrollView addSubview:_titleLabel];
+    
+    _nameLabel = [UILabel labelWithFrame:CGRectMake(2 * BAPadding, _titleLabel.bottom + 2 * BAPadding, BAScreenWidth / 2 - 2 * BAPadding, 30) text:_reportModel.name color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    
+    [_scrollView addSubview:_nameLabel];
+    
+    _roomNamelLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, _nameLabel.width, 30) text:_reportModel.roomName color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    
+    [_scrollView addSubview:_roomNamelLabel];
+    
+    _iconView = [UIImageView imageViewWithFrame:CGRectMake(0, 0, BAScreenWidth / 4, BAScreenWidth / 4) image:nil];
+    _iconView.centerX = BAScreenWidth * 3 / 4;
+    _iconView.centerY = _nameLabel.bottom;
+    [_iconView sd_setImageWithURL:[NSURL URLWithString:_reportModel.avatar] placeholderImage:BAPlaceHolderImg];
+    _iconView.layer.cornerRadius = _iconView.width / 2;
+    _iconView.layer.masksToBounds = YES;
+    
+    [_scrollView addSubview:_iconView];
+    
+    _countReportTitleLabel = [UILabel labelWithFrame:CGRectMake(0, _countReport.y - 30, BAScreenWidth, 20) text:@"弹幕数量" color:BAWhiteColor font:BABlodFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    
+    [_scrollView addSubview:_countReportTitleLabel];
 }
 
 
@@ -319,7 +356,7 @@
 
 
 - (void)setupFansReport{
-    _fansReport = [[BAFansReport alloc] initWithFrame:CGRectMake(0, 4 * BAScreenHeight - BAScreenHeight * 0.75, BAScreenWidth, BAScreenHeight * 0.75)];
+    _fansReport = [[BAFansReport alloc] initWithFrame:CGRectMake(0, 4 * BAScreenHeight - 392, BAScreenWidth, 392)];
     
     [_scrollView addSubview:_fansReport];
 }

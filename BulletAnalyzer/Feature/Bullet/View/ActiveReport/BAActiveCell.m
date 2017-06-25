@@ -27,7 +27,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         
-        self.backgroundColor = BADark1BackgroundColor;
+        self.backgroundColor = BACellColor1;
         
         self.layer.masksToBounds = NO;
         
@@ -58,7 +58,7 @@
     [self.contentView addSubview:_countLabel];
     
     _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(_countLabel.right, BAPadding, BABulletActiveCellHeight - 2 * BAPadding, BABulletActiveCellHeight - 2 * BAPadding)];
-    _iconView.layer.cornerRadius = (BABulletListCellHeight - 2 * BAPadding) / 2;
+    _iconView.layer.cornerRadius = _iconView.width / 2;
     _iconView.layer.masksToBounds = YES;
     
     [self.contentView addSubview:_iconView];
@@ -76,7 +76,7 @@
     
     [self.contentView addSubview:_levelLabel];
     
-    _recordBtn = [UIButton buttonWithFrame:CGRectMake(0, BABulletActiveCellHeight, BAScreenWidth - 2 * BAPadding, 30) title:@"查看TA的发言记录" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:BADark2BackgroundColor] target:self action:@selector(recordBtnClicked)];
+    _recordBtn = [UIButton buttonWithFrame:CGRectMake(0, BABulletActiveCellHeight, BAScreenWidth - 2 * BAPadding, 30) title:@"查看TA的发言记录" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:BACellColor1] target:self action:@selector(recordBtnClicked)];
     _recordBtn.hidden = YES;
     
     [self.contentView addSubview:_recordBtn];
@@ -91,7 +91,7 @@
     _nameLabel.text = _userModel.nn;
     _levelLabel.text = [NSString stringWithFormat:@"%@\nLVL", _userModel.level];
     _recordBtn.hidden = !_userModel.isActiveCellSelect;
-    self.backgroundColor = _userModel.isActiveCellSelect ? BADark2BackgroundColor : BADark1BackgroundColor;
+    self.backgroundColor = _userModel.isActiveCellSelect ? BACellColor1 : [UIColor clearColor];
 }
 
 @end

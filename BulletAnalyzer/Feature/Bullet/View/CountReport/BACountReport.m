@@ -6,6 +6,8 @@
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
+#define VALUE(INDEX) [NSValue valueWithCGPoint:points[INDEX]]
+
 #import "BACountReport.h"
 #import "BAReportModel.h"
 #import "NSDate+Category.h"
@@ -18,6 +20,7 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 @property (nonatomic, strong) CAShapeLayer *bulletBorderLayer;
 @property (nonatomic, strong) CAShapeLayer *bulletLayer;
 @property (nonatomic, strong) CAGradientLayer *bulletGradientLayer;
+@property (nonatomic, strong) UIImageView *merkerView;
 
 @end
 
@@ -27,7 +30,7 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         
-        self.backgroundColor = BADark1BackgroundColor;
+        self.backgroundColor = BACellColor1;
         
         [self setupBg];
     }
@@ -39,6 +42,37 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     [super layoutSubviews];
     
     [self animation];
+}
+
+
+#pragma mark - userInteraction
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    UIScrollView *scrollView = (UIScrollView *)self.superview;
+    scrollView.scrollEnabled = NO;
+    
+    CGPoint point = [[touches anyObject] locationInView:self];
+
+    [self moveToPoint:point];
+    
+}
+
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    CGPoint point = [[touches anyObject] locationInView:self];
+    
+    [self moveToPoint:point];
+}
+
+
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    UIScrollView *scrollView = (UIScrollView *)self.superview;
+    scrollView.scrollEnabled = YES;
+}
+
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    UIScrollView *scrollView = (UIScrollView *)self.superview;
+    scrollView.scrollEnabled = YES;
 }
 
 
@@ -58,38 +92,62 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 
     if (!_bulletLayer.isHidden) return;
     
-    _bulletLayer.hidden = NO;
     _bulletBorderLayer.hidden = NO;
+
+    CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    animation1.fromValue = @(0);
+    animation1.toValue = @(1);
+    animation1.duration = 1.5;
     
-    CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"transform.scale.y"];
-    animation1.fromValue = @(0.0);
-    animation1.toValue = @(1.0);
+    [_bulletBorderLayer addAnimation:animation1 forKey:nil];
     
-    CABasicAnimation *animation2 = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
-    animation2.fromValue = @(self.height);
-    animation2.toValue = @(0.0);
-    
-    CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
-    animationGroup.duration = 1.0;
-    animationGroup.animations = @[animation1, animation2];
-    
-    [_bulletLayer addAnimation:animationGroup forKey:nil];
-    [_bulletBorderLayer addAnimation:animationGroup forKey:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        _bulletLayer.hidden = NO;
+        CABasicAnimation *animation2 = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        animation2.fromValue = @(0);
+        animation2.toValue = @(1);
+        animation2.duration = 0.75;
+        
+        [_bulletLayer addAnimation:animation2 forKey:nil];
+    });
 }
 
 
 - (void)hide{
     _bulletLayer.hidden = YES;
     _bulletBorderLayer.hidden =  YES;
+    _merkerView.hidden = YES;
 }
 
 
 #pragma mark - private
+- (void)moveToPoint:(CGPoint)point{
+    
+    __block NSInteger closeIndex;
+    __block CGFloat minDistance = 999999;
+    [_reportModel.countTimePointArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGPoint objPoint = [obj CGPointValue];
+        CGFloat distance = sqrt((pow(objPoint.x - point.x, 2) + pow(objPoint.y - point.y, 2)));
+        if (minDistance > distance) {
+            minDistance = distance;
+            closeIndex = idx;
+        }
+    }];
+    
+    if (minDistance < 20) {
+        self.merkerView.hidden = NO;
+        CGPoint targetPoint = [_reportModel.countTimePointArray[closeIndex] CGPointValue];
+        targetPoint.y += 1;
+        _merkerView.center = targetPoint;
+    }
+}
+
+
 - (void)setupXYZ{
 
     [_YValues enumerateObjectsUsingBlock:^(UILabel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
 
-        obj.text = [NSString stringWithFormat:@"%zd", _reportModel.maxBulletCount / 6 * (5 - idx)];
+        obj.text = [NSString stringWithFormat:@"%zd", _reportModel.maxBulletCount / 7 * (7 - idx)];
     }];
     
     NSInteger duration = _reportModel.duration ? _reportModel.duration : [[NSDate date] minutesAfterDate:_reportModel.begin];
@@ -168,7 +226,7 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     
     CAGradientLayer *gradientLayer = [CAGradientLayer layer];
     gradientLayer.frame = self.bounds;
-    [gradientLayer setColors:[NSArray arrayWithObjects:(id)[[color colorWithAlphaComponent:0.8] CGColor], (id)[[color colorWithAlphaComponent:0.05] CGColor], nil]];
+    [gradientLayer setColors:[NSArray arrayWithObjects:(id)[[color colorWithAlphaComponent:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil]];
     [gradientLayer setStartPoint:CGPointMake(0.5, 0)];
     [gradientLayer setEndPoint:CGPointMake(0.5, 1)];
     [gradientLayer setMask:shapeLayer];
@@ -200,6 +258,17 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
         UILabel *XValue = [self createXValue];
         XValue.x = self.width / 7 * i;
     }
+}
+
+
+- (UIImageView *)merkerView{
+    if (!_merkerView) {
+        _merkerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"merker"]];
+        _merkerView.hidden = YES;
+        
+        [self addSubview:_merkerView];
+    }
+    return _merkerView;
 }
 
 

@@ -24,8 +24,6 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         
-        self.backgroundColor = BADark3BackgroundColor;
-        
         [self setupSubViews];
     }
     return self;
@@ -81,7 +79,7 @@
     _onlineCurveView.endTimeLabel.text = _reportModel.end ? [formatter stringFromDate:_reportModel.end] : [formatter stringFromDate:[NSDate date]];
     _onlineCurveView.maxValueLabel.text = [NSString stringWithFormat:@"%.1fK", (CGFloat)_reportModel.maxOnlineCount / 1000];
     _onlineCurveView.minValueLabel.text = [NSString stringWithFormat:@"%.1fK", (CGFloat)_reportModel.minOnlineCount / 1000];
-    
+
     [_fansCountCurveView drawLayerWithPointArray:_reportModel.fansTimePointArray color:BALineColor6];
     _fansCountCurveView.countLabel.text = BAStringWithInteger(_reportModel.fansIncrese);
     _fansCountCurveView.typeLabel.text = @"关注增长";
@@ -101,6 +99,8 @@
     UILabel *middleValue = [UILabel labelWithFrame:CGRectMake(_levelCountCurveView.beginTimeLabel.x + BAFansReportDrawViewWidth / 2 - 25, _levelCountCurveView.beginTimeLabel.y, 50, BACommonTextFontSize) text:@"35" color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [_levelCountCurveView addSubview:middleValue];
+    
+    [self hide];
 }
 
 
