@@ -6,8 +6,6 @@
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
-#define VALUE(INDEX) [NSValue valueWithCGPoint:points[INDEX]]
-
 #import "BACountReport.h"
 #import "BAReportModel.h"
 #import "NSDate+Category.h"
@@ -20,7 +18,7 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 @property (nonatomic, strong) CAShapeLayer *bulletBorderLayer;
 @property (nonatomic, strong) CAShapeLayer *bulletLayer;
 @property (nonatomic, strong) CAGradientLayer *bulletGradientLayer;
-@property (nonatomic, strong) UIImageView *merkerView;
+//@property (nonatomic, strong) UIImageView *merkerView;
 
 @end
 
@@ -46,34 +44,34 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 
 
 #pragma mark - userInteraction
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    UIScrollView *scrollView = (UIScrollView *)self.superview;
-    scrollView.scrollEnabled = NO;
-    
-    CGPoint point = [[touches anyObject] locationInView:self];
-
-    [self moveToPoint:point];
-    
-}
-
-
-- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    CGPoint point = [[touches anyObject] locationInView:self];
-    
-    [self moveToPoint:point];
-}
-
-
-- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    UIScrollView *scrollView = (UIScrollView *)self.superview;
-    scrollView.scrollEnabled = YES;
-}
-
-
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    UIScrollView *scrollView = (UIScrollView *)self.superview;
-    scrollView.scrollEnabled = YES;
-}
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    UIScrollView *scrollView = (UIScrollView *)self.superview;
+//    scrollView.scrollEnabled = NO;
+//    
+//    CGPoint point = [[touches anyObject] locationInView:self];
+//
+//    [self moveToPoint:point];
+//    
+//}
+//
+//
+//- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    CGPoint point = [[touches anyObject] locationInView:self];
+//    
+//    [self moveToPoint:point];
+//}
+//
+//
+//- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    UIScrollView *scrollView = (UIScrollView *)self.superview;
+//    scrollView.scrollEnabled = YES;
+//}
+//
+//
+//- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    UIScrollView *scrollView = (UIScrollView *)self.superview;
+//    scrollView.scrollEnabled = YES;
+//}
 
 
 #pragma mark - public
@@ -116,31 +114,31 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 - (void)hide{
     _bulletLayer.hidden = YES;
     _bulletBorderLayer.hidden =  YES;
-    _merkerView.hidden = YES;
+    //_merkerView.hidden = YES;
 }
 
 
 #pragma mark - private
-- (void)moveToPoint:(CGPoint)point{
-    
-    __block NSInteger closeIndex;
-    __block CGFloat minDistance = 999999;
-    [_reportModel.countTimePointArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        CGPoint objPoint = [obj CGPointValue];
-        CGFloat distance = sqrt((pow(objPoint.x - point.x, 2) + pow(objPoint.y - point.y, 2)));
-        if (minDistance > distance) {
-            minDistance = distance;
-            closeIndex = idx;
-        }
-    }];
-    
-    if (minDistance < 20) {
-        self.merkerView.hidden = NO;
-        CGPoint targetPoint = [_reportModel.countTimePointArray[closeIndex] CGPointValue];
-        targetPoint.y += 1;
-        _merkerView.center = targetPoint;
-    }
-}
+//- (void)moveToPoint:(CGPoint)point{
+//    
+//    __block NSInteger closeIndex;
+//    __block CGFloat minDistance = 999999;
+//    [_reportModel.countTimePointArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        CGPoint objPoint = [obj CGPointValue];
+//        CGFloat distance = sqrt((pow(objPoint.x - point.x, 2) + pow(objPoint.y - point.y, 2)));
+//        if (minDistance > distance) {
+//            minDistance = distance;
+//            closeIndex = idx;
+//        }
+//    }];
+//    
+//    if (minDistance < 20) {
+//        self.merkerView.hidden = NO;
+//        CGPoint targetPoint = [_reportModel.countTimePointArray[closeIndex] CGPointValue];
+//        targetPoint.y += 1;
+//        _merkerView.center = targetPoint;
+//    }
+//}
 
 
 - (void)setupXYZ{
@@ -261,15 +259,15 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 }
 
 
-- (UIImageView *)merkerView{
-    if (!_merkerView) {
-        _merkerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"merker"]];
-        _merkerView.hidden = YES;
-        
-        [self addSubview:_merkerView];
-    }
-    return _merkerView;
-}
+//- (UIImageView *)merkerView{
+//    if (!_merkerView) {
+//        _merkerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"merker"]];
+//        _merkerView.hidden = YES;
+//        
+//        [self addSubview:_merkerView];
+//    }
+//    return _merkerView;
+//}
 
 
 - (UIView *)createLine{

@@ -1459,7 +1459,7 @@
 				TargetAttributes = {
 					38AD54B91EE0366900D310A5 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = ADESGAWMRV;
+						DevelopmentTeam = 724LG2HP95;
 						ProvisioningStyle = Automatic;
 					};
 					38AD54D21EE0366A00D310A5 = {
@@ -1819,7 +1819,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = ADESGAWMRV;
+				DEVELOPMENT_TEAM = 724LG2HP95;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BulletAnalyzer/Resource",
@@ -1841,7 +1841,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = ADESGAWMRV;
+				DEVELOPMENT_TEAM = 724LG2HP95;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BulletAnalyzer/Resource",

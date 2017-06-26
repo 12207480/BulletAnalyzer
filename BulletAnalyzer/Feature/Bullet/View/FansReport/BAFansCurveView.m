@@ -79,11 +79,12 @@
     
     __block CGPoint lastPoint;
     __block NSUInteger  lastIdx;
+    __block CGPoint secondlastPoint;
     [fillPath moveToPoint:CGPointMake(0, _drawView.height)];
     [pointArray enumerateObjectsUsingBlock:^(NSValue *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         CGPoint point = obj.CGPointValue;
-//        if (point.y != lastPoint.y) {
+        //if (point.y != lastPoint.y || (point.y == lastPoint.y && point.y == secondlastPoint.y)) {
             if (idx == 0) { //第一个点
                 
                 [fillPath addLineToPoint:point];
@@ -100,10 +101,11 @@
                 
                 [fillPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)]; //三次曲线
                 [borderPath addCurveToPoint:point controlPoint1:CGPointMake((lastPoint.x + point.x) / 2, lastPoint.y) controlPoint2:CGPointMake((lastPoint.x + point.x) / 2, point.y)];
+                secondlastPoint = lastPoint;
                 lastPoint = point;
                 lastIdx = idx;
             }
-//        }
+        //}
     }];
     [fillPath addLineToPoint:CGPointMake(_drawView.width, _drawView.height)];
     [fillPath addLineToPoint:CGPointMake(0, _drawView.height)];
