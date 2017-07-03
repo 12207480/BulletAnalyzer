@@ -591,6 +591,12 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
         
         CGFloat percent = A / (sqrt(B) * sqrt(C));
         
+        ////测试
+        //CGFloat percent2 = [self similarPercentWithStringA:bulletModel.txt andStringB:sentence.text];
+        //if (percent > 0.7 || percent2 > 0.7) {
+        //    NSLog(@"\n*******************\n%@\n%@\n近似度余弦法:%f\n近似度距离法:%f\n*******************", bulletModel.txt, sentence.text, percent, percent2);
+        //}
+        
         if (percent > self.similarity) { //7成相似 则合并
             *stop = YES;
             similar = YES;
@@ -602,9 +608,9 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
         newSentence.container = _sentenceArray;
         [_sentenceArray addObject:newSentence];
     }
-//    NSArray *countTotal = [_sentenceArray valueForKeyPath:@"@unionOfObjects.count"];
-//    NSNumber *sumCount = [countTotal valueForKeyPath:@"@sum.integerValue"];
-//    NSLog(@"_bulletsArray:%zd--_sentenceArray:%zd--_sentence:%@", _bulletsArray.count, _sentenceArray.count, sumCount);
+    //NSArray *countTotal = [_sentenceArray valueForKeyPath:@"@unionOfObjects.count"];
+    //NSNumber *sumCount = [countTotal valueForKeyPath:@"@sum.integerValue"];
+    //NSLog(@"_bulletsArray:%zd--_sentenceArray:%zd--_sentence:%@", _bulletsArray.count, _sentenceArray.count, sumCount);
 }
 
 
@@ -690,40 +696,46 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
 }
 
 
-////编辑距离分析法
-//- (CGFloat)similarPercentWithStringA:(NSString *)stringA andStringB:(NSString *)stringB{
-//    NSInteger n = stringA.length;
-//    NSInteger m = stringB.length;
-//    if (m == 0 || n == 0) return 0;
-//    
-//    //Construct a matrix, need C99 support
-//    NSInteger matrix[n + 1][m + 1];
-//    memset(&matrix[0], 0, m + 1);
-//    for(NSInteger i=1; i<=n; i++) {
-//        memset(&matrix[i], 0, m + 1);
-//        matrix[i][0] = i;
-//    }
-//    for(NSInteger i = 1; i <= m; i++) {
-//        matrix[0][i] = i;
-//    }
-//    for(NSInteger i = 1; i <= n; i++) {
-//        unichar si = [stringA characterAtIndex:i - 1];
-//        for(NSInteger j = 1; j <= m; j++) {
-//            unichar dj = [stringB characterAtIndex:j-1];
-//            NSInteger cost;
-//            if(si == dj){
-//                cost = 0;
-//            } else {
-//                cost = 1;
-//            }
-//            const NSInteger above = matrix[i - 1][j] + 1;
-//            const NSInteger left = matrix[i][j - 1] + 1;
-//            const NSInteger diag = matrix[i - 1][j - 1] + cost;
-//            matrix[i][j] = MIN(above, MIN(left, diag));
-//        }
-//    }
-//    return 100.0 - 100.0 * matrix[n][m] / stringA.length;
-//}
+//编辑距离分析法
+- (CGFloat)similarPercentWithStringA:(NSString *)stringA andStringB:(NSString *)stringB{
+    NSInteger n = stringA.length;
+    NSInteger m = stringB.length;
+    if (m == 0 || n == 0) return 0;
+    
+    //Construct a matrix, need C99 support
+    NSInteger matrix[n + 1][m + 1];
+    memset(&matrix[0], 0, m + 1);
+    for(NSInteger i=1; i<=n; i++) {
+        memset(&matrix[i], 0, m + 1);
+        matrix[i][0] = i;
+    }
+    for(NSInteger i = 1; i <= m; i++) {
+        matrix[0][i] = i;
+    }
+    for(NSInteger i = 1; i <= n; i++) {
+        unichar si = [stringA characterAtIndex:i - 1];
+        for(NSInteger j = 1; j <= m; j++) {
+            unichar dj = [stringB characterAtIndex:j-1];
+            NSInteger cost;
+            if(si == dj){
+                cost = 0;
+            } else {
+                cost = 1;
+            }
+            const NSInteger above = matrix[i - 1][j] + 1;
+            const NSInteger left = matrix[i][j - 1] + 1;
+            const NSInteger diag = matrix[i - 1][j - 1] + cost;
+            matrix[i][j] = MIN(above, MIN(left, diag));
+        }
+    }
+    
+    CGFloat percent = 1.0 - (CGFloat)matrix[n][m] / stringA.length;
+    if (percent > 1) {
+        percent = 0;
+    }
+    
+    return MAX(percent, 0);
+}
 
 
 - (dispatch_queue_t)analyzingQueue{
