@@ -15,11 +15,14 @@
 #import "BARoomModel.h"
 #import "BABulletModel.h"
 #import "BAReportModel.h"
+#import "Lottie.h"
 
 @interface BAMainViewController ()
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) BAReportView *reportView;
+@property (nonatomic, strong) UIView *launchMask;
+@property (nonatomic, strong) LOTAnimationView *launchAnimation;
 
 @end
 
@@ -36,6 +39,8 @@
     [self setupNavigation];
     
     [self addNotificationObserver];
+    
+    [self setupLaunchMask];
 }
 
 
@@ -46,6 +51,27 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     _reportView.reportModelArray = [BAAnalyzerCenter defaultCenter].reportModelArray;
+}
+
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    if (_launchMask && _launchAnimation) {
+        [_launchAnimation playWithCompletion:^(BOOL animationFinished) {
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:1 animations:^{
+                    _launchMask.alpha = 0;
+                } completion:^(BOOL finished) {
+                    [_launchAnimation removeFromSuperview];
+                    _launchAnimation = nil;
+                    [_launchMask removeFromSuperview];
+                    _launchMask = nil;
+                }];
+            });
+        }];
+    }
 }
 
 
@@ -101,6 +127,22 @@
 
 
 #pragma mark - private
+- (void)setupLaunchMask{
+    _launchMask = [[UIView alloc] initWithFrame:self.view.bounds];
+    _launchMask.backgroundColor = BAWhiteColor;
+    
+    [self.view addSubview:_launchMask];
+    
+    _launchAnimation = [LOTAnimationView animationNamed:@"empty_status"];
+    _launchAnimation.frame = CGRectMake(0, 0, BAScreenWidth, 300);
+    _launchAnimation.center = self.view.center;
+    _launchAnimation.contentMode = UIViewContentModeScaleAspectFit;
+    //_launchAnimation.loopAnimation = YES;
+    
+    [_launchMask addSubview:_launchAnimation];
+}
+
+
 - (void)setupTitleView{
     _titleLabel = [UILabel labelWithFrame:CGRectMake(0, 60, BAScreenWidth, BASuperLargeTextFontSize) text:@"ANALYZER" color:[UIColor whiteColor] font:BABlodFont(BASuperLargeTextFontSize) textAlignment:NSTextAlignmentCenter];
     
