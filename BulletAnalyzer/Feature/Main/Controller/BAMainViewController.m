@@ -133,7 +133,7 @@
     
     [self.view addSubview:_launchMask];
     
-    _launchAnimation = [LOTAnimationView animationNamed:@"empty_status"];
+    _launchAnimation = [LOTAnimationView animationNamed:@"servishero_loading"];
     _launchAnimation.frame = CGRectMake(0, 0, BAScreenWidth, 300);
     _launchAnimation.center = self.view.center;
     _launchAnimation.contentMode = UIViewContentModeScaleAspectFit;
