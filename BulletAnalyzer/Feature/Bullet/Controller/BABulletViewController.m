@@ -17,6 +17,7 @@
 #import "BAFansReport.h"
 #import "BAReportModel.h"
 #import "BAAnalyzerCenter.h"
+#import "BASocketTool.h"
 
 @interface BABulletViewController () <UIScrollViewDelegate>
 //弹幕列表
@@ -232,6 +233,8 @@
             } completion:nil];
     
             [[BAAnalyzerCenter defaultCenter] endAnalyzing];
+            [[BASocketTool defaultSocket] cutOff];
+            
             selfWeak.tipsLabel.hidden = YES;
         }];
         UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
