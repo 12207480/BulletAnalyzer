@@ -86,14 +86,16 @@
     [_heartbeatTimer invalidate];
     _heartbeatTimer = nil;
     
-    _heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval:40 repeats:YES block:^(NSTimer * _Nonnull timer) {
-        
-        NSLog(@"发送心跳包");
-        
-        NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=keeplive/tick@=%@/", [self timeString]]];
-        [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
-    }];
+    _heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval:40 target:self selector:@selector(heartBeat) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_heartbeatTimer forMode:NSRunLoopCommonModes];
+    
     [_heartbeatTimer fire];
+}
+
+
+- (void)heartBeat{
+    NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=keeplive/tick@=%@/", [self timeString]]];
+    [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
 }
 
 

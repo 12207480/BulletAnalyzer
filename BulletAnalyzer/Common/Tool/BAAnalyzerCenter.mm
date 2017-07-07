@@ -206,11 +206,7 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
         _repeatTime = 1.f; //默认5秒释放一次弹幕
     }
 
-    _cleanTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatTime repeats:YES block:^(NSTimer * _Nonnull timer) {
-        [self cleanMemory];
-        _timeRepeatCount += 1;
-    }];
-    
+    _cleanTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatTime target:self selector:@selector(cleanMemory) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_cleanTimer forMode:NSRunLoopCommonModes];
 }
 
@@ -404,6 +400,7 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
 
 - (void)cleanMemory{
     
+    _timeRepeatCount += 1;
     dispatch_sync(self.analyzingQueue, ^{
         
         //根据用户发言的次数排序

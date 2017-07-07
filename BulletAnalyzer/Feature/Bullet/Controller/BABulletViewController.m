@@ -100,6 +100,8 @@
 
 #pragma mark - animation
 - (void)smaller{
+    [_hideTimer invalidate];
+    _hideTimer = nil;
     _bulletSetting.hidden = YES;
     _bulletListView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -140,13 +142,7 @@
     _hideTimer = nil;
     
     _repeatDuration = 5.f;
-    _hideTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatDuration repeats:NO block:^(NSTimer * _Nonnull timer) {
-        
-        [self smaller];
-        [_hideTimer invalidate];
-        _hideTimer = nil;
-    }];
-    
+    _hideTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatDuration target:self selector:@selector(smaller) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_hideTimer forMode:NSRunLoopCommonModes];
 }
 
@@ -278,23 +274,26 @@
     [_timer invalidate];
     _timer = nil;
     
-    _timer = [NSTimer scheduledTimerWithTimeInterval:_getDuration repeats:YES block:^(NSTimer * _Nonnull timer) {
-        
-        if (!self.title.length) {
-            self.title = _reportModel.name;
-            self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"star" highlightedImg:nil target:self action:@selector(roomCollect)];
-            [self larger];
-        }
+    _timer = [NSTimer scheduledTimerWithTimeInterval:_getDuration target:self selector:@selector(getTimeUp) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
 
-        NSArray *subArray;
-        if (_reportModel.bulletsArray.count > _getCount) {
-            subArray = [_reportModel.bulletsArray subarrayWithRange:NSMakeRange(_reportModel.bulletsArray.count - _getCount, _getCount)];
-        } else {
-            subArray = _reportModel.bulletsArray;
-        }
-        [_bulletListView addBullets:subArray];
-    }];
-    [_timer fire];
+
+- (void)getTimeUp{
+    
+    if (!self.title.length) {
+        self.title = _reportModel.name;
+        self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"star" highlightedImg:nil target:self action:@selector(roomCollect)];
+        [self larger];
+    }
+    
+    NSArray *subArray;
+    if (_reportModel.bulletsArray.count > _getCount) {
+        subArray = [_reportModel.bulletsArray subarrayWithRange:NSMakeRange(_reportModel.bulletsArray.count - _getCount, _getCount)];
+    } else {
+        subArray = _reportModel.bulletsArray;
+    }
+    [_bulletListView addBullets:subArray];
 }
 
 
