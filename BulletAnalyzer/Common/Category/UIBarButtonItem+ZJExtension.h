@@ -23,7 +23,7 @@
  *  纯图片UIBarButtonItem快速创建
  *
  *  @param imgName    普通状态图片名
- *  @param selImgName 高亮状态图片名
+ *  @param highImgName 高亮状态图片名
  *  @param target     目标
  *  @param sel        监听点击后的方法
  *

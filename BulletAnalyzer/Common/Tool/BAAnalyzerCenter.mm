@@ -275,7 +275,7 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
 
 - (void)giftCaculate:(NSArray *)giftModelArray{
     
-    dispatch_sync(self.analyzingQueue, ^{
+    dispatch_async(self.analyzingQueue, ^{
         [giftModelArray enumerateObjectsUsingBlock:^(BAGiftModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
             
             switch (obj.giftType) {
@@ -400,9 +400,11 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
 
 - (void)cleanMemory{
     
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
     _timeRepeatCount += 1;
-    dispatch_sync(self.analyzingQueue, ^{
-        
+    dispatch_async(self.analyzingQueue, ^{
+       
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         //根据用户发言的次数排序
         NSInteger params = 5;
         if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //5秒处理一次用户/用户等级
@@ -477,13 +479,15 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
             
             _bulletsCount = 0;
         }
+        
+        dispatch_semaphore_signal(semaphore);
     });
 }
 
 
 - (void)caculate:(NSArray *)bulletsArray{
     
-    dispatch_sync(self.analyzingQueue, ^{
+    dispatch_async(self.analyzingQueue, ^{
         [bulletsArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop1) {
             
             if (!_analyzingReportModel.roomId.length) {

@@ -678,7 +678,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3858D7711EF62EF900763822 /* ActiveReport */ = {
+		3858D7711EF62EF900763822 /* ActiveReport(活跃度报告) */ = {
 			isa = PBXGroup;
 			children = (
 				3858D77A1EF62F0300763822 /* BAActiveReport.h */,
@@ -688,19 +688,21 @@
 				3858D7871EF673BD00763822 /* BAAcitveSlider.h */,
 				3858D7881EF673BD00763822 /* BAAcitveSlider.m */,
 			);
+			name = "ActiveReport(活跃度报告)";
 			path = ActiveReport;
 			sourceTree = "<group>";
 		};
-		3858D77D1EF62F1F00763822 /* WordsReport */ = {
+		3858D77D1EF62F1F00763822 /* WordsReport(词频报告) */ = {
 			isa = PBXGroup;
 			children = (
 				3858D77E1EF62F1F00763822 /* BAWordsReport.h */,
 				3858D77F1EF62F1F00763822 /* BAWordsReport.m */,
 			);
+			name = "WordsReport(词频报告)";
 			path = WordsReport;
 			sourceTree = "<group>";
 		};
-		386A7ADE1EF7ED32004AA427 /* FansReport */ = {
+		386A7ADE1EF7ED32004AA427 /* FansReport(粉丝报告) */ = {
 			isa = PBXGroup;
 			children = (
 				386A7ADF1EF7ED58004AA427 /* BAFansReport.h */,
@@ -708,6 +710,7 @@
 				386A7AE21EF7F16A004AA427 /* BAFansCurveView.h */,
 				386A7AE31EF7F16A004AA427 /* BAFansCurveView.m */,
 			);
+			name = "FansReport(粉丝报告)";
 			path = FansReport;
 			sourceTree = "<group>";
 		};
@@ -787,15 +790,15 @@
 		388A85DD1EE4108C00A0BC5B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				38B316701EFDF484003C70AA /* SentenceView */,
-				386A7ADE1EF7ED32004AA427 /* FansReport */,
-				3858D77D1EF62F1F00763822 /* WordsReport */,
-				3858D7711EF62EF900763822 /* ActiveReport */,
-				F2382E011EF375DD00BE5446 /* CountReport */,
-				F21BD44C1EEFC7AB0079312C /* BulletController */,
-				F21BD4451EEF7AFA0079312C /* ScrollIndicator */,
+				38B316701EFDF484003C70AA /* SentenceView(语义列表) */,
+				386A7ADE1EF7ED32004AA427 /* FansReport(粉丝报告) */,
+				3858D77D1EF62F1F00763822 /* WordsReport(词频报告) */,
+				3858D7711EF62EF900763822 /* ActiveReport(活跃度报告) */,
+				F2382E011EF375DD00BE5446 /* CountReport(弹幕数报告) */,
+				F21BD44C1EEFC7AB0079312C /* BulletController(弹幕控制) */,
+				F21BD4451EEF7AFA0079312C /* ScrollIndicator(页数指示器) */,
 				388A85DE1EE4108C00A0BC5B /* BulletCycle */,
-				388A85E11EE4108C00A0BC5B /* BulletList */,
+				388A85E11EE4108C00A0BC5B /* BulletList(弹幕列表) */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -809,7 +812,7 @@
 			path = BulletCycle;
 			sourceTree = "<group>";
 		};
-		388A85E11EE4108C00A0BC5B /* BulletList */ = {
+		388A85E11EE4108C00A0BC5B /* BulletList(弹幕列表) */ = {
 			isa = PBXGroup;
 			children = (
 				388A85E21EE4108C00A0BC5B /* BABulletListView.h */,
@@ -817,6 +820,7 @@
 				F21BD4491EEF7D150079312C /* BABulletListCell.h */,
 				F21BD44A1EEF7D150079312C /* BABulletListCell.m */,
 			);
+			name = "BulletList(弹幕列表)";
 			path = BulletList;
 			sourceTree = "<group>";
 		};
@@ -1365,12 +1369,13 @@
 			path = BulletAnalyzerUITests;
 			sourceTree = "<group>";
 		};
-		38B316701EFDF484003C70AA /* SentenceView */ = {
+		38B316701EFDF484003C70AA /* SentenceView(语义列表) */ = {
 			isa = PBXGroup;
 			children = (
 				38B316711EFDF4A8003C70AA /* BASentenceView.h */,
 				38B316721EFDF4A8003C70AA /* BASentenceView.m */,
 			);
+			name = "SentenceView(语义列表)";
 			path = SentenceView;
 			sourceTree = "<group>";
 		};
@@ -1449,16 +1454,17 @@
 			path = FMDB;
 			sourceTree = "<group>";
 		};
-		F21BD4451EEF7AFA0079312C /* ScrollIndicator */ = {
+		F21BD4451EEF7AFA0079312C /* ScrollIndicator(页数指示器) */ = {
 			isa = PBXGroup;
 			children = (
 				F21BD4461EEF7B080079312C /* BAScrollIndicator.h */,
 				F21BD4471EEF7B080079312C /* BAScrollIndicator.m */,
 			);
+			name = "ScrollIndicator(页数指示器)";
 			path = ScrollIndicator;
 			sourceTree = "<group>";
 		};
-		F21BD44C1EEFC7AB0079312C /* BulletController */ = {
+		F21BD44C1EEFC7AB0079312C /* BulletController(弹幕控制) */ = {
 			isa = PBXGroup;
 			children = (
 				F2382DF71EF2756E00BE5446 /* BABulletMenu.h */,
@@ -1468,6 +1474,7 @@
 				3894FDE31EF2BD180013A4E0 /* BASlider.h */,
 				3894FDE41EF2BD180013A4E0 /* BASlider.m */,
 			);
+			name = "BulletController(弹幕控制)";
 			path = BulletController;
 			sourceTree = "<group>";
 		};
@@ -1706,12 +1713,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F2382E011EF375DD00BE5446 /* CountReport */ = {
+		F2382E011EF375DD00BE5446 /* CountReport(弹幕数报告) */ = {
 			isa = PBXGroup;
 			children = (
 				F2382E0A1EF3870500BE5446 /* BACountReport.h */,
 				F2382E0B1EF3870500BE5446 /* BACountReport.m */,
 			);
+			name = "CountReport(弹幕数报告)";
 			path = CountReport;
 			sourceTree = "<group>";
 		};
