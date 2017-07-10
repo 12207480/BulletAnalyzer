@@ -21,7 +21,7 @@
     CGSize btnSize = [title sizeWithAttributes:@{NSFontAttributeName : textBtn.titleLabel.font}];
     textBtn.bounds = CGRectMake(0, 0, btnSize.width, btnSize.height);
     
-    [textBtn addTarget:target action:sel forControlEvents:UIControlEventTouchDown];
+    [textBtn addTarget:target action:sel forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:textBtn];
     return btnItem;
@@ -37,9 +37,10 @@
     imgBtn.frame = CGRectMake(0, 0, img.size.width, img.size.height);
     
     [imgBtn setImage:img forState:UIControlStateNormal];
-    [imgBtn setImage:selImg forState:UIControlStateHighlighted];
+    [imgBtn setImage:img forState:UIControlStateHighlighted];
+    [imgBtn setImage:selImg forState:UIControlStateSelected];
     
-    [imgBtn addTarget:target action:sel forControlEvents:UIControlEventTouchDown];
+    [imgBtn addTarget:target action:sel forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:imgBtn];
     return btnItem;

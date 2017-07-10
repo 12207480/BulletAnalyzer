@@ -393,6 +393,7 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
             [_bulletsArray addObject:obj];
             //记录新增弹幕数量
             _bulletsCount += 1;
+            _analyzingReportModel.totalBulletCount += 1;
         }
     }];
 }
@@ -487,9 +488,11 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
 
 - (void)caculate:(NSArray *)bulletsArray{
     
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(2);
     dispatch_async(self.analyzingQueue, ^{
         [bulletsArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop1) {
             
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
             if (!_analyzingReportModel.roomId.length) {
                 _analyzingReportModel.roomId = bulletModel.rid;
                 [self getRoomInfo];
@@ -500,6 +503,8 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
             
             //分析发送人
             [self analyzingUser:bulletModel];
+            
+            dispatch_semaphore_signal(semaphore);
         }];
     });
 }
@@ -698,45 +703,45 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
 
 
 //编辑距离分析法
-- (CGFloat)similarPercentWithStringA:(NSString *)stringA andStringB:(NSString *)stringB{
-    NSInteger n = stringA.length;
-    NSInteger m = stringB.length;
-    if (m == 0 || n == 0) return 0;
-    
-    //Construct a matrix, need C99 support
-    NSInteger matrix[n + 1][m + 1];
-    memset(&matrix[0], 0, m + 1);
-    for(NSInteger i=1; i<=n; i++) {
-        memset(&matrix[i], 0, m + 1);
-        matrix[i][0] = i;
-    }
-    for(NSInteger i = 1; i <= m; i++) {
-        matrix[0][i] = i;
-    }
-    for(NSInteger i = 1; i <= n; i++) {
-        unichar si = [stringA characterAtIndex:i - 1];
-        for(NSInteger j = 1; j <= m; j++) {
-            unichar dj = [stringB characterAtIndex:j-1];
-            NSInteger cost;
-            if(si == dj){
-                cost = 0;
-            } else {
-                cost = 1;
-            }
-            const NSInteger above = matrix[i - 1][j] + 1;
-            const NSInteger left = matrix[i][j - 1] + 1;
-            const NSInteger diag = matrix[i - 1][j - 1] + cost;
-            matrix[i][j] = MIN(above, MIN(left, diag));
-        }
-    }
-    
-    CGFloat percent = 1.0 - (CGFloat)matrix[n][m] / stringA.length;
-    if (percent > 1) {
-        percent = 0;
-    }
-    
-    return MAX(percent, 0);
-}
+//- (CGFloat)similarPercentWithStringA:(NSString *)stringA andStringB:(NSString *)stringB{
+//    NSInteger n = stringA.length;
+//    NSInteger m = stringB.length;
+//    if (m == 0 || n == 0) return 0;
+//    
+//    //Construct a matrix, need C99 support
+//    NSInteger matrix[n + 1][m + 1];
+//    memset(&matrix[0], 0, m + 1);
+//    for(NSInteger i=1; i<=n; i++) {
+//        memset(&matrix[i], 0, m + 1);
+//        matrix[i][0] = i;
+//    }
+//    for(NSInteger i = 1; i <= m; i++) {
+//        matrix[0][i] = i;
+//    }
+//    for(NSInteger i = 1; i <= n; i++) {
+//        unichar si = [stringA characterAtIndex:i - 1];
+//        for(NSInteger j = 1; j <= m; j++) {
+//            unichar dj = [stringB characterAtIndex:j-1];
+//            NSInteger cost;
+//            if(si == dj){
+//                cost = 0;
+//            } else {
+//                cost = 1;
+//            }
+//            const NSInteger above = matrix[i - 1][j] + 1;
+//            const NSInteger left = matrix[i][j - 1] + 1;
+//            const NSInteger diag = matrix[i - 1][j - 1] + cost;
+//            matrix[i][j] = MIN(above, MIN(left, diag));
+//        }
+//    }
+//    
+//    CGFloat percent = 1.0 - (CGFloat)matrix[n][m] / stringA.length;
+//    if (percent > 1) {
+//        percent = 0;
+//    }
+//    
+//    return MAX(percent, 0);
+//}
 
 
 - (dispatch_queue_t)analyzingQueue{
@@ -974,10 +979,6 @@ static BAAnalyzerCenter *defaultCenter = nil;
             NSString *dictPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"iosjieba.bundle/dict/jieba.dict.small.utf8"];
             NSString *hmmPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"iosjieba.bundle/dict/hmm_model.utf8"];
             NSString *userDictPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"iosjieba.bundle/dict/user.dict.utf8"];
-            
-            NSLog(@"%@",dictPath);
-            NSLog(@"%@",hmmPath);
-            NSLog(@"%@",hmmPath);
             
             const char *cDictPath = [dictPath UTF8String];
             const char *cHmmPath = [hmmPath UTF8String];

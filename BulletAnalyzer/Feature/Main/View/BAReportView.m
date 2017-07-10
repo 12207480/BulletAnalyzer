@@ -32,6 +32,8 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
         [self setupCollectionView];
         
         [self setupIndicator];
+        
+        [self addNotificationObserver];
     }
     return self;
 }
@@ -49,10 +51,18 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
         [_collectionView reloadData];
         [_collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:500 * _reportModelArray.count inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionCenteredHorizontally];
         self.currentIndex = 500 * _reportModelArray.count - 1;
-        _indicatorLabel.hidden = NO;
-    } else {
-        _indicatorLabel.hidden = YES;
+        _indicatorLabel.hidden = _reportModelArray.count == 1;
     }
+}
+
+
+#pragma mark - userInteraction
+- (void)reportDelBtnClicked:(NSNotification *)sender{
+    BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellReportDelBtnClicked];
+    
+    [_reportModelArray removeObject:reportModel];
+    [_reportModelArray removeLastObject];
+    self.reportModelArray = _reportModelArray;
 }
 
 
@@ -77,7 +87,7 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
 
 
 - (void)setupIndicator{
-    _indicatorLabel = [UILabel labelWithFrame:CGRectMake(0, _collectionView.bottom + 4 * BAPadding, BAScreenWidth, BASmallTextFontSize) text:@"" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _indicatorLabel = [UILabel labelWithFrame:CGRectMake(0, _collectionView.bottom + 4 * BAPadding, BAScreenWidth, BASmallTextFontSize) text:@"" color:BAWhiteColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [self addSubview:_indicatorLabel];
 }
@@ -118,6 +128,11 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
     
     NSInteger realIndex = (_currentIndex + 1) % _reportModelArray.count;
     _indicatorLabel.text = [NSString stringWithFormat:@"%zd of %zd", realIndex + 1, _reportModelArray.count];
+}
+
+
+- (void)addNotificationObserver{
+    [BANotificationCenter addObserver:self selector:@selector(reportDelBtnClicked:) name:BANotificationMainCellReportDelBtnClicked object:nil];
 }
 
 

@@ -19,7 +19,9 @@
 
 @interface BAMainViewController ()
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) UILabel *weekLabel;
+@property (nonatomic, strong) UILabel *dayLabel;
+@property (nonatomic, strong) UIView *timeLine;
 @property (nonatomic, strong) BAReportView *reportView;
 @property (nonatomic, strong) UIView *launchMask;
 @property (nonatomic, strong) LOTAnimationView *launchAnimation;
@@ -40,7 +42,7 @@
     
     [self addNotificationObserver];
     
-    [self setupLaunchMask];
+    //[self setupLaunchMask];
 }
 
 
@@ -48,7 +50,7 @@
     [super viewWillAppear:animated];
     
     [UIApplication sharedApplication].statusBarHidden = NO;
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     _reportView.reportModelArray = [BAAnalyzerCenter defaultCenter].reportModelArray;
 }
@@ -83,21 +85,27 @@
 #pragma mark - userInteraction
 - (void)roomBtnClicked{
     [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+    
+    UIButton *btn = (UIButton *)self.navigationItem.leftBarButtonItem.customView;
+    btn.selected = !btn.isSelected;
 }
 
 
 - (void)openBtnClicked:(NSNotification *)sender{
-    BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellClicked];
+    BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellOpenBtnClicked];
 
     BABulletViewController *bulletVC = [[BABulletViewController alloc] init];
     bulletVC.reportModel = reportModel;
 
     BANavigationViewController *navigationVc = [[BANavigationViewController alloc] initWithRootViewController:bulletVC];
     [self presentViewController:navigationVc animated:YES completion:nil];
+}
+
+
+- (void)reportDelBtnClicked:(NSNotification *)sender{
+    BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellReportDelBtnClicked];
     
-    
-    //[[BAAnalyzerCenter defaultCenter] delReport:sender.userInfo[BAUserInfoKeyReportModel]];
-    
+    [[BAAnalyzerCenter defaultCenter] delReport:reportModel];
 }
 
 
@@ -144,58 +152,53 @@
 
 
 - (void)setupTitleView{
-    _titleLabel = [UILabel labelWithFrame:CGRectMake(0, 60, BAScreenWidth, BASuperLargeTextFontSize) text:@"ANALYZER" color:[UIColor whiteColor] font:BABlodFont(BASuperLargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    
+    NSDate *nowDate = [NSDate date];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    formatter.dateFormat = @"d";
+    
+    _dayLabel = [UILabel labelWithFrame:CGRectMake(2 * BAPadding, 64 + BAPadding, BAScreenWidth, 40) text:[formatter stringFromDate:nowDate] color:BAWhiteColor font:BABlodFont(44) textAlignment:NSTextAlignmentLeft];
+    [_dayLabel sizeToFit];
+    
+    [self.view addSubview:_dayLabel];
+    
+    _timeLine = [[UIView alloc] initWithFrame:CGRectMake(_dayLabel.right + BAPadding, _dayLabel.y + 8, 1.5, _dayLabel.height - 16)];
+    _timeLine.backgroundColor = [BAWhiteColor colorWithAlphaComponent:0.5];
+    
+    [self.view addSubview:_timeLine];
+    
+    formatter.dateFormat = @"EEEE\nMMMM";
+    _weekLabel = [UILabel labelWithFrame:CGRectMake(_timeLine.right + BAPadding, _dayLabel.y, BAScreenWidth / 3, _dayLabel.height) text:[formatter stringFromDate:nowDate] color:BAWhiteColor font:BACommonFont(15) textAlignment:NSTextAlignmentLeft];
+    _weekLabel.numberOfLines = 2;
+    
+    [self.view addSubview:_weekLabel];
+    
+    _titleLabel = [UILabel labelWithFrame:CGRectMake(BAScreenWidth * 2 / 3 - 2 * BAPadding, _dayLabel.y, BAScreenWidth / 3, _dayLabel.height) text:@"ANALYZER" color:BAWhiteColor font:BABlodFont(20) textAlignment:NSTextAlignmentRight];
     
     [self.view addSubview:_titleLabel];
-        
-    _timeLabel = [UILabel labelWithFrame:CGRectMake(0, _titleLabel.bottom + BAPadding, BAScreenWidth, BALargeTextFontSize) text:nil color:BALightTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
-    
-    NSTextAttachment *calenderImg = [[NSTextAttachment alloc] init];
-    calenderImg.image = [UIImage imageNamed:@"Calender"];
-    calenderImg.bounds = CGRectMake(0, 0, 15, 15);
-    NSAttributedString *calenderAttr = [NSAttributedString attributedStringWithAttachment:calenderImg];
-    NSAttributedString *timeStr = [[NSAttributedString alloc] initWithString:[self getNowTimeWithFomatterEng]];
-    
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] init];
-    [string appendAttributedString:calenderAttr];
-    [string appendAttributedString:timeStr];
-    [string addAttribute:NSBaselineOffsetAttributeName value:@(1.5) range:NSMakeRange(1, string.length - 1)];
-    
-    _timeLabel.attributedText = string;
-    
-    [self.view addSubview:_timeLabel];
 }
 
 
 - (void)setupReportView{
-    _reportView = [[BAReportView alloc] initWithFrame:CGRectMake(0, _timeLabel.bottom + 4 * BAPadding, BAScreenWidth, BAScreenHeight * 4 / 5)];
+    _reportView = [[BAReportView alloc] initWithFrame:CGRectMake(0, _dayLabel.bottom + 5 * BAPadding, BAScreenWidth, BAScreenHeight * 4 / 5)];
     
     [self.view addSubview:_reportView];
 }
 
 
 - (void)setupNavigation{
-    //self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"房间" target:self action:@selector(roomBtnClicked)];
-    
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"roomList" highlightedImg:@"roomListSel" target:self action:@selector(roomBtnClicked)];
     
 }
 
 
 - (void)addNotificationObserver{
     [BANotificationCenter addObserver:self selector:@selector(roomSelected:) name:BANotificationRoomListCellClicked object:nil];
-    [BANotificationCenter addObserver:self selector:@selector(openBtnClicked:) name:BANotificationMainCellClicked object:nil];
+    [BANotificationCenter addObserver:self selector:@selector(openBtnClicked:) name:BANotificationMainCellOpenBtnClicked object:nil];
+    [BANotificationCenter addObserver:self selector:@selector(reportDelBtnClicked:) name:BANotificationMainCellReportDelBtnClicked object:nil];
     [BANotificationCenter addObserver:self selector:@selector(beginAnalyzing:) name:BANotificationBeginAnalyzing object:nil];
     [BANotificationCenter addObserver:self selector:@selector(reportModelArrayUpdated:) name:BANotificationUpdateReporsComplete object:nil];
 }
 
-
-- (NSString *)getNowTimeWithFomatterEng{
-    NSDateFormatter *formatter = [NSDateFormatter new];
-    NSLocale *EngLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-    formatter.locale = EngLocale;
-    formatter.dateFormat = @" d MMMM - EEEE";
-    
-    return [formatter stringFromDate:[NSDate date]];
-}
 
 @end

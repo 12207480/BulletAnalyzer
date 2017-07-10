@@ -55,8 +55,10 @@
 #define BAAssistColor BAColor(255, 127, 102)
 #define BAAssist2Color BAColor(115, 210, 230) //辅助色(蓝)
 #define BADisabledColor BAColor(204, 204, 204) //不可选颜色
+#define BARoomNameColor BAColor(102, 102, 102) //主页房间名颜色
+#define BARoomInfoColor BAColor(115, 115, 115) //主页房间信息颜色
 
-#define BANavigationBarColor BAColor(35, 38, 66) //导航栏背景图
+#define BANavigationBarColor [UIColor clearColor] //导航栏背景图
 #define BATabBarColor BAColor(61, 64, 105) //底部栏颜色
 #define BASpratorColor BAColor(75, 80, 119) //分隔线颜色
 #define BACellColor1 BAColor(58, 59, 97) //cell第一种背景色
@@ -76,15 +78,17 @@
 #define BABlodFont(size) [UIFont systemFontOfSize:size weight:UIFontWeightBold]
 
 #define BACommonTextFontSize 14
-#define BASuperLargeTextFontSize 30
 #define BALargeTextFontSize 20
 #define BASmallTextFontSize 12
 
 //通知
 static NSString *const BANotificationRoomListCellClicked = @"BANotificationRoomListCellClicked";
 static NSString *const BAUserInfoKeyRoomListCellClicked = @"RoomModel";
-static NSString *const BANotificationMainCellClicked = @"BANotificationMainCellClicked";
-static NSString *const BAUserInfoKeyMainCellClicked = @"ReportModel";
+static NSString *const BANotificationMainCellOpenBtnClicked = @"BANotificationMainCellOpenBtnClicked";
+static NSString *const BAUserInfoKeyMainCellOpenBtnClicked = @"ReportModel";
+static NSString *const BANotificationMainCellReportDelBtnClicked = @"BANotificationMainCellReportDelBtnClicked";
+static NSString *const BAUserInfoKeyMainCellReportDelBtnClicked = @"ReportModel";
+static NSString *const BANotificationMainCellHistoryDelBtnClicked = @"BANotificationMainCellHistoryDelBtnClicked";
 static NSString *const BANotificationBullet = @"BANotificationBullet";
 static NSString *const BAUserInfoKeyBullet = @"Bullet";
 static NSString *const BANotificationGift = @"BANotificationGift";

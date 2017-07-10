@@ -40,10 +40,10 @@
  */
 @property (nonatomic, copy) NSString *photo;
 
-/**
- 直播间截图数组 元素为image
- */
-@property (nonatomic, strong) NSMutableArray *photoArray;
+///**
+// 直播间截图数组 元素为image
+// */
+//@property (nonatomic, strong) NSMutableArray *photoArray;
 
 /**
  粉丝数量
@@ -81,6 +81,11 @@
 @property (nonatomic, assign) NSInteger duration;
 
 /**
+ 分析描述
+ */
+@property (nonatomic, copy) NSString *timeDescription;
+
+/**
  弹幕数组
  */
 @property (nonatomic, strong) NSMutableArray *bulletsArray;
@@ -106,7 +111,12 @@
 @property (nonatomic, strong) NSMutableArray *countTimeArray;
 
 /**
- 最大弹幕数组
+ 弹幕总数
+ */
+@property (nonatomic, assign) NSInteger totalBulletCount;
+
+/**
+ 30秒最大弹幕数
  */
 @property (nonatomic, assign) NSInteger maxBulletCount;
 

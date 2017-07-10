@@ -23,7 +23,7 @@
     [self.navigationBar setBackgroundImage:[UIImage imageWithColor:BANavigationBarColor] forBarMetrics:UIBarMetricsDefault];
     self.navigationBar.contentMode = UIViewContentModeScaleAspectFill;
     self.navigationBar.translucent = YES;
-    self.navigationBar.shadowImage = [UIImage imageWithColor:BASpratorColor];
+    self.navigationBar.shadowImage = [UIImage imageWithColor:BANavigationBarColor];
     self.navigationBar.tintColor = BAThemeColor;
     self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : BAWhiteColor};
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;

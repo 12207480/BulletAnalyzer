@@ -77,8 +77,6 @@
     
     [self setupFansReport];
     
-    
-    
     [self setupInfo];
     
     self.getSpeed = 0.5;
@@ -129,10 +127,9 @@
 }
 
 
-
 #pragma mark - userInteraction
 - (void)roomCollect{
-    NSLog(@"%s", __func__);
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -227,10 +224,8 @@
                 selfWeak.scrollView.y = 0;
                 
             } completion:nil];
-    
-            [[BAAnalyzerCenter defaultCenter] endAnalyzing];
+
             [[BASocketTool defaultSocket] cutOff];
-            
             selfWeak.tipsLabel.hidden = YES;
         }];
         UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
