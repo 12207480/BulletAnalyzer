@@ -175,6 +175,7 @@ static NSString *const BAAddReportCellReusedId = @"BAAddReportCellReusedId";
     CGFloat offsetX = _collectionView.contentOffset.x;
     
     [self adjustImgTransformWithOffsetY:offsetX];
+    [self endEditing:YES];
 }
 
 

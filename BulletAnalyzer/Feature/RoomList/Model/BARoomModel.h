@@ -115,5 +115,10 @@
  */
 @property (nonatomic, copy) NSString *cate_name;
 
+/**
+ 房间状态  1直播中 2为未直播
+ */
+@property (nonatomic, copy) NSString *room_status;
+
 @end
 

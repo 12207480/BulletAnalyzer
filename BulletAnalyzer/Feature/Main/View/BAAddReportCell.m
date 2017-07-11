@@ -9,6 +9,8 @@
 
 #import "BAAddReportCell.h"
 #import "BASearchHistoryCell.h"
+#import "BASocketTool.h"
+#import "BARoomModel.h"
 
 static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReusedId";
 
@@ -22,6 +24,9 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 @property (nonatomic, strong) UIView *lineView;
 @property (nonatomic, strong) UIView *blockView;
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) BARoomModel *roomModel;
+@property (nonatomic, strong) UIImageView *icon;
+@property (nonatomic, strong) UILabel *previewLabel;
 
 @end
 
@@ -40,8 +45,41 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 
 #pragma mark - userInteraction
-- (void)historyDelBtnClicked{
+- (void)addBtnClicked{
+    if (_roomNumField.isFirstResponder) {
+        [_roomNumField resignFirstResponder];
+    }
     
+    if (!_roomModel) {
+        [BATool showHUDWithText:@"请输入房间号" ToView:self];
+        return;
+    }
+    
+    if (_roomModel.room_status.integerValue == 1) {
+        
+        [[BASocketTool defaultSocket] connectSocketWithRoomId:_roomModel.room_id];
+    } else {
+        
+        [BATool showHUDWithText:@"该房间未开播" ToView:self];
+    }
+}
+
+
+- (void)historyDelBtnClicked{
+
+}
+
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    if (_roomNumField.isFirstResponder) {
+        [_roomNumField resignFirstResponder];
+    }
+    
+}
+
+
+- (void)previewTapped{
+    [_roomNumField becomeFirstResponder];
 }
 
 
@@ -54,12 +92,6 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 
 #pragma mark - private
-- (void)setupStatus{
-    
- 
-}
-
-
 - (void)setupAddReportView{
     
     _titleLabel = [UILabel labelWithFrame:CGRectMake(0, 3 * BAPadding, BAReportCellWidth, 30) text:@"房间搜索" color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
@@ -72,7 +104,7 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
     
     [self.contentView addSubview:_roomNumBgView];
     
-    _roomNumField = [UITextField textFieldWithFrame:CGRectMake(3.5 * BAPadding, _roomNumBgView.y + BAPadding, _roomNumBgView.width - 3.5 * BAPadding, 40) placeholder:nil color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) secureTextEntry:NO delegate:self];
+    _roomNumField = [UITextField textFieldWithFrame:CGRectMake(3.5 * BAPadding - 2, _roomNumBgView.y + BAPadding, _roomNumBgView.width - 3.5 * BAPadding, 40) placeholder:nil color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) secureTextEntry:NO delegate:self];
     NSAttributedString *placeHolder = [[NSAttributedString alloc] initWithString:@"请输入房间号" attributes: @{NSForegroundColorAttributeName:BAWhiteColor,
                                                                                                               NSFontAttributeName:_roomNumField.font
                                                                                                             }];
@@ -83,10 +115,12 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
     _roomNumField.leftView = leftView;
     _roomNumField.leftViewMode = UITextFieldViewModeAlways;
     _roomNumField.tintColor = [UIColor clearColor];
+    _roomNumField.returnKeyType = UIReturnKeyDone;
+    [_roomNumField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
     
     [self.contentView  addSubview:_roomNumField];
     
-    _historyDelBtn = [UIButton buttonWithFrame:CGRectMake(2 * BAPadding, _roomNumBgView.bottom + 1.5 * BAPadding, BAReportCellWidth - 4 * BAPadding, 60) title:@"连接" color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) backgroundImage:[UIImage imageNamed:@"openBtn"] target:self action:@selector(historyDelBtnClicked)];
+    _historyDelBtn = [UIButton buttonWithFrame:CGRectMake(2 * BAPadding, _roomNumBgView.bottom + 1.5 * BAPadding, BAReportCellWidth - 4 * BAPadding, 60) title:@"连接" color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) backgroundImage:[UIImage imageNamed:@"openBtn"] target:self action:@selector(addBtnClicked)];
     
     [self.contentView addSubview:_historyDelBtn];
     
@@ -125,10 +159,61 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
     [_historyDelBtn setImage:[UIImage imageNamed:@"historyDel"] forState:UIControlStateNormal];
     
     [self.contentView addSubview:_historyDelBtn];
+    
+    _icon = [[UIImageView alloc] initWithFrame:CGRectMake(_roomNumField.x - 2, _roomNumField.y + 5, 30, 30)];
+    _icon.alpha = 0;
+    _icon.layer.cornerRadius = 15;
+    _icon.layer.masksToBounds = YES;
+    
+    [self.contentView addSubview:_icon];
+    
+    _previewLabel = [UILabel labelWithFrame:CGRectMake(_icon.right + BAPadding, _roomNumField.y, _roomNumField.width - 36, _roomNumField.height) text:nil color:BAWhiteColor font:_roomNumField.font textAlignment:NSTextAlignmentLeft];
+    _previewLabel.alpha = 0;
+    _previewLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *previewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewTapped)];
+    [_previewLabel addGestureRecognizer:previewTap];
+    
+    [self.contentView addSubview:_previewLabel];
 }
 
 
-#pragma mark ---UICollectionViewDelegate---
+- (void)search{
+    BAHttpParams *params = [BAHttpParams new];
+    params.roomId = _roomNumField.text;
+    [BAHttpTool getRoomInfoWithParams:params success:^(id obj) {
+        
+        _roomModel = obj;
+        [self showPreview];
+    } fail:^(NSString *error) {
+        _roomModel = nil;
+        [self hidePreview];
+        [BATool showHUDWithText:error ToView:self];
+    }];
+}
+
+
+- (void)showPreview{
+    _previewLabel.text = _roomModel.owner_name;
+    [_icon sd_setImageWithURL:[NSURL URLWithString:_roomModel.avatar] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+       [UIView animateWithDuration:0.5 animations:^{
+           _icon.alpha = 1;
+           _previewLabel.alpha = 1;
+           _roomNumField.alpha = 0;
+       }];
+    }];
+}
+
+
+- (void)hidePreview{
+    [UIView animateWithDuration:0.5 animations:^{
+        _icon.alpha = 0;
+        _previewLabel.alpha = 0;
+        _roomNumField.alpha = 1;
+    }];
+}
+
+
+#pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     return 10;
 }
@@ -143,7 +228,22 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGFloat offsetX = scrollView.contentOffset.x;
-    _blockView.x = 2 * BAPadding + (_lineView.width - _blockView.width) * offsetX / (scrollView.contentSize.width - _collectionView.width +  BAPadding);
+    _blockView.x = 2 * BAPadding + (_lineView.width - _blockView.width) * offsetX / (scrollView.contentSize.width - _collectionView.width);
+}
+
+
+#pragma mark - UITextFiledDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+
+- (void)textFieldDidChange{
+    [self hidePreview];
+    
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(search) object:nil];
+    [self performSelector:@selector(search) withObject:nil afterDelay:0.8];
 }
 
 @end

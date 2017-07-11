@@ -50,6 +50,8 @@ static NSString *const BANetworkError = @"上帝关了门窗, 还顺便断了网
                 
                 success(obj);
             }];
+        } else {
+            fail(responseObject[@"data"]);
         }
         
     } fail:^(NSURLSessionDataTask *task, NSError *error) {
