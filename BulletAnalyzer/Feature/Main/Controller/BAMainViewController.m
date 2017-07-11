@@ -83,7 +83,13 @@
 
 
 #pragma mark - userInteraction
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+}
+
+
 - (void)roomBtnClicked{
+    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
     [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
     
     UIButton *btn = (UIButton *)self.navigationItem.leftBarButtonItem.customView;

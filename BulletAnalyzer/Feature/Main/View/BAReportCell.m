@@ -97,23 +97,26 @@
 
 
 - (void)setupReportView{
-
-    _delBtn = [UIButton buttonWithFrame:CGRectMake(BAReportCellWidth - BAPadding - 21, BAPadding, 21, 21) title:nil color:nil font:nil backgroundImage:[UIImage imageNamed:@"reportDel"] target:self action:@selector(delBtnClicked)];
+    CGFloat realPadding = Screen40inch ? BAPadding / 2 : BAPadding;
+    
+    _delBtn = [UIButton buttonWithFrame:CGRectMake(BAReportCellWidth - realPadding - 21, realPadding, 21, 21) title:nil color:nil font:nil backgroundImage:[UIImage imageNamed:@"reportDel"] target:self action:@selector(delBtnClicked)];
     
     [self.contentView addSubview:_delBtn];
     
-    _nameLabel = [UILabel labelWithFrame:CGRectMake(0, _delBtn.bottom + BAPadding, BAReportCellWidth, 30) text:nil color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _nameLabel = [UILabel labelWithFrame:CGRectMake(0, _delBtn.bottom + realPadding, BAReportCellWidth, 30) text:nil color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [self.contentView addSubview:_nameLabel];
     
-    _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(BAReportCellWidth / 2 - 60, _nameLabel.bottom + 2 * BAPadding, 120, 120)];
+    CGFloat imgWidth = Screen40inch ? 100 : 120;
+    imgWidth = Screen55inch ? 150 : imgWidth;
+    _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(BAReportCellWidth / 2 - imgWidth / 2, _nameLabel.bottom + 2 * realPadding, imgWidth, imgWidth)];
     _imgView.contentMode = UIViewContentModeScaleAspectFill;
-    _imgView.layer.cornerRadius = 60;
+    _imgView.layer.cornerRadius = imgWidth / 2;
     _imgView.layer.masksToBounds = YES;
     
     [self.contentView addSubview:_imgView];
     
-    _titleLabel = [UILabel labelWithFrame:CGRectMake(BAPadding, _imgView.bottom + 2 * BAPadding, BAReportCellWidth - 2 * BAPadding, 28) text:nil color:BARoomNameColor font:BACommonFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _titleLabel = [UILabel labelWithFrame:CGRectMake(realPadding, _imgView.bottom + 2 * realPadding, BAReportCellWidth - 2 * realPadding, 28) text:nil color:BARoomNameColor font:BACommonFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
 
     [self.contentView addSubview:_titleLabel];
     
@@ -121,15 +124,15 @@
     
     [self.contentView addSubview:_timeLabel];
     
-    _bulletLabel = [UILabel labelWithFrame:CGRectMake(0, _timeLabel.bottom, BAReportCellWidth / 2 - BAPadding / 2, 28) text:nil color:BARoomInfoColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentRight];
+    _bulletLabel = [UILabel labelWithFrame:CGRectMake(0, _timeLabel.bottom, BAReportCellWidth / 2 - realPadding / 2, 28) text:nil color:BARoomInfoColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentRight];
     
     [self.contentView addSubview:_bulletLabel];
     
-    _giftLabel = [UILabel labelWithFrame:CGRectMake(BAReportCellWidth / 2 + BAPadding / 2, _timeLabel.bottom, BAReportCellWidth / 2, 28) text:nil color:BARoomInfoColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _giftLabel = [UILabel labelWithFrame:CGRectMake(BAReportCellWidth / 2 + realPadding / 2, _timeLabel.bottom, BAReportCellWidth / 2, 28) text:nil color:BARoomInfoColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
 
     [self.contentView addSubview:_giftLabel];
     
-    _openBtn = [UIButton buttonWithFrame:CGRectMake(2 * BAPadding, _giftLabel.bottom, BAReportCellWidth - 4 * BAPadding, 60) title:@"查看" color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) backgroundImage:[UIImage imageNamed:@"openBtn"] target:self action:@selector(openBtnClicked)];
+    _openBtn = [UIButton buttonWithFrame:CGRectMake(2 * realPadding, _giftLabel.bottom, BAReportCellWidth - 4 * realPadding, 60) title:@"查看" color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) backgroundImage:[UIImage imageNamed:@"openBtn"] target:self action:@selector(openBtnClicked)];
     
     [self.contentView addSubview:_openBtn];
 }

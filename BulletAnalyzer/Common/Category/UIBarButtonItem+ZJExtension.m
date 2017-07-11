@@ -32,7 +32,7 @@
     UIButton *imgBtn = [[UIButton alloc] init];
     
     UIImage *img = [UIImage imageNamed:imgName];
-    UIImage *selImg = [UIImage imageNamed:highImgName];
+    UIImage *selImg = highImgName.length ? [UIImage imageNamed:highImgName] : nil;
     
     imgBtn.frame = CGRectMake(0, 0, img.size.width, img.size.height);
     

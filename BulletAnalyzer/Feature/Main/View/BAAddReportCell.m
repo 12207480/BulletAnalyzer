@@ -16,7 +16,7 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 @interface BAAddReportCell() <UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *addBtn;
+@property (nonatomic, strong) UIButton *addBtn;
 @property (nonatomic, strong) UIImageView *roomNumBgView;
 @property (nonatomic, strong) UITextField *roomNumField;
 @property (nonatomic, strong) UILabel *searchHistory;
@@ -94,17 +94,19 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 #pragma mark - private
 - (void)setupAddReportView{
     
-    _titleLabel = [UILabel labelWithFrame:CGRectMake(0, 3 * BAPadding, BAReportCellWidth, 30) text:@"房间搜索" color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    CGFloat realPadding = Screen40inch ? BAPadding / 2 : BAPadding;
+    
+    _titleLabel = [UILabel labelWithFrame:CGRectMake(0, 3 * realPadding, BAReportCellWidth, 30) text:@"房间搜索" color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [self.contentView addSubview:_titleLabel];
     
-    _roomNumBgView = [[UIImageView alloc] initWithFrame:CGRectMake(2 * BAPadding, _titleLabel.bottom + 2 * BAPadding, BAReportCellWidth - 4 * BAPadding, 60)];
+    _roomNumBgView = [[UIImageView alloc] initWithFrame:CGRectMake(2 * realPadding, _titleLabel.bottom + 2 * realPadding, BAReportCellWidth - 4 * realPadding, 60)];
     _roomNumBgView.image = [UIImage imageNamed:@"numFieldBg"];
-    _roomNumBgView.contentMode = UIViewContentModeScaleAspectFit;
+    _roomNumBgView.contentMode = UIViewContentModeScaleToFill;
     
     [self.contentView addSubview:_roomNumBgView];
     
-    _roomNumField = [UITextField textFieldWithFrame:CGRectMake(3.5 * BAPadding - 2, _roomNumBgView.y + BAPadding, _roomNumBgView.width - 3.5 * BAPadding, 40) placeholder:nil color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) secureTextEntry:NO delegate:self];
+    _roomNumField = [UITextField textFieldWithFrame:CGRectMake(3.5 * realPadding - 2, _roomNumBgView.y + realPadding, _roomNumBgView.width - 3.5 * realPadding, 40) placeholder:nil color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) secureTextEntry:NO delegate:self];
     NSAttributedString *placeHolder = [[NSAttributedString alloc] initWithString:@"请输入房间号" attributes: @{NSForegroundColorAttributeName:BAWhiteColor,
                                                                                                               NSFontAttributeName:_roomNumField.font
                                                                                                             }];
@@ -117,19 +119,20 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
     _roomNumField.tintColor = [UIColor clearColor];
     _roomNumField.returnKeyType = UIReturnKeyDone;
     [_roomNumField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
+    _roomNumField.centerY = _roomNumBgView.centerY;
     
     [self.contentView  addSubview:_roomNumField];
     
-    _historyDelBtn = [UIButton buttonWithFrame:CGRectMake(2 * BAPadding, _roomNumBgView.bottom + 1.5 * BAPadding, BAReportCellWidth - 4 * BAPadding, 60) title:@"连接" color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) backgroundImage:[UIImage imageNamed:@"openBtn"] target:self action:@selector(addBtnClicked)];
+    _addBtn = [UIButton buttonWithFrame:CGRectMake(2 * realPadding, _roomNumBgView.bottom + 1.5 * realPadding, BAReportCellWidth - 4 * realPadding, 60) title:@"连接" color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) backgroundImage:[UIImage imageNamed:@"openBtn"] target:self action:@selector(addBtnClicked)];
     
-    [self.contentView addSubview:_historyDelBtn];
+    [self.contentView addSubview:_addBtn];
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     layout.minimumLineSpacing = 0;
     layout.itemSize = CGSizeMake(BAReportCellWidth / 4, 90);
     
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, BAReportCellHeight - 90 - 3 * BAPadding, BAReportCellWidth, 90) collectionViewLayout:layout];
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, BAReportCellHeight - 90 - 3 * realPadding, BAReportCellWidth, 90) collectionViewLayout:layout];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     _collectionView.bounces = NO;
@@ -140,34 +143,34 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
     
     [self.contentView addSubview:_collectionView];
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(2 * BAPadding, _collectionView.y - 1, BAReportCellWidth - 4 * BAPadding, 1)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(2 * realPadding, _collectionView.y - 1, BAReportCellWidth - 4 * realPadding, 1)];
     _lineView.backgroundColor = BASpratorColor;
     
     [self.contentView addSubview:_lineView];
     
-    _blockView = [[UIView alloc] initWithFrame:CGRectMake(2 * BAPadding, _lineView.y - 0.5, 50, 2)];
+    _blockView = [[UIView alloc] initWithFrame:CGRectMake(2 * realPadding, _lineView.y - 0.5, 50, 2)];
     _blockView.backgroundColor = BAThemeColor;
     
     [self.contentView addSubview:_blockView];
     
-    _searchHistory = [UILabel labelWithFrame:CGRectMake(2 * BAPadding, _lineView.y - BAPadding - 20, BAReportCellWidth / 2, 20) text:@"搜索历史" color:BAColor(76, 76, 76) font:BABlodFont(16) textAlignment:NSTextAlignmentLeft];
+    _searchHistory = [UILabel labelWithFrame:CGRectMake(2 * realPadding, _lineView.y - realPadding - 20, BAReportCellWidth / 2, 20) text:@"搜索历史" color:BAColor(76, 76, 76) font:BABlodFont(16) textAlignment:NSTextAlignmentLeft];
     
     [self.contentView addSubview:_searchHistory];
     
-    _historyDelBtn = [UIButton buttonWithFrame:CGRectMake(BAReportCellWidth - 2 * BAPadding - 20, _searchHistory.y + 3, 20, 14) title:nil color:nil font:nil backgroundImage:nil target:self action:@selector(historyDelBtnClicked)];
+    _historyDelBtn = [UIButton buttonWithFrame:CGRectMake(BAReportCellWidth - 2 * realPadding - 20, _searchHistory.y + 3, 20, 14) title:nil color:nil font:nil backgroundImage:nil target:self action:@selector(historyDelBtnClicked)];
     _historyDelBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [_historyDelBtn setImage:[UIImage imageNamed:@"historyDel"] forState:UIControlStateNormal];
     
     [self.contentView addSubview:_historyDelBtn];
     
-    _icon = [[UIImageView alloc] initWithFrame:CGRectMake(_roomNumField.x - 2, _roomNumField.y + 5, 30, 30)];
+    _icon = [[UIImageView alloc] initWithFrame:CGRectMake(_roomNumBgView.x + 2 * realPadding, _roomNumField.y + 5, 30, 30)];
     _icon.alpha = 0;
     _icon.layer.cornerRadius = 15;
     _icon.layer.masksToBounds = YES;
     
     [self.contentView addSubview:_icon];
     
-    _previewLabel = [UILabel labelWithFrame:CGRectMake(_icon.right + BAPadding, _roomNumField.y, _roomNumField.width - 36, _roomNumField.height) text:nil color:BAWhiteColor font:_roomNumField.font textAlignment:NSTextAlignmentLeft];
+    _previewLabel = [UILabel labelWithFrame:CGRectMake(_icon.right + realPadding, _roomNumField.y, _roomNumField.width - 36, _roomNumField.height) text:nil color:BAWhiteColor font:_roomNumField.font textAlignment:NSTextAlignmentLeft];
     _previewLabel.alpha = 0;
     _previewLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *previewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewTapped)];
@@ -227,8 +230,10 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    CGFloat realPadding = Screen40inch ? BAPadding / 2 : BAPadding;
+    
     CGFloat offsetX = scrollView.contentOffset.x;
-    _blockView.x = 2 * BAPadding + (_lineView.width - _blockView.width) * offsetX / (scrollView.contentSize.width - _collectionView.width);
+    _blockView.x = 2 * realPadding + (_lineView.width - _blockView.width) * offsetX / (scrollView.contentSize.width - _collectionView.width);
 }
 
 
@@ -236,6 +241,14 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
     return YES;
+}
+
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    
+    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+    NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+    return [string isEqualToString:filtered];
 }
 
 

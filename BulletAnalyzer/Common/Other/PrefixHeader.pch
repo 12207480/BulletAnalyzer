@@ -19,6 +19,12 @@
 #import "NSObject+ZJUIExtension.h"
 #import "BANavigationViewController.h"
 
+//判断是否为4inch 
+#define Screen40inch ([UIScreen mainScreen].bounds.size.height == 568)
+//判断是否为4.7inch
+#define Screen47inch ([UIScreen mainScreen].bounds.size.height == 667)
+//判断是否为5.5inch
+#define Screen55inch ([UIScreen mainScreen].bounds.size.height == 736)
 
 //尺寸
 #define BAScreenHeight [UIScreen mainScreen].bounds.size.height//屏幕高度
