@@ -492,12 +492,12 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
     dispatch_async(self.analyzingQueue, ^{
         [bulletsArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop1) {
             
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
             if (!_analyzingReportModel.roomId.length) {
                 _analyzingReportModel.roomId = bulletModel.rid;
                 [self getRoomInfo];
             }
             
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
             //分析单词及语义
             [self analyzingWords:bulletModel];
             

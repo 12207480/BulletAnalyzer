@@ -201,6 +201,8 @@
 		F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */; };
 		F2587C091EFB64520026DFF5 /* BAGiftValueModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C081EFB64520026DFF5 /* BAGiftValueModel.m */; };
 		F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */; };
+		F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */; };
+		F2A8BE8A1F1470FC00DC9B3C /* BASearchHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE891F1470FC00DC9B3C /* BASearchHistoryCell.m */; };
 		F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79CE1EE501F200927776 /* BATableViewCell.m */; };
 		F2DF79D21EE5022D00927776 /* BARoomListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79D11EE5022D00927776 /* BARoomListCell.m */; };
 /* End PBXBuildFile section */
@@ -644,6 +646,10 @@
 		F2587C081EFB64520026DFF5 /* BAGiftValueModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGiftValueModel.m; sourceTree = "<group>"; };
 		F2587C0D1EFB93B00026DFF5 /* BASentenceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceModel.h; sourceTree = "<group>"; };
 		F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceModel.m; sourceTree = "<group>"; };
+		F2A8BE851F14523500DC9B3C /* BAAddReportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAAddReportCell.h; sourceTree = "<group>"; };
+		F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAAddReportCell.m; sourceTree = "<group>"; };
+		F2A8BE881F1470FC00DC9B3C /* BASearchHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASearchHistoryCell.h; sourceTree = "<group>"; };
+		F2A8BE891F1470FC00DC9B3C /* BASearchHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASearchHistoryCell.m; sourceTree = "<group>"; };
 		F2DF79CD1EE501F200927776 /* BATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATableViewCell.h; sourceTree = "<group>"; };
 		F2DF79CE1EE501F200927776 /* BATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATableViewCell.m; sourceTree = "<group>"; };
 		F2DF79D01EE5022D00927776 /* BARoomListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARoomListCell.h; sourceTree = "<group>"; };
@@ -876,6 +882,10 @@
 				F21BD41C1EE7F6DE0079312C /* BAReportView.m */,
 				F21BD41E1EE7F7200079312C /* BAReportCell.h */,
 				F21BD41F1EE7F7200079312C /* BAReportCell.m */,
+				F2A8BE851F14523500DC9B3C /* BAAddReportCell.h */,
+				F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */,
+				F2A8BE881F1470FC00DC9B3C /* BASearchHistoryCell.h */,
+				F2A8BE891F1470FC00DC9B3C /* BASearchHistoryCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1890,6 +1900,7 @@
 				F231C7B01EE509F700EB0F79 /* SDWebImageDecoder.m in Sources */,
 				388A86C61EE4424600A0BC5B /* UIScrollView+MJExtension.m in Sources */,
 				F222A46F1F0B44D000E70ADA /* LOTAnimatableShapeValue.m in Sources */,
+				F2A8BE8A1F1470FC00DC9B3C /* BASearchHistoryCell.m in Sources */,
 				F2DF79D21EE5022D00927776 /* BARoomListCell.m in Sources */,
 				388A86C51EE4424600A0BC5B /* NSBundle+MJRefresh.m in Sources */,
 				F222A4651F0B44D000E70ADA /* LOTLayerView.m in Sources */,
@@ -2004,6 +2015,7 @@
 				38B316731EFDF4A8003C70AA /* BASentenceView.m in Sources */,
 				388AFFE51EE045F90031DE53 /* DDFileLogger.m in Sources */,
 				388A863D1EE43EA400A0BC5B /* MASConstraint.m in Sources */,
+				F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */,
 				F222A4761F0B44D000E70ADA /* NSValue+Compat.m in Sources */,
 				388A85F51EE4163200A0BC5B /* MMDrawerVisualState.m in Sources */,
 				38A5A0E41EE2AA6800CFF645 /* NSObject+MJProperty.m in Sources */,

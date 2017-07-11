@@ -9,10 +9,12 @@
 
 #import "BAReportView.h"
 #import "BAReportCell.h"
+#import "BAAddReportCell.h"
 #import "BAReplyModel.h"
 #import "BAReportModel.h"
 
 static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
+static NSString *const BAAddReportCellReusedId = @"BAAddReportCellReusedId";
 
 @interface BAReportView()<UICollectionViewDelegate, UICollectionViewDataSource>
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -81,6 +83,7 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
     _collectionView.layer.masksToBounds = NO;
     
     [_collectionView registerClass:[BAReportCell class] forCellWithReuseIdentifier:BAReportCellReusedId];
+    [_collectionView registerClass:[BAAddReportCell class] forCellWithReuseIdentifier:BAAddReportCellReusedId];
     
     [self addSubview:_collectionView];
 }
@@ -144,11 +147,20 @@ static NSString *const BAReportCellReusedId = @"BAReportCellReusedId";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    BAReportCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BAReportCellReusedId forIndexPath:indexPath];
-    cell.reportModel = _reportModelArray[indexPath.item % _reportModelArray.count];
-    cell.transform = indexPath.item == _reportModelArray.count * 500 ? CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 0), 1.1, 1.1) : CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 2 * BAPadding), 0.9, 0.9);
+    BAReportModel *reportModel = _reportModelArray[indexPath.item % _reportModelArray.count];
     
-    return cell;
+    if (reportModel.isAddNewReport) {
+        BAAddReportCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BAAddReportCellReusedId forIndexPath:indexPath];
+        cell.transform = indexPath.item == _reportModelArray.count * 500 ? CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 0), 1.1, 1.1) : CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 2 * BAPadding), 0.9, 0.9);
+        
+        return cell;
+    } else {
+        BAReportCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BAReportCellReusedId forIndexPath:indexPath];
+        cell.reportModel = _reportModelArray[indexPath.item % _reportModelArray.count];
+        cell.transform = indexPath.item == _reportModelArray.count * 500 ? CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 0), 1.1, 1.1) : CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 2 * BAPadding), 0.9, 0.9);
+        
+        return cell;
+    }
 }
 
 //item大小

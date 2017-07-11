@@ -187,7 +187,7 @@
 
 
 - (void)setupNavigation{
-    self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"roomList" highlightedImg:@"roomListSel" target:self action:@selector(roomBtnClicked)];
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"roomList" highlightedImg:nil target:self action:@selector(roomBtnClicked)];
     
 }
 

@@ -46,7 +46,7 @@
 #define BADark1BackgroundColor BAColor(6, 8, 18)//背景颜色
 #define BADark2BackgroundColor BAColor(14, 15, 26)//背景颜色
 #define BADark3BackgroundColor BAColor(22, 24, 35)//背景颜色
-#define BAThemeColor BAColor(83, 202, 227) //常用的主色
+#define BAThemeColor BAColor(249, 118, 143) //常用的主色
 #define BAHighlightThemeColor BAColor(0, 179, 179) //高亮主题色
 #define BAWhiteColor [UIColor whiteColor]
 #define BABlackColor [UIColor blackColor]
@@ -60,7 +60,7 @@
 
 #define BANavigationBarColor [UIColor clearColor] //导航栏背景图
 #define BATabBarColor BAColor(61, 64, 105) //底部栏颜色
-#define BASpratorColor BAColor(75, 80, 119) //分隔线颜色
+#define BASpratorColor BAColor(240, 240, 240) //分隔线颜色
 #define BACellColor1 BAColor(58, 59, 97) //cell第一种背景色
 #define BACellColor2 BAColor(68, 69, 107) //cell第二种背景色
 
