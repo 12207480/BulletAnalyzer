@@ -488,7 +488,6 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
 
 - (void)caculate:(NSArray *)bulletsArray{
     
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(2);
     dispatch_async(self.analyzingQueue, ^{
         [bulletsArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop1) {
             
@@ -496,16 +495,15 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
                 _analyzingReportModel.roomId = bulletModel.rid;
                 [self getRoomInfo];
             }
-            
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
             //分析单词及语义
             [self analyzingWords:bulletModel];
             
             //分析发送人
             [self analyzingUser:bulletModel];
-            
-            dispatch_semaphore_signal(semaphore);
         }];
+        
+        [self caculateLevelPoint];
     });
 }
 
@@ -578,7 +576,7 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
         __block NSInteger A = 0; //两个向量内积
         __block NSInteger B = 0; //第一个句子的模长乘积的平方
         __block NSInteger C = 0; //第二个句子的模长乘积的平方
-        [sentence.wordsDic.copy enumerateKeysAndObjectsUsingBlock:^(NSString *key1, NSNumber *value1, BOOL * _Nonnull stop) {
+        [sentence.wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key1, NSNumber *value1, BOOL * _Nonnull stop) {
     
             NSNumber *value2 = [wordsDic objectForKey:key1];
             if (value2.integerValue) {
@@ -669,15 +667,24 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
     //计算总等级以及总用户量, 用以计算平均等级
     _analyzingReportModel.levelSum += bulletModel.level.integerValue;
     _analyzingReportModel.levelCount += 1;
-    
+}
+
+
+- (void)caculateLevelPoint{
     //计算等级分布图的坐标
-    [_levelCountPointArray removeAllObjects];
+    NSMutableArray *tempCountPointArray = [NSMutableArray array];
     NSInteger maxLevelCount = [[_levelCountArray valueForKeyPath:@"@max.integerValue"] integerValue];
     [_levelCountArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         CGPoint point = CGPointMake(BAFansReportDrawViewWidth * (CGFloat)idx / (_levelCountArray.count - 1), BAFansReportDrawViewHeight * (1 - ((CGFloat)obj.integerValue / maxLevelCount)));
-        [_levelCountPointArray addObject:[NSValue valueWithCGPoint:point]];
+        [tempCountPointArray addObject:[NSValue valueWithCGPoint:point]];
     }];
+    
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(2);
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    [_levelCountPointArray removeAllObjects];
+    [_levelCountPointArray addObjectsFromArray:tempCountPointArray];
+    dispatch_semaphore_signal(semaphore);
 }
 
 

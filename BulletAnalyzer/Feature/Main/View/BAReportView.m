@@ -73,11 +73,11 @@ static NSString *const BAAddReportCellReusedId = @"BAAddReportCellReusedId";
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     layout.minimumLineSpacing = 0;
+    layout.itemSize = CGSizeMake(BAReportCellWidth, BAReportCellHeight);
     
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, BAScreenWidth, BAReportCellHeight) collectionViewLayout:layout];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
-    _collectionView.bounces = NO;
     _collectionView.showsHorizontalScrollIndicator = NO;
     _collectionView.backgroundColor = [UIColor clearColor];
     _collectionView.layer.masksToBounds = NO;
@@ -140,7 +140,7 @@ static NSString *const BAAddReportCellReusedId = @"BAAddReportCellReusedId";
 }
 
 
-#pragma mark ---UICollectionViewDelegate---
+#pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     return 1000 * _reportModelArray.count;
 }
@@ -164,14 +164,8 @@ static NSString *const BAAddReportCellReusedId = @"BAAddReportCellReusedId";
     }
 }
 
-//item大小
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
 
-    return CGSizeMake(BAReportCellWidth, BAReportCellHeight);
-}
-
-
-#pragma mark ---UIScrollViewDelegate---
+#pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGFloat offsetX = _collectionView.contentOffset.x;
     
