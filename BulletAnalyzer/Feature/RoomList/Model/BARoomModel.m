@@ -7,8 +7,11 @@
 //
 
 #import "BARoomModel.h"
+#import "MJExtension.h"
 
 @implementation BARoomModel
+
+MJExtensionCodingImplementation
 
 - (void)setRoom_thumb:(NSString *)room_thumb{
     _room_thumb = room_thumb;

@@ -16,4 +16,9 @@
  */
 @property (nonatomic, strong) NSMutableArray *reportModelArray;
 
+/**
+ 传入搜索历史
+ */
+@property (nonatomic, strong) NSMutableArray *searchHistoryArray;
+
 @end

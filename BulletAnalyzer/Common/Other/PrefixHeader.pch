@@ -57,7 +57,7 @@
 #define BAWhiteColor [UIColor whiteColor]
 #define BABlackColor [UIColor blackColor]
 #define BACommonTextColor BAColor(51, 51, 51) //一般文字颜色
-#define BALightTextColor BAColor(179, 179, 195) //浅说明性文字
+#define BALightTextColor BAColor(153, 153, 153) //浅说明性文字
 #define BAAssistColor BAColor(255, 127, 102)
 #define BAAssist2Color BAColor(115, 210, 230) //辅助色(蓝)
 #define BADisabledColor BAColor(204, 204, 204) //不可选颜色
@@ -103,8 +103,9 @@ static NSString *const BANotificationBeginAnalyzing = @"BANotificationBeginAnaly
 static NSString *const BANotificationEndAnalyzing = @"BANotificationEndAnalyzing";
 static NSString *const BANotificationInterrupAnalyzing = @"BANotificationInterrupAnalyzing";
 static NSString *const BAUserInfoKeyReportModel = @"ReportModel";
-static NSString *const BANotificationUpdateReporsComplete = @"BANotificationUpdateReporsComplete";
+static NSString *const BANotificationDataUpdateComplete = @"BANotificationDataUpdateComplete";
 static NSString *const BAUserInfoKeyReportModelArray = @"ReportModelArray";
+static NSString *const BAUserInfoKeySearchHistoryArray = @"SearchHistoryArray";
 
 //url
 static NSString *const BADouyuImgBaicUrl = @"https://apic.douyucdn.cn/upload/";

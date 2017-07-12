@@ -27,6 +27,8 @@ static NSString *const BAReportData = @"reportData"; //数据
 static NSString *const BANotice = @"notice"; //关注表
 static NSString *const BANoticeID = @"noticeID"; //关注表ID
 static NSString *const BANoticeData = @"noticeData"; //关注表数据
+static NSString *const BASearchHistory = @"searchHistory"; //搜索历史表
+static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历史表数据
 
 @interface BAAnalyzerCenter()
 @property (nonatomic, strong) FMDatabaseQueue *dataBaseQueue;
@@ -767,6 +769,7 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
         
         NSMutableArray *tempArray = [NSMutableArray array];
         NSMutableArray *noticeTempArray = [NSMutableArray array];
+        NSMutableArray *searchHistoryTempArray = [NSMutableArray array];
         BOOL open = [db open];
         if (open) {
             //创表(若无) 1.完成分析表
@@ -834,12 +837,36 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
                 }
             }
             
+            //搜索历史表
+            NSString *execute4 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ Blob)", BASearchHistory, BASearchHistoryData];
+            BOOL createSearchHistoryTable = [db executeUpdate:execute4];
+            if (createSearchHistoryTable) {
+                NSLog(@"searchHistoryTable创表成功");
+            } else {
+                NSLog(@"searchHistoryTable创表失败");
+            }
+            
+            //再取出关注表来里的数据解档
+            NSString *select4 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID ASC", BASearchHistory];
+            FMResultSet *result4 = [db executeQuery:select4];
+            while (result4.next) {
+                
+                NSData *searchHistoryData = [result4 dataForColumn:BASearchHistoryData];
+                BARoomModel *roomModel = [NSKeyedUnarchiver unarchiveObjectWithData:searchHistoryData];
+                
+                if (roomModel) {
+                    [searchHistoryTempArray addObject:roomModel];
+                }
+            }
+            
             [db close];
         }
         _reportModelArray = tempArray;
         _noticeArray = noticeTempArray;
+        _searchHistoryArray = searchHistoryTempArray;
         
-        [BANotificationCenter postNotificationName:BANotificationUpdateReporsComplete object:nil userInfo:@{BAUserInfoKeyReportModelArray : _reportModelArray}];
+        [BANotificationCenter postNotificationName:BANotificationDataUpdateComplete object:nil userInfo:@{BAUserInfoKeyReportModelArray : _reportModelArray,
+                                                                                                          BAUserInfoKeySearchHistoryArray : _searchHistoryArray}];
     }];
 }
 
@@ -880,9 +907,9 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
             //判断是否为未完成分析表分别存入表单
             NSString *del;
             if (isInterruptAnalyzing) {
-                del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?);", BAAnalyzingReport, BAReportID];
+                del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BAAnalyzingReport, BAReportID];
             } else {
-                del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?);", BACompletedReport, BAReportID];
+                del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BACompletedReport, BAReportID];
             }
             BOOL success = [db executeUpdate:del, @(report.timeID)];
             if (!success) {
@@ -914,7 +941,7 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
         if (open) {
 
             //删除这个用户所有的标记
-            NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?);", BANotice, BANoticeID];
+            NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BANotice, BANoticeID];
             BOOL success = [db executeUpdate:del, @(bulletModel.uid.integerValue)];
             if (!success) {
                 NSLog(@"删除失败");
@@ -947,7 +974,7 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
         if (open) {
             
             //删除
-            NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?);", BANotice, BANoticeID];
+            NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BANotice, BANoticeID];
             BOOL success = [db executeUpdate:del, @(bulletModel.uid.integerValue)];
             if (!success) {
                 NSLog(@"删除失败");
@@ -957,6 +984,49 @@ static NSString *const BANoticeData = @"noticeData"; //关注表数据
                         [_noticeArray removeObject:obj];
                     }
                 }];
+            }
+            [db close];
+        }
+    }];
+}
+
+
+- (void)addSearchHistory:(BARoomModel *)roomModel{
+    
+    [_searchHistoryArray insertObject:roomModel atIndex:0];
+    
+    //存入本地
+    [_dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        
+        BOOL open = [db open];
+        if (open) {
+            
+            //判断是否为未完成分析表分别存入表单
+            NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BASearchHistory, BASearchHistoryData];
+            NSData *searchHistoryData = [NSKeyedArchiver archivedDataWithRootObject:roomModel];
+            BOOL success = [db executeUpdate:insert, searchHistoryData];
+            if (!success) {
+                NSLog(@"储存失败");
+            }
+            [db close];
+        }
+    }];
+}
+
+
+- (void)clearSearchHistory{
+    
+    [_searchHistoryArray removeAllObjects];
+    
+    [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        BOOL open = [db open];
+        if (open) {
+            
+            //判断是否为未完成分析表分别存入表单
+            NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BASearchHistory];
+            BOOL success = [db executeUpdate:del];
+            if (!success) {
+                NSLog(@"删除失败");
             }
             [db close];
         }

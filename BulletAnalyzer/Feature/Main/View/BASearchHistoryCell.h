@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class BARoomModel;
+
 @interface BASearchHistoryCell : UICollectionViewCell
+
+/**
+ 传入房间数据
+ */
+@property (nonatomic, strong) BARoomModel *roomModel;
 
 @end

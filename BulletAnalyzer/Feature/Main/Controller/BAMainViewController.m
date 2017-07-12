@@ -52,7 +52,8 @@
     [UIApplication sharedApplication].statusBarHidden = NO;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
-    _reportView.reportModelArray = [BAAnalyzerCenter defaultCenter].reportModelArray;
+    _reportView.searchHistoryArray = [BAAnalyzerCenter defaultCenter].searchHistoryArray.mutableCopy;
+    _reportView.reportModelArray = [BAAnalyzerCenter defaultCenter].reportModelArray.mutableCopy;
 }
 
 
@@ -133,10 +134,12 @@
 }
 
 
-- (void)reportModelArrayUpdated:(NSNotification *)sender{
-    NSMutableArray *array = sender.userInfo[BAUserInfoKeyReportModelArray];
+- (void)dataUpdated:(NSNotification *)sender{
+    NSMutableArray *searchHistoryArray = sender.userInfo[BAUserInfoKeySearchHistoryArray];
+    NSMutableArray *reportModelArray = sender.userInfo[BAUserInfoKeyReportModelArray];
     
-    _reportView.reportModelArray = array;
+    _reportView.searchHistoryArray = searchHistoryArray.mutableCopy;
+    _reportView.reportModelArray = reportModelArray.mutableCopy;
 }
 
 
@@ -203,7 +206,7 @@
     [BANotificationCenter addObserver:self selector:@selector(openBtnClicked:) name:BANotificationMainCellOpenBtnClicked object:nil];
     [BANotificationCenter addObserver:self selector:@selector(reportDelBtnClicked:) name:BANotificationMainCellReportDelBtnClicked object:nil];
     [BANotificationCenter addObserver:self selector:@selector(beginAnalyzing:) name:BANotificationBeginAnalyzing object:nil];
-    [BANotificationCenter addObserver:self selector:@selector(reportModelArrayUpdated:) name:BANotificationUpdateReporsComplete object:nil];
+    [BANotificationCenter addObserver:self selector:@selector(dataUpdated:) name:BANotificationDataUpdateComplete object:nil];
 }
 
 

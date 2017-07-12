@@ -13,6 +13,6 @@
 /**
  传入搜索历史
  */
-@property (nonatomic, strong) NSArray *searchHistoryArray;
+@property (nonatomic, strong) NSMutableArray *searchHistoryArray;
 
 @end

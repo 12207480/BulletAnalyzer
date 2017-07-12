@@ -11,6 +11,7 @@
 #import "BASearchHistoryCell.h"
 #import "BASocketTool.h"
 #import "BARoomModel.h"
+#import "BAAnalyzerCenter.h"
 
 static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReusedId";
 
@@ -58,6 +59,10 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
     if (_roomModel.room_status.integerValue == 1) {
         
         [[BASocketTool defaultSocket] connectSocketWithRoomId:_roomModel.room_id];
+        [[BAAnalyzerCenter defaultCenter] addSearchHistory:_roomModel];
+        [_searchHistoryArray insertObject:_roomModel atIndex:0];
+        [_collectionView reloadData];
+        
     } else {
         
         [BATool showHUDWithText:@"该房间未开播" ToView:self];
@@ -66,7 +71,9 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 
 - (void)historyDelBtnClicked{
-
+    [[BAAnalyzerCenter defaultCenter] clearSearchHistory];
+    [_searchHistoryArray removeAllObjects];
+    [_collectionView reloadData];
 }
 
 
@@ -74,7 +81,6 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
     if (_roomNumField.isFirstResponder) {
         [_roomNumField resignFirstResponder];
     }
-    
 }
 
 
@@ -84,7 +90,7 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 
 #pragma mark - public
-- (void)setSearchHistoryArray:(NSArray *)searchHistoryArray{
+- (void)setSearchHistoryArray:(NSMutableArray *)searchHistoryArray{
     _searchHistoryArray = searchHistoryArray;
     
     [_collectionView reloadData];
@@ -218,14 +224,37 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 10;
+    return _searchHistoryArray.count;
 }
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     BASearchHistoryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BASearchHistoryCellReusedId forIndexPath:indexPath];
+    cell.roomModel = _searchHistoryArray[indexPath.item];
     
     return cell;
+}
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    BARoomModel *roomModel = _searchHistoryArray[indexPath.item];
+    BAHttpParams *params = [BAHttpParams new];
+    params.roomId = roomModel.room_id;
+    
+    [BAHttpTool getRoomInfoWithParams:params success:^(BARoomModel *obj) {
+        
+        if (obj.room_status.integerValue == 1) {
+            
+            [[BASocketTool defaultSocket] connectSocketWithRoomId:roomModel.room_id];
+        } else {
+            [BATool showHUDWithText:@"该房间未开播" ToView:self];
+        }
+        
+    } fail:^(NSString *error) {
+        [BATool showHUDWithText:error ToView:self];
+    }];
+    
 }
 
 
@@ -246,7 +275,7 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     
-    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"] invertedSet];
     NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
     return [string isEqualToString:filtered];
 }

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class BAReportModel, BABulletModel;
+@class BAReportModel, BABulletModel, BARoomModel;
 
 @interface BAAnalyzerCenter : NSObject
 
@@ -16,6 +16,11 @@
  分析报告数组
  */
 @property (nonatomic, strong) NSMutableArray *reportModelArray;
+
+/**
+ 搜索历史数组
+ */
+@property (nonatomic, strong) NSMutableArray *searchHistoryArray;
 
 /**
  是否正在分析
@@ -70,6 +75,16 @@
 /**
  删除关注对象
  */
-- (void)delNotice:(BABulletModel *)BABulletModel;
+- (void)delNotice:(BABulletModel *)bulletModel;
+
+/**
+ 添加连接历史
+ */
+- (void)addSearchHistory:(BARoomModel *)roomModel;
+
+/**
+ 清空连接历史
+ */
+- (void)clearSearchHistory;
 
 @end

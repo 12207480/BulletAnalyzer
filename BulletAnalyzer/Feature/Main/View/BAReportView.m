@@ -43,7 +43,7 @@ static NSString *const BAAddReportCellReusedId = @"BAAddReportCellReusedId";
 
 #pragma mark ---public---
 - (void)setReportModelArray:(NSMutableArray *)reportModelArray{
-    _reportModelArray = reportModelArray.mutableCopy;
+    _reportModelArray = reportModelArray;
     
     BAReportModel *reportModel = [BAReportModel new];
     reportModel.addNewReport = YES;
@@ -153,6 +153,7 @@ static NSString *const BAAddReportCellReusedId = @"BAAddReportCellReusedId";
     if (reportModel.isAddNewReport) {
         BAAddReportCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BAAddReportCellReusedId forIndexPath:indexPath];
         cell.transform = indexPath.item == _reportModelArray.count * 500 ? CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 0), 1.1, 1.1) : CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 2 * BAPadding), 0.9, 0.9);
+        cell.searchHistoryArray = _searchHistoryArray;
         
         return cell;
     } else {

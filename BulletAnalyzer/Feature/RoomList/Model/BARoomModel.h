@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BARoomModel : NSObject
+@interface BARoomModel : NSObject <NSCoding>
 
 /**
  房间号
