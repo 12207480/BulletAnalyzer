@@ -122,22 +122,17 @@
     UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    toVC.view.frame = toVC.view.frame;
-    toVC.view.transform = CGAffineTransformMakeScale(1.3, 1.3);
-    toVC.view.alpha = 0;
-    
     UIView *containerView = [transitionContext containerView];
-    [containerView addSubview:fromVC.view];
     [containerView addSubview:toVC.view];
+    [containerView addSubview:fromVC.view];
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         
-        toVC.view.transform = CGAffineTransformIdentity;
-        toVC.view.alpha = 1;
+        fromVC.view.transform = CGAffineTransformMakeScale(1.3, 1.3);
+        fromVC.view.alpha = 0;
         
     } completion:^(BOOL finished) {
         
-        [toVC.view removeFromSuperview];
         [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
         if ([transitionContext transitionWasCancelled]) {
             //失败处理
