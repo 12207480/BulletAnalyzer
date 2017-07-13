@@ -92,7 +92,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [UIApplication sharedApplication].statusBarHidden = YES;
+    //[UIApplication sharedApplication].statusBarHidden = YES;
 }
 
 
@@ -175,9 +175,9 @@
     _iconView = [UIImageView imageViewWithFrame:CGRectMake(0, 0, BAScreenWidth / 4, BAScreenWidth / 4) image:nil];
     _iconView.centerX = BAScreenWidth * 3 / 4;
     _iconView.centerY = _nameLabel.bottom;
-    [_iconView sd_setImageWithURL:[NSURL URLWithString:_reportModel.avatar] placeholderImage:BAPlaceHolderImg];
     _iconView.layer.cornerRadius = _iconView.width / 2;
     _iconView.clipsToBounds = YES;
+    [_iconView sd_setImageWithURL:[NSURL URLWithString:_reportModel.avatar] placeholderImage:BAPlaceHolderImg];
     
     [_scrollView addSubview:_iconView];
     

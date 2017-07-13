@@ -92,6 +92,7 @@ static NSString *const BANotificationRoomListCellClicked = @"BANotificationRoomL
 static NSString *const BAUserInfoKeyRoomListCellClicked = @"RoomModel";
 static NSString *const BANotificationMainCellOpenBtnClicked = @"BANotificationMainCellOpenBtnClicked";
 static NSString *const BAUserInfoKeyMainCellOpenBtnClicked = @"ReportModel";
+static NSString *const BAUserInfoKeyMainCellOpenBtnFrame = @"OpenBtnFrame";
 static NSString *const BANotificationMainCellReportDelBtnClicked = @"BANotificationMainCellReportDelBtnClicked";
 static NSString *const BAUserInfoKeyMainCellReportDelBtnClicked = @"ReportModel";
 static NSString *const BANotificationMainCellHistoryDelBtnClicked = @"BANotificationMainCellHistoryDelBtnClicked";

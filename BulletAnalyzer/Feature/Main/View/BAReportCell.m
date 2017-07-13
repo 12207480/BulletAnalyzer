@@ -37,7 +37,10 @@
 
 #pragma mark - userInteraction
 - (void)openBtnClicked{
-    [BANotificationCenter postNotificationName:BANotificationMainCellOpenBtnClicked object:nil userInfo:@{BAUserInfoKeyMainCellOpenBtnClicked : _reportModel}];
+    
+    CGRect realRect = [self convertRect:_imgView.frame toView:BAKeyWindow];
+    [BANotificationCenter postNotificationName:BANotificationMainCellOpenBtnClicked object:nil userInfo:@{BAUserInfoKeyMainCellOpenBtnClicked : _reportModel,
+                                                                                                          BAUserInfoKeyMainCellOpenBtnFrame : [NSValue valueWithCGRect:realRect]}];
 }
 
 

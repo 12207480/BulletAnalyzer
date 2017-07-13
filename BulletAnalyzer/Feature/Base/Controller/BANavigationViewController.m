@@ -9,29 +9,26 @@
 
 #import "BANavigationViewController.h"
 #import "UIBarButtonItem+ZJExtension.h"
+#import "BATransition.h"
 
-@interface BANavigationViewController () <UIGestureRecognizerDelegate, UINavigationControllerDelegate>
+@interface BANavigationViewController () <UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate>
 
 @end
 
 @implementation BANavigationViewController
 
-
+#pragma mark - lifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.navigationBar setBackgroundImage:[UIImage imageWithColor:BANavigationBarColor] forBarMetrics:UIBarMetricsDefault];
-    self.navigationBar.contentMode = UIViewContentModeScaleAspectFill;
-    self.navigationBar.translucent = YES;
-    self.navigationBar.shadowImage = [UIImage imageWithColor:BANavigationBarColor];
-    self.navigationBar.tintColor = BAThemeColor;
-    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : BAWhiteColor};
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-
+    [self setupNavibationBar];
+    
     //设置全局右滑返回
     [self setupRightPanReturn];
-    
+
     self.delegate = self;
+    self.transitioningDelegate = self;
+    //self.modalPresentationStyle = UIModalPresentationCustom;
 }
 
 
@@ -48,7 +45,48 @@
 }
 
 
-#pragma mark ---每次push之后生成返回按钮----
+- (void)dealloc{
+    [BANotificationCenter removeObserver:self];
+}
+
+
+#pragma mark - private
+- (void)setupNavibationBar{
+
+    [self.navigationBar setBackgroundImage:[UIImage imageWithColor:BANavigationBarColor] forBarMetrics:UIBarMetricsDefault];
+    self.navigationBar.contentMode = UIViewContentModeScaleAspectFill;
+    self.navigationBar.translucent = YES;
+    self.navigationBar.shadowImage = [UIImage imageWithColor:BANavigationBarColor];
+    self.navigationBar.tintColor = BAThemeColor;
+    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : BAWhiteColor};
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+}
+
+
+#pragma mark - transitioningDelegate
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
+
+    //if (!_cycleRect.origin.x) {
+    //    _cycleRect = CGRectMake(BAScreenWidth / 2, BAScreenHeight / 2, 0, 0);
+    //}
+    //return [BATransition transitionWithType:BATransitionTypePresent animation:BATransitionAnimationCycle attribute:@{BATransitionAttributeCycleRect : [NSValue valueWithCGRect:_cycleRect]}];
+    
+    return [BATransition transitionWithType:BATransitionTypePresent animation:BATransitionAnimationGradient attribute:nil];
+}
+
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
+    
+    //if (!_cycleRect.origin.x) {
+    //    _cycleRect = CGRectMake(BAScreenWidth / 2, BAScreenHeight / 2, 0, 0);
+    //}
+    //return [BATransition transitionWithType:BATransitionTypeDismiss animation:BATransitionAnimationCycle attribute:@{BATransitionAttributeCycleRect : [NSValue valueWithCGRect:_cycleRect]}];
+    
+    return [BATransition transitionWithType:BATransitionTypeDismiss animation:BATransitionAnimationGradient attribute:nil];
+}
+
+
+#pragma mark - 每次push之后生成返回按钮
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
     if (self.viewControllers.count > 0) {
         viewController.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_black"  highlightedImg:nil target:self action:@selector(popViewController)];
@@ -128,7 +166,7 @@
 }
 
 
-#pragma mark ---处理全局右滑返回---
+#pragma mark - 处理全局右滑返回
 - (void)setupRightPanReturn{
     
     // 获取系统自带滑动手势的target对象

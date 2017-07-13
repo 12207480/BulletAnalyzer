@@ -100,11 +100,13 @@
 
 - (void)openBtnClicked:(NSNotification *)sender{
     BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellOpenBtnClicked];
-
+    CGRect rect = [sender.userInfo[BAUserInfoKeyMainCellOpenBtnFrame] CGRectValue];
+    
     BABulletViewController *bulletVC = [[BABulletViewController alloc] init];
     bulletVC.reportModel = reportModel;
 
     BANavigationViewController *navigationVc = [[BANavigationViewController alloc] initWithRootViewController:bulletVC];
+    navigationVc.cycleRect = rect;
     [self presentViewController:navigationVc animated:YES completion:nil];
 }
 

@@ -45,9 +45,11 @@
 
 #pragma mark - public
 - (void)setBulletModel:(BABulletModel *)bulletModel{
-    _bulletModel = bulletModel;
     
-    [_icon sd_setImageWithURL:[NSURL URLWithString:bulletModel.iconSmall] placeholderImage:BAPlaceHolderImg];
+    if (![bulletModel.iconSmall isEqualToString:_bulletModel.iconSmall]) {
+        [_icon sd_setImageWithURL:[NSURL URLWithString:bulletModel.iconSmall] placeholderImage:BAPlaceHolderImg];
+    }
+    _bulletModel = bulletModel;
     _nameLabel.text = bulletModel.nn;
     _contentLabel.text = bulletModel.txt;
     
@@ -131,7 +133,6 @@
     
     [self.contentView addSubview:_unNoticeBtn];
 }
-
 
 
 @end

@@ -11,6 +11,7 @@
 
 @implementation UIImageView (ZJRadius)
 static bool _needClipsToBounds;
+static UIImage *_image;
 
 + (void)load{
     

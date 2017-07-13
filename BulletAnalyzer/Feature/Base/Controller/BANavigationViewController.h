@@ -15,4 +15,9 @@
  */
 @property (nonatomic, assign, getter=isBackGestureEnable) BOOL backGestureEnable;
 
+/**
+ present时圆圈的大小
+ */
+@property (nonatomic, assign) CGRect cycleRect;
+
 @end
