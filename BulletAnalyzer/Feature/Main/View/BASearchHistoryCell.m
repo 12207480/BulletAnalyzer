@@ -41,7 +41,7 @@
     CGFloat imgWidth = BAReportCellWidth / 8;
     _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(BAReportCellWidth / 8 - imgWidth / 2, BAPadding, imgWidth , imgWidth)];
     _imgView.layer.cornerRadius = imgWidth / 2;
-    _imgView.layer.masksToBounds = YES;
+    _imgView.clipsToBounds = YES;
     
     [self addSubview:_imgView];
     

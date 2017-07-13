@@ -208,7 +208,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         _repeatTime = 1.f; //默认5秒释放一次弹幕
     }
 
-    _cleanTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatTime target:self selector:@selector(cleanMemory) userInfo:nil repeats:YES];
+    _cleanTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatTime target:self selector:@selector(caculate) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_cleanTimer forMode:NSRunLoopCommonModes];
 }
 
@@ -401,7 +401,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 }
 
 
-- (void)cleanMemory{
+//计算
+- (void)caculate{
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
     _timeRepeatCount += 1;
@@ -410,7 +411,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         //根据用户发言的次数排序
         NSInteger params = 5;
-        if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //5秒处理一次用户/用户等级
+        if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //5秒处理一次用户/用户等级/句子
         
             //只保留最新100个弹幕
             if (_bulletsArray.count > 200) {
@@ -454,7 +455,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         }
         
         params = 30;
-        if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //30秒处理弹幕数量 以及当前观看人数 主播体重
+        if ((double)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //30秒处理弹幕数量 以及当前观看人数 主播体重 等级分布
             
             //新建弹幕信息与时间关系的模型
             BACountTimeModel *countTimeModel = [BACountTimeModel new];
@@ -463,6 +464,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             
             _timeCountModel = countTimeModel;
             [self getRoomInfo];
+            [self caculateLevelPoint];
             
             [_countTimeArray addObject:countTimeModel];
             
@@ -504,8 +506,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             //分析发送人
             [self analyzingUser:bulletModel];
         }];
-        
-        [self caculateLevelPoint];
     });
 }
 
@@ -682,11 +682,10 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         [tempCountPointArray addObject:[NSValue valueWithCGPoint:point]];
     }];
     
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(2);
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    [_levelCountPointArray removeAllObjects];
+    if (_levelCountArray.count) {
+        [_levelCountPointArray removeAllObjects];
+    }
     [_levelCountPointArray addObjectsFromArray:tempCountPointArray];
-    dispatch_semaphore_signal(semaphore);
 }
 
 

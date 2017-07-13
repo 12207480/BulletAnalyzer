@@ -177,7 +177,7 @@
     _iconView.centerY = _nameLabel.bottom;
     [_iconView sd_setImageWithURL:[NSURL URLWithString:_reportModel.avatar] placeholderImage:BAPlaceHolderImg];
     _iconView.layer.cornerRadius = _iconView.width / 2;
-    _iconView.layer.masksToBounds = YES;
+    _iconView.clipsToBounds = YES;
     
     [_scrollView addSubview:_iconView];
     

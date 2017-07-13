@@ -41,7 +41,7 @@
 - (void)setupValue{
     _valueView = [UIView new];
     _valueView.frame = CGRectMake(0, 0, 0, self.height);
-    _valueView.layer.masksToBounds = YES;
+    _valueView.clipsToBounds = YES;
     
     [self addSubview:_valueView];
     

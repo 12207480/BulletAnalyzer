@@ -172,7 +172,7 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
     _icon = [[UIImageView alloc] initWithFrame:CGRectMake(_roomNumBgView.x + 2 * realPadding, _roomNumField.y + 5, 30, 30)];
     _icon.alpha = 0;
     _icon.layer.cornerRadius = 15;
-    _icon.layer.masksToBounds = YES;
+    _icon.clipsToBounds = YES;
     
     [self.contentView addSubview:_icon];
     

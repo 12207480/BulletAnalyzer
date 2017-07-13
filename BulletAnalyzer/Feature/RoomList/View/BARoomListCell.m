@@ -55,7 +55,7 @@
     _bgView.backgroundColor = BAWhiteColor;
     _bgView.layer.borderColor = [BABlackColor colorWithAlphaComponent:0.2].CGColor;
     _bgView.layer.borderWidth = 0.8;
-    _bgView.layer.masksToBounds = YES;
+    _bgView.clipsToBounds = YES;
     
     [self.contentView addSubview:_bgView];
     

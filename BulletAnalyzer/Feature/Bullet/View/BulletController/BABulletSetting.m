@@ -118,7 +118,7 @@
     
     _filterBtn = [UIButton buttonWithFrame:CGRectMake(BAScreenWidth / 4, self.height / 5, BAScreenWidth / 2, self.height / 4) title:@"    弹幕筛选" color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:BAThemeColor] target:self action:@selector(btnClicked:)];
     _filterBtn.layer.cornerRadius = _filterBtn.height / 2;
-    _filterBtn.layer.masksToBounds = YES;
+    _filterBtn.clipsToBounds = YES;
     _filterBtn.tag = 0;
     [_filterBtn setImage:[UIImage imageNamed:@"filterImg"] forState:UIControlStateNormal];
     
@@ -126,7 +126,7 @@
     
     _speedBtn = [UIButton buttonWithFrame:CGRectMake(BAScreenWidth / 4, self.height * 3 / 5, BAScreenWidth / 2, self.height / 4) title:@"    弹幕速度" color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:BAThemeColor] target:self action:@selector(btnClicked:)];
     _speedBtn.layer.cornerRadius = _speedBtn.height / 2;
-    _speedBtn.layer.masksToBounds = YES;
+    _speedBtn.clipsToBounds = YES;
     _speedBtn.tag = 1;
     [_speedBtn setImage:[UIImage imageNamed:@"speedImg"] forState:UIControlStateNormal];
     

@@ -59,7 +59,7 @@
     
     _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(_countLabel.right, BAPadding, BABulletActiveCellHeight - 2 * BAPadding, BABulletActiveCellHeight - 2 * BAPadding)];
     _iconView.layer.cornerRadius = _iconView.width / 2;
-    _iconView.layer.masksToBounds = YES;
+    _iconView.clipsToBounds = YES;
     
     [self.contentView addSubview:_iconView];
     

@@ -1326,7 +1326,7 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
         centerView.layer.shadowOpacity = 0.f;
         centerView.layer.shadowOffset = CGSizeMake(0, -3);
         centerView.layer.shadowPath = NULL;
-        centerView.layer.masksToBounds = YES;
+        centerView.clipsToBounds = YES;
     }
 }
 

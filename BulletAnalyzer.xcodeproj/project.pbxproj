@@ -201,6 +201,8 @@
 		F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */; };
 		F2587C091EFB64520026DFF5 /* BAGiftValueModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C081EFB64520026DFF5 /* BAGiftValueModel.m */; };
 		F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */; };
+		F293DFAA1F17044200404F46 /* CALayer+ZJRadius.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DFA91F17044200404F46 /* CALayer+ZJRadius.m */; };
+		F293DFAD1F171BCE00404F46 /* UIImageView+ZJRadius.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DFAC1F171BCE00404F46 /* UIImageView+ZJRadius.m */; };
 		F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */; };
 		F2A8BE8A1F1470FC00DC9B3C /* BASearchHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE891F1470FC00DC9B3C /* BASearchHistoryCell.m */; };
 		F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79CE1EE501F200927776 /* BATableViewCell.m */; };
@@ -646,6 +648,10 @@
 		F2587C081EFB64520026DFF5 /* BAGiftValueModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGiftValueModel.m; sourceTree = "<group>"; };
 		F2587C0D1EFB93B00026DFF5 /* BASentenceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceModel.h; sourceTree = "<group>"; };
 		F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceModel.m; sourceTree = "<group>"; };
+		F293DFA81F17044200404F46 /* CALayer+ZJRadius.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+ZJRadius.h"; sourceTree = "<group>"; };
+		F293DFA91F17044200404F46 /* CALayer+ZJRadius.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+ZJRadius.m"; sourceTree = "<group>"; };
+		F293DFAB1F171BCE00404F46 /* UIImageView+ZJRadius.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ZJRadius.h"; sourceTree = "<group>"; };
+		F293DFAC1F171BCE00404F46 /* UIImageView+ZJRadius.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ZJRadius.m"; sourceTree = "<group>"; };
 		F2A8BE851F14523500DC9B3C /* BAAddReportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAAddReportCell.h; sourceTree = "<group>"; };
 		F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAAddReportCell.m; sourceTree = "<group>"; };
 		F2A8BE881F1470FC00DC9B3C /* BASearchHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASearchHistoryCell.h; sourceTree = "<group>"; };
@@ -1286,6 +1292,10 @@
 				38A5A0BF1EE2615A00CFF645 /* NSData+HexExtension.m */,
 				F231C7C41EE541ED00EB0F79 /* NSObject+ZJUIExtension.h */,
 				F231C7C51EE541ED00EB0F79 /* NSObject+ZJUIExtension.m */,
+				F293DFA81F17044200404F46 /* CALayer+ZJRadius.h */,
+				F293DFA91F17044200404F46 /* CALayer+ZJRadius.m */,
+				F293DFAB1F171BCE00404F46 /* UIImageView+ZJRadius.h */,
+				F293DFAC1F171BCE00404F46 /* UIImageView+ZJRadius.m */,
 			);
 			name = "Category(分类)";
 			path = Category;
@@ -1982,6 +1992,7 @@
 				388A85E41EE4108C00A0BC5B /* BABulletModel.m in Sources */,
 				38A5A0DF1EE2AA6800CFF645 /* MJPropertyKey.m in Sources */,
 				388A86C11EE4424600A0BC5B /* MJRefreshNormalHeader.m in Sources */,
+				F293DFAA1F17044200404F46 /* CALayer+ZJRadius.m in Sources */,
 				388A86421EE43EA400A0BC5B /* NSArray+MASAdditions.m in Sources */,
 				388A86101EE4231300A0BC5B /* BAHttpParams.m in Sources */,
 				F222A47D1F0B44D000E70ADA /* LOTLayerGroup.m in Sources */,
@@ -2036,6 +2047,7 @@
 				38A5A0E21EE2AA6800CFF645 /* NSObject+MJCoding.m in Sources */,
 				38A5A0E31EE2AA6800CFF645 /* NSObject+MJKeyValue.m in Sources */,
 				388A86BD1EE4424600A0BC5B /* MJRefreshBackGifFooter.m in Sources */,
+				F293DFAD1F171BCE00404F46 /* UIImageView+ZJRadius.m in Sources */,
 				388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */,
 				F222A4671F0B44D000E70ADA /* LOTRectShapeLayer.m in Sources */,
 				F222A46B1F0B44D000E70ADA /* LOTAnimatableColorValue.m in Sources */,

@@ -112,7 +112,7 @@
     _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(BAReportCellWidth / 2 - imgWidth / 2, _nameLabel.bottom + 2 * realPadding, imgWidth, imgWidth)];
     _imgView.contentMode = UIViewContentModeScaleAspectFill;
     _imgView.layer.cornerRadius = imgWidth / 2;
-    _imgView.layer.masksToBounds = YES;
+    _imgView.clipsToBounds = YES;
     
     [self.contentView addSubview:_imgView];
     

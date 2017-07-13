@@ -78,7 +78,7 @@
     _icon = [[UIImageView alloc] initWithFrame:CGRectMake(4 * BAPadding, 2 * BAPadding, iconHeight, iconHeight)];
     _icon.contentMode = UIViewContentModeScaleAspectFill;
     _icon.layer.cornerRadius = iconHeight / 2;
-    _icon.layer.masksToBounds = YES;
+    _icon.clipsToBounds = YES;
     
     [self.contentView addSubview:_icon];
     
