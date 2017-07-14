@@ -51,6 +51,10 @@
 
 #pragma mark - public
 - (void)setReportModel:(BAReportModel *)reportModel{
+    
+    if (![_reportModel.avatar isEqualToString:reportModel.avatar]) {
+        [_imgView sd_setImageWithURL:[NSURL URLWithString:reportModel.avatar] placeholderImage:BAPlaceHolderImg];
+    }
     _reportModel = reportModel;
     
     if (reportModel) {
@@ -62,7 +66,6 @@
 #pragma mark - private
 - (void)setupStatus{
     _nameLabel.text = _reportModel.name;
-    [_imgView sd_setImageWithURL:[NSURL URLWithString:_reportModel.avatar] placeholderImage:BAPlaceHolderImg];
     _titleLabel.text = _reportModel.roomName;
     _timeLabel.text = _reportModel.timeDescription;
     [self setInfoWithBulletCount:[NSString stringWithFormat:@" %zd", _reportModel.totalBulletCount] giftCount:[NSString stringWithFormat:@" %zd", _reportModel.giftsArray.count]];

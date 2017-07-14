@@ -71,7 +71,7 @@
     //}
     //return [BATransition transitionWithType:BATransitionTypePresent animation:BATransitionAnimationCycle attribute:@{BATransitionAttributeCycleRect : [NSValue valueWithCGRect:_cycleRect]}];
     
-    return [BATransition transitionWithType:BATransitionTypePresent animation:BATransitionAnimationGradient attribute:nil];
+    return [BATransition transitionWithType:BATransitionTypePresent animation:BATransitionAnimationMove attribute:nil];
 }
 
 
@@ -82,7 +82,7 @@
     //}
     //return [BATransition transitionWithType:BATransitionTypeDismiss animation:BATransitionAnimationCycle attribute:@{BATransitionAttributeCycleRect : [NSValue valueWithCGRect:_cycleRect]}];
     
-    return [BATransition transitionWithType:BATransitionTypeDismiss animation:BATransitionAnimationGradient attribute:nil];
+    return [BATransition transitionWithType:BATransitionTypeDismiss animation:BATransitionAnimationMove attribute:nil];
 }
 
 

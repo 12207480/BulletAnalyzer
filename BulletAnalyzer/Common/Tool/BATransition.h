@@ -16,7 +16,8 @@ typedef NS_ENUM(NSUInteger, BATransitionType) {
 typedef NS_ENUM(NSUInteger, BATransitionAnimation) {
     BATransitionAnimationDamping = 0,//弹性动画
     BATransitionAnimationCycle = 1, //圆圈切割动画
-    BATransitionAnimationGradient = 2
+    BATransitionAnimationGradient = 2, //渐变缩放动画
+    BATransitionAnimationMove = 3 //视图移动动画
 };
 
 static NSString *const BATransitionAttributeCycleRect = @"BATransitionAttributeCycleRect";

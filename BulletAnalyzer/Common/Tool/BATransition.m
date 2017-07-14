@@ -60,6 +60,11 @@
             [self gradientPresentWithContext:transitionContext];
             break;
             
+        case BATransitionAnimationMove:
+            
+            [self movePresentWithContext:transitionContext];
+            break;
+            
         default:
             [self cyclePresentWithContext:transitionContext];
             break;
@@ -81,11 +86,69 @@
             [self gradientDismissWithContext:transitionContext];
             break;
             
+        case BATransitionAnimationMove:
+            
+            [self moveDismissWithContext:transitionContext];
+            break;
+            
         default:
             
             [self cycleDismissWithContext:transitionContext];
             break;
     }
+}
+
+
+#pragma mark - 视图移动动画
+- (void)movePresentWithContext:(id<UIViewControllerContextTransitioning>)transitionContext{
+    
+    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    
+    toVC.view.transform = CGAffineTransformMakeTranslation(0, BAScreenHeight);
+    
+    UIView *containerView = [transitionContext containerView];
+    [containerView addSubview:fromVC.view];
+    [containerView addSubview:toVC.view];
+    
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+        
+        toVC.view.transform = CGAffineTransformIdentity;
+        fromVC.view.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(0, -BAScreenHeight / 3), 1.3, 1.3);
+        
+    } completion:^(BOOL finished) {
+        
+        [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+        if ([transitionContext transitionWasCancelled]) {
+            //失败处理
+        }
+    }];
+}
+
+
+- (void)moveDismissWithContext:(id<UIViewControllerContextTransitioning>)transitionContext{
+    
+    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    
+    UIView *containerView = [transitionContext containerView];
+    [containerView addSubview:toVC.view];
+    [containerView addSubview:fromVC.view];
+    
+    toVC.view.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(0, -BAScreenHeight / 3), 1.3, 1.3);
+    
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+        
+        fromVC.view.transform = CGAffineTransformMakeTranslation(0, BAScreenHeight);
+        toVC.view.transform = CGAffineTransformIdentity;
+        
+    } completion:^(BOOL finished) {
+        
+        [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+        if ([transitionContext transitionWasCancelled]) {
+            //失败处理
+        }
+    }];
 }
 
 
