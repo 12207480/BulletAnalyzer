@@ -66,9 +66,9 @@
 #pragma mark - transitioningDelegate
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
 
-    //if (!_cycleRect.origin.x) {
-    //    _cycleRect = CGRectMake(BAScreenWidth / 2, BAScreenHeight / 2, 0, 0);
-    //}
+//    if (!_cycleRect.origin.x) {
+//        _cycleRect = CGRectMake(BAScreenWidth / 2, BAScreenHeight / 2, 0, 0);
+//    }
     //return [BATransition transitionWithType:BATransitionTypePresent animation:BATransitionAnimationCycle attribute:@{BATransitionAttributeCycleRect : [NSValue valueWithCGRect:_cycleRect]}];
     
     return [BATransition transitionWithType:BATransitionTypePresent animation:BATransitionAnimationMove attribute:nil];
@@ -77,9 +77,9 @@
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
     
-    //if (!_cycleRect.origin.x) {
-    //    _cycleRect = CGRectMake(BAScreenWidth / 2, BAScreenHeight / 2, 0, 0);
-    //}
+//    if (!_cycleRect.origin.x) {
+//        _cycleRect = CGRectMake(BAScreenWidth / 2, BAScreenHeight / 2, 0, 0);
+//    }
     //return [BATransition transitionWithType:BATransitionTypeDismiss animation:BATransitionAnimationCycle attribute:@{BATransitionAttributeCycleRect : [NSValue valueWithCGRect:_cycleRect]}];
     
     return [BATransition transitionWithType:BATransitionTypeDismiss animation:BATransitionAnimationMove attribute:nil];

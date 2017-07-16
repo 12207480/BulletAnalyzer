@@ -52,6 +52,7 @@
     
     switch (_animation) {
         case BATransitionAnimationDamping:
+            
             [self dampingPresentWithContext:transitionContext];
             break;
             
@@ -61,11 +62,17 @@
             break;
             
         case BATransitionAnimationMove:
-            
+    
             [self movePresentWithContext:transitionContext];
             break;
             
+        case BATransitionAnimationJelly:
+            
+            [self jellyPresentWithContext:transitionContext];
+            break;
+            
         default:
+            
             [self cyclePresentWithContext:transitionContext];
             break;
     }
@@ -91,11 +98,91 @@
             [self moveDismissWithContext:transitionContext];
             break;
             
+        case BATransitionAnimationJelly:
+            
+            [self jellyDismissWithContext:transitionContext];
+            break;
+            
         default:
             
             [self cycleDismissWithContext:transitionContext];
             break;
     }
+}
+
+
+#pragma mark - 果冻动画
+- (void)jellyPresentWithContext:(id<UIViewControllerContextTransitioning>)transitionContext{
+    
+    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    
+    UIView *containerView = [transitionContext containerView];
+    [containerView addSubview:fromVC.view];
+    [containerView addSubview:toVC.view];
+    
+    toVC.view.layer.transform = CATransform3DMakeTranslation(0, BAScreenHeight, 0);
+    
+    CATransform3D transform3D = CATransform3DIdentity;
+    transform3D.m12 = -0.25;
+    
+    [UIView animateWithDuration:2 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        
+        fromVC.view.layer.transform = CATransform3DScale(CATransform3DTranslate(transform3D, 0, -BAScreenHeight / 2, 0), 1, 1, 1);
+        toVC.view.layer.transform = CATransform3DScale(CATransform3DTranslate(transform3D, 0, BAScreenHeight / 2, 0), 1, 1, 1);
+        
+    } completion:^(BOOL finished) {
+        
+        [UIView animateWithDuration:6.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0 options:UIViewAnimationOptionCurveLinear animations:^{
+            
+            fromVC.view.layer.transform = CATransform3DTranslate(CATransform3DIdentity, 0, -BAScreenHeight, 0);
+            toVC.view.layer.transform = CATransform3DIdentity;
+            
+        } completion:^(BOOL finished) {
+            
+            [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+            if ([transitionContext transitionWasCancelled]) {
+                //失败处理
+            }
+        }];
+    }];
+}
+
+
+- (void)jellyDismissWithContext:(id<UIViewControllerContextTransitioning>)transitionContext{
+    
+    UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    
+    UIView *containerView = [transitionContext containerView];
+    [containerView addSubview:toVC.view];
+    [containerView addSubview:fromVC.view];
+    
+    toVC.view.layer.transform = CATransform3DMakeTranslation(0, -BAScreenHeight, 0);
+    
+    CATransform3D transform3D = CATransform3DIdentity;
+    transform3D.m12 = 0.25;
+    
+    [UIView animateWithDuration:2 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+    
+        fromVC.view.layer.transform = CATransform3DScale(CATransform3DTranslate(transform3D, 0, BAScreenHeight / 2, 0), 1, 1, 1);
+        toVC.view.layer.transform = CATransform3DScale(CATransform3DTranslate(transform3D, 0, -BAScreenHeight / 2, 0), 1, 1, 1);
+        
+    } completion:^(BOOL finished) {
+        
+        [UIView animateWithDuration:6.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0 options:UIViewAnimationOptionCurveLinear animations:^{
+            
+            fromVC.view.layer.transform = CATransform3DTranslate(CATransform3DIdentity, 0, BAScreenHeight, 0);
+            toVC.view.layer.transform = CATransform3DIdentity;
+            
+        } completion:^(BOOL finished) {
+            
+            [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+            if ([transitionContext transitionWasCancelled]) {
+                //失败处理
+            }
+        }];
+    }];
 }
 
 

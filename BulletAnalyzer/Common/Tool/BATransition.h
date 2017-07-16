@@ -14,10 +14,11 @@ typedef NS_ENUM(NSUInteger, BATransitionType) {
 };
 
 typedef NS_ENUM(NSUInteger, BATransitionAnimation) {
-    BATransitionAnimationDamping = 0,//弹性动画
-    BATransitionAnimationCycle = 1, //圆圈切割动画
+    BATransitionAnimationDamping = 0,//弹性动画 //须传弹出高度 key为BATransitionAttributeDampingHeight
+    BATransitionAnimationCycle = 1, //圆圈切割动画 //须传圆形起始尺寸 key为BATransitionAttributeCycleRect
     BATransitionAnimationGradient = 2, //渐变缩放动画
-    BATransitionAnimationMove = 3 //视图移动动画
+    BATransitionAnimationMove = 3, //视图移动动画
+    BATransitionAnimationJelly = 4, //果冻动画
 };
 
 static NSString *const BATransitionAttributeCycleRect = @"BATransitionAttributeCycleRect";
