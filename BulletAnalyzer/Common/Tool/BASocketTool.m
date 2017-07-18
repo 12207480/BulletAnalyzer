@@ -12,7 +12,6 @@
 #import "BAAnalyzerCenter.h"
 #import "NSData+HexExtension.h"
 
-
 @implementation BASocketTool {
     NSTimer *_heartbeatTimer;
     NSString *_roomId;
