@@ -56,7 +56,8 @@
 #define BADark2BackgroundColor BAColor(14, 15, 26)//背景颜色
 #define BADark3BackgroundColor BAColor(22, 24, 35)//背景颜色
 #define BAThemeColor BAColor(249, 118, 143) //常用的主色
-#define BAGurdientThemeColor  BAColor(91, 38, 228) //渐变蓝主色
+#define BAGurdientPinkColor  BAColor(255, 129, 227) //渐变粉主色
+#define BAGurdientBlueColor  BAColor(99, 91, 255) //渐变蓝主色
 #define BAHighlightThemeColor BAColor(0, 179, 179) //高亮主题色
 #define BAWhiteColor [UIColor whiteColor]
 #define BABlackColor [UIColor blackColor]

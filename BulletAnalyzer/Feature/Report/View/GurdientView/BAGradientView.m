@@ -41,7 +41,7 @@
     _gradientLayer.frame = self.bounds;
     _gradientLayer.startPoint = CGPointMake(0, 0);
     _gradientLayer.endPoint = CGPointMake(0, 1);
-    _gradientLayer.colors = @[(__bridge id)BAGurdientThemeColor.CGColor,(__bridge id)BAThemeColor.CGColor];
+    _gradientLayer.colors = @[(__bridge id)BAGurdientBlueColor.CGColor,(__bridge id)BAGurdientPinkColor.CGColor];
     
     [self.layer addSublayer:_gradientLayer];
 }
