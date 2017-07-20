@@ -207,6 +207,9 @@
 		F2DA672F1F174BF3003BD66A /* BATransition.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DA672E1F174BF3003BD66A /* BATransition.m */; };
 		F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79CE1EE501F200927776 /* BATableViewCell.m */; };
 		F2DF79D21EE5022D00927776 /* BARoomListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79D11EE5022D00927776 /* BARoomListCell.m */; };
+		F2EF75581F20753D00B0D70B /* BAReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75571F20753D00B0D70B /* BAReportViewController.m */; };
+		F2EF75671F2082FD00B0D70B /* BAGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75661F2082FD00B0D70B /* BAGradientView.m */; };
+		F2EF756A1F20A56100B0D70B /* BAInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75691F20A56100B0D70B /* BAInfoView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -660,6 +663,12 @@
 		F2DF79CE1EE501F200927776 /* BATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATableViewCell.m; sourceTree = "<group>"; };
 		F2DF79D01EE5022D00927776 /* BARoomListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARoomListCell.h; sourceTree = "<group>"; };
 		F2DF79D11EE5022D00927776 /* BARoomListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BARoomListCell.m; sourceTree = "<group>"; };
+		F2EF75561F20753D00B0D70B /* BAReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAReportViewController.h; sourceTree = "<group>"; };
+		F2EF75571F20753D00B0D70B /* BAReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAReportViewController.m; sourceTree = "<group>"; };
+		F2EF75651F2082FD00B0D70B /* BAGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGradientView.h; sourceTree = "<group>"; };
+		F2EF75661F2082FD00B0D70B /* BAGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGradientView.m; sourceTree = "<group>"; };
+		F2EF75681F20A56100B0D70B /* BAInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAInfoView.h; sourceTree = "<group>"; };
+		F2EF75691F20A56100B0D70B /* BAInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAInfoView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1100,6 +1109,7 @@
 				388A85F71EE4179F00A0BC5B /* Main(主界面) */,
 				388A85FB1EE4179F00A0BC5B /* RoomList(直播间列表) */,
 				388A85D41EE4108C00A0BC5B /* Bullet(弹幕) */,
+				F2EF75521F20750900B0D70B /* Report(报告) */,
 			);
 			name = "Feature(功能)";
 			path = Feature;
@@ -1743,6 +1753,80 @@
 			path = CountReport;
 			sourceTree = "<group>";
 		};
+		F2EF75521F20750900B0D70B /* Report(报告) */ = {
+			isa = PBXGroup;
+			children = (
+				F2EF75531F20752300B0D70B /* Controller */,
+				F2EF75541F20752300B0D70B /* Model */,
+				F2EF75551F20752300B0D70B /* View */,
+			);
+			name = "Report(报告)";
+			path = Report;
+			sourceTree = "<group>";
+		};
+		F2EF75531F20752300B0D70B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F2EF75561F20753D00B0D70B /* BAReportViewController.h */,
+				F2EF75571F20753D00B0D70B /* BAReportViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		F2EF75541F20752300B0D70B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F2EF75551F20752300B0D70B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F2EF75641F2082FD00B0D70B /* GurdientView(渐变背景图) */,
+				F2EF755F1F2080D600B0D70B /* Menu(菜单) */,
+				F2EF755D1F20803B00B0D70B /* Indicator(指示器) */,
+				F2EF755E1F20803B00B0D70B /* InfoView(主播信息) */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F2EF755D1F20803B00B0D70B /* Indicator(指示器) */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Indicator(指示器)";
+			path = Indicator;
+			sourceTree = "<group>";
+		};
+		F2EF755E1F20803B00B0D70B /* InfoView(主播信息) */ = {
+			isa = PBXGroup;
+			children = (
+				F2EF75681F20A56100B0D70B /* BAInfoView.h */,
+				F2EF75691F20A56100B0D70B /* BAInfoView.m */,
+			);
+			name = "InfoView(主播信息)";
+			path = InfoView;
+			sourceTree = "<group>";
+		};
+		F2EF755F1F2080D600B0D70B /* Menu(菜单) */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Menu(菜单)";
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		F2EF75641F2082FD00B0D70B /* GurdientView(渐变背景图) */ = {
+			isa = PBXGroup;
+			children = (
+				F2EF75651F2082FD00B0D70B /* BAGradientView.h */,
+				F2EF75661F2082FD00B0D70B /* BAGradientView.m */,
+			);
+			name = "GurdientView(渐变背景图)";
+			path = GurdientView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1927,6 +2011,7 @@
 				388AFFE11EE045F90031DE53 /* GCDAsyncUdpSocket.m in Sources */,
 				388A86B51EE4424600A0BC5B /* MJRefreshAutoFooter.m in Sources */,
 				388A85F31EE4163200A0BC5B /* MMDrawerBarButtonItem.m in Sources */,
+				F2EF75671F2082FD00B0D70B /* BAGradientView.m in Sources */,
 				F231C7891EE5097200EB0F79 /* UIView+ZJExtension.m in Sources */,
 				388AFFE01EE045F90031DE53 /* GCDAsyncSocket.m in Sources */,
 				388A86011EE417D200A0BC5B /* BAMainViewController.m in Sources */,
@@ -1940,6 +2025,7 @@
 				386A7AE11EF7ED58004AA427 /* BAFansReport.m in Sources */,
 				388A85C71EE40C2B00A0BC5B /* AFURLRequestSerialization.m in Sources */,
 				F21BD4341EE91DFD0079312C /* FMDatabase.m in Sources */,
+				F2EF756A1F20A56100B0D70B /* BAInfoView.m in Sources */,
 				F21BD4261EE915660079312C /* BAAnalyzerCenter.mm in Sources */,
 				388A00011EE04A030031DE53 /* BASocketTool.m in Sources */,
 				388A86BA1EE4424600A0BC5B /* MJRefreshAutoGifFooter.m in Sources */,
@@ -2069,6 +2155,7 @@
 				388AFFE31EE045F90031DE53 /* DDAbstractDatabaseLogger.m in Sources */,
 				F222A4841F0B44D000E70ADA /* LOTShapeStroke.m in Sources */,
 				F231C7B41EE509F700EB0F79 /* SDWebImagePrefetcher.m in Sources */,
+				F2EF75581F20753D00B0D70B /* BAReportViewController.m in Sources */,
 				F222A4641F0B44D000E70ADA /* LOTGroupLayerView.m in Sources */,
 				38A5A0EF1EE2C6C000CFF645 /* BABasicInfoModel.m in Sources */,
 			);

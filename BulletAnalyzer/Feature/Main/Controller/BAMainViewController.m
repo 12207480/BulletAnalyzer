@@ -8,6 +8,7 @@
 
 #import "BAMainViewController.h"
 #import "BABulletViewController.h"
+#import "BAReportViewController.h"
 #import "BAReportView.h"
 #import "UIViewController+MMDrawerController.h"
 #import "BASocketTool.h"
@@ -102,7 +103,7 @@
     BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellOpenBtnClicked];
     CGRect rect = [sender.userInfo[BAUserInfoKeyMainCellOpenBtnFrame] CGRectValue];
     
-    BABulletViewController *bulletVC = [[BABulletViewController alloc] init];
+    BAReportViewController *bulletVC = [[BAReportViewController alloc] init];
     bulletVC.reportModel = reportModel;
 
     BANavigationViewController *navigationVc = [[BANavigationViewController alloc] initWithRootViewController:bulletVC];
