@@ -57,11 +57,11 @@
     [self addSubview:_avatarView];
     
     CGFloat nameHeight = avatarWidth / 4;
-    _nameLabel = [UILabel labelWithFrame:CGRectMake(2 * BAPadding, 2 * BAPadding, BAScreenWidth / 2, nameHeight) text:nil color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _nameLabel = [UILabel labelWithFrame:CGRectMake(2 * BAPadding, 2 * BAPadding, BAScreenWidth / 2 - 3 * BAPadding, nameHeight) text:nil color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_nameLabel];
     
-    _roomNameLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, _nameLabel.width, nameHeight - 10) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _roomNameLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, _nameLabel.width, nameHeight - 12) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_roomNameLabel];
     

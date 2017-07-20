@@ -81,7 +81,7 @@
 
 
 - (void)setupInfoView{
-    _infoView = [[BAInfoView alloc] initWithFrame:CGRectMake(0, 64 + BAPadding, BAScreenWidth, BAScreenHeight / 4)];
+    _infoView = [[BAInfoView alloc] initWithFrame:CGRectMake(0, 64 + 2 * BAPadding, BAScreenWidth, BAScreenHeight / 4)];
     _infoView.reportModel = _reportModel;
     
     [_scrollView addSubview:_infoView];
