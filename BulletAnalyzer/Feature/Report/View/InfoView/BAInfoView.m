@@ -45,36 +45,37 @@
     CGFloat width = self.width;
     CGFloat height = self.height;
     
-    _avatarBgView = [UIImageView imageViewWithFrame:CGRectMake(width - 2 * BAPadding - height, 0, height, height) image:nil];
+    CGFloat avatarBgWidth = height + 2 * BAPadding;
+    _avatarBgView = [UIImageView imageViewWithFrame:CGRectMake(width - BAPadding - avatarBgWidth, -BAPadding, avatarBgWidth, avatarBgWidth) image:[UIImage imageNamed:@"avatarBg"]];
     
     [self addSubview:_avatarBgView];
     
     CGFloat avatarWidth = height - BAPadding * 2;
     _avatarView = [UIImageView imageViewWithFrame:CGRectMake(width - 3 * BAPadding - avatarWidth, BAPadding, avatarWidth, avatarWidth) image:nil];
-    _avatarView.layer.cornerRadius = avatarWidth;
+    _avatarView.layer.cornerRadius = avatarWidth / 2;
     _avatarView.clipsToBounds = YES;
     
     [self addSubview:_avatarView];
     
     CGFloat nameHeight = avatarWidth / 4;
-    _nameLabel = [UILabel labelWithFrame:CGRectMake(2 * BAPadding, 2 * BAPadding, BAScreenWidth / 2 - 3 * BAPadding, nameHeight) text:nil color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _nameLabel = [UILabel labelWithFrame:CGRectMake(2 * BAPadding, BAPadding, BAScreenWidth / 2 - 3 * BAPadding, nameHeight) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_nameLabel];
     
-    _roomNameLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, _nameLabel.width, nameHeight - 12) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _roomNameLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, _avatarView.x - BAPadding, nameHeight - 10) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_roomNameLabel];
     
-    _roomNumLabel = [UILabel labelWithFrame:CGRectMake(_roomNameLabel.x, _roomNameLabel.bottom, _roomNameLabel.width, _roomNameLabel.height) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _roomNumLabel = [UILabel labelWithFrame:CGRectMake(_roomNameLabel.x, _roomNameLabel.bottom, _roomNameLabel.width, _roomNameLabel.height) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_roomNumLabel];
     
     
-    _bulletLabel = [UILabel labelWithFrame:CGRectMake(_roomNumLabel.x, height - 2 * BAPadding - 28, _roomNameLabel.width, nameHeight) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _bulletLabel = [UILabel labelWithFrame:CGRectMake(_roomNumLabel.x, height - BAPadding - 28, _roomNameLabel.width, nameHeight) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_bulletLabel];
     
-    _giftLabel = [UILabel labelWithFrame:CGRectMake(_roomNumLabel.x, height - 2 * BAPadding - 28, _roomNameLabel.width, nameHeight) text:nil color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _giftLabel = [UILabel labelWithFrame:CGRectMake(_roomNumLabel.x, height - BAPadding - 28, _roomNameLabel.width, nameHeight) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_giftLabel];
 }
@@ -93,7 +94,7 @@
 - (void)setInfoWithBulletCount:(NSString *)bulletCount giftCount:(NSString *)giftCount{
     
     NSTextAttachment *bulletImg = [[NSTextAttachment alloc] init];
-    bulletImg.image = [UIImage imageNamed:@"bullet"];
+    bulletImg.image = [UIImage imageNamed:@"bulletWhite"];
     bulletImg.bounds = CGRectMake(0, 0, 20, 20);
     NSAttributedString *bulletAttr = [NSAttributedString attributedStringWithAttachment:bulletImg];
     NSAttributedString *bulletStr = [[NSAttributedString alloc] initWithString:bulletCount];
@@ -108,7 +109,7 @@
     _bulletLabel.height = (self.height - BAPadding * 2) / 4;
     
     NSTextAttachment *giftImg = [[NSTextAttachment alloc] init];
-    giftImg.image = [UIImage imageNamed:@"gift"];
+    giftImg.image = [UIImage imageNamed:@"giftWhite"];
     giftImg.bounds = CGRectMake(0, 0, 20, 20);
     NSAttributedString *giftAttr = [NSAttributedString attributedStringWithAttachment:giftImg];
     NSAttributedString *giftStr = [[NSAttributedString alloc] initWithString:giftCount];

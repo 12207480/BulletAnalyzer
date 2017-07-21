@@ -210,6 +210,11 @@
 		F2EF75581F20753D00B0D70B /* BAReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75571F20753D00B0D70B /* BAReportViewController.m */; };
 		F2EF75671F2082FD00B0D70B /* BAGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75661F2082FD00B0D70B /* BAGradientView.m */; };
 		F2EF756A1F20A56100B0D70B /* BAInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75691F20A56100B0D70B /* BAInfoView.m */; };
+		F2EF756D1F218EF100B0D70B /* BAMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF756C1F218EF100B0D70B /* BAMenuView.m */; };
+		F2EF75701F218FE700B0D70B /* BAMenuBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF756F1F218FE700B0D70B /* BAMenuBtn.m */; };
+		F2EF75771F21A63300B0D70B /* BACountChart.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75761F21A63300B0D70B /* BACountChart.m */; };
+		F2EF757A1F21A6FA00B0D70B /* BAIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75791F21A6FA00B0D70B /* BAIndicator.m */; };
+		F2EF75FF1F21EDA200B0D70B /* BACountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75FE1F21EDA200B0D70B /* BACountInfoView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -669,6 +674,16 @@
 		F2EF75661F2082FD00B0D70B /* BAGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGradientView.m; sourceTree = "<group>"; };
 		F2EF75681F20A56100B0D70B /* BAInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAInfoView.h; sourceTree = "<group>"; };
 		F2EF75691F20A56100B0D70B /* BAInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAInfoView.m; sourceTree = "<group>"; };
+		F2EF756B1F218EF100B0D70B /* BAMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAMenuView.h; sourceTree = "<group>"; };
+		F2EF756C1F218EF100B0D70B /* BAMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAMenuView.m; sourceTree = "<group>"; };
+		F2EF756E1F218FE700B0D70B /* BAMenuBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAMenuBtn.h; sourceTree = "<group>"; };
+		F2EF756F1F218FE700B0D70B /* BAMenuBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAMenuBtn.m; sourceTree = "<group>"; };
+		F2EF75751F21A63300B0D70B /* BACountChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACountChart.h; sourceTree = "<group>"; };
+		F2EF75761F21A63300B0D70B /* BACountChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountChart.m; sourceTree = "<group>"; };
+		F2EF75781F21A6FA00B0D70B /* BAIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAIndicator.h; sourceTree = "<group>"; };
+		F2EF75791F21A6FA00B0D70B /* BAIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAIndicator.m; sourceTree = "<group>"; };
+		F2EF75FD1F21EDA200B0D70B /* BACountInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACountInfoView.h; sourceTree = "<group>"; };
+		F2EF75FE1F21EDA200B0D70B /* BACountInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountInfoView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1783,6 +1798,10 @@
 		F2EF75551F20752300B0D70B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F2EF75711F21A61500B0D70B /* CountChart(弹幕数量图表) */,
+				F2EF75721F21A61500B0D70B /* FansChart */,
+				F2EF75731F21A61500B0D70B /* GiftChart */,
+				F2EF75741F21A61500B0D70B /* WordsChart */,
 				F2EF75641F2082FD00B0D70B /* GurdientView(渐变背景图) */,
 				F2EF755F1F2080D600B0D70B /* Menu(菜单) */,
 				F2EF755D1F20803B00B0D70B /* Indicator(指示器) */,
@@ -1794,6 +1813,8 @@
 		F2EF755D1F20803B00B0D70B /* Indicator(指示器) */ = {
 			isa = PBXGroup;
 			children = (
+				F2EF75781F21A6FA00B0D70B /* BAIndicator.h */,
+				F2EF75791F21A6FA00B0D70B /* BAIndicator.m */,
 			);
 			name = "Indicator(指示器)";
 			path = Indicator;
@@ -1812,6 +1833,10 @@
 		F2EF755F1F2080D600B0D70B /* Menu(菜单) */ = {
 			isa = PBXGroup;
 			children = (
+				F2EF756B1F218EF100B0D70B /* BAMenuView.h */,
+				F2EF756C1F218EF100B0D70B /* BAMenuView.m */,
+				F2EF756E1F218FE700B0D70B /* BAMenuBtn.h */,
+				F2EF756F1F218FE700B0D70B /* BAMenuBtn.m */,
 			);
 			name = "Menu(菜单)";
 			path = Menu;
@@ -1825,6 +1850,39 @@
 			);
 			name = "GurdientView(渐变背景图)";
 			path = GurdientView;
+			sourceTree = "<group>";
+		};
+		F2EF75711F21A61500B0D70B /* CountChart(弹幕数量图表) */ = {
+			isa = PBXGroup;
+			children = (
+				F2EF75751F21A63300B0D70B /* BACountChart.h */,
+				F2EF75761F21A63300B0D70B /* BACountChart.m */,
+				F2EF75FD1F21EDA200B0D70B /* BACountInfoView.h */,
+				F2EF75FE1F21EDA200B0D70B /* BACountInfoView.m */,
+			);
+			name = "CountChart(弹幕数量图表)";
+			path = CountChart;
+			sourceTree = "<group>";
+		};
+		F2EF75721F21A61500B0D70B /* FansChart */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FansChart;
+			sourceTree = "<group>";
+		};
+		F2EF75731F21A61500B0D70B /* GiftChart */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = GiftChart;
+			sourceTree = "<group>";
+		};
+		F2EF75741F21A61500B0D70B /* WordsChart */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = WordsChart;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1984,6 +2042,7 @@
 				388A86BC1EE4424600A0BC5B /* MJRefreshAutoStateFooter.m in Sources */,
 				388A860D1EE4218B00A0BC5B /* BARoomModel.m in Sources */,
 				388AFFEA1EE045F90031DE53 /* DDMultiFormatter.m in Sources */,
+				F2EF756D1F218EF100B0D70B /* BAMenuView.m in Sources */,
 				388A86431EE43EA400A0BC5B /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				388A86411EE43EA400A0BC5B /* MASViewConstraint.m in Sources */,
 				388A86BB1EE4424600A0BC5B /* MJRefreshAutoNormalFooter.m in Sources */,
@@ -2033,6 +2092,7 @@
 				38A5A0E01EE2AA6800CFF645 /* MJPropertyType.m in Sources */,
 				F222A46E1F0B44D000E70ADA /* LOTAnimatableScaleValue.m in Sources */,
 				388A86C41EE4424600A0BC5B /* MJRefreshConst.m in Sources */,
+				F2EF75701F218FE700B0D70B /* BAMenuBtn.m in Sources */,
 				388A85E61EE4108C00A0BC5B /* BAReplyModel.m in Sources */,
 				388EF8361EED55130013CDC1 /* BAUserModel.m in Sources */,
 				388A85C61EE40C2B00A0BC5B /* AFSecurityPolicy.m in Sources */,
@@ -2113,10 +2173,12 @@
 				388A863D1EE43EA400A0BC5B /* MASConstraint.m in Sources */,
 				F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */,
 				F222A4761F0B44D000E70ADA /* NSValue+Compat.m in Sources */,
+				F2EF75FF1F21EDA200B0D70B /* BACountInfoView.m in Sources */,
 				388A85F51EE4163200A0BC5B /* MMDrawerVisualState.m in Sources */,
 				38A5A0E41EE2AA6800CFF645 /* NSObject+MJProperty.m in Sources */,
 				F222A47C1F0B44D000E70ADA /* LOTLayer.m in Sources */,
 				F222A46C1F0B44D000E70ADA /* LOTAnimatableNumberValue.m in Sources */,
+				F2EF75771F21A63300B0D70B /* BACountChart.m in Sources */,
 				388A85FE1EE417BA00A0BC5B /* BANavigationViewController.m in Sources */,
 				F2382DFF1EF27D3300BE5446 /* BABulletSetting.m in Sources */,
 				388AFFE81EE045F90031DE53 /* DDContextFilterLogFormatter.m in Sources */,
@@ -2133,6 +2195,7 @@
 				38A5A0E31EE2AA6800CFF645 /* NSObject+MJKeyValue.m in Sources */,
 				F2DA672F1F174BF3003BD66A /* BATransition.m in Sources */,
 				388A86BD1EE4424600A0BC5B /* MJRefreshBackGifFooter.m in Sources */,
+				F2EF757A1F21A6FA00B0D70B /* BAIndicator.m in Sources */,
 				F293DFAD1F171BCE00404F46 /* UIImageView+ZJRadius.m in Sources */,
 				388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */,
 				F222A4671F0B44D000E70ADA /* LOTRectShapeLayer.m in Sources */,

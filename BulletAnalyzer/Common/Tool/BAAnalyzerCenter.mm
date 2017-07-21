@@ -473,7 +473,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             
             //计算弹幕数量与时间的坐标
             CGFloat width = BAScreenWidth;
-            CGFloat height = width;
+            CGFloat height = BAScreenHeight / 2;
             
             [_countTimePointArray removeAllObjects];
             [_countTimeArray enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
