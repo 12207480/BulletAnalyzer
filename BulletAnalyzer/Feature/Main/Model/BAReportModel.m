@@ -45,12 +45,19 @@ MJExtensionCodingImplementation
     _duration = [end minutesAfterDate:_begin];
     
     NSDateFormatter *formatter= [NSDateFormatter new];
-    formatter.dateFormat = @"m.d H:mm - ";
+    formatter.dateFormat = @"M.d H:mm - ";
     
     NSMutableString *tempStr = [formatter stringFromDate:_begin].mutableCopy;
     formatter.dateFormat = @"H:mm";
     [tempStr appendString:[formatter stringFromDate:_end]];
-    [tempStr appendString:[NSString stringWithFormat:@"  %zdminutes", _duration]];
+    
+    NSString *durationStr;
+    if (_duration < 60) {
+        durationStr = [NSString stringWithFormat:@"%zdminutes", _duration];
+    } else {
+        durationStr = [NSString stringWithFormat:@"%.1fhours", (CGFloat)_duration / 60];
+    }
+    [tempStr appendString:[NSString stringWithFormat:@"  %@", durationStr]];
     
     _timeDescription = tempStr;
 }

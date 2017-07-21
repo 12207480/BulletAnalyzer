@@ -87,7 +87,17 @@
 
 
 - (void)setStatus{
-    _countMenu.info = [NSString stringWithFormat:@"  %zd条弹幕在线分析", _reportModel.totalBulletCount];
+    NSString *bulletCount;
+    if (_reportModel.totalBulletCount < 1000) {
+        bulletCount = BAStringWithInteger(_reportModel.totalBulletCount);
+    } else if (_reportModel.totalBulletCount < 1000000) {
+        bulletCount = [NSString stringWithFormat:@"%.1fk", (CGFloat)_reportModel.totalBulletCount / 1000];
+    } else {
+        bulletCount = [NSString stringWithFormat:@"%.1fm", (CGFloat)_reportModel.totalBulletCount / 1000000];
+    }
+    
+    
+    _countMenu.info = [NSString stringWithFormat:@"  %@条弹幕在线分析", bulletCount];
 }
 
 @end

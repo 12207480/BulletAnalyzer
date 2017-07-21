@@ -62,11 +62,11 @@
     
     [self addSubview:_nameLabel];
     
-    _roomNameLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, _avatarView.x - BAPadding, nameHeight - 10) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _roomNameLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, _avatarView.x - BAPadding, nameHeight - 10) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BACommonFont(13) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_roomNameLabel];
     
-    _roomNumLabel = [UILabel labelWithFrame:CGRectMake(_roomNameLabel.x, _roomNameLabel.bottom, _roomNameLabel.width, _roomNameLabel.height) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _roomNumLabel = [UILabel labelWithFrame:CGRectMake(_roomNameLabel.x, _roomNameLabel.bottom, _roomNameLabel.width, _roomNameLabel.height) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BACommonFont(13) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_roomNumLabel];
     

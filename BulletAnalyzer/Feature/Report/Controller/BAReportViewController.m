@@ -12,6 +12,9 @@
 #import "BAMenuView.h"
 #import "BAIndicator.h"
 #import "BACountChart.h"
+#import "BACountInfoView.h"
+#import "BAWordsChart.h"
+#import "BAWordsInfoView.h"
 
 @interface BAReportViewController () <UIScrollViewDelegate>
 //结构
@@ -20,12 +23,17 @@
 @property (nonatomic, strong) UIView *contentBgView;
 @property (nonatomic, strong) BAIndicator *indicator;
 
-//第一页
+//第一页(基本信息, 菜单)
 @property (nonatomic, strong) BAInfoView *infoView;
 @property (nonatomic, strong) BAMenuView *menuView;
 
-//第二页
+//第二页(弹幕数量)
 @property (nonatomic, strong) BACountChart *countChart;
+@property (nonatomic, strong) BACountInfoView *countInfoView;
+
+//第三页(关键词)
+@property (nonatomic, strong) BAWordsChart *wordsChart;
+@property (nonatomic, strong) BAWordsInfoView *wordsInfoView;
 
 @end
 
@@ -49,7 +57,9 @@
     
     [self setupIndicator];
     
-    [self setupCountChart];
+    [self setupCountReport];
+    
+    [self setupWordsReport];
 }
 
 
@@ -142,11 +152,29 @@
 }
 
 
-- (void)setupCountChart{
+- (void)setupCountReport{
     _countChart = [[BACountChart alloc] initWithFrame:CGRectMake(BAScreenWidth, 0, BAScreenWidth, BAScreenHeight / 2)];
     _countChart.reportModel = _reportModel;
     
     [_scrollView addSubview:_countChart];
+    
+    _countInfoView = [[BACountInfoView alloc] initWithFrame:CGRectMake(BAScreenWidth, _indicator.bottom, BAScreenWidth, BAScreenHeight * 0.4)];
+    _countInfoView.reportModel = _reportModel;
+    
+    [_scrollView addSubview:_countInfoView];
+}
+
+
+- (void)setupWordsReport{
+    _wordsChart = [[BAWordsChart alloc] initWithFrame:CGRectMake(BAScreenWidth * 2, 0, BAScreenWidth, BAScreenHeight / 2)];
+    _wordsChart.reportModel = _reportModel;
+    
+    [_scrollView addSubview:_wordsChart];
+    
+    _wordsInfoView = [[BAWordsInfoView alloc] initWithFrame:CGRectMake(BAScreenWidth * 2, _indicator.bottom, BAScreenWidth, BAScreenHeight * 0.4)];
+    _wordsInfoView.reportModel = _reportModel;
+    
+    [_scrollView addSubview:_wordsInfoView];
 }
 
 

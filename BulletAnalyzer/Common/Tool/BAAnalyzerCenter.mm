@@ -109,6 +109,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         _analyzingReportModel.wordsArray = _wordsArray;
         _analyzingReportModel.userBulletCountArray = _userBulletCountArray;
         _analyzingReportModel.levelCountArray = _levelCountArray;
+        _analyzingReportModel.countTimeArray = _countTimeArray;
         _analyzingReportModel.countTimePointArray = _countTimePointArray;
         _analyzingReportModel.onlineTimePointArray = _onlineTimePointArray;
         _analyzingReportModel.fansTimePointArray = _fansTimePointArray;
