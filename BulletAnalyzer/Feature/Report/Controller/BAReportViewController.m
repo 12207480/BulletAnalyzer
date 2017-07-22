@@ -228,27 +228,31 @@
             case 1:
                 [_countChart hide];
                 [_wordsChart hide];
+                [_fansChart hide];
                 break;
                 
             case 2:
                 [_wordsChart hide];
+                [_fansChart hide];
                 [_countChart animation];
                 break;
                 
             case 3:
                 [_countChart hide];
-                [_wordsChart animation];
                 [_fansChart hide];
+                [_wordsChart animation];
                 break;
                 
             case 4:
+                [_countChart hide];
                 [_wordsChart hide];
                 [_fansChart animation];
                 break;
                 
             case 5:
+                [_wordsChart hide];
+                [_countChart hide];
                 [_fansChart hide];
-                
                 break;
                 
             default:
