@@ -46,7 +46,7 @@
     CGFloat height = self.height;
     
     CGFloat blockHeight = (height - 2) / 3;
-    _durationBlock = [BACountInfoBlock blockWithDescription:@"弹幕采集时段" addition:nil tip:@"采集时间越长, 数据越精确" imageName:@"" frame:
+    _durationBlock = [BACountInfoBlock blockWithDescription:@"弹幕采集时段" addition:nil tip:@"采集时间越长, 数据越精确" imageName:@"count1" frame:
                       CGRectMake(0, 0, BAScreenWidth, blockHeight)];
     
     [self addSubview:_durationBlock];
@@ -56,7 +56,7 @@
     
     [self addSubview:_line1];
     
-    _activeBlock = [BACountInfoBlock blockWithDescription:@"弹幕最活跃时间" addition:nil tip:nil imageName:@"" frame:CGRectMake(0, _line1.bottom, BAScreenWidth, blockHeight)];
+    _activeBlock = [BACountInfoBlock blockWithDescription:@"弹幕最活跃时间" addition:nil tip:nil imageName:@"count2" frame:CGRectMake(0, _line1.bottom, BAScreenWidth, blockHeight)];
     
     [self addSubview:_activeBlock];
  
@@ -65,7 +65,7 @@
     
     [self addSubview:_line2];
     
-    _bulletModeBlock = [BACountInfoBlock blockWithDescription:@"数据基于海量弹幕模式" addition:nil tip:@"纵轴数据为30秒内弹幕数量" imageName:@"" frame:CGRectMake(0, _line2.bottom, BAScreenWidth, blockHeight)];
+    _bulletModeBlock = [BACountInfoBlock blockWithDescription:@"数据基于海量弹幕模式" addition:nil tip:@"纵轴数据为30秒内弹幕数量" imageName:@"count3" frame:CGRectMake(0, _line2.bottom, BAScreenWidth, blockHeight)];
     
     [self addSubview:_bulletModeBlock];
 }

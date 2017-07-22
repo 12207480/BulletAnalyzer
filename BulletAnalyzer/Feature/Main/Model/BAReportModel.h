@@ -186,6 +186,11 @@
 @property (nonatomic, strong) NSMutableArray *sentenceArray;
 
 /**
+ 用户提到最多的句子
+ */
+@property (nonatomic, strong) NSMutableArray *popSentenceArray;
+
+/**
  全部礼物数组
  */
 @property (nonatomic, strong) NSMutableArray *giftsArray;

@@ -42,13 +42,14 @@
 #pragma mark - private
 - (void)setupSubViews{
     CGFloat height = self.height;
+    CGFloat width = self.width;
     
     CGFloat imgHeight = height - 4 * BAPadding;
-    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(BAScreenWidth - 2 * BAPadding, 2 * BAPadding, imgHeight, imgHeight)];
+    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(width - 2 * BAPadding - imgHeight, 2 * BAPadding, imgHeight, imgHeight)];
     
     [self addSubview:_imageView];
     
-    CGFloat labelWidth = BAScreenWidth - imgHeight - 6 * BAPadding;
+    CGFloat labelWidth = width - imgHeight - 6 * BAPadding;
     _descripLabel = [UILabel labelWithFrame:CGRectMake(BAPadding * 2, height / 2 - 20, labelWidth, 20) text:nil color:BACommonTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_descripLabel];
@@ -57,7 +58,7 @@
     
     [self addSubview:_additionLabel];
     
-    _tipLabel = [UILabel labelWithFrame:CGRectMake(_descripLabel.x, _descripLabel.bottom, labelWidth, 20) text:nil color:BALightTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentLeft];
+    _tipLabel = [UILabel labelWithFrame:CGRectMake(_descripLabel.x, _descripLabel.bottom, labelWidth, 20) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_tipLabel];
 }

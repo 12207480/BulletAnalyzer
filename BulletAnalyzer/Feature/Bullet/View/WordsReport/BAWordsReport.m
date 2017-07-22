@@ -45,15 +45,6 @@
 }
 
 
-#pragma mark - userInteraction
-- (void)labelTapped:(UITapGestureRecognizer *)sender{
-    UILabel *label= (UILabel *)sender.view;
-    
-    NSLog(@"%zd", sender.view.tag);
-}
-
-
-
 #pragma mark - public
 - (void)setReportModel:(BAReportModel *)reportModel{
     _reportModel = reportModel;
@@ -181,7 +172,7 @@
 
 
 - (UILabel *)createXValue{
-    UILabel *label = [UILabel labelWithFrame:CGRectMake(0, 0, _bgView.width / 10, BAScreenWidth * 0.2) text:@"" color:BAWhiteColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    UILabel *label = [UILabel labelWithFrame:CGRectMake(0, 0, _bgView.width / 10, BAScreenWidth * 0.2) text:nil color:BAWhiteColor font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.numberOfLines = 0;
     label.userInteractionEnabled = YES;

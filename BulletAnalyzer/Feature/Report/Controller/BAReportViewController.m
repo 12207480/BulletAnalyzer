@@ -15,6 +15,10 @@
 #import "BACountInfoView.h"
 #import "BAWordsChart.h"
 #import "BAWordsInfoView.h"
+#import "BAFansChart.h"
+#import "BAFansInfoView.h"
+#import "BAGiftChart.h"
+#import "BAGiftInfoView.h"
 
 @interface BAReportViewController () <UIScrollViewDelegate>
 //结构
@@ -22,6 +26,7 @@
 @property (nonatomic, strong) BAGradientView *gradientView;
 @property (nonatomic, strong) UIView *contentBgView;
 @property (nonatomic, strong) BAIndicator *indicator;
+@property (nonatomic, assign) NSInteger page;
 
 //第一页(基本信息, 菜单)
 @property (nonatomic, strong) BAInfoView *infoView;
@@ -34,6 +39,14 @@
 //第三页(关键词)
 @property (nonatomic, strong) BAWordsChart *wordsChart;
 @property (nonatomic, strong) BAWordsInfoView *wordsInfoView;
+
+//第四页(粉丝)
+@property (nonatomic, strong) BAFansChart *fansChart;
+@property (nonatomic, strong) BAFansInfoView *fansInfoView;
+
+//第五页(礼物)
+@property (nonatomic, strong) BAGiftChart *giftChart;
+@property (nonatomic, strong) BAGiftInfoView *giftInfoView;
 
 @end
 
@@ -60,6 +73,10 @@
     [self setupCountReport];
     
     [self setupWordsReport];
+    
+    [self setupFansReport];
+    
+    [self setupGiftReport];
 }
 
 
@@ -178,22 +195,95 @@
 }
 
 
+- (void)setupFansReport{
+    _fansChart = [[BAFansChart alloc] initWithFrame:CGRectMake(BAScreenWidth * 3, 0, BAScreenWidth, BAScreenHeight / 2)];
+    _fansChart.reportModel = _reportModel;
+    
+    [_scrollView addSubview:_fansChart];
+    
+    _fansInfoView = [[BAFansInfoView alloc] initWithFrame:CGRectMake(BAScreenWidth * 3, _indicator.bottom, BAScreenWidth, BAScreenHeight * 0.4)];
+    _fansInfoView.reportModel = _reportModel;
+    
+    [_scrollView addSubview:_fansInfoView];
+}
+
+
+- (void)setupGiftReport{
+    _giftChart = [[BAGiftChart alloc] initWithFrame:CGRectMake(BAScreenWidth * 4, 0, BAScreenWidth, BAScreenHeight / 2)];
+    _giftChart.reportModel = _reportModel;
+    
+    [_scrollView addSubview:_giftChart];
+    
+    _giftInfoView = [[BAGiftInfoView alloc] initWithFrame:CGRectMake(BAScreenWidth * 4, _indicator.bottom, BAScreenWidth, BAScreenHeight * 0.4)];
+    _giftInfoView.reportModel = _reportModel;
+    
+    [_scrollView addSubview:_giftInfoView];
+}
+
+
+- (void)setPage:(NSInteger)page{
+    if (_page != page) { //如果改变了页数
+        
+        switch (page) {
+            case 1:
+                [_countChart hide];
+                [_wordsChart hide];
+                break;
+                
+            case 2:
+                [_wordsChart hide];
+                [_countChart animation];
+                break;
+                
+            case 3:
+                [_countChart hide];
+                [_wordsChart animation];
+                [_fansChart hide];
+                break;
+                
+            case 4:
+                [_wordsChart hide];
+                [_fansChart animation];
+                break;
+                
+            case 5:
+                [_fansChart hide];
+                
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
+    _page = page;
+}
+
+
 #pragma mark - scrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGFloat offsetX = scrollView.contentOffset.x;
-    _indicator.x = offsetX;
     
+    if ((CGFloat)offsetX/BAScreenWidth - (NSInteger)(offsetX/BAScreenWidth) == 0) { //翻页为整数才会调用动画
+        self.page = offsetX / BAScreenWidth + 1;
+    }
+    _indicator.x = offsetX; //保持指示器不动
+    
+    //根据移动距离动画
     _gradientView.offsetX = offsetX;
     _indicator.offsetX = offsetX;
     if (offsetX < BAScreenWidth) {
         CGFloat percent = (BAScreenWidth - offsetX) / BAScreenWidth;
         CGFloat height = BAScreenHeight / 2 + BAScreenHeight * 0.1 * (1 - percent);
         _contentBgView.frame = CGRectMake(0, height, BAScreenWidth, BAScreenHeight - height);
-        _indicator.alpha = (1 - percent);
+        _indicator.alpha = (1 - percent * 2);
     } else {
         _contentBgView.frame = CGRectMake(0, BAScreenHeight * 0.6, BAScreenWidth, BAScreenHeight * 0.4);
         _indicator.alpha = 1;
     }
+    
+    
 }
 
 @end

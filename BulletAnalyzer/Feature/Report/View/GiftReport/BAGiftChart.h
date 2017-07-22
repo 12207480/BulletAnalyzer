@@ -1,8 +1,8 @@
 //
-//  BACountChart.h
+//  BAGiftChart.h
 //  BulletAnalyzer
 //
-//  Created by 张骏 on 17/7/21.
+//  Created by Zj on 17/7/22.
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
@@ -10,21 +10,11 @@
 
 @class BAReportModel;
 
-@interface BACountChart : UIView
+@interface BAGiftChart : UIView
 
 /**
  传入分析数据模型
  */
 @property (nonatomic, strong) BAReportModel *reportModel;
-
-/**
- 开始动画
- */
-- (void)animation;
-
-/**
- 隐藏
- */
-- (void)hide;
 
 @end

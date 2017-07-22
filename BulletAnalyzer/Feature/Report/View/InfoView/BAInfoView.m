@@ -62,7 +62,7 @@
     
     [self addSubview:_nameLabel];
     
-    _roomNameLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, _avatarView.x - BAPadding, nameHeight - 10) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BACommonFont(13) textAlignment:NSTextAlignmentLeft];
+    _roomNameLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, _avatarBgView.x - BAPadding, nameHeight - 10) text:nil color:[BAWhiteColor colorWithAlphaComponent:0.95] font:BACommonFont(13) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_roomNameLabel];
     

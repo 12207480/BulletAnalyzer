@@ -26,9 +26,14 @@
 @property (nonatomic, strong) NSDictionary *wordsDic;
 
 /**
- 相似的句子有多少个
+ 相似的句子有多少个 //会递减
  */
 @property (nonatomic, assign) NSInteger count;
+
+/**
+ 相似的句子有多少个 //不会递减
+ */
+@property (nonatomic, assign) NSInteger realCount;
 
 /**
  存放自己的数组

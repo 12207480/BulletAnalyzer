@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		380ECF031F22ED2500D26CF6 /* BASentenceLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECEFC1F22ED2500D26CF6 /* BASentenceLabel.m */; };
+		380ECF041F22ED2500D26CF6 /* BAWordsChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECEFE1F22ED2500D26CF6 /* BAWordsChart.m */; };
+		380ECF051F22ED2500D26CF6 /* BAWordsInfoBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF001F22ED2500D26CF6 /* BAWordsInfoBlock.m */; };
+		380ECF061F22ED2500D26CF6 /* BAWordsInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF021F22ED2500D26CF6 /* BAWordsInfoView.m */; };
+		380ECF0B1F22ED4A00D26CF6 /* BAFansChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF0A1F22ED4A00D26CF6 /* BAFansChart.m */; };
+		380ECF0E1F22ED6A00D26CF6 /* BAFansInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF0D1F22ED6A00D26CF6 /* BAFansInfoView.m */; };
+		380ECF111F22ED8400D26CF6 /* BAGiftChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF101F22ED8400D26CF6 /* BAGiftChart.m */; };
+		380ECF141F22ED8C00D26CF6 /* BAGiftInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF131F22ED8C00D26CF6 /* BAGiftInfoView.m */; };
+		380ECF171F23661100D26CF6 /* BAFansChartPartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF161F23661100D26CF6 /* BAFansChartPartView.m */; };
+		380ECF1A1F236FA100D26CF6 /* BAFansChartXYView.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF191F236FA100D26CF6 /* BAFansChartXYView.m */; };
 		385204181EE98534006139FB /* BAWordsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 385204171EE98534006139FB /* BAWordsModel.m */; };
 		3858D77C1EF62F0300763822 /* BAActiveReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D77B1EF62F0300763822 /* BAActiveReport.m */; };
 		3858D7801EF62F1F00763822 /* BAWordsReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3858D77F1EF62F1F00763822 /* BAWordsReport.m */; };
@@ -17,8 +27,6 @@
 		387020461F2242490047B94B /* BACountChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 387020411F2242490047B94B /* BACountChart.m */; };
 		387020471F2242490047B94B /* BACountInfoBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 387020431F2242490047B94B /* BACountInfoBlock.m */; };
 		387020481F2242490047B94B /* BACountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 387020451F2242490047B94B /* BACountInfoView.m */; };
-		3870204B1F2247C30047B94B /* BAWordsChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 3870204A1F2247C30047B94B /* BAWordsChart.m */; };
-		3870204E1F2247D30047B94B /* BAWordsInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3870204D1F2247D30047B94B /* BAWordsInfoView.m */; };
 		388A00011EE04A030031DE53 /* BASocketTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A00001EE04A030031DE53 /* BASocketTool.m */; };
 		388A85C41EE40C2B00A0BC5B /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85B81EE40C2B00A0BC5B /* AFHTTPSessionManager.m */; };
 		388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85BB1EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m */; };
@@ -238,6 +246,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		380ECEFB1F22ED2500D26CF6 /* BASentenceLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceLabel.h; sourceTree = "<group>"; };
+		380ECEFC1F22ED2500D26CF6 /* BASentenceLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceLabel.m; sourceTree = "<group>"; };
+		380ECEFD1F22ED2500D26CF6 /* BAWordsChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsChart.h; sourceTree = "<group>"; };
+		380ECEFE1F22ED2500D26CF6 /* BAWordsChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAWordsChart.m; sourceTree = "<group>"; };
+		380ECEFF1F22ED2500D26CF6 /* BAWordsInfoBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsInfoBlock.h; sourceTree = "<group>"; };
+		380ECF001F22ED2500D26CF6 /* BAWordsInfoBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAWordsInfoBlock.m; sourceTree = "<group>"; };
+		380ECF011F22ED2500D26CF6 /* BAWordsInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsInfoView.h; sourceTree = "<group>"; };
+		380ECF021F22ED2500D26CF6 /* BAWordsInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAWordsInfoView.m; sourceTree = "<group>"; };
+		380ECF091F22ED4A00D26CF6 /* BAFansChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFansChart.h; sourceTree = "<group>"; };
+		380ECF0A1F22ED4A00D26CF6 /* BAFansChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAFansChart.m; sourceTree = "<group>"; };
+		380ECF0C1F22ED6A00D26CF6 /* BAFansInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFansInfoView.h; sourceTree = "<group>"; };
+		380ECF0D1F22ED6A00D26CF6 /* BAFansInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAFansInfoView.m; sourceTree = "<group>"; };
+		380ECF0F1F22ED8400D26CF6 /* BAGiftChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftChart.h; sourceTree = "<group>"; };
+		380ECF101F22ED8400D26CF6 /* BAGiftChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGiftChart.m; sourceTree = "<group>"; };
+		380ECF121F22ED8C00D26CF6 /* BAGiftInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftInfoView.h; sourceTree = "<group>"; };
+		380ECF131F22ED8C00D26CF6 /* BAGiftInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGiftInfoView.m; sourceTree = "<group>"; };
+		380ECF151F23661100D26CF6 /* BAFansChartPartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFansChartPartView.h; sourceTree = "<group>"; };
+		380ECF161F23661100D26CF6 /* BAFansChartPartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAFansChartPartView.m; sourceTree = "<group>"; };
+		380ECF181F236FA100D26CF6 /* BAFansChartXYView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFansChartXYView.h; sourceTree = "<group>"; };
+		380ECF191F236FA100D26CF6 /* BAFansChartXYView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAFansChartXYView.m; sourceTree = "<group>"; };
 		385204161EE98534006139FB /* BAWordsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsModel.h; sourceTree = "<group>"; };
 		385204171EE98534006139FB /* BAWordsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAWordsModel.m; sourceTree = "<group>"; };
 		3858D77A1EF62F0300763822 /* BAActiveReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAActiveReport.h; sourceTree = "<group>"; };
@@ -258,10 +286,6 @@
 		387020431F2242490047B94B /* BACountInfoBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountInfoBlock.m; sourceTree = "<group>"; };
 		387020441F2242490047B94B /* BACountInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACountInfoView.h; sourceTree = "<group>"; };
 		387020451F2242490047B94B /* BACountInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountInfoView.m; sourceTree = "<group>"; };
-		387020491F2247C30047B94B /* BAWordsChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BAWordsChart.h; path = BulletAnalyzer/Feature/Report/View/CountChart/BAWordsChart.h; sourceTree = SOURCE_ROOT; };
-		3870204A1F2247C30047B94B /* BAWordsChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BAWordsChart.m; path = BulletAnalyzer/Feature/Report/View/CountChart/BAWordsChart.m; sourceTree = SOURCE_ROOT; };
-		3870204C1F2247D30047B94B /* BAWordsInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BAWordsInfoView.h; path = BulletAnalyzer/Feature/Report/View/CountChart/BAWordsInfoView.h; sourceTree = SOURCE_ROOT; };
-		3870204D1F2247D30047B94B /* BAWordsInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BAWordsInfoView.m; path = BulletAnalyzer/Feature/Report/View/CountChart/BAWordsInfoView.m; sourceTree = SOURCE_ROOT; };
 		388A00001EE04A030031DE53 /* BASocketTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASocketTool.m; sourceTree = "<group>"; };
 		388A85B71EE40C2B00A0BC5B /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		388A85B81EE40C2B00A0BC5B /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPSessionManager.m; sourceTree = "<group>"; };
@@ -723,6 +747,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		380ECEFA1F22ED2500D26CF6 /* WordsReport(关键词分析) */ = {
+			isa = PBXGroup;
+			children = (
+				380ECEFB1F22ED2500D26CF6 /* BASentenceLabel.h */,
+				380ECEFC1F22ED2500D26CF6 /* BASentenceLabel.m */,
+				380ECEFD1F22ED2500D26CF6 /* BAWordsChart.h */,
+				380ECEFE1F22ED2500D26CF6 /* BAWordsChart.m */,
+				380ECEFF1F22ED2500D26CF6 /* BAWordsInfoBlock.h */,
+				380ECF001F22ED2500D26CF6 /* BAWordsInfoBlock.m */,
+				380ECF011F22ED2500D26CF6 /* BAWordsInfoView.h */,
+				380ECF021F22ED2500D26CF6 /* BAWordsInfoView.m */,
+			);
+			name = "WordsReport(关键词分析)";
+			path = WordsReport;
+			sourceTree = "<group>";
+		};
+		380ECF071F22ED3700D26CF6 /* FansReport(粉丝分析) */ = {
+			isa = PBXGroup;
+			children = (
+				380ECF091F22ED4A00D26CF6 /* BAFansChart.h */,
+				380ECF0A1F22ED4A00D26CF6 /* BAFansChart.m */,
+				380ECF0C1F22ED6A00D26CF6 /* BAFansInfoView.h */,
+				380ECF0D1F22ED6A00D26CF6 /* BAFansInfoView.m */,
+				380ECF151F23661100D26CF6 /* BAFansChartPartView.h */,
+				380ECF161F23661100D26CF6 /* BAFansChartPartView.m */,
+				380ECF181F236FA100D26CF6 /* BAFansChartXYView.h */,
+				380ECF191F236FA100D26CF6 /* BAFansChartXYView.m */,
+			);
+			name = "FansReport(粉丝分析)";
+			path = FansReport;
+			sourceTree = "<group>";
+		};
+		380ECF081F22ED3700D26CF6 /* GiftReport */ = {
+			isa = PBXGroup;
+			children = (
+				380ECF0F1F22ED8400D26CF6 /* BAGiftChart.h */,
+				380ECF101F22ED8400D26CF6 /* BAGiftChart.m */,
+				380ECF121F22ED8C00D26CF6 /* BAGiftInfoView.h */,
+				380ECF131F22ED8C00D26CF6 /* BAGiftInfoView.m */,
+			);
+			path = GiftReport;
+			sourceTree = "<group>";
+		};
 		3858D7711EF62EF900763822 /* ActiveReport(活跃度报告) */ = {
 			isa = PBXGroup;
 			children = (
@@ -1821,10 +1888,10 @@
 		F2EF75551F20752300B0D70B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				380ECF071F22ED3700D26CF6 /* FansReport(粉丝分析) */,
+				380ECF081F22ED3700D26CF6 /* GiftReport */,
+				380ECEFA1F22ED2500D26CF6 /* WordsReport(关键词分析) */,
 				3870203F1F2242490047B94B /* CountReport(弹幕数量页) */,
-				F2EF75721F21A61500B0D70B /* FansChart */,
-				F2EF75731F21A61500B0D70B /* GiftChart */,
-				F2EF75741F21A61500B0D70B /* WordsChart(关键词分析) */,
 				F2EF75641F2082FD00B0D70B /* GurdientView(渐变背景图) */,
 				F2EF755F1F2080D600B0D70B /* Menu(菜单) */,
 				F2EF755D1F20803B00B0D70B /* Indicator(指示器) */,
@@ -1873,32 +1940,6 @@
 			);
 			name = "GurdientView(渐变背景图)";
 			path = GurdientView;
-			sourceTree = "<group>";
-		};
-		F2EF75721F21A61500B0D70B /* FansChart */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = FansChart;
-			sourceTree = "<group>";
-		};
-		F2EF75731F21A61500B0D70B /* GiftChart */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = GiftChart;
-			sourceTree = "<group>";
-		};
-		F2EF75741F21A61500B0D70B /* WordsChart(关键词分析) */ = {
-			isa = PBXGroup;
-			children = (
-				387020491F2247C30047B94B /* BAWordsChart.h */,
-				3870204A1F2247C30047B94B /* BAWordsChart.m */,
-				3870204C1F2247D30047B94B /* BAWordsInfoView.h */,
-				3870204D1F2247D30047B94B /* BAWordsInfoView.m */,
-			);
-			name = "WordsChart(关键词分析)";
-			path = WordsChart;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2097,6 +2138,7 @@
 				F222A4801F0B44D000E70ADA /* LOTShapeFill.m in Sources */,
 				386A7AE41EF7F16A004AA427 /* BAFansCurveView.m in Sources */,
 				F2382DF91EF2756E00BE5446 /* BABulletMenu.m in Sources */,
+				380ECF051F22ED2500D26CF6 /* BAWordsInfoBlock.m in Sources */,
 				388A863E1EE43EA400A0BC5B /* MASConstraintMaker.m in Sources */,
 				386A7AE11EF7ED58004AA427 /* BAFansReport.m in Sources */,
 				388A85C71EE40C2B00A0BC5B /* AFURLRequestSerialization.m in Sources */,
@@ -2125,10 +2167,12 @@
 				388A86451EE43EA400A0BC5B /* ViewController+MASAdditions.m in Sources */,
 				F21BD4381EE91DFD0079312C /* FMResultSet.m in Sources */,
 				388AFFE91EE045F90031DE53 /* DDDispatchQueueLogFormatter.m in Sources */,
+				380ECF061F22ED2500D26CF6 /* BAWordsInfoView.m in Sources */,
 				F21BD44B1EEF7D150079312C /* BABulletListCell.m in Sources */,
 				38A5A0E51EE2AA6800CFF645 /* NSString+MJExtension.m in Sources */,
 				F222A4851F0B44D000E70ADA /* LOTShapeTransform.m in Sources */,
 				388A85F61EE4163200A0BC5B /* UIViewController+MMDrawerController.m in Sources */,
+				380ECF171F23661100D26CF6 /* BAFansChartPartView.m in Sources */,
 				F231C7B21EE509F700EB0F79 /* SDWebImageDownloaderOperation.m in Sources */,
 				F222A4811F0B44D000E70ADA /* LOTShapeGroup.m in Sources */,
 				388A86071EE417F000A0BC5B /* BARoomListTableViewController.m in Sources */,
@@ -2137,6 +2181,7 @@
 				F222A4711F0B44D000E70ADA /* CAAnimationGroup+LOTAnimatableGroup.m in Sources */,
 				388A863F1EE43EA400A0BC5B /* MASLayoutConstraint.m in Sources */,
 				F222A4611F0B44D000E70ADA /* LOTAnimatableLayer.m in Sources */,
+				380ECF0E1F22ED6A00D26CF6 /* BAFansInfoView.m in Sources */,
 				388A85E81EE4108C00A0BC5B /* BABulletListView.m in Sources */,
 				F222A4691F0B44D000E70ADA /* LOTStrokeShapeLayer.m in Sources */,
 				388AFFFD1EE049EA0031DE53 /* AppDelegate.m in Sources */,
@@ -2162,6 +2207,7 @@
 				388AFFEE1EE046120031DE53 /* BAViewController.m in Sources */,
 				388A86B61EE4424600A0BC5B /* MJRefreshBackFooter.m in Sources */,
 				388A86BE1EE4424600A0BC5B /* MJRefreshBackNormalFooter.m in Sources */,
+				380ECF141F22ED8C00D26CF6 /* BAGiftInfoView.m in Sources */,
 				38B54CDC1EEA94720092C76B /* Segmentor.mm in Sources */,
 				388AFFE41EE045F90031DE53 /* DDASLLogger.m in Sources */,
 				388AFFE71EE045F90031DE53 /* DDTTYLogger.m in Sources */,
@@ -2184,6 +2230,7 @@
 				388A86B81EE4424600A0BC5B /* MJRefreshFooter.m in Sources */,
 				F231C7AF1EE509F700EB0F79 /* SDWebImageCompat.m in Sources */,
 				F222A4721F0B44D000E70ADA /* CGGeometry+LOTAdditions.m in Sources */,
+				380ECF031F22ED2500D26CF6 /* BASentenceLabel.m in Sources */,
 				F222A4791F0B44D000E70ADA /* LOTAsset.m in Sources */,
 				F231C7B71EE509F700EB0F79 /* UIImage+MultiFormat.m in Sources */,
 				3858D7801EF62F1F00763822 /* BAWordsReport.m in Sources */,
@@ -2193,6 +2240,7 @@
 				F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */,
 				F222A4761F0B44D000E70ADA /* NSValue+Compat.m in Sources */,
 				388A85F51EE4163200A0BC5B /* MMDrawerVisualState.m in Sources */,
+				380ECF041F22ED2500D26CF6 /* BAWordsChart.m in Sources */,
 				38A5A0E41EE2AA6800CFF645 /* NSObject+MJProperty.m in Sources */,
 				F222A47C1F0B44D000E70ADA /* LOTLayer.m in Sources */,
 				F222A46C1F0B44D000E70ADA /* LOTAnimatableNumberValue.m in Sources */,
@@ -2219,7 +2267,6 @@
 				F222A46B1F0B44D000E70ADA /* LOTAnimatableColorValue.m in Sources */,
 				F222A4701F0B44D000E70ADA /* LOTAnimationCache.m in Sources */,
 				3858D77C1EF62F0300763822 /* BAActiveReport.m in Sources */,
-				3870204E1F2247D30047B94B /* BAWordsInfoView.m in Sources */,
 				388A86BF1EE4424600A0BC5B /* MJRefreshBackStateFooter.m in Sources */,
 				F231C7BB1EE509F700EB0F79 /* UIView+WebCacheOperation.m in Sources */,
 				388A86C21EE4424600A0BC5B /* MJRefreshStateHeader.m in Sources */,
@@ -2227,16 +2274,18 @@
 				F222A4621F0B44D000E70ADA /* LOTCompositionLayer.m in Sources */,
 				388A861C1EE42F0500A0BC5B /* GiFHUD.m in Sources */,
 				F231C7AC1EE509F700EB0F79 /* MKAnnotationView+WebCache.m in Sources */,
+				380ECF1A1F236FA100D26CF6 /* BAFansChartXYView.m in Sources */,
 				38A5A0C01EE2615A00CFF645 /* NSData+HexExtension.m in Sources */,
 				F21BD4401EEF77490079312C /* BABulletViewController.m in Sources */,
 				3858D7891EF673BD00763822 /* BAAcitveSlider.m in Sources */,
 				F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */,
 				388A863C1EE43EA400A0BC5B /* MASCompositeConstraint.m in Sources */,
 				388A85E71EE4108C00A0BC5B /* BABulletCycle.m in Sources */,
-				3870204B1F2247C30047B94B /* BAWordsChart.m in Sources */,
 				388AFFE31EE045F90031DE53 /* DDAbstractDatabaseLogger.m in Sources */,
 				F222A4841F0B44D000E70ADA /* LOTShapeStroke.m in Sources */,
 				F231C7B41EE509F700EB0F79 /* SDWebImagePrefetcher.m in Sources */,
+				380ECF111F22ED8400D26CF6 /* BAGiftChart.m in Sources */,
+				380ECF0B1F22ED4A00D26CF6 /* BAFansChart.m in Sources */,
 				F2EF75581F20753D00B0D70B /* BAReportViewController.m in Sources */,
 				F222A4641F0B44D000E70ADA /* LOTGroupLayerView.m in Sources */,
 				38A5A0EF1EE2C6C000CFF645 /* BABasicInfoModel.m in Sources */,

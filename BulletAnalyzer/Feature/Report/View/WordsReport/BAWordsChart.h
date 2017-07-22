@@ -1,8 +1,8 @@
 //
-//  BACountChart.h
+//  BAWordsChart.h
 //  BulletAnalyzer
 //
-//  Created by 张骏 on 17/7/21.
+//  Created by Zj on 17/7/21.
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 @class BAReportModel;
 
-@interface BACountChart : UIView
+@interface BAWordsChart : UIView
 
 /**
  传入分析数据模型
