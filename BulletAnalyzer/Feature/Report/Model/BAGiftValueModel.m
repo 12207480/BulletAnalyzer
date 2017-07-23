@@ -14,6 +14,11 @@
 
 MJCodingImplementation
 
++ (NSArray *)mj_ignoredCodingPropertyNames{
+    return @[@"startAngle", @"endAngle", @"directAngle", @"alpha", @"translation"];
+}
+
+
 - (void)setGiftType:(BAGiftType)giftType{
     _giftType = giftType;
     

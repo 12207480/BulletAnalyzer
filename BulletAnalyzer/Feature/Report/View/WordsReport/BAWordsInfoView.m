@@ -108,10 +108,10 @@
     _sentence1.descripLabel.text = [NSString stringWithFormat:@"1、%@", sentence1Model.text];
     _sentence1.infoLabel.text = [NSString stringWithFormat:@"%zd次", sentence1Model.realCount];
     
-    _sentence2.descripLabel.text = [NSString stringWithFormat:@"1、%@", sentence2Model.text];
+    _sentence2.descripLabel.text = [NSString stringWithFormat:@"2、%@", sentence2Model.text];
     _sentence2.infoLabel.text = [NSString stringWithFormat:@"%zd次", sentence2Model.realCount];
     
-    _sentence3.descripLabel.text = [NSString stringWithFormat:@"1、%@", sentence3Model.text];
+    _sentence3.descripLabel.text = [NSString stringWithFormat:@"3、%@", sentence3Model.text];
     _sentence3.infoLabel.text = [NSString stringWithFormat:@"%zd次", sentence3Model.realCount];
 }
 

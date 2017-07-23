@@ -11,10 +11,6 @@
 #import "BABulletListView.h"
 #import "BABulletMenu.h"
 #import "BABulletSetting.h"
-#import "BACountReport.h"
-#import "BAWordsReport.h"
-#import "BAActiveReport.h"
-#import "BAFansReport.h"
 #import "BAReportModel.h"
 #import "BAAnalyzerCenter.h"
 #import "BASocketTool.h"
@@ -26,20 +22,6 @@
 @property (nonatomic, strong) BABulletSetting *bulletSetting;
 @property (nonatomic, strong) NSTimer *hideTimer;
 @property (nonatomic, assign) CGFloat repeatDuration;
-
-//分析报告
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *nameLabel;
-@property (nonatomic, strong) UILabel *roomNamelLabel;
-@property (nonatomic, strong) UILabel *countReportTitleLabel;
-@property (nonatomic, strong) UIImageView *iconView;
-@property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, assign) NSInteger page;
-@property (nonatomic, strong) UILabel *tipsLabel;
-@property (nonatomic, strong) BACountReport *countReport;
-@property (nonatomic, strong) BAWordsReport *wordsReport;
-@property (nonatomic, strong) BAActiveReport *activeReport;
-@property (nonatomic, strong) BAFansReport *fansReport;
 
 //控制速度
 @property (nonatomic, strong) NSTimer *timer; //抓取弹幕
@@ -67,25 +49,7 @@
     
     [self setupNavigationBar];
     
-    [self setupScrollView];
-    
-    [self setupCountReport];
-    
-    [self setupWordsReport];
-    
-    [self setupActiceReport];
-    
-    [self setupFansReport];
-    
-    [self setupInfo];
-    
     self.getSpeed = 0.5;
-    
-    if (_reportModel.end) {
-        self.page = 1;
-        self.scrollView.y = 0;
-        self.tipsLabel.hidden = YES;
-    }
 }
 
 
@@ -144,49 +108,6 @@
 }
 
 
-- (void)setupScrollView{
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, BAScreenHeight, BAScreenWidth, BAScreenHeight)];
-    _scrollView.contentSize = CGSizeMake(BAScreenWidth, BAScreenHeight * 4);
-    _scrollView.pagingEnabled = YES;
-    _scrollView.showsVerticalScrollIndicator = NO;
-    _scrollView.delegate = self;
-    _scrollView.layer.contents = (id)[UIImage imageNamed:@"backgroundView"].CGImage;
-    
-    _tipsLabel = [UILabel labelWithFrame:CGRectMake(0, -20, BAScreenWidth, 20) text:@"下拉回到弹幕列表" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
-    
-    [_scrollView addSubview:_tipsLabel];
-    [self.view addSubview:_scrollView];
-}
-
-
-- (void)setupInfo{
-    _titleLabel = [UILabel labelWithFrame:CGRectMake(0, 0, BAScreenWidth, 100) text:@"分析报告" color:BAWhiteColor font:BACommonFont(30) textAlignment:NSTextAlignmentCenter];
-    
-    [_scrollView addSubview:_titleLabel];
-    
-    _nameLabel = [UILabel labelWithFrame:CGRectMake(2 * BAPadding, _titleLabel.bottom + 2 * BAPadding, BAScreenWidth / 2 - 2 * BAPadding, 30) text:_reportModel.name color:BAWhiteColor font:BABlodFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
-    
-    [_scrollView addSubview:_nameLabel];
-    
-    _roomNamelLabel = [UILabel labelWithFrame:CGRectMake(_nameLabel.x, _nameLabel.bottom, _nameLabel.width, 30) text:_reportModel.roomName color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
-    
-    [_scrollView addSubview:_roomNamelLabel];
-    
-    _iconView = [UIImageView imageViewWithFrame:CGRectMake(0, 0, BAScreenWidth / 4, BAScreenWidth / 4) image:nil];
-    _iconView.centerX = BAScreenWidth * 3 / 4;
-    _iconView.centerY = _nameLabel.bottom;
-    _iconView.layer.cornerRadius = _iconView.width / 2;
-    _iconView.clipsToBounds = YES;
-    [_iconView sd_setImageWithURL:[NSURL URLWithString:_reportModel.avatar] placeholderImage:BAPlaceHolderImg];
-    
-    [_scrollView addSubview:_iconView];
-    
-    _countReportTitleLabel = [UILabel labelWithFrame:CGRectMake(0, _countReport.y - 30, BAScreenWidth, 20) text:@"弹幕数量" color:BAWhiteColor font:BABlodFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
-    
-    [_scrollView addSubview:_countReportTitleLabel];
-}
-
-
 - (void)setupBulletListView{
     _bulletListView = [[BABulletListView alloc] initWithFrame:CGRectMake(0, 0, BAScreenWidth, BAScreenHeight - 50)];
 
@@ -219,14 +140,9 @@
         
         UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"结束" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             
-            [UIView animateWithDuration:1 delay:0 usingSpringWithDamping:0.9 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-               
-                selfWeak.scrollView.y = 0;
-                
-            } completion:nil];
+
 
             [[BASocketTool defaultSocket] cutOff];
-            selfWeak.tipsLabel.hidden = YES;
         }];
         UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
         
@@ -239,10 +155,9 @@
         
         [UIView animateWithDuration:1 delay:0 usingSpringWithDamping:0.9 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut animations:^{
            
-            selfWeak.scrollView.y = 0;
+            
             
         } completion:nil];
-        selfWeak.page = 1;
     };
     
     [self.view addSubview:_bulletMenu];
@@ -327,106 +242,6 @@
     }
     
     [self setupTimer];
-}
-
-
-- (void)setupCountReport{
-    _countReport = [[BACountReport alloc] initWithFrame:CGRectMake(0, BAScreenHeight - BAScreenWidth, BAScreenWidth, BAScreenWidth)];
-    
-    [_scrollView addSubview:_countReport];
-}
-
-
-- (void)setupWordsReport{
-    _wordsReport = [[BAWordsReport alloc] initWithFrame:CGRectMake(0, 2 * BAScreenHeight - 0.8 * BAScreenWidth, BAScreenWidth, 0.8 * BAScreenWidth)];
-    
-    [_scrollView addSubview:_wordsReport];
-}
-
-
-- (void)setupActiceReport{
-    _activeReport = [[BAActiveReport alloc] initWithFrame:CGRectMake(0, 2 * BAScreenHeight, BAScreenWidth, BAScreenHeight)];
-
-    [_scrollView addSubview:_activeReport];
-}
-
-
-
-- (void)setupFansReport{
-    _fansReport = [[BAFansReport alloc] initWithFrame:CGRectMake(0, 4 * BAScreenHeight - 392, BAScreenWidth, 392)];
-    
-    [_scrollView addSubview:_fansReport];
-}
-
-
-
-- (void)setPage:(NSInteger)page{
-  
-    if (_page != page) {
-        
-        switch (page) {
-            case 1:
-                _countReport.reportModel = _reportModel;
-                break;
-                
-            case 2:
-                _wordsReport.reportModel = _reportModel;
-                break;
-                
-            case 3:
-                _activeReport.reportModel = _reportModel;
-                break;
-                
-            case 4:
-                _fansReport.reportModel = _reportModel;
-                break;
-                
-            default:
-                break;
-        }
-    }
-    
-    _page = page;
-}
-
-
-#pragma mark - scrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-    CGFloat offsetY = scrollView.contentOffset.y;
-    
-    //下拉隐藏
-    if (offsetY < -50 && !_reportModel.end) {
-        
-        [UIView animateWithDuration:1 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.9 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            
-            scrollView.y = BAScreenHeight;
-            
-        } completion:^(BOOL finished) {
-    
-            _scrollView.contentOffset = CGPointMake(0, 0);
-            self.page = 0;
-        }];
-    }
-    
-    if (offsetY >= BAScreenHeight) {
-        [_countReport hide];
-    }
-    
-    if (offsetY >= 2 * BAScreenHeight || offsetY <= 0) {
-        [_wordsReport hide];
-    }
-    
-    if (offsetY >= 3 * BAScreenHeight || offsetY <= BAScreenHeight) {
-        [_activeReport hide];
-    }
-    
-    if (offsetY >= 4 * BAScreenHeight || offsetY <= 2 * BAScreenHeight) {
-        [_fansReport hide];
-    }
-    
-    //划到每一页
-    self.page = (NSInteger)(offsetY + BAScreenHeight / 2) / BAScreenHeight + 1;
 }
 
 
