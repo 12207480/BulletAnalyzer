@@ -31,4 +31,23 @@
  */
 @property (nonatomic, assign) NSInteger count;
 
+/**
+ 礼物价值(giftValue * count)
+ */
+@property (nonatomic, assign) CGFloat totalGiftValue;
+
+/**
+ 计算角度
+ */
+- (void)caculateWithStartAngle:(CGFloat)startAngle maxValue:(CGFloat)maxValue;
+
+/**
+ 通过调用上面方法设置下面参数
+ */
+@property (nonatomic, assign) CGFloat startAngle; //起始角度
+@property (nonatomic, assign) CGFloat endAngle; //终止角度
+@property (nonatomic, assign) CGFloat directAngle; //朝向角度 //用于动画
+@property (nonatomic, assign) CGFloat alpha; //透明度
+@property (nonatomic, assign) CATransform3D translation; //移动动画
+
 @end

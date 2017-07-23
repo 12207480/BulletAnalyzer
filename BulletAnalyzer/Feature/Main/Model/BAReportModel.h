@@ -56,6 +56,11 @@
 @property (nonatomic, copy) NSString *weight;
 
 /**
+ 体重增长
+ */
+@property (nonatomic, assign) CGFloat weightIncrese;
+
+/**
  开始分析时间
  */
 @property (nonatomic, strong) NSDate *begin;
@@ -204,6 +209,16 @@
  用户礼物价值数组
  */
 @property (nonatomic, strong) NSMutableArray *giftValueArray;
+
+/**
+ 送礼物的人说的弹幕数组
+ */
+@property (nonatomic, strong) NSMutableArray *giftUserBulletArry;
+
+/**
+ 送礼物人的id的数组
+ */
+@property (nonatomic, strong) NSMutableArray *giftUserIdArray;
 
 /**
  新增报告

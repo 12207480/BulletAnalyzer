@@ -229,23 +229,27 @@
                 [_countChart hide];
                 [_wordsChart hide];
                 [_fansChart hide];
+                [_giftChart hide];
                 break;
                 
             case 2:
                 [_wordsChart hide];
                 [_fansChart hide];
+                [_giftChart hide];
                 [_countChart animation];
                 break;
                 
             case 3:
                 [_countChart hide];
                 [_fansChart hide];
+                [_giftChart hide];
                 [_wordsChart animation];
                 break;
                 
             case 4:
                 [_countChart hide];
                 [_wordsChart hide];
+                [_giftChart hide];
                 [_fansChart animation];
                 break;
                 
@@ -253,6 +257,7 @@
                 [_wordsChart hide];
                 [_countChart hide];
                 [_fansChart hide];
+                [_giftChart animation];
                 break;
                 
             default:

@@ -28,6 +28,10 @@ MJExtensionCodingImplementation
 
 - (BOOL)isEqual:(id)object{
     
+    if ([object isKindOfClass:[NSString class]]) {
+        return [self.nn isEqualToString:object];
+    }
+    
     BABulletModel *bulletModel = (BABulletModel *)object;
     return [self.ic isEqualToString:bulletModel.ic];
 }

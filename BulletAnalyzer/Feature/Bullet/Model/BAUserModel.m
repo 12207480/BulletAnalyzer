@@ -38,7 +38,7 @@ MJExtensionCodingImplementation
     userModel.level = giftModel.level;
     userModel.ic = giftModel.ic;
     userModel.ct = giftModel.ct;
-    userModel.count = @"1";
+    userModel.giftCount = @"1";
     userModel.bulletArray = [NSMutableArray array];
     
     return userModel;

@@ -50,6 +50,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 @property (nonatomic, strong) NSMutableArray *giftsArray; //全部礼物
 @property (nonatomic, strong) NSMutableArray *userFishBallCountArray; //根据赠送鱼丸数的用户数组
 @property (nonatomic, strong) NSMutableArray *giftValueArray; //礼物价值分布数组
+@property (nonatomic, strong) NSMutableArray *giftUserBulletArray; //送礼物的人弹幕的数组
+@property (nonatomic, strong) NSMutableArray *giftUserIdArray; //送过礼物人的id数组
 
 @property (nonatomic, strong) NSMutableArray *sentenceArray; //根据词频 余弦夹角算出来的近似度句子
 @property (nonatomic, strong) NSMutableArray *popSentenceArray; //提到最多的句子 保留30条
@@ -94,12 +96,14 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         _giftsArray = [NSMutableArray array];
         _userFishBallCountArray = [NSMutableArray array];
         _giftValueArray = [NSMutableArray array];
+        _giftUserBulletArray = [NSMutableArray array];
+        _giftUserIdArray = [NSMutableArray array];
         
         //初始化近似度计算的句子
         _sentenceArray = [NSMutableArray array];
         _popSentenceArray = [NSMutableArray array];
         
-        for (NSInteger i = 1; i < 8; i++) {
+        for (NSInteger i = 1; i <= 8; i++) {
             BAGiftValueModel *giftValueModel = [BAGiftValueModel new];
             giftValueModel.giftType = (BAGiftType)i;
             [_giftValueArray addObject:giftValueModel];
@@ -122,6 +126,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         _analyzingReportModel.giftsArray = _giftsArray;
         _analyzingReportModel.userFishBallCountArray = _userFishBallCountArray;
         _analyzingReportModel.giftValueArray = _giftValueArray;
+        _analyzingReportModel.giftUserBulletArry = _giftUserBulletArray;
+        _analyzingReportModel.giftUserIdArray = _giftUserIdArray;
         
         _analyzingReportModel.sentenceArray = _sentenceArray;
         _analyzingReportModel.popSentenceArray = _popSentenceArray;
@@ -152,7 +158,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         _giftsArray = _analyzingReportModel.giftsArray;
         _userFishBallCountArray = _analyzingReportModel.userFishBallCountArray;
         _giftValueArray = _analyzingReportModel.giftValueArray;
-    
+        _giftUserBulletArray = _analyzingReportModel.giftUserBulletArry;
+        _giftUserIdArray = _analyzingReportModel.giftUserIdArray;
+        
         _sentenceArray = _analyzingReportModel.sentenceArray;
         _popSentenceArray = _analyzingReportModel.popSentenceArray;
     }
@@ -285,6 +293,10 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     dispatch_async(self.analyzingQueue, ^{
         [giftModelArray enumerateObjectsUsingBlock:^(BAGiftModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
             
+            if (obj.uid.length) {
+                [_giftUserIdArray addObject:obj.nn];
+            };
+            
             switch (obj.giftType) {
                 case BAGiftTypeFishBall:
                     
@@ -326,16 +338,23 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                     
                     break;
                 }
-                case BAGiftTypePlane:
+                case BAGiftTypeCard:
                 {
                     BAGiftValueModel *giftValue = _giftValueArray[5];
                     [self dealWithGift:obj giftValue:giftValue];
                     
                     break;
                 }
-                case BAGiftTypeRocket:
+                case BAGiftTypePlane:
                 {
                     BAGiftValueModel *giftValue = _giftValueArray[6];
+                    [self dealWithGift:obj giftValue:giftValue];
+                    
+                    break;
+                }
+                case BAGiftTypeRocket:
+                {
+                    BAGiftValueModel *giftValue = _giftValueArray[7];
                     [self dealWithGift:obj giftValue:giftValue];
                     
                     break;
@@ -350,9 +369,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
 
 - (void)dealWithFishBall:(BAGiftModel *)fishBall{
-    
-    if (!fishBall.uid.length) return;
-    
+
     //送鱼丸次数
     __block BOOL contained = NO;
     [_userFishBallCountArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop3) {
@@ -371,13 +388,14 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
 
 - (void)dealWithGift:(BAGiftModel *)giftModel giftValue:(BAGiftValueModel *)giftValue{
+    
     __block BOOL contained = NO;
     [giftValue.userModelArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop3) {
         
         contained = [giftModel isEqual:userModel];
         if (contained) {
             *stop3 = YES;
-            userModel.giftCount = BAStringWithInteger(userModel.giftCount.integerValue + 1);
+            userModel.giftCount = BAStringWithInteger(userModel.giftCount.integerValue + 1); //用户礼物计数器+1
         }
     }];
     if (!contained) {
@@ -395,8 +413,13 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     [self caculate:bulletModelArray];
     
     //将弹幕加入公开的弹幕数组, 去除重复的弹幕
-    [bulletModelArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [bulletModelArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (![_bulletsArray containsObject:obj]) {
+
+            //如果说话的人送过礼物 则存入送礼物说话的弹幕
+            if ([_giftUserIdArray containsObject:obj]) {
+                [_giftUserBulletArray addObject:obj];
+            }
             [_bulletsArray addObject:obj];
             //记录新增弹幕数量
             _bulletsCount += 1;
@@ -530,6 +553,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         
         if (![self isIgnore:words]) { //筛选
             
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
             //记录词的出现频率
             __block BOOL contained = NO;
             [_wordsArray enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
@@ -550,6 +575,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 
                 [_wordsArray addObject:newWordsModel];
             }
+            dispatch_semaphore_signal(semaphore);
         }
     }];
     
@@ -641,6 +667,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
 - (void)analyzingUser:(BABulletModel *)bulletModel{
     
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     //记录用户发言次数
     __block BOOL contained1 = NO;
     [_userBulletCountArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -659,7 +687,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         
         [_userBulletCountArray addObject:userModel];
     }
-  
+    
+    dispatch_semaphore_signal(semaphore);
+    
     //记录用户等级分布
     if (bulletModel.level.integerValue <= 5) {
         _levelCountArray[0] = @([_levelCountArray[0] integerValue] + 1);

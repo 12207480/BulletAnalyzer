@@ -113,7 +113,7 @@ MJCodingImplementation
 - (BOOL)isEqual:(id)object{
     BAUserModel *userModel = (BAUserModel *)object;
     
-    return [self.uid isEqual:userModel.uid];
+    return [self.nn isEqual:userModel.nn];
 }
 
 

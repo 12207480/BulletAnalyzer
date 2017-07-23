@@ -17,4 +17,14 @@
  */
 @property (nonatomic, strong) BAReportModel *reportModel;
 
+/**
+ 开始动画
+ */
+- (void)animation;
+
+/**
+ 隐藏
+ */
+- (void)hide;
+
 @end

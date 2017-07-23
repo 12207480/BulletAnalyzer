@@ -95,7 +95,9 @@
             BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
             
             if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && giftModel.giftType == BAGiftTypeRocket)) { //别的房间火箭广播消息过滤掉
-                [giftArray addObject:giftModel];
+                if (giftModel.nn.length) { //没有用户名的礼物 放弃
+                    [giftArray addObject:giftModel];
+                }
             }
         
         } else if ([dic[@"type"] isEqualToString:BAInfoTypeLoginReplay]) { //登录返回数据

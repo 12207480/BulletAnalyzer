@@ -26,6 +26,11 @@
 //判断是否为5.5inch
 #define Screen55inch ([UIScreen mainScreen].bounds.size.height == 736)
 
+//弧度转角度
+#define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
+//角度转弧度
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+
 //尺寸
 #define BAScreenHeight [UIScreen mainScreen].bounds.size.height//屏幕高度
 #define BAScreenWidth [UIScreen mainScreen].bounds.size.width//屏幕宽度

@@ -63,4 +63,16 @@ MJExtensionCodingImplementation
 }
 
 
+- (void)setWeight:(NSString *)weight{
+    
+    if (_weight && ![_weight isEqualToString:weight]) {
+        NSString *weightBefore = [_weight substringToIndex:_weight.length - 1];
+        NSString *weightAfter = [weight substringToIndex:weight.length - 1];
+        _weightIncrese += (weightAfter.doubleValue - weightBefore.doubleValue);
+    }
+    
+    _weight = weight;
+}
+
+
 @end

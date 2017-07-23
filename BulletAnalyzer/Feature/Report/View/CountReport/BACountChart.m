@@ -52,10 +52,10 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     animation1.fromValue = @(0);
     animation1.toValue = @(1);
-    animation1.duration = 0.6;
+    animation1.duration = 0.8;
     
     [_bulletBorderLayer addAnimation:animation1 forKey:nil];
-    [self performSelector:@selector(bulletLayerAnimation) withObject:nil afterDelay:0.6];
+    [self performSelector:@selector(bulletLayerAnimation) withObject:nil afterDelay:0.8];
 }
 
 
