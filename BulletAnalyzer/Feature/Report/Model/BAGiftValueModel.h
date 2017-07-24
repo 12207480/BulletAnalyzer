@@ -49,5 +49,6 @@
 @property (nonatomic, assign) CGFloat directAngle; //朝向角度 //用于动画
 @property (nonatomic, assign) CGFloat alpha; //透明度
 @property (nonatomic, assign) CATransform3D translation; //移动动画
+@property (nonatomic, assign, getter=isMovingOut) BOOL movingOut; //是否移出去了
 
 @end

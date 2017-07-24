@@ -41,6 +41,11 @@
 @property (nonatomic, weak) NSMutableArray *container;
 
 /**
+ 排行
+ */
+@property (nonatomic, assign) NSInteger index;
+
+/**
  count减一
  */
 - (void)decrease;

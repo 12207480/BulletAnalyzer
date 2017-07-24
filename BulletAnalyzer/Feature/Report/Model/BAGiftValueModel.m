@@ -15,7 +15,7 @@
 MJCodingImplementation
 
 + (NSArray *)mj_ignoredCodingPropertyNames{
-    return @[@"startAngle", @"endAngle", @"directAngle", @"alpha", @"translation"];
+    return @[@"startAngle", @"endAngle", @"directAngle", @"alpha", @"translation", @"movingOut"];
 }
 
 
@@ -94,6 +94,7 @@ MJCodingImplementation
     _startAngle = startAngle;
     _endAngle = _startAngle + self.totalGiftValue / maxValue * M_PI * 2;
     _directAngle = (_endAngle + _startAngle) / 2;
+    _movingOut = NO;
 }
 
 @end

@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSMutableArray *inPieArray; //内圈
 @property (nonatomic, strong) NSMutableArray *lineArray; //线
 @property (nonatomic, strong) NSMutableArray *bedgeArray; //图标
+@property (nonatomic, strong) NSMutableArray *arcArray; //每组图像的容器
 @property (nonatomic, strong) NSMutableArray *durationArray; //动画时间
 
 @property (nonatomic, strong) CALayer *fishBallIcon; //鱼丸图标
@@ -108,11 +109,25 @@
 }
 
 
+- (void)animationMove:(CALayer *)arcLayer giftValueModel:(BAGiftValueModel *)giftValueModel{
+
+    if (giftValueModel.isMovingOut) {
+        arcLayer.transform = CATransform3DIdentity;
+        giftValueModel.movingOut = NO;
+    } else {
+        arcLayer.transform = giftValueModel.translation;
+        giftValueModel.movingOut = YES;
+    }
+}
+
+
 - (void)hide{
-    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(animationWithAttribute:) object:nil];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
     [self.layer removeAllAnimations];
     NSInteger i = 0;
     for (CAShapeLayer *pieLayer in _pieArray) {
+        
+        //隐藏
         CAShapeLayer *inPieLayer = _inPieArray[i];
         CALayer *bedgeLayer = _bedgeArray[i];
         CAShapeLayer *lineLayer = _lineArray[i];
@@ -120,6 +135,11 @@
         lineLayer.hidden = YES;
         pieLayer.hidden = YES;
         inPieLayer.hidden = YES;
+        
+        //还原
+        CALayer *arcLayer = _arcArray[i];
+        arcLayer.transform = CATransform3DIdentity;
+        
         i++;
     }
 }
@@ -129,17 +149,40 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     CGPoint touchPoint = [[touches anyObject] locationInView:self];
     
-    //判断是否点击了鱼丸
-    
-    
-    //求点击位置与-90°的夹角 与 之前的圆弧对比
-    
-    
+    [self dealWithTouch:touchPoint];
 }
 
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    CGPoint touchPoint = [[touches anyObject] locationInView:self];
+    
+    [self dealWithTouch:touchPoint];
+}
 
+
+- (void)dealWithTouch:(CGPoint)touchPoint{
+    
+    CGFloat touchAngle = [self angleForStartPoint:_pieCenter EndPoint:touchPoint];
+    CGFloat touchDistance = [self distanceForPointA:touchPoint pointB:_pieCenter];
+    //判断是否点击了鱼丸
+    if (touchDistance < _inPieRadius - BAPadding) {
+        
+        
+        return;
+    }
+    
+    //求点击位置与-90°的夹角 与 之前的圆弧对比
+    if (touchDistance > _inPieRadius - BAPadding && touchDistance < _pieRadius + 2 * BAPadding) {
+        
+        [_giftValueArray enumerateObjectsUsingBlock:^(BAGiftValueModel *giftValueModel, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if (giftValueModel.startAngle < touchAngle && giftValueModel.endAngle > touchAngle) {
+                
+                [self animationMove:_arcArray[idx] giftValueModel:giftValueModel];
+                *stop = YES;
+            }
+        }];
+    }
 }
 
 
@@ -191,24 +234,33 @@
     
     [self addSubview:_fishBallLabel];
     
-    self.layer.shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+    self.layer.shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.4].CGColor;
     self.layer.shadowOpacity = 0.5;
-    self.layer.shadowOffset = CGSizeMake(3, 3);
+    self.layer.shadowOffset = CGSizeMake(5, 5);
 }
 
 
 - (void)dealData{
     
+    //计算礼物价值占比
+    CGFloat maxValue = 0;
+    for (BAGiftValueModel *valueModel in _reportModel.giftValueArray) {
+        maxValue += valueModel.totalGiftValue;
+    }
+    _maxValue = maxValue;
+    
     //只取送了礼物的
     NSMutableArray *tempArray = [NSMutableArray array];
     [_reportModel.giftValueArray enumerateObjectsUsingBlock:^(BAGiftValueModel *valueModel, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (valueModel.count && idx) {
+        
+        if (valueModel.count && idx && (valueModel.totalGiftValue / _maxValue) > (0.01)) {//排除没有数量/排除免费礼物/排除占比低于百分之一的礼物
             [tempArray addObject:valueModel];
         }
     }];
     _giftValueArray = tempArray.mutableCopy;
-    
-    CGFloat maxValue = 0;
+   
+    //计算排除后的总价值
+    maxValue = 0;
     for (BAGiftValueModel *valueModel in _giftValueArray) {
         maxValue += valueModel.totalGiftValue;
     }
@@ -220,19 +272,22 @@
 
 - (void)drawPieChart{
     
-    _pieRadius = self.height / 2 - 8 * BAPadding;
-    _inPieRadius = _pieRadius - 3 * BAPadding;
+    _pieRadius = self.height / 2 - 8 * BAPadding - 7;
+    _inPieRadius = _pieRadius - 3 * BAPadding + 3.5;
     _pieCenter = CGPointMake(self.width / 2, self.height / 2 + 40);
     
     NSMutableArray *pieArray = [NSMutableArray array];
     NSMutableArray *inPieArray = [NSMutableArray array];
     NSMutableArray *durationArray = [NSMutableArray array];
+    NSMutableArray *arcArray = [NSMutableArray array];
+    
     __block CGFloat endAngle = - M_PI / 2;
     [_giftValueArray enumerateObjectsUsingBlock:^(BAGiftValueModel *giftValueModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
         //创建一个容器 放外部饼状图与内部饼状图, 为动画做准备
         CALayer *arcLayer = [CALayer layer];
         arcLayer.frame = self.bounds;
+        [arcArray addObject:arcLayer];
         [self.layer addSublayer:arcLayer];
         
         //计算每个礼物的起始 终止角度
@@ -264,7 +319,7 @@
         
         CAShapeLayer *inPieLayer = [CAShapeLayer layer];
         inPieLayer.path = inPiePath.CGPath;
-        inPieLayer.lineWidth = 2 * BAPadding;
+        inPieLayer.lineWidth = 14;
         inPieLayer.strokeColor = inPieColor.CGColor;
         inPieLayer.fillColor = [UIColor clearColor].CGColor;
         inPieLayer.hidden = YES;
@@ -280,6 +335,7 @@
     _pieArray = pieArray;
     _inPieArray = inPieArray;
     _durationArray = durationArray;
+    _arcArray = arcArray;
 }
 
 
@@ -328,7 +384,7 @@
     }
     [_bedgeArray addObject:iconLayer];
     
-    CGFloat iconDistance = container.frame.size.height / 2 - 35; //图标到中心点的距离
+    CGFloat iconDistance = container.frame.size.height / 2 - 40; //图标到中心点的距离
     CGFloat iconCenterX;
     CGFloat iconCenterY;
     
@@ -336,11 +392,11 @@
     CGFloat lineBeginX;
     CGFloat lineBeginY;
     
-    CGFloat iconBorderDistance = iconDistance - 13.5;
+    CGFloat iconBorderDistance = iconDistance - 12.5;
     CGFloat lineEndX;
     CGFloat lineEndY;
     
-    CGFloat moveDistance = BAPadding / 2; //动画移动的距离
+    CGFloat moveDistance = BAPadding * 1.5; //动画移动的距离
     CGFloat moveX;
     CGFloat moveY;
     
@@ -418,7 +474,7 @@
     CAShapeLayer *lineLayer = [CAShapeLayer layer];
     lineLayer.path = linePath.CGPath;
     lineLayer.lineWidth = 1;
-    lineLayer.strokeColor = [BAWhiteColor colorWithAlphaComponent:0.8].CGColor;
+    lineLayer.strokeColor = [BAWhiteColor colorWithAlphaComponent:0.6].CGColor;
     lineLayer.fillColor = [UIColor clearColor].CGColor;
     lineLayer.hidden = YES;
     
@@ -432,5 +488,36 @@
     [container addSublayer:iconLayer];
 }
 
+
+/**
+ *  计算角度 与Y轴夹角 -90 - 270
+ */
+- (CGFloat)angleForStartPoint:(CGPoint)startPoint EndPoint:(CGPoint)endPoint{
+    
+    CGPoint Xpoint = CGPointMake(startPoint.x + 100, startPoint.y);
+    
+    CGFloat a = endPoint.x - startPoint.x;
+    CGFloat b = endPoint.y - startPoint.y;
+    CGFloat c = Xpoint.x - startPoint.x;
+    CGFloat d = Xpoint.y - startPoint.y;
+    
+    CGFloat rads = acos(((a*c) + (b*d)) / ((sqrt(a*a + b*b)) * (sqrt(c*c + d*d))));
+    
+    if (startPoint.y > endPoint.y) {
+        rads = -rads;
+    }
+    if (rads < - M_PI / 2 && rads > - M_PI) {
+        rads += M_PI * 2;
+    }
+    
+    return rads;
+}
+
+//两点之间距离
+- (CGFloat)distanceForPointA:(CGPoint)pointA pointB:(CGPoint)pointB{
+    CGFloat deltaX = pointB.x - pointA.x;
+    CGFloat deltaY = pointB.y - pointA.y;
+    return sqrt(deltaX * deltaX + deltaY * deltaY );
+}
 
 @end

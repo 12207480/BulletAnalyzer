@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		380ECF031F22ED2500D26CF6 /* BASentenceLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECEFC1F22ED2500D26CF6 /* BASentenceLabel.m */; };
 		380ECF041F22ED2500D26CF6 /* BAWordsChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECEFE1F22ED2500D26CF6 /* BAWordsChart.m */; };
 		380ECF051F22ED2500D26CF6 /* BAWordsInfoBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF001F22ED2500D26CF6 /* BAWordsInfoBlock.m */; };
 		380ECF061F22ED2500D26CF6 /* BAWordsInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF021F22ED2500D26CF6 /* BAWordsInfoView.m */; };
@@ -208,6 +207,7 @@
 		F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */; };
 		F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */; };
 		F293DFAD1F171BCE00404F46 /* UIImageView+ZJRadius.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DFAC1F171BCE00404F46 /* UIImageView+ZJRadius.m */; };
+		F299E4571F259BDD008A5CC3 /* BASentenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4561F259BDD008A5CC3 /* BASentenceCell.m */; };
 		F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */; };
 		F2A8BE8A1F1470FC00DC9B3C /* BASearchHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE891F1470FC00DC9B3C /* BASearchHistoryCell.m */; };
 		F2DA672F1F174BF3003BD66A /* BATransition.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DA672E1F174BF3003BD66A /* BATransition.m */; };
@@ -239,8 +239,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		380ECEFB1F22ED2500D26CF6 /* BASentenceLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceLabel.h; sourceTree = "<group>"; };
-		380ECEFC1F22ED2500D26CF6 /* BASentenceLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceLabel.m; sourceTree = "<group>"; };
 		380ECEFD1F22ED2500D26CF6 /* BAWordsChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsChart.h; sourceTree = "<group>"; };
 		380ECEFE1F22ED2500D26CF6 /* BAWordsChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAWordsChart.m; sourceTree = "<group>"; };
 		380ECEFF1F22ED2500D26CF6 /* BAWordsInfoBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsInfoBlock.h; sourceTree = "<group>"; };
@@ -674,6 +672,8 @@
 		F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceModel.m; sourceTree = "<group>"; };
 		F293DFAB1F171BCE00404F46 /* UIImageView+ZJRadius.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ZJRadius.h"; sourceTree = "<group>"; };
 		F293DFAC1F171BCE00404F46 /* UIImageView+ZJRadius.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ZJRadius.m"; sourceTree = "<group>"; };
+		F299E4551F259BDD008A5CC3 /* BASentenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceCell.h; sourceTree = "<group>"; };
+		F299E4561F259BDD008A5CC3 /* BASentenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceCell.m; sourceTree = "<group>"; };
 		F2A8BE851F14523500DC9B3C /* BAAddReportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAAddReportCell.h; sourceTree = "<group>"; };
 		F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAAddReportCell.m; sourceTree = "<group>"; };
 		F2A8BE881F1470FC00DC9B3C /* BASearchHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASearchHistoryCell.h; sourceTree = "<group>"; };
@@ -729,14 +729,14 @@
 		380ECEFA1F22ED2500D26CF6 /* WordsReport(关键词分析) */ = {
 			isa = PBXGroup;
 			children = (
-				380ECEFB1F22ED2500D26CF6 /* BASentenceLabel.h */,
-				380ECEFC1F22ED2500D26CF6 /* BASentenceLabel.m */,
 				380ECEFD1F22ED2500D26CF6 /* BAWordsChart.h */,
 				380ECEFE1F22ED2500D26CF6 /* BAWordsChart.m */,
 				380ECEFF1F22ED2500D26CF6 /* BAWordsInfoBlock.h */,
 				380ECF001F22ED2500D26CF6 /* BAWordsInfoBlock.m */,
 				380ECF011F22ED2500D26CF6 /* BAWordsInfoView.h */,
 				380ECF021F22ED2500D26CF6 /* BAWordsInfoView.m */,
+				F299E4551F259BDD008A5CC3 /* BASentenceCell.h */,
+				F299E4561F259BDD008A5CC3 /* BASentenceCell.m */,
 			);
 			name = "WordsReport(关键词分析)";
 			path = WordsReport;
@@ -758,7 +758,7 @@
 			path = FansReport;
 			sourceTree = "<group>";
 		};
-		380ECF081F22ED3700D26CF6 /* GiftReport */ = {
+		380ECF081F22ED3700D26CF6 /* GiftReport(礼物分析) */ = {
 			isa = PBXGroup;
 			children = (
 				380ECF0F1F22ED8400D26CF6 /* BAGiftChart.h */,
@@ -766,6 +766,7 @@
 				380ECF121F22ED8C00D26CF6 /* BAGiftInfoView.h */,
 				380ECF131F22ED8C00D26CF6 /* BAGiftInfoView.m */,
 			);
+			name = "GiftReport(礼物分析)";
 			path = GiftReport;
 			sourceTree = "<group>";
 		};
@@ -1818,7 +1819,7 @@
 			isa = PBXGroup;
 			children = (
 				380ECF071F22ED3700D26CF6 /* FansReport(粉丝分析) */,
-				380ECF081F22ED3700D26CF6 /* GiftReport */,
+				380ECF081F22ED3700D26CF6 /* GiftReport(礼物分析) */,
 				380ECEFA1F22ED2500D26CF6 /* WordsReport(关键词分析) */,
 				3870203F1F2242490047B94B /* CountReport(弹幕数量页) */,
 				F2EF75641F2082FD00B0D70B /* GurdientView(渐变背景图) */,
@@ -2055,6 +2056,7 @@
 				388AFFE11EE045F90031DE53 /* GCDAsyncUdpSocket.m in Sources */,
 				38D775E41F24F284005371D4 /* BAUserModel.m in Sources */,
 				38D775E31F24F284005371D4 /* BAReplyModel.m in Sources */,
+				F299E4571F259BDD008A5CC3 /* BASentenceCell.m in Sources */,
 				38D775E01F24F284005371D4 /* BACountTimeModel.m in Sources */,
 				388A86B51EE4424600A0BC5B /* MJRefreshAutoFooter.m in Sources */,
 				388A85F31EE4163200A0BC5B /* MMDrawerBarButtonItem.m in Sources */,
@@ -2155,7 +2157,6 @@
 				388A86B81EE4424600A0BC5B /* MJRefreshFooter.m in Sources */,
 				F231C7AF1EE509F700EB0F79 /* SDWebImageCompat.m in Sources */,
 				F222A4721F0B44D000E70ADA /* CGGeometry+LOTAdditions.m in Sources */,
-				380ECF031F22ED2500D26CF6 /* BASentenceLabel.m in Sources */,
 				F222A4791F0B44D000E70ADA /* LOTAsset.m in Sources */,
 				F231C7B71EE509F700EB0F79 /* UIImage+MultiFormat.m in Sources */,
 				38B316731EFDF4A8003C70AA /* BASentenceView.m in Sources */,

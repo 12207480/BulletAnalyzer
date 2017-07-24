@@ -9,20 +9,19 @@
 #import "BAWordsInfoView.h"
 #import "BAReportModel.h"
 #import "BAWordsInfoBlock.h"
-#import "BASentenceLabel.h"
 #import "BAWordsModel.h"
 #import "BASentenceModel.h"
+#import "BASentenceCell.h"
 
-@interface BAWordsInfoView()
+static NSString *const BASentenceCellReusedId = @"BASentenceCellReusedId";
+
+@interface BAWordsInfoView() <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) BAWordsInfoBlock *popWordsBlock;
 @property (nonatomic, strong) UIView *line1;
 @property (nonatomic, strong) BAWordsInfoBlock *popSentenceBlock;
 @property (nonatomic, strong) UIView *line2;
-@property (nonatomic, strong) BASentenceLabel *sentence1;
-@property (nonatomic, strong) UIView *line3;
-@property (nonatomic, strong) BASentenceLabel *sentence2;
-@property (nonatomic, strong) UIView *line4;
-@property (nonatomic, strong) BASentenceLabel *sentence3;
+@property (nonatomic, strong) UITableView *sentenceTableView;
+@property (nonatomic, strong) NSMutableArray *sentenceArray;
 
 @end
 
@@ -70,28 +69,18 @@
     
     [self addSubview:_line2];
     
-    CGFloat sentenceHeight = (height - 4) / 6;
-    _sentence1 = [BASentenceLabel blockWithDescription:nil info:nil frame:CGRectMake(0, _line2.bottom, BAScreenWidth, sentenceHeight)];
+    CGFloat sentenceHeight = (height - 5) / 6;
+    _sentenceTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _line2.bottom, BAScreenWidth, (sentenceHeight + 1) * 3)];
+    _sentenceTableView.delegate = self;
+    _sentenceTableView.dataSource = self;
+    _sentenceTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _sentenceTableView.showsVerticalScrollIndicator = NO;
+    _sentenceTableView.rowHeight = sentenceHeight + 1;
+    _sentenceTableView.backgroundColor = BAWhiteColor;
     
-    [self addSubview:_sentence1];
+    [_sentenceTableView registerClass:[BASentenceCell class] forCellReuseIdentifier:BASentenceCellReusedId];
     
-    _line3 = [[UIView alloc] initWithFrame:CGRectMake(2 * BAPadding, _sentence1.bottom, BAScreenWidth - 4 * BAPadding, 1)];
-    _line3.backgroundColor = BASpratorColor;
-    
-    [self addSubview:_line3];
-    
-    _sentence2 = [BASentenceLabel blockWithDescription:nil info:nil frame:CGRectMake(0, _line3.bottom, BAScreenWidth, sentenceHeight)];
-    
-    [self addSubview:_sentence2];
-    
-    _line4 = [[UIView alloc] initWithFrame:CGRectMake(2 * BAPadding, _sentence2.bottom, BAScreenWidth - 4 * BAPadding, 1)];
-    _line4.backgroundColor = BASpratorColor;
-    
-    [self addSubview:_line4];
-    
-    _sentence3 = [BASentenceLabel blockWithDescription:nil info:nil frame:CGRectMake(0, _line4.bottom, BAScreenWidth, sentenceHeight)];
-    
-    [self addSubview:_sentence3];
+    [self addSubview:_sentenceTableView];
 }
 
 
@@ -101,18 +90,29 @@
     _popWordsBlock.descripLabel.text = [NSString stringWithFormat:@"弹幕最多提到的关键词: %@", wordsModel.words];
     _popWordsBlock.infoLabel.text = [NSString stringWithFormat:@"%@次", wordsModel.count];
     
+    [_sentenceTableView reloadData];
+    _sentenceArray = _reportModel.popSentenceArray.copy;
+}
+
+
+#pragma mark - tableViewDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _sentenceArray.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    BASentenceCell *cell = [tableView dequeueReusableCellWithIdentifier:BASentenceCellReusedId forIndexPath:indexPath];
+    BASentenceModel *sentenceModel = _sentenceArray[indexPath.row];
+    sentenceModel.index = indexPath.row + 1;
+    cell.sentenceModel = sentenceModel;
     
-    BASentenceModel *sentence1Model = _reportModel.popSentenceArray[0];
-    BASentenceModel *sentence2Model = _reportModel.popSentenceArray[1];
-    BASentenceModel *sentence3Model = _reportModel.popSentenceArray[2];
-    _sentence1.descripLabel.text = [NSString stringWithFormat:@"1、%@", sentence1Model.text];
-    _sentence1.infoLabel.text = [NSString stringWithFormat:@"%zd次", sentence1Model.realCount];
-    
-    _sentence2.descripLabel.text = [NSString stringWithFormat:@"2、%@", sentence2Model.text];
-    _sentence2.infoLabel.text = [NSString stringWithFormat:@"%zd次", sentence2Model.realCount];
-    
-    _sentence3.descripLabel.text = [NSString stringWithFormat:@"3、%@", sentence3Model.text];
-    _sentence3.infoLabel.text = [NSString stringWithFormat:@"%zd次", sentence3Model.realCount];
+    return cell;
 }
 
 @end

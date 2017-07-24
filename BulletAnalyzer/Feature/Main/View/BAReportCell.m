@@ -37,7 +37,6 @@
 
 #pragma mark - userInteraction
 - (void)openBtnClicked{
-    
     CGRect realRect = [self convertRect:_imgView.frame toView:BAKeyWindow];
     [BANotificationCenter postNotificationName:BANotificationMainCellOpenBtnClicked object:nil userInfo:@{BAUserInfoKeyMainCellOpenBtnClicked : _reportModel,
                                                                                                           BAUserInfoKeyMainCellOpenBtnFrame : [NSValue valueWithCGRect:realRect]}];
@@ -105,7 +104,7 @@
 - (void)setupReportView{
     CGFloat realPadding = Screen40inch ? BAPadding / 2 : BAPadding;
     
-    _delBtn = [UIButton buttonWithFrame:CGRectMake(BAReportCellWidth - realPadding - 21, realPadding, 21, 21) title:nil color:nil font:nil backgroundImage:[UIImage imageNamed:@"reportDel"] target:self action:@selector(delBtnClicked)];
+    _delBtn = [UIButton buttonWithFrame:CGRectMake(BAReportCellWidth - realPadding * 1.5 - 21, realPadding * 1.5, 21, 21) title:nil color:nil font:nil backgroundImage:[UIImage imageNamed:@"reportDel"] target:self action:@selector(delBtnClicked)];
     
     [self.contentView addSubview:_delBtn];
     
