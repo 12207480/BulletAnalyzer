@@ -130,6 +130,7 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
     [self.contentView  addSubview:_roomNumField];
     
     _addBtn = [UIButton buttonWithFrame:CGRectMake(2 * realPadding, _roomNumBgView.bottom + 1.5 * realPadding, BAReportCellWidth - 4 * realPadding, 60) title:@"连接" color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) backgroundImage:[UIImage imageNamed:@"openBtn"] target:self action:@selector(addBtnClicked)];
+    _addBtn.adjustsImageWhenHighlighted = NO;
     
     [self.contentView addSubview:_addBtn];
     

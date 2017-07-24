@@ -138,6 +138,7 @@
     [self.contentView addSubview:_giftLabel];
     
     _openBtn = [UIButton buttonWithFrame:CGRectMake(2 * realPadding, _giftLabel.bottom, BAReportCellWidth - 4 * realPadding, 60) title:@"查看" color:BAWhiteColor font:BACommonFont(BALargeTextFontSize) backgroundImage:[UIImage imageNamed:@"openBtn"] target:self action:@selector(openBtnClicked)];
+    _openBtn.adjustsImageWhenHighlighted = NO;
     
     [self.contentView addSubview:_openBtn];
 }

@@ -74,12 +74,12 @@
     
     [self addSubview:_wordsMenu];
     
-    _fansMenu = [BAMenuBtn btnWithImage:@"fansMenu" type:@"  粉丝质量分析" frame:CGRectMake(0, height, width, height) target:self actions:@selector(wordsMenuClicked)];
+    _fansMenu = [BAMenuBtn btnWithImage:@"fansMenu" type:@"  粉丝质量分析" frame:CGRectMake(0, height, width, height) target:self actions:@selector(fansMenuClicked)];
     _fansMenu.info = @"  关注粉丝状况";
     
     [self addSubview:_fansMenu];
     
-    _giftMenu = [BAMenuBtn btnWithImage:@"giftMenu" type:@"礼物分析" frame:CGRectMake(width, height, width, height) target:self actions:@selector(wordsMenuClicked)];
+    _giftMenu = [BAMenuBtn btnWithImage:@"giftMenu" type:@"礼物分析" frame:CGRectMake(width, height, width, height) target:self actions:@selector(giftMenuClicked)];
     _giftMenu.info = @"土豪在哪";
     
     [self addSubview:_giftMenu];

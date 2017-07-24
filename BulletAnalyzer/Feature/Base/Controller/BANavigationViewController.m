@@ -53,10 +53,10 @@
 #pragma mark - private
 - (void)setupNavibationBar{
 
-    [self.navigationBar setBackgroundImage:[UIImage imageWithColor:BANavigationBarColor] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor]] forBarMetrics:UIBarMetricsDefault];
     self.navigationBar.contentMode = UIViewContentModeScaleAspectFill;
     self.navigationBar.translucent = YES;
-    self.navigationBar.shadowImage = [UIImage imageWithColor:BANavigationBarColor];
+    self.navigationBar.shadowImage = [UIImage imageWithColor:[UIColor clearColor]];
     self.navigationBar.tintColor = BAThemeColor;
     self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : BAWhiteColor};
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;

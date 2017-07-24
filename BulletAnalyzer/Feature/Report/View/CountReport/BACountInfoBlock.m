@@ -46,7 +46,7 @@
     
     CGFloat imgHeight = height - 4 * BAPadding;
     _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(width - 2 * BAPadding - imgHeight, 2 * BAPadding, imgHeight, imgHeight)];
-    _imageView.contentMode = UIViewContentModeScaleToFill;
+    _imageView.contentMode = UIViewContentModeScaleAspectFit;
     
     [self addSubview:_imageView];
     

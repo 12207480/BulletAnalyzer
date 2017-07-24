@@ -66,8 +66,12 @@ MJCodingImplementation
 }
 
 
-- (NSString *)nn{
-    return _nn.length ? _nn : _sn;
+- (void)setSn:(NSString *)sn{
+    _sn = sn;
+    
+    if (sn.length) {
+        _nn = sn;
+    }
 }
 
 

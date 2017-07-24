@@ -67,7 +67,7 @@
 - (void)setupSubViews{
     
     _bgView = [[UIView alloc] initWithFrame:CGRectMake(2 * BAPadding, 0, BAScreenWidth - 4 * BAPadding, BABulletListCellHeight)];
-    _bgView.backgroundColor = BACellColor1;
+    _bgView.backgroundColor = BABulletCellColor;
     _bgView.layer.cornerRadius = BARadius;
 //    _bgView.layer.shadowOpacity = 0.5;
 //    _bgView.layer.shadowColor = BABlackColor.CGColor;
@@ -111,7 +111,7 @@
     
     _noticeBtn = [UIButton buttonWithFrame:CGRectMake(_bgView.x, _bgView.bottom + 6, (_bgView.width - 6) / 2, 30) title:@"标记此用户发言" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
     _noticeBtn.tag = 0;
-    _noticeBtn.backgroundColor = BACellColor1;
+    _noticeBtn.backgroundColor = BABulletCellColor;
     _noticeBtn.layer.cornerRadius = BARadius;
 //    _noticeBtn.layer.shadowOpacity = 0.5;
 //    _noticeBtn.layer.shadowColor = BABlackColor.CGColor;
@@ -123,7 +123,7 @@
     
     _unNoticeBtn = [UIButton buttonWithFrame:CGRectMake(_noticeBtn.right + 6, _bgView.bottom + 6, (_bgView.width - 6) / 2, 30) title:@"取消此用户标记" color:BAThemeColor font:BACommonFont(BACommonTextFontSize) backgroundImage:nil target:self action:@selector(btnClicked:)];
     _unNoticeBtn.tag = 1;
-    _unNoticeBtn.backgroundColor = BACellColor1;
+    _unNoticeBtn.backgroundColor = BABulletCellColor;
     _unNoticeBtn.layer.cornerRadius = BARadius;
 //    _unNoticeBtn.layer.shadowOpacity = 0.5;
 //    _unNoticeBtn.layer.shadowColor = BABlackColor.CGColor;

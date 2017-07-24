@@ -208,6 +208,7 @@
 		F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */; };
 		F293DFAD1F171BCE00404F46 /* UIImageView+ZJRadius.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DFAC1F171BCE00404F46 /* UIImageView+ZJRadius.m */; };
 		F299E4571F259BDD008A5CC3 /* BASentenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4561F259BDD008A5CC3 /* BASentenceCell.m */; };
+		F299E45A1F25D82B008A5CC3 /* BAGiftUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4591F25D82B008A5CC3 /* BAGiftUserCell.m */; };
 		F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */; };
 		F2A8BE8A1F1470FC00DC9B3C /* BASearchHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE891F1470FC00DC9B3C /* BASearchHistoryCell.m */; };
 		F2DA672F1F174BF3003BD66A /* BATransition.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DA672E1F174BF3003BD66A /* BATransition.m */; };
@@ -674,6 +675,8 @@
 		F293DFAC1F171BCE00404F46 /* UIImageView+ZJRadius.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ZJRadius.m"; sourceTree = "<group>"; };
 		F299E4551F259BDD008A5CC3 /* BASentenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceCell.h; sourceTree = "<group>"; };
 		F299E4561F259BDD008A5CC3 /* BASentenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceCell.m; sourceTree = "<group>"; };
+		F299E4581F25D82B008A5CC3 /* BAGiftUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftUserCell.h; sourceTree = "<group>"; };
+		F299E4591F25D82B008A5CC3 /* BAGiftUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGiftUserCell.m; sourceTree = "<group>"; };
 		F2A8BE851F14523500DC9B3C /* BAAddReportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAAddReportCell.h; sourceTree = "<group>"; };
 		F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAAddReportCell.m; sourceTree = "<group>"; };
 		F2A8BE881F1470FC00DC9B3C /* BASearchHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASearchHistoryCell.h; sourceTree = "<group>"; };
@@ -765,6 +768,8 @@
 				380ECF101F22ED8400D26CF6 /* BAGiftChart.m */,
 				380ECF121F22ED8C00D26CF6 /* BAGiftInfoView.h */,
 				380ECF131F22ED8C00D26CF6 /* BAGiftInfoView.m */,
+				F299E4581F25D82B008A5CC3 /* BAGiftUserCell.h */,
+				F299E4591F25D82B008A5CC3 /* BAGiftUserCell.m */,
 			);
 			name = "GiftReport(礼物分析)";
 			path = GiftReport;
@@ -2108,6 +2113,7 @@
 				388A86071EE417F000A0BC5B /* BARoomListTableViewController.m in Sources */,
 				F231C7AD1EE509F700EB0F79 /* NSData+ImageContentType.m in Sources */,
 				F222A46A1F0B44D000E70ADA /* LOTAnimatableBoundsValue.m in Sources */,
+				F299E45A1F25D82B008A5CC3 /* BAGiftUserCell.m in Sources */,
 				F222A4711F0B44D000E70ADA /* CAAnimationGroup+LOTAnimatableGroup.m in Sources */,
 				388A863F1EE43EA400A0BC5B /* MASLayoutConstraint.m in Sources */,
 				F222A4611F0B44D000E70ADA /* LOTAnimatableLayer.m in Sources */,

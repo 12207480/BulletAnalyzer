@@ -17,7 +17,8 @@ typedef NS_ENUM(NSUInteger, BAGiftType) {
     BAGiftTypeDeserveLevel3 = 5, //高级酬勤 50鱼翅
     BAGiftTypeCard = 6,    //办卡 6鱼翅鱼翅
     BAGiftTypePlane = 7,    //飞机 100鱼翅
-    BAGiftTypeRocket = 8    //火箭 500鱼翅
+    BAGiftTypeRocket = 8,    //火箭 500鱼翅
+    BAGiftTypeNone = 9999 //无礼物
 };
 
 @interface BAGiftModel : BABasicInfoModel <NSCoding>

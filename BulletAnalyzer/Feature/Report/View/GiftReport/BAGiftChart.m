@@ -33,6 +33,7 @@
 @property (nonatomic, assign) CGFloat pieRadius; //外圈半径(中点)
 @property (nonatomic, assign) CGFloat inPieRadius; //内圈半径(中点)
 @property (nonatomic, assign) CGPoint pieCenter; //(圆心)
+@property (nonatomic, assign, getter=isFishBallClicked) BOOL fishBallClicked; //鱼丸是否点击了
 
 @end
 
@@ -117,6 +118,36 @@
     } else {
         arcLayer.transform = giftValueModel.translation;
         giftValueModel.movingOut = YES;
+    
+        [_arcArray enumerateObjectsUsingBlock:^(CALayer *arc, NSUInteger idx, BOOL * _Nonnull stop) {
+            BAGiftValueModel *giftValue = _giftValueArray[idx];
+            if (![arcLayer isEqual:arc] && giftValue.isMovingOut) {
+                [self animationMove:arc giftValueModel:giftValue];
+            }
+        }];
+        
+        if (self.isFishBallClicked) {
+            [self animationFishBall];
+        }
+    }
+}
+
+
+- (void)animationFishBall{
+    
+    if (self.isFishBallClicked) {
+        _fishBallIcon.contents = (id)[UIImage imageNamed:@"giftFishBallIcon"].CGImage;
+        self.fishBallClicked = NO;
+    } else {
+        _fishBallIcon.contents = (id)[UIImage imageNamed:@"giftFishBallClickedIcon"].CGImage;
+        self.fishBallClicked = YES;
+        
+        [_arcArray enumerateObjectsUsingBlock:^(CALayer *arc, NSUInteger idx, BOOL * _Nonnull stop) {
+            BAGiftValueModel *giftValue = _giftValueArray[idx];
+            if (giftValue.isMovingOut) {
+                [self animationMove:arc giftValueModel:giftValue];
+            }
+        }];
     }
 }
 
@@ -141,6 +172,9 @@
         arcLayer.transform = CATransform3DIdentity;
         
         i++;
+    }
+    if (self.isFishBallClicked) {
+        [self animationFishBall];
     }
 }
 
@@ -167,6 +201,12 @@
     //判断是否点击了鱼丸
     if (touchDistance < _inPieRadius - BAPadding) {
         
+        if (self.isFishBallClicked) {
+            _giftPieClicked(BAGiftTypeNone);
+        } else {
+            _giftPieClicked(BAGiftTypeFishBall);
+        }
+        [self animationFishBall];
         
         return;
     }
@@ -177,6 +217,12 @@
         [_giftValueArray enumerateObjectsUsingBlock:^(BAGiftValueModel *giftValueModel, NSUInteger idx, BOOL * _Nonnull stop) {
             
             if (giftValueModel.startAngle < touchAngle && giftValueModel.endAngle > touchAngle) {
+                
+                if (giftValueModel.isMovingOut) {
+                    _giftPieClicked(BAGiftTypeNone);
+                } else {
+                    _giftPieClicked(giftValueModel.giftType);
+                }
                 
                 [self animationMove:_arcArray[idx] giftValueModel:giftValueModel];
                 *stop = YES;
@@ -396,7 +442,7 @@
     CGFloat lineEndX;
     CGFloat lineEndY;
     
-    CGFloat moveDistance = BAPadding * 1.5; //动画移动的距离
+    CGFloat moveDistance = BAPadding; //动画移动的距离
     CGFloat moveX;
     CGFloat moveY;
     

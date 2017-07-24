@@ -61,37 +61,23 @@
 //颜色
 #define BAColor(R, G, B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]//自定义颜色
 #define BARandomColor BAColor(arc4random_uniform(255), arc4random_uniform(255), arc4random_uniform(255)) //随机色
+#define BAWhiteColor [UIColor whiteColor] //白色
+#define BABlackColor [UIColor blackColor] //黑色
 #define BABackgroundColor BAColor(240, 243, 246)//背景颜色
-#define BADark1BackgroundColor BAColor(6, 8, 18)//背景颜色
-#define BADark2BackgroundColor BAColor(14, 15, 26)//背景颜色
-#define BADark3BackgroundColor BAColor(22, 24, 35)//背景颜色
 #define BAThemeColor BAColor(249, 118, 143) //常用的主色
-#define BAGurdientPinkColor  BAColor(255, 129, 227) //渐变粉主色
-#define BAGurdientBlueColor  BAColor(99, 91, 255) //渐变蓝主色
-#define BAHighlightThemeColor BAColor(0, 179, 179) //高亮主题色
-#define BAWhiteColor [UIColor whiteColor]
-#define BABlackColor [UIColor blackColor]
+#define BAGurdientPinkColor BAColor(255, 129, 227) //渐变粉主色
+#define BAGurdientBlueColor BAColor(99, 91, 255) //渐变蓝主色
 #define BACommonTextColor BAColor(51, 51, 51) //一般文字颜色
 #define BALightTextColor BAColor(153, 153, 153) //浅说明性文字
-#define BAAssistColor BAColor(255, 127, 102)
-#define BAAssist2Color BAColor(115, 210, 230) //辅助色(蓝)
 #define BADisabledColor BAColor(204, 204, 204) //不可选颜色
 #define BARoomNameColor BAColor(102, 102, 102) //主页房间名颜色
 #define BARoomInfoColor BAColor(115, 115, 115) //主页房间信息颜色
 #define BASpratorColor BAColor(240, 240, 240) //分隔线颜色
-
-#define BANavigationBarColor [UIColor clearColor] //导航栏背景图
-#define BATabBarColor BAColor(61, 64, 105) //底部栏颜色
-#define BACellColor1 BAColor(58, 59, 97) //cell第一种背景色 //废弃
-#define BACellColor2 BAColor(68, 69, 107) //cell第二种背景色 //废弃
-
+#define BABulletCellColor BAColor(240, 243, 246) //弹幕背景色
 #define BALineColor1 BAColor(240, 196, 70) //弹幕数量曲线颜色
-#define BALineColor2 BAColor(253, 161, 111) //在线人数曲线颜色
-#define BALineColor3 BAColor(0, 199, 163) //关注增长曲线颜色
-#define BALineColor4 BAColor(255, 117, 143)  //等级分布曲线颜色
-#define BALineColor5 BAColor(11, 120, 227)  //蓝色
-#define BALineColor6 BAColor(86, 178, 186)  //浅蓝色
-#define BALineColor7 BAColor(44, 129, 100)  //浅蓝色
+#define BALineColor2 BAColor(240, 187, 144) //在线人数曲线颜色
+#define BALineColor3 BAColor(140, 203, 172) //关注增长曲线颜色
+#define BALineColor4 BAColor(254, 160, 183)  //等级分布曲线颜色
 
 //字体
 #define BAThinFont(size) [UIFont systemFontOfSize:size weight:UIFontWeightUltraLight]

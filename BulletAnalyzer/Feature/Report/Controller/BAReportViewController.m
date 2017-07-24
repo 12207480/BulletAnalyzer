@@ -82,7 +82,11 @@
 
 #pragma mark - userInteraction
 - (void)dismiss{
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    if (self.scrollView.contentOffset.x) {
+        [self.scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+    } else {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 
@@ -134,22 +138,23 @@
     CGFloat height = BAScreenWidth / 375 * 356;
     _menuView = [[BAMenuView alloc] initWithFrame:CGRectMake(0, BAScreenHeight - height - 2 * BAPadding, BAScreenWidth, height)];
     _menuView.reportModel = _reportModel;
+    WeakObj(self);
     _menuView.menuClicked = ^(menuBtnType type){
         switch (type) {
             case menuBtnTypeCount:
-                
+                [selfWeak.scrollView setContentOffset:CGPointMake(BAScreenWidth, 0) animated:YES];
                 break;
                 
             case menuBtnTypeWords:
-                
+                [selfWeak.scrollView setContentOffset:CGPointMake(BAScreenWidth * 2, 0) animated:YES];
                 break;
                 
             case menuBtnTypeFans:
-                
+                [selfWeak.scrollView setContentOffset:CGPointMake(BAScreenWidth * 3, 0) animated:YES];
                 break;
                 
             case menuBtnTypeGift:
-                
+                [selfWeak.scrollView setContentOffset:CGPointMake(BAScreenWidth * 4, 0) animated:YES];
                 break;
                 
             default:
@@ -211,6 +216,10 @@
 - (void)setupGiftReport{
     _giftChart = [[BAGiftChart alloc] initWithFrame:CGRectMake(BAScreenWidth * 4, 0, BAScreenWidth, BAScreenHeight / 2)];
     _giftChart.reportModel = _reportModel;
+    WeakObj(self);
+    _giftChart.giftPieClicked = ^(BAGiftType giftType) {
+        selfWeak.giftInfoView.selectedGiftType = giftType;
+    };
     
     [_scrollView addSubview:_giftChart];
     

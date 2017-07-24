@@ -28,8 +28,6 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
     
     self.title = @"房间列表";
     
-    self.view.backgroundColor = BADark1BackgroundColor;
-    
     [self setupTableView];
     
     [self getStatus];

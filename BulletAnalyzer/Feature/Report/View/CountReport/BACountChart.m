@@ -157,7 +157,7 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     
     CAGradientLayer *gradientLayer = [CAGradientLayer layer];
     gradientLayer.frame = _chart.bounds;
-    [gradientLayer setColors:[NSArray arrayWithObjects:(id)[[color colorWithAlphaComponent:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil]];
+    [gradientLayer setColors:[NSArray arrayWithObjects:(id)[[color colorWithAlphaComponent:0.5] CGColor], (id)[[UIColor clearColor] CGColor], nil]];
     [gradientLayer setStartPoint:CGPointMake(0.5, 0)];
     [gradientLayer setEndPoint:CGPointMake(0.5, 1)];
     [gradientLayer setMask:shapeLayer];

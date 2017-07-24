@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BAGiftModel.h"
 
 @class BAReportModel;
 
@@ -16,5 +17,10 @@
  传入分析数据模型
  */
 @property (nonatomic, strong) BAReportModel *reportModel;
+
+/**
+ 选中礼物类型
+ */
+@property (nonatomic, assign) BAGiftType selectedGiftType;
 
 @end

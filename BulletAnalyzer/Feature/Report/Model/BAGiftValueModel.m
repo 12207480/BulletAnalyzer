@@ -29,12 +29,12 @@ MJCodingImplementation
             
         case BAGiftTypeCostGift:
             _giftValue = 0.15;
-            _alpha = 0.75;
+            _alpha = 0.45;
             break;
             
         case BAGiftTypeDeserveLevel1:
             _giftValue = 15;
-            _alpha = 0.55;
+            _alpha = 0.75;
             break;
             
         case BAGiftTypeDeserveLevel2:
@@ -44,7 +44,7 @@ MJCodingImplementation
             
         case BAGiftTypeDeserveLevel3:
             _giftValue = 50;
-            _alpha = 0.45;
+            _alpha = 0.55;
             break;
             
         case BAGiftTypeCard:
@@ -54,13 +54,13 @@ MJCodingImplementation
             
         case BAGiftTypePlane:
             _giftValue = 100;
-            _alpha = 0.7;
+            _alpha = 0.8;
             break;
             
             
         case BAGiftTypeRocket:
             _giftValue = 500;
-            _alpha = 0.5;
+            _alpha = 0.9;
             break;
             
         default:

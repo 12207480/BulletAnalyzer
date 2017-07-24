@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BAGiftModel.h"
+
+typedef void(^giftPieClicked)(BAGiftType giftType);
 
 @class BAReportModel;
 
@@ -16,6 +19,11 @@
  传入分析数据模型
  */
 @property (nonatomic, strong) BAReportModel *reportModel;
+
+/**
+ 扇形图点击回调
+ */
+@property (nonatomic, copy) giftPieClicked giftPieClicked;
 
 /**
  开始动画

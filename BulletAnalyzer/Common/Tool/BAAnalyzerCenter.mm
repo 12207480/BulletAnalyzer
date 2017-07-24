@@ -82,14 +82,14 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         _fansTimePointArray = [NSMutableArray array];
         _levelCountPointArray = [NSMutableArray array];
         _levelCountArray = @[
-                             @0, //0-10级
-                             @0, //11-20级
-                             @0, //21-30级
-                             @0, //31-40级
-                             @0, //41-50级
-                             @0, //51-60级
-                             @0, //61-70级
-                             @0  //70级以上
+                             @0, //0-5级
+                             @0, //6-10级
+                             @0, //11-15级
+                             @0, //16-20级
+                             @0, //21-25级
+                             @0, //26-30级
+                             @0, //31-35级
+                             @0  //35级以上
                              ].mutableCopy;
         
         //初始化礼物数组
@@ -293,9 +293,12 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     dispatch_async(self.analyzingQueue, ^{
         [giftModelArray enumerateObjectsUsingBlock:^(BAGiftModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
             
-            if (obj.uid.length) {
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(3);
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+            if (obj.nn.length && ![_giftUserIdArray containsObject:obj.nn]) {
                 [_giftUserIdArray addObject:obj.nn];
             };
+            dispatch_semaphore_signal(semaphore);
             
             switch (obj.giftType) {
                 case BAGiftTypeFishBall:
@@ -416,10 +419,16 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     [bulletModelArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (![_bulletsArray containsObject:obj]) {
 
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(3);
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
             //如果说话的人送过礼物 则存入送礼物说话的弹幕
-            if ([_giftUserIdArray containsObject:obj]) {
-                [_giftUserBulletArray addObject:obj];
+            if (_giftUserIdArray.count) {
+                if ([_giftUserIdArray containsObject:obj.nn]) {
+                    [_giftUserBulletArray addObject:obj];
+                }
             }
+            dispatch_semaphore_signal(semaphore);
+            
             [_bulletsArray addObject:obj];
             //记录新增弹幕数量
             _bulletsCount += 1;
@@ -557,7 +566,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
             //记录词的出现频率
             __block BOOL contained = NO;
-            [_wordsArray enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+            [_wordsArray.mutableCopy enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
                 
                 contained = [wordsModel isEqual:words];
                 if (contained) {

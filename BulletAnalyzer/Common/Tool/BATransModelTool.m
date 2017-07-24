@@ -90,7 +90,10 @@
             
         } else if ([dic[@"type"] isEqualToString:BAInfoTypeSmallGift] || [dic[@"type"] isEqualToString:BAInfoTypeDeserveGift] || [dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
             
-            //NSLog(@"%@ : %@", dic[@"nn"] ,dic.description);
+            if ([dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
+                
+                NSLog(@"%@", dic.description);
+            }
             
             BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
             

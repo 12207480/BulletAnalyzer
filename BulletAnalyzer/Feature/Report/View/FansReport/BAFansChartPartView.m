@@ -126,7 +126,7 @@
     
     _gradientLayer = [CAGradientLayer layer];
     _gradientLayer.frame = self.bounds;
-    [_gradientLayer setColors:[NSArray arrayWithObjects:(id)[[color colorWithAlphaComponent:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil]];
+    [_gradientLayer setColors:[NSArray arrayWithObjects:(id)[[color colorWithAlphaComponent:0.4] CGColor], (id)[[UIColor clearColor] CGColor], nil]];
     [_gradientLayer setStartPoint:CGPointMake(0.5, 0)];
     [_gradientLayer setEndPoint:CGPointMake(0.5, 1)];
     [_gradientLayer setMask:_shapeLayer];
