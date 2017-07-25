@@ -76,7 +76,38 @@ static NSString *const BAGiftUserCellReusedId = @"BAGiftUserCellReusedId";
         self.activeCell = NO;
         NSString *imageName = [NSString stringWithFormat:@"giftTitle%zd", (NSInteger)selectedGiftType];
         _titleBlock.icon.image = [UIImage imageNamed:imageName];
-        _titleBlock.descripLabel.text = @"礼物赠送人";
+        switch (selectedGiftType) {
+            case BAGiftTypeCard:
+                _titleBlock.descripLabel.text = @"办卡赠送排行";
+                break;
+                
+            case BAGiftTypeCostGift:
+                _titleBlock.descripLabel.text = @"道具礼物赠送排行";
+                break;
+                
+            case BAGiftTypePlane:
+                _titleBlock.descripLabel.text = @"飞机赠送排行";
+                break;
+                
+            case BAGiftTypeRocket:
+                _titleBlock.descripLabel.text = @"火箭赠送排行";
+                break;
+                
+            case BAGiftTypeDeserveLevel1:
+                _titleBlock.descripLabel.text = @"低级酬勤赠送排行";
+                break;
+                
+            case BAGiftTypeDeserveLevel2:
+                _titleBlock.descripLabel.text = @"中级酬勤赠送排行";
+                break;
+                
+            case BAGiftTypeDeserveLevel3:
+                _titleBlock.descripLabel.text = @"高级酬勤赠送排行";
+                break;
+                
+            default:
+                break;
+        }
     }
     
     [UIView transitionWithView:_tableView duration:0.6f options:UIViewAnimationOptionTransitionFlipFromTop animations:^(void) {

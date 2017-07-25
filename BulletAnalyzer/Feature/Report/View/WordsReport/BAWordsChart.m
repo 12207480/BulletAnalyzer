@@ -180,7 +180,7 @@
 
 
 - (UILabel *)createXValue{
-    UILabel *label = [UILabel labelWithFrame:CGRectMake(0, _chart.bottom + 5, 20, 50) text:nil color:BAWhiteColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    UILabel *label = [UILabel labelWithFrame:CGRectMake(0, _chart.bottom + 3, 20, 60) text:nil color:BAWhiteColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.numberOfLines = 0;
     [_XValues addObject:label];
