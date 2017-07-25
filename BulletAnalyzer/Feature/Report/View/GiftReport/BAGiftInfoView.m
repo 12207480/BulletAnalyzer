@@ -20,6 +20,7 @@ static NSString *const BAGiftUserCellReusedId = @"BAGiftUserCellReusedId";
 @property (nonatomic, strong) UIView *line;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *statusArray;
+@property (nonatomic, assign, getter=isActiveCell) BOOL activeCell;
 
 @end
 
@@ -29,6 +30,7 @@ static NSString *const BAGiftUserCellReusedId = @"BAGiftUserCellReusedId";
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         
+        self.activeCell = YES;
         [self setupSubViews];
     }
     return self;
@@ -48,19 +50,20 @@ static NSString *const BAGiftUserCellReusedId = @"BAGiftUserCellReusedId";
 - (void)setSelectedGiftType:(BAGiftType)selectedGiftType{
     _selectedGiftType = selectedGiftType;
     
-    
     if (selectedGiftType == BAGiftTypeNone) {
         
-        NSInteger length = _reportModel.userBulletCountArray.count > 10 ? 10 : _reportModel.userBulletCountArray.count;
+        NSInteger length = _reportModel.userBulletCountArray.count > 20 ? 20 : _reportModel.userBulletCountArray.count;
         _statusArray = [_reportModel.userBulletCountArray subarrayWithRange:NSMakeRange(0, length)].mutableCopy;
         
+        self.activeCell = YES;
         _titleBlock.icon.image = [UIImage imageNamed:@"activeTitle"];
         _titleBlock.descripLabel.text = @"发言次数排行";
     } else if (selectedGiftType == BAGiftTypeFishBall) {
         
-        NSInteger length = _reportModel.userFishBallCountArray.count > 10 ? 10 : _reportModel.userFishBallCountArray.count;
+        NSInteger length = _reportModel.userFishBallCountArray.count > 20 ? 20 : _reportModel.userFishBallCountArray.count;
         _statusArray = [_reportModel.userFishBallCountArray subarrayWithRange:NSMakeRange(0, length)].mutableCopy;
-    
+        
+        self.activeCell = NO;
         NSString *imageName = [NSString stringWithFormat:@"giftTitle%zd", (NSInteger)selectedGiftType];
         _titleBlock.icon.image = [UIImage imageNamed:imageName];
         _titleBlock.descripLabel.text = @"鱼丸赠送排行";
@@ -69,16 +72,14 @@ static NSString *const BAGiftUserCellReusedId = @"BAGiftUserCellReusedId";
         
         BAGiftValueModel *giftValueModel = _reportModel.giftValueArray[selectedGiftType - 1];
         _statusArray = giftValueModel.userModelArray.mutableCopy;
-        [_statusArray sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
-            return userModel1.giftCount.integerValue > userModel2.giftCount.integerValue ? NSOrderedAscending : NSOrderedDescending;
-        }];
         
+        self.activeCell = NO;
         NSString *imageName = [NSString stringWithFormat:@"giftTitle%zd", (NSInteger)selectedGiftType];
         _titleBlock.icon.image = [UIImage imageNamed:imageName];
         _titleBlock.descripLabel.text = @"礼物赠送人";
     }
     
-    [UIView transitionWithView:_tableView duration:0.5f options:UIViewAnimationOptionTransitionCrossDissolve animations:^(void) {
+    [UIView transitionWithView:_tableView duration:0.6f options:UIViewAnimationOptionTransitionFlipFromTop animations:^(void) {
         [_tableView reloadData];
     } completion: ^(BOOL isFinished) {
         
@@ -128,6 +129,7 @@ static NSString *const BAGiftUserCellReusedId = @"BAGiftUserCellReusedId";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     BAGiftUserCell *cell = [tableView dequeueReusableCellWithIdentifier:BAGiftUserCellReusedId forIndexPath:indexPath];
+    cell.activeCell = self.isActiveCell;
     cell.userModel = _statusArray[indexPath.row];
     return cell;
 }

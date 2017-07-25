@@ -17,4 +17,9 @@
  */
 @property (nonatomic, strong) BAUserModel *userModel;
 
+/**
+ 发言活跃度cell是否被选中
+ */
+@property (nonatomic, assign, getter=isActiveCell) BOOL activeCell;
+
 @end

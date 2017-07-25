@@ -64,7 +64,7 @@
     CGFloat delay = 0;
     for (CAShapeLayer *pieLayer in _pieArray) {
         CAShapeLayer *inPieLayer = _inPieArray[i];
-        CGFloat duration = [_durationArray[i] floatValue] > 0.1 ? [_durationArray[i] floatValue] : 0.1;
+        CGFloat duration = [_durationArray[i] floatValue];
         [self performSelector:@selector(animationWithAttribute:) withObject:@{@"layer" : pieLayer, @"duration" : @(duration)} afterDelay:delay inModes:@[NSRunLoopCommonModes]];
         [self performSelector:@selector(animationWithAttribute:) withObject:@{@"layer" : inPieLayer, @"duration" : @(duration)} afterDelay:delay inModes:@[NSRunLoopCommonModes]];
         delay += duration;

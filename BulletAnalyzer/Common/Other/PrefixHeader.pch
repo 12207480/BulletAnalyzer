@@ -73,7 +73,7 @@
 #define BARoomNameColor BAColor(102, 102, 102) //主页房间名颜色
 #define BARoomInfoColor BAColor(115, 115, 115) //主页房间信息颜色
 #define BASpratorColor BAColor(240, 240, 240) //分隔线颜色
-#define BABulletCellColor BAColor(240, 243, 246) //弹幕背景色
+#define BABulletCellColor BAColor(55, 55, 55) //弹幕背景色
 #define BALineColor1 BAColor(240, 196, 70) //弹幕数量曲线颜色
 #define BALineColor2 BAColor(240, 187, 144) //在线人数曲线颜色
 #define BALineColor3 BAColor(140, 203, 172) //关注增长曲线颜色

@@ -6,12 +6,21 @@
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
+#define UMAppkey @"581c2823677baa4a270018f0"
+#define SinaAppKey @"3778916055"
+#define SinaAppSecret @"1f53828f21ab781084f1d299db6647f2"
+#define WeiXinAppKey @"wxdcc698cd0924dd05"
+#define WeiXinAppSecret @"a99a5f5be27811f138c95d55edb5673a"
+#define QQAppID @"1105884303"
+#define QQAppKey @"rWhJaIQnpmHUEgoM"
+
 #import "AppDelegate.h"
 #import "BAMainViewController.h"
 #import "BARoomListTableViewController.h"
 #import "BANavigationViewController.h"
 #import "MMDrawerController.h"
 #import "BAAnalyzerCenter.h"
+#import <UMSocialCore/UMSocialCore.h>
 
 @interface AppDelegate ()
 @property(nonatomic,strong) MMDrawerController *drawerController;
@@ -28,6 +37,18 @@
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [UIApplication sharedApplication].statusBarHidden = NO;
+    
+    /* 打开调试日志 */
+    [[UMSocialManager defaultManager] openLog:NO];
+    
+    /* 设置友盟appkey */
+    [[UMSocialManager defaultManager] setUmSocialAppkey:UMAppkey];
+    
+    //注册分享
+    [self configUSharePlatforms];
+    
+    [self confitUShareSettings];
+
     
     //2、初始化导航控制器
     BANavigationViewController *centerNvaVC = [[BANavigationViewController alloc] initWithRootViewController:centerVC];
@@ -53,6 +74,38 @@
     [BAAnalyzerCenter defaultCenter];
     
     return YES;
+}
+
+
+- (void)confitUShareSettings{
+    /*
+     * 打开图片水印
+     */
+    //[UMSocialGlobal shareInstance].isUsingWaterMark = YES;
+    
+    /*
+     * 关闭强制验证https，可允许http图片分享，但需要在info.plist设置安全域名
+     <key>NSAppTransportSecurity</key>
+     <dict>
+     <key>NSAllowsArbitraryLoads</key>
+     <true/>
+     </dict>
+     */
+    //[UMSocialGlobal shareInstance].isUsingHttpsWhenShareContent = NO;
+}
+
+
+- (void)configUSharePlatforms{
+    /* 设置微信的appKey和appSecret */
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:WeiXinAppKey appSecret:WeiXinAppSecret redirectURL:@"http://mobile.umeng.com/social"];
+    
+    /* 设置分享到QQ互联的appID
+     * U-Share SDK为了兼容大部分平台命名，统一用appKey和appSecret进行参数设置，而QQ平台仅需将appID作为U-Share的appKey参数传进即可。
+     */
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:QQAppID /*设置QQ平台的appID*/  appSecret:nil redirectURL:@"http://mobile.umeng.com/social"];
+    
+    /* 设置新浪的appKey和appSecret */
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:SinaAppKey  appSecret:SinaAppKey redirectURL:@"https://sns.whalecloud.com/sina2/callback"];
 }
 
 

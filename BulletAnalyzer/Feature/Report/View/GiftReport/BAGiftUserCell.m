@@ -43,9 +43,9 @@
     _nameLabel.text = userModel.nn;
     _levelLabel.text = userModel.level.length ? [NSString stringWithFormat:@"level %@", userModel.level] : @"";
     
-    if (userModel.count.integerValue > 1) {
+    if (self.isActiveCell) {
         _infoLabel.text = [NSString stringWithFormat:@"%@次发言", userModel.count];
-    } else if (userModel.giftCount.integerValue > 0) {
+    } else {
         _infoLabel.text = [NSString stringWithFormat:@"%@个礼物", userModel.giftCount];
     }
 }

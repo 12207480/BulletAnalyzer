@@ -78,11 +78,6 @@
 @property (nonatomic, copy) NSString *level;
 
 /**
- 发言活跃度cell是否被选中
- */
-@property (nonatomic, assign, getter=isActiveCellSelect) BOOL activeCellSelect;
-
-/**
  快速创建用户模型
  */
 + (instancetype)userModelWithBullet:(BABulletModel *)bulletModel;

@@ -90,14 +90,14 @@
             
         } else if ([dic[@"type"] isEqualToString:BAInfoTypeSmallGift] || [dic[@"type"] isEqualToString:BAInfoTypeDeserveGift] || [dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
             
-            if ([dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
-                
-                NSLog(@"%@", dic.description);
-            }
+//            if ([dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
+//                
+//                NSLog(@"%@---%@----%@", dic[@"dn"], dic[@"sn"] ,dic.description);
+//            }
             
             BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
             
-            if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && giftModel.giftType == BAGiftTypeRocket)) { //别的房间火箭广播消息过滤掉
+            if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && (giftModel.giftType == BAGiftTypeRocket || giftModel.giftType == BAGiftTypePlane))) { //别的房间火箭广播消息过滤掉
                 if (giftModel.nn.length) { //没有用户名的礼物 放弃
                     [giftArray addObject:giftModel];
                 }

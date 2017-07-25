@@ -52,7 +52,7 @@
 
 #pragma mark - private
 - (void)setupNavibationBar{
-
+    
     [self.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor]] forBarMetrics:UIBarMetricsDefault];
     self.navigationBar.contentMode = UIViewContentModeScaleAspectFill;
     self.navigationBar.translucent = YES;

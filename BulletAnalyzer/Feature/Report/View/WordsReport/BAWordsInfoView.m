@@ -90,8 +90,8 @@ static NSString *const BASentenceCellReusedId = @"BASentenceCellReusedId";
     _popWordsBlock.descripLabel.text = [NSString stringWithFormat:@"弹幕最多提到的关键词: %@", wordsModel.words];
     _popWordsBlock.infoLabel.text = [NSString stringWithFormat:@"%@次", wordsModel.count];
     
+    _sentenceArray = _reportModel.popSentenceArray.count > 10 ? [_reportModel.popSentenceArray subarrayWithRange:NSMakeRange(0, 10)].mutableCopy : _reportModel.popSentenceArray.mutableCopy;
     [_sentenceTableView reloadData];
-    _sentenceArray = _reportModel.popSentenceArray.copy;
 }
 
 

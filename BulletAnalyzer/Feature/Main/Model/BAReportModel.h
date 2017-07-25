@@ -216,11 +216,6 @@
 @property (nonatomic, strong) NSMutableArray *giftUserBulletArry;
 
 /**
- 送礼物人的id的数组
- */
-@property (nonatomic, strong) NSMutableArray *giftUserIdArray;
-
-/**
  新增报告
  */
 @property (nonatomic, assign, getter=isAddNewReport) BOOL addNewReport;

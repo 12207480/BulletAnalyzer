@@ -19,6 +19,7 @@
 #import "BAFansInfoView.h"
 #import "BAGiftChart.h"
 #import "BAGiftInfoView.h"
+#import <UShareUI/UShareUI.h>
 
 @interface BAReportViewController () <UIScrollViewDelegate>
 //结构
@@ -47,6 +48,11 @@
 //第五页(礼物)
 @property (nonatomic, strong) BAGiftChart *giftChart;
 @property (nonatomic, strong) BAGiftInfoView *giftInfoView;
+
+//二维码
+@property (nonatomic, strong) UIImageView *CIFilterView;
+@property (nonatomic, assign, getter=isScreenshot) BOOL screenshot;
+@property (nonatomic, strong) UIImage *shareImg;
 
 @end
 
@@ -77,6 +83,8 @@
     [self setupFansReport];
     
     [self setupGiftReport];
+    
+    [self setupCIFilterView];
 }
 
 
@@ -90,14 +98,77 @@
 }
 
 
+- (void)share{
+    
+    if (!_shareImg) {
+        
+        self.navigationItem.leftBarButtonItem = nil;
+        self.navigationItem.rightBarButtonItem = nil;
+        self.screenshot = YES;
+        
+        [_countChart animation];
+        [_wordsChart animation];
+        [_fansChart animation];
+        [_giftChart animation];
+        
+        __block NSMutableArray *images = [NSMutableArray array];
+        UIImage *menuPage = [self captureScreen:BAKeyWindow];
+        [images addObject:menuPage];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            for (NSInteger i = 2; i < 6; i++) {
+                [_scrollView setContentOffset:CGPointMake(BAScreenWidth * (i - 1) - 1, 0) animated:NO];
+                [_scrollView setContentOffset:CGPointMake(BAScreenWidth * (i - 1), 0) animated:YES];
+                switch (i) {
+                    case 2:
+                        self.title = @"弹幕数量波动";
+                        break;
+                        
+                    case 3:
+                        self.title = @"关键词分析";
+                        break;
+                        
+                    case 4:
+                        self.title = @"粉丝质量解析";
+                        break;
+                        
+                    case 5:
+                        self.title = @"礼物价值分布";
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+                UIImage *currentPage = [self captureScreen:BAKeyWindow];
+                [images addObject:currentPage];
+            }
+            _shareImg = [self combineImages:images];
+            
+            self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(dismiss)];
+            //self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
+            self.screenshot = NO;
+            self.title = @"分析报告";
+            [_scrollView setContentOffset:CGPointMake(1, 0) animated:NO];
+            [_scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+            
+            [self shareBtnClicked];
+        });
+    } else {
+        
+        [self shareBtnClicked];
+    }
+}
+
+
 #pragma mark - private
 - (void)prepare{
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.layer.contents = (id)[UIImage new].CGImage;
     self.title = @"分析报告";
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(dismiss)];
+    //self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
 }
-
 
 
 - (void)setupGradientView{
@@ -230,7 +301,33 @@
 }
 
 
+- (void)setupCIFilterView{
+    // 1. 创建一个二维码滤镜实例(CIFilter)
+    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    // 滤镜恢复默认设置
+    [filter setDefaults];
+    
+    // 2. 给滤镜添加数据
+    NSString *string = @"https://itunes.apple.com/app/id1194998642";
+    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    // 使用KVC的方式给filter赋值
+    [filter setValue:data forKeyPath:@"inputMessage"];
+    
+    // 3. 生成二维码
+    CIImage *image = [filter outputImage];
+    UIImage *result = [self createNonInterpolatedUIImageFormCIImage:image withSize:BAScreenWidth / 3];
+    result = [self imageBlackToTransparent:result withRed:249 andGreen:118 andBlue:143];
+    
+    // 4. 显示二维码
+    _CIFilterView = [[UIImageView alloc] initWithImage:result];
+    _CIFilterView.center = self.view.center;
+    _CIFilterView.hidden = YES;
+    [self.view addSubview:_CIFilterView];
+}
+
+
 - (void)setPage:(NSInteger)page{
+    if (self.isScreenshot) return;
     if (_page != page) { //如果改变了页数
         
         switch (page) {
@@ -302,6 +399,145 @@
     }
     
     
+}
+
+
+#pragma mark - share
+- (void)shareBtnClicked{
+
+    [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_WechatTimeLine),@(UMSocialPlatformType_QQ),@(UMSocialPlatformType_Qzone),@(UMSocialPlatformType_Sina)]];
+    //显示分享面板
+    [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
+        [self shareWebPageToPlatformType:platformType];
+    }];
+}
+
+
+- (void)shareWebPageToPlatformType:(UMSocialPlatformType)platformType{
+    
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    
+    //创建图片内容对象
+    UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
+    //如果有缩略图，则设置缩略图
+    //shareObject.thumbImage = [UIImage imageNamed:@"icon"];
+    [shareObject setShareImage:_shareImg];
+    
+    //分享消息对象设置分享内容对象
+    messageObject.shareObject = shareObject;
+    
+    //调用分享接口
+    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+        if (error) {
+            NSLog(@"************Share fail with error %@*********",error);
+        }else{
+            NSLog(@"response data is %@",data);
+        }
+    }];
+}
+
+
+#pragma mark - CIFilter
+- (UIImage *)createNonInterpolatedUIImageFormCIImage:(CIImage *)image withSize:(CGFloat)size {
+    
+    CGRect extent = CGRectIntegral(image.extent);
+    CGFloat scale = MIN(size/CGRectGetWidth(extent), size/CGRectGetHeight(extent));
+    
+    // 1.创建bitmap;
+    size_t width = CGRectGetWidth(extent) * scale;
+    size_t height = CGRectGetHeight(extent) * scale;
+    CGColorSpaceRef cs = CGColorSpaceCreateDeviceGray();
+    CGContextRef bitmapRef = CGBitmapContextCreate(nil, width, height, 8, 0, cs, (CGBitmapInfo)kCGImageAlphaNone);
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CGImageRef bitmapImage = [context createCGImage:image fromRect:extent];
+    CGContextSetInterpolationQuality(bitmapRef, kCGInterpolationNone);
+    CGContextScaleCTM(bitmapRef, scale, scale);
+    CGContextDrawImage(bitmapRef, extent, bitmapImage);
+    
+    // 2.保存bitmap到图片
+    CGImageRef scaledImage = CGBitmapContextCreateImage(bitmapRef);
+    CGContextRelease(bitmapRef);
+    CGImageRelease(bitmapImage);
+    return [UIImage imageWithCGImage:scaledImage];
+}
+
+
+void ProviderReleaseData (void *info, const void *data, size_t size){
+    free((void*)data);
+}
+- (UIImage *)imageBlackToTransparent:(UIImage *)image withRed:(CGFloat)red andGreen:(CGFloat)green andBlue:(CGFloat)blue{
+    const int imageWidth = image.size.width;
+    const int imageHeight = image.size.height;
+    size_t      bytesPerRow = imageWidth * 4;
+    uint32_t* rgbImageBuf = (uint32_t*)malloc(bytesPerRow * imageHeight);
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(rgbImageBuf, imageWidth, imageHeight, 8, bytesPerRow, colorSpace,
+                                                 kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipLast);
+    CGContextDrawImage(context, CGRectMake(0, 0, imageWidth, imageHeight), image.CGImage);
+    // 遍历像素
+    int pixelNum = imageWidth * imageHeight;
+    uint32_t* pCurPtr = rgbImageBuf;
+    for (int i = 0; i < pixelNum; i++, pCurPtr++){
+        if ((*pCurPtr & 0xFFFFFF00) < 0x99999900)    // 将白色变成透明
+        {
+            // 改成下面的代码，会将图片转成想要的颜色
+            uint8_t* ptr = (uint8_t*)pCurPtr;
+            ptr[3] = red; //0~255
+            ptr[2] = green;
+            ptr[1] = blue;
+        }
+        else
+        {
+            uint8_t* ptr = (uint8_t*)pCurPtr;
+            ptr[0] = 0;
+        }
+    }
+    // 输出图片
+    CGDataProviderRef dataProvider = CGDataProviderCreateWithData(NULL, rgbImageBuf, bytesPerRow * imageHeight, ProviderReleaseData);
+    CGImageRef imageRef = CGImageCreate(imageWidth, imageHeight, 8, 32, bytesPerRow, colorSpace,
+                                        kCGImageAlphaLast | kCGBitmapByteOrder32Little, dataProvider,
+                                        NULL, true, kCGRenderingIntentDefault);
+    CGDataProviderRelease(dataProvider);
+    UIImage* resultUIImage = [UIImage imageWithCGImage:imageRef];
+    // 清理空间
+    CGImageRelease(imageRef);
+    CGContextRelease(context);
+    CGColorSpaceRelease(colorSpace);
+    return resultUIImage;
+}
+
+
+- (UIImage *)captureScreen:(UIView*)viewToCapture {
+    UIGraphicsBeginImageContextWithOptions(viewToCapture.bounds.size, NO, 0.0);
+    [viewToCapture.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return viewImage;
+}
+
+
+- (UIImage *)combineImages:(NSMutableArray *)images{
+    
+    UIImage *image = [images firstObject];
+    CGFloat width = image.size.width;
+    CGFloat height = image.size.height * 5;
+    CGSize offScreenSize = CGSizeMake(width, height);
+    
+    UIGraphicsBeginImageContext(offScreenSize);
+    
+    CGRect rect = CGRectMake(0, 0, width, image.size.height);
+    
+    for (UIImage *image in images) {
+        
+        [image drawInRect:rect];
+        rect.origin.y += image.size.height;
+    }
+    
+    UIImage *imagez = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return imagez;
 }
 
 @end
