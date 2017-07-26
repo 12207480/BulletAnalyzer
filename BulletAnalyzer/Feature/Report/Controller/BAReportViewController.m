@@ -146,7 +146,7 @@
             _shareImg = [BATool combineImages:images];
             
             self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(dismiss)];
-            self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
+            //self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
             self.screenshot = NO;
             self.title = @"分析报告";
             [_scrollView setContentOffset:CGPointMake(1, 0) animated:NO];
@@ -167,7 +167,7 @@
     self.view.layer.contents = (id)[UIImage new].CGImage;
     self.title = @"分析报告";
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(dismiss)];
-    self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
+    //self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
 }
 
 
