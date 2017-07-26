@@ -52,7 +52,7 @@ static NSString *const BAGiftUserCellReusedId = @"BAGiftUserCellReusedId";
     
     if (selectedGiftType == BAGiftTypeNone) {
         
-        NSInteger length = _reportModel.userBulletCountArray.count > 20 ? 20 : _reportModel.userBulletCountArray.count;
+        NSInteger length = _reportModel.userBulletCountArray.count > 10 ? 10 : _reportModel.userBulletCountArray.count;
         _statusArray = [_reportModel.userBulletCountArray subarrayWithRange:NSMakeRange(0, length)].mutableCopy;
         
         self.activeCell = YES;
@@ -60,8 +60,7 @@ static NSString *const BAGiftUserCellReusedId = @"BAGiftUserCellReusedId";
         _titleBlock.descripLabel.text = @"发言次数排行";
     } else if (selectedGiftType == BAGiftTypeFishBall) {
         
-        NSInteger length = _reportModel.userFishBallCountArray.count > 20 ? 20 : _reportModel.userFishBallCountArray.count;
-        _statusArray = [_reportModel.userFishBallCountArray subarrayWithRange:NSMakeRange(0, length)].mutableCopy;
+        _statusArray = _reportModel.userFishBallCountArray.mutableCopy;
         
         self.activeCell = NO;
         NSString *imageName = [NSString stringWithFormat:@"giftTitle%zd", (NSInteger)selectedGiftType];
