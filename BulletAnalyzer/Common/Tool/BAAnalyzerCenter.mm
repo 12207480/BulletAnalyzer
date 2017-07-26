@@ -1016,165 +1016,185 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
 
 - (void)saveReportLocolized{
-    //存入本地
-    [_dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+    
+    dispatch_async(self.analyzingQueue, ^{
         
-        BOOL open = [db open];
-        if (open) {
+        //存入本地
+        [_dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
             
-            //判断是否为未完成分析表分别存入表单
-            NSString *insert;
-            if (_analyzingReportModel.isInterruptAnalyzing) {
-                insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BAAnalyzingReport, BAReportID, BAReportData];
-            } else {
-                insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BACompletedReport, BAReportID, BAReportData];
+            BOOL open = [db open];
+            if (open) {
+                
+                //判断是否为未完成分析表分别存入表单
+                NSString *insert;
+                if (_analyzingReportModel.isInterruptAnalyzing) {
+                    insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BAAnalyzingReport, BAReportID, BAReportData];
+                } else {
+                    insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BACompletedReport, BAReportID, BAReportData];
+                }
+                NSData *reportData = [NSKeyedArchiver archivedDataWithRootObject:_analyzingReportModel];
+                BOOL success = [db executeUpdate:insert, @(_analyzingReportModel.timeID), reportData];
+                if (!success) {
+                    NSLog(@"储存失败");
+                }
+                [db close];
             }
-            NSData *reportData = [NSKeyedArchiver archivedDataWithRootObject:_analyzingReportModel];
-            BOOL success = [db executeUpdate:insert, @(_analyzingReportModel.timeID), reportData];
-            if (!success) {
-                NSLog(@"储存失败");
-            }
-            [db close];
-        }
-    }];
+        }];
+    });
 }
 
 
 - (void)delReport:(BAReportModel *)report{
     
-    BOOL isInterruptAnalyzing = report.isInterruptAnalyzing;
-    
-    [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
-        BOOL open = [db open];
-        if (open) {
-            
-            //判断是否为未完成分析表分别存入表单
-            NSString *del;
-            if (isInterruptAnalyzing) {
-                del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BAAnalyzingReport, BAReportID];
-            } else {
-                del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BACompletedReport, BAReportID];
-            }
-            BOOL success = [db executeUpdate:del, @(report.timeID)];
-            if (!success) {
-                NSLog(@"删除失败");
-            } else {
-                if (!isInterruptAnalyzing) {
-                    [_reportModelArray removeObject:report];
+    dispatch_async(self.analyzingQueue, ^{
+
+        BOOL isInterruptAnalyzing = report.isInterruptAnalyzing;
+        
+        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL open = [db open];
+            if (open) {
+                
+                //判断是否为未完成分析表分别存入表单
+                NSString *del;
+                if (isInterruptAnalyzing) {
+                    del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BAAnalyzingReport, BAReportID];
+                } else {
+                    del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BACompletedReport, BAReportID];
                 }
+                BOOL success = [db executeUpdate:del, @(report.timeID)];
+                if (!success) {
+                    NSLog(@"删除失败");
+                } else {
+                    if (!isInterruptAnalyzing) {
+                        [_reportModelArray removeObject:report];
+                    }
+                }
+                [db close];
             }
-            [db close];
-        }
-    }];
+        }];
+    });
 }
 
 
 - (void)addNotice:(BABulletModel *)bulletModel{
-    //先添加入数组
-    [_noticeArray addObject:bulletModel];
-    NSMutableArray *tempArray = [NSMutableArray array];
-    [_noticeArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (bulletModel.uid.integerValue == obj.uid.integerValue) {
-            [tempArray addObject:obj]; //遍历 获取这个用户被标记次数
-        }
-    }];
     
-    
-    [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
-        BOOL open = [db open];
-        if (open) {
-
-            //删除这个用户所有的标记
-            NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BANotice, BANoticeID];
-            BOOL success = [db executeUpdate:del, @(bulletModel.uid.integerValue)];
-            if (!success) {
-                NSLog(@"删除失败");
-            } else {
-                //写入这个用户被标记次数并存入表格
-                [tempArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    obj.noticeCount = tempArray.count;
-                    //存入表单
-                    NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BANotice, BANoticeID, BANoticeData];
-                    NSData *noticeData = [NSKeyedArchiver archivedDataWithRootObject:obj];
-                    BOOL success = [db executeUpdate:insert, @(obj.uid.integerValue), noticeData];
-                    if (!success) {
-                        NSLog(@"储存失败");
-                    }
-                }];
+    dispatch_async(self.analyzingQueue, ^{
+        
+        //先添加入数组
+        [_noticeArray addObject:bulletModel];
+        NSMutableArray *tempArray = [NSMutableArray array];
+        [_noticeArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (bulletModel.uid.integerValue == obj.uid.integerValue) {
+                [tempArray addObject:obj]; //遍历 获取这个用户被标记次数
             }
-            
-            [db close];
-        }
-    }];
+        }];
+        
+        
+        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL open = [db open];
+            if (open) {
+                
+                //删除这个用户所有的标记
+                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BANotice, BANoticeID];
+                BOOL success = [db executeUpdate:del, @(bulletModel.uid.integerValue)];
+                if (!success) {
+                    NSLog(@"删除失败");
+                } else {
+                    //写入这个用户被标记次数并存入表格
+                    [tempArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                        obj.noticeCount = tempArray.count;
+                        //存入表单
+                        NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BANotice, BANoticeID, BANoticeData];
+                        NSData *noticeData = [NSKeyedArchiver archivedDataWithRootObject:obj];
+                        BOOL success = [db executeUpdate:insert, @(obj.uid.integerValue), noticeData];
+                        if (!success) {
+                            NSLog(@"储存失败");
+                        }
+                    }];
+                }
+                
+                [db close];
+            }
+        }];
+    });
 }
 
 
 - (void)delNotice:(BABulletModel *)bulletModel{
     
-    bulletModel.noticeCount = 0;
-
-    [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
-        BOOL open = [db open];
-        if (open) {
-            
-            //删除
-            NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BANotice, BANoticeID];
-            BOOL success = [db executeUpdate:del, @(bulletModel.uid.integerValue)];
-            if (!success) {
-                NSLog(@"删除失败");
-            } else {
-                [_noticeArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if ([obj.uid isEqualToString:bulletModel.uid]) {
-                        [_noticeArray removeObject:obj];
-                    }
-                }];
+    dispatch_async(self.analyzingQueue, ^{
+        
+        bulletModel.noticeCount = 0;
+        
+        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL open = [db open];
+            if (open) {
+                
+                //删除
+                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BANotice, BANoticeID];
+                BOOL success = [db executeUpdate:del, @(bulletModel.uid.integerValue)];
+                if (!success) {
+                    NSLog(@"删除失败");
+                } else {
+                    [_noticeArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                        if ([obj.uid isEqualToString:bulletModel.uid]) {
+                            [_noticeArray removeObject:obj];
+                        }
+                    }];
+                }
+                [db close];
             }
-            [db close];
-        }
-    }];
+        }];
+    });
 }
 
 
 - (void)addSearchHistory:(BARoomModel *)roomModel{
     
-    [_searchHistoryArray insertObject:roomModel atIndex:0];
+    dispatch_async(self.analyzingQueue, ^{
     
-    //存入本地
-    [_dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        [_searchHistoryArray insertObject:roomModel atIndex:0];
         
-        BOOL open = [db open];
-        if (open) {
+        //存入本地
+        [_dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
             
-            //判断是否为未完成分析表分别存入表单
-            NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BASearchHistory, BASearchHistoryData];
-            NSData *searchHistoryData = [NSKeyedArchiver archivedDataWithRootObject:roomModel];
-            BOOL success = [db executeUpdate:insert, searchHistoryData];
-            if (!success) {
-                NSLog(@"储存失败");
+            BOOL open = [db open];
+            if (open) {
+                
+                //判断是否为未完成分析表分别存入表单
+                NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BASearchHistory, BASearchHistoryData];
+                NSData *searchHistoryData = [NSKeyedArchiver archivedDataWithRootObject:roomModel];
+                BOOL success = [db executeUpdate:insert, searchHistoryData];
+                if (!success) {
+                    NSLog(@"储存失败");
+                }
+                [db close];
             }
-            [db close];
-        }
-    }];
+        }];
+    });
 }
 
 
 - (void)clearSearchHistory{
     
-    [_searchHistoryArray removeAllObjects];
-    
-    [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
-        BOOL open = [db open];
-        if (open) {
-            
-            //判断是否为未完成分析表分别存入表单
-            NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BASearchHistory];
-            BOOL success = [db executeUpdate:del];
-            if (!success) {
-                NSLog(@"删除失败");
+    dispatch_async(self.analyzingQueue, ^{
+        
+        [_searchHistoryArray removeAllObjects];
+        
+        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL open = [db open];
+            if (open) {
+                
+                //判断是否为未完成分析表分别存入表单
+                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BASearchHistory];
+                BOOL success = [db executeUpdate:del];
+                if (!success) {
+                    NSLog(@"删除失败");
+                }
+                [db close];
             }
-            [db close];
-        }
-    }];
+        }];
+    });
 }
 
 

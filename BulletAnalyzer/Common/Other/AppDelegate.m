@@ -7,12 +7,12 @@
 //
 
 #define UMAppkey @"581c2823677baa4a270018f0"
-#define SinaAppKey @"3778916055"
-#define SinaAppSecret @"1f53828f21ab781084f1d299db6647f2"
+#define SinaAppKey @"1718006107"
+#define SinaAppSecret @"d2c0aad092b14af7c0d9427b61b98fe4"
 #define WeiXinAppKey @"wxdcc698cd0924dd05"
 #define WeiXinAppSecret @"a99a5f5be27811f138c95d55edb5673a"
-#define QQAppID @"1105884303"
-#define QQAppKey @"rWhJaIQnpmHUEgoM"
+#define QQAppID @"1106313590"
+#define QQAppKey @"CdgNZRgrdEHqzXyU"
 
 #import "AppDelegate.h"
 #import "BAMainViewController.h"
@@ -31,46 +31,47 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    //1、初始化控制器
+    //初始化窗口
+    _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [_window makeKeyAndVisible];
+    
+    //打开调试日志
+    [[UMSocialManager defaultManager] openLog:YES];
+    
+    //设置友盟appkey
+    [[UMSocialManager defaultManager] setUmSocialAppkey:UMAppkey];
+    
+    //注册分享
+    [self configUSharePlatforms];
+
+    [self confitUShareSettings];
+    
+    //初始化控制器
     UIViewController *centerVC = [[BAMainViewController alloc] init];
     UIViewController *leftVC = [[BARoomListTableViewController alloc] init];
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [UIApplication sharedApplication].statusBarHidden = NO;
-    
-    /* 打开调试日志 */
-    [[UMSocialManager defaultManager] openLog:NO];
-    
-    /* 设置友盟appkey */
-    [[UMSocialManager defaultManager] setUmSocialAppkey:UMAppkey];
-    
-    //注册分享
-    [self configUSharePlatforms];
-    
-    [self confitUShareSettings];
 
-    
-    //2、初始化导航控制器
+    //初始化导航控制器
     BANavigationViewController *centerNvaVC = [[BANavigationViewController alloc] initWithRootViewController:centerVC];
     BANavigationViewController *leftNvaVC = [[BANavigationViewController alloc] initWithRootViewController:leftVC];
     
-    //3、使用MMDrawerController
+    //使用MMDrawerController
     _drawerController = [[MMDrawerController alloc] initWithCenterViewController:centerNvaVC leftDrawerViewController:leftNvaVC];
     _drawerController.showsShadow = NO;
     
-    //4、设置打开/关闭抽屉的手势
+    //设置打开/关闭抽屉的手势
     _drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
     _drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
     
-    //5、设置左右两边抽屉显示的多少
+    //设置左右两边抽屉显示的多少
     _drawerController.maximumLeftDrawerWidth = BARoomListViewWidth;
     
-    //6、初始化窗口、设置根控制器、显示窗口
-    _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    //初始化窗口、设置根控制器、显示窗口
     [_window setRootViewController:_drawerController];
-    [_window makeKeyAndVisible];
     
-    //7、初始化分析库
+    //初始化分析库
     [BAAnalyzerCenter defaultCenter];
     
     return YES;

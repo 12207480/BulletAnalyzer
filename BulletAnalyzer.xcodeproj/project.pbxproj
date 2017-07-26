@@ -77,7 +77,6 @@
 		388A86C81EE4424600A0BC5B /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A86B41EE4424600A0BC5B /* UIView+MJExtension.m */; };
 		388AFF8F1EE042100031DE53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 388AFF861EE042100031DE53 /* Assets.xcassets */; };
 		388AFF901EE042100031DE53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 388AFF871EE042100031DE53 /* LaunchScreen.storyboard */; };
-		388AFF911EE042100031DE53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 388AFF891EE042100031DE53 /* Main.storyboard */; };
 		388AFF941EE042700031DE53 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 388AFF8B1EE042100031DE53 /* Info.plist */; };
 		388AFFDF1EE045F90031DE53 /* Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = 388AFFC41EE045F90031DE53 /* Documentation.html */; };
 		388AFFE01EE045F90031DE53 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 388AFFC61EE045F90031DE53 /* GCDAsyncSocket.m */; };
@@ -394,7 +393,6 @@
 		388A86B41EE4424600A0BC5B /* UIView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MJExtension.m"; sourceTree = "<group>"; };
 		388AFF861EE042100031DE53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		388AFF881EE042100031DE53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		388AFF8A1EE042100031DE53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		388AFF8B1EE042100031DE53 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		388AFFC21EE045F90031DE53 /* CocoaAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocoaAsyncSocket.h; sourceTree = "<group>"; };
 		388AFFC41EE045F90031DE53 /* Documentation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Documentation.html; sourceTree = "<group>"; };
@@ -1227,7 +1225,6 @@
 				F231C7BC1EE52E8300EB0F79 /* Reveal.framework */,
 				388AFF861EE042100031DE53 /* Assets.xcassets */,
 				388AFF871EE042100031DE53 /* LaunchScreen.storyboard */,
-				388AFF891EE042100031DE53 /* Main.storyboard */,
 				388AFF8B1EE042100031DE53 /* Info.plist */,
 			);
 			name = "Resource(资源)";
@@ -2105,7 +2102,6 @@
 				388AFFE21EE045F90031DE53 /* Info.plist in Resources */,
 				F222A4911F0B673400E70ADA /* servishero_loading.json in Resources */,
 				38B54CDB1EEA94720092C76B /* iosjieba.bundle in Resources */,
-				388AFF911EE042100031DE53 /* Main.storyboard in Resources */,
 				388AFFDF1EE045F90031DE53 /* Documentation.html in Resources */,
 				F222A45F1F0B44D000E70ADA /* .gitkeep in Resources */,
 				388AFFEB1EE045F90031DE53 /* README.txt in Resources */,
@@ -2373,14 +2369,6 @@
 				388AFF881EE042100031DE53 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		388AFF891EE042100031DE53 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				388AFF8A1EE042100031DE53 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
