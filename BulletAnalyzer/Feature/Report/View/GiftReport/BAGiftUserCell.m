@@ -35,13 +35,11 @@
 #pragma mark - public
 - (void)setUserModel:(BAUserModel *)userModel{
     
-    if (![_userModel.iconBig isEqualToString:userModel.iconBig]) {
-        [_userIcon sd_setImageWithURL:[NSURL URLWithString:userModel.iconBig] placeholderImage:BAPlaceHolderImg];
-    }
     _userModel = userModel;
     
     _nameLabel.text = userModel.nn;
     _levelLabel.text = userModel.level.length ? [NSString stringWithFormat:@"level %@", userModel.level] : @"";
+    [_userIcon sd_setImageWithURL:[NSURL URLWithString:userModel.iconBig] placeholderImage:BAPlaceHolderImg];
     
     if (self.isActiveCell) {
         _infoLabel.text = [NSString stringWithFormat:@"%@次发言", userModel.count];

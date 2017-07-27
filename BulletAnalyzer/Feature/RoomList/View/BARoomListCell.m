@@ -53,8 +53,6 @@
     _bgView = [[UIView alloc] initWithFrame:CGRectMake(BAPadding, 0, BARoomListScreenShotImgWidth, BARoomListViewHeight)];
     _bgView.layer.cornerRadius = BARadius;
     _bgView.backgroundColor = BAWhiteColor;
-    _bgView.layer.borderColor = [BABlackColor colorWithAlphaComponent:0.2].CGColor;
-    _bgView.layer.borderWidth = 0.8;
     _bgView.clipsToBounds = YES;
     
     [self.contentView addSubview:_bgView];

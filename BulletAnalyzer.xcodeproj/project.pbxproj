@@ -211,12 +211,13 @@
 		F231C7BD1EE52E8400EB0F79 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F231C7BC1EE52E8300EB0F79 /* Reveal.framework */; };
 		F231C7C01EE52F0D00EB0F79 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F231C7BF1EE52F0D00EB0F79 /* libz.tbd */; };
 		F231C7C61EE541ED00EB0F79 /* NSObject+ZJUIExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F231C7C51EE541ED00EB0F79 /* NSObject+ZJUIExtension.m */; };
+		F23405921F29E7FB006D6EE7 /* UIImageView+ZJRadius.m in Sources */ = {isa = PBXBuildFile; fileRef = F23405911F29E7FB006D6EE7 /* UIImageView+ZJRadius.m */; };
+		F23405951F29EE28006D6EE7 /* UIView+ZJRadius.m in Sources */ = {isa = PBXBuildFile; fileRef = F23405941F29EE28006D6EE7 /* UIView+ZJRadius.m */; };
 		F2382DF91EF2756E00BE5446 /* BABulletMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382DF81EF2756E00BE5446 /* BABulletMenu.m */; };
 		F2382DFF1EF27D3300BE5446 /* BABulletSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382DFE1EF27D3300BE5446 /* BABulletSetting.m */; };
 		F2382E0F1EF3ADE600BE5446 /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E0E1EF3ADE600BE5446 /* NSDate+Category.m */; };
 		F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */; };
 		F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */; };
-		F293DFAD1F171BCE00404F46 /* UIImageView+ZJRadius.m in Sources */ = {isa = PBXBuildFile; fileRef = F293DFAC1F171BCE00404F46 /* UIImageView+ZJRadius.m */; };
 		F299E4571F259BDD008A5CC3 /* BASentenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4561F259BDD008A5CC3 /* BASentenceCell.m */; };
 		F299E45A1F25D82B008A5CC3 /* BAGiftUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4591F25D82B008A5CC3 /* BAGiftUserCell.m */; };
 		F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */; };
@@ -684,6 +685,10 @@
 		F231C7BF1EE52F0D00EB0F79 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		F231C7C41EE541ED00EB0F79 /* NSObject+ZJUIExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ZJUIExtension.h"; sourceTree = "<group>"; };
 		F231C7C51EE541ED00EB0F79 /* NSObject+ZJUIExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ZJUIExtension.m"; sourceTree = "<group>"; };
+		F23405901F29E7FB006D6EE7 /* UIImageView+ZJRadius.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ZJRadius.h"; sourceTree = "<group>"; };
+		F23405911F29E7FB006D6EE7 /* UIImageView+ZJRadius.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ZJRadius.m"; sourceTree = "<group>"; };
+		F23405931F29EE28006D6EE7 /* UIView+ZJRadius.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZJRadius.h"; sourceTree = "<group>"; };
+		F23405941F29EE28006D6EE7 /* UIView+ZJRadius.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZJRadius.m"; sourceTree = "<group>"; };
 		F2382DF71EF2756E00BE5446 /* BABulletMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletMenu.h; sourceTree = "<group>"; };
 		F2382DF81EF2756E00BE5446 /* BABulletMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletMenu.m; sourceTree = "<group>"; };
 		F2382DFD1EF27D3300BE5446 /* BABulletSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletSetting.h; sourceTree = "<group>"; };
@@ -694,8 +699,6 @@
 		F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+Category.m"; sourceTree = "<group>"; };
 		F2587C0D1EFB93B00026DFF5 /* BASentenceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceModel.h; sourceTree = "<group>"; };
 		F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceModel.m; sourceTree = "<group>"; };
-		F293DFAB1F171BCE00404F46 /* UIImageView+ZJRadius.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ZJRadius.h"; sourceTree = "<group>"; };
-		F293DFAC1F171BCE00404F46 /* UIImageView+ZJRadius.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ZJRadius.m"; sourceTree = "<group>"; };
 		F299E4551F259BDD008A5CC3 /* BASentenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceCell.h; sourceTree = "<group>"; };
 		F299E4561F259BDD008A5CC3 /* BASentenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceCell.m; sourceTree = "<group>"; };
 		F299E4581F25D82B008A5CC3 /* BAGiftUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftUserCell.h; sourceTree = "<group>"; };
@@ -1361,6 +1364,10 @@
 		38A5A0BD1EE2614900CFF645 /* Category(分类) */ = {
 			isa = PBXGroup;
 			children = (
+				F23405931F29EE28006D6EE7 /* UIView+ZJRadius.h */,
+				F23405941F29EE28006D6EE7 /* UIView+ZJRadius.m */,
+				F23405901F29E7FB006D6EE7 /* UIImageView+ZJRadius.h */,
+				F23405911F29E7FB006D6EE7 /* UIImageView+ZJRadius.m */,
 				F2382E101EF3AFE300BE5446 /* NSDateFormatter+Category.h */,
 				F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */,
 				F2382E0D1EF3ADE600BE5446 /* NSDate+Category.h */,
@@ -1374,8 +1381,6 @@
 				38A5A0BF1EE2615A00CFF645 /* NSData+HexExtension.m */,
 				F231C7C41EE541ED00EB0F79 /* NSObject+ZJUIExtension.h */,
 				F231C7C51EE541ED00EB0F79 /* NSObject+ZJUIExtension.m */,
-				F293DFAB1F171BCE00404F46 /* UIImageView+ZJRadius.h */,
-				F293DFAC1F171BCE00404F46 /* UIImageView+ZJRadius.m */,
 			);
 			name = "Category(分类)";
 			path = Category;
@@ -2270,6 +2275,7 @@
 				F222A4681F0B44D000E70ADA /* LOTShapeLayerView.m in Sources */,
 				F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */,
 				388A860A1EE419D000A0BC5B /* UIBarButtonItem+ZJExtension.m in Sources */,
+				F23405951F29EE28006D6EE7 /* UIView+ZJRadius.m in Sources */,
 				388A86B81EE4424600A0BC5B /* MJRefreshFooter.m in Sources */,
 				F231C7AF1EE509F700EB0F79 /* SDWebImageCompat.m in Sources */,
 				F222A4721F0B44D000E70ADA /* CGGeometry+LOTAdditions.m in Sources */,
@@ -2302,7 +2308,6 @@
 				F2DA672F1F174BF3003BD66A /* BATransition.m in Sources */,
 				388A86BD1EE4424600A0BC5B /* MJRefreshBackGifFooter.m in Sources */,
 				F2EF757A1F21A6FA00B0D70B /* BAIndicator.m in Sources */,
-				F293DFAD1F171BCE00404F46 /* UIImageView+ZJRadius.m in Sources */,
 				388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */,
 				F222A4671F0B44D000E70ADA /* LOTRectShapeLayer.m in Sources */,
 				F222A46B1F0B44D000E70ADA /* LOTAnimatableColorValue.m in Sources */,
@@ -2326,6 +2331,7 @@
 				380ECF111F22ED8400D26CF6 /* BAGiftChart.m in Sources */,
 				380ECF0B1F22ED4A00D26CF6 /* BAFansChart.m in Sources */,
 				F2EF75581F20753D00B0D70B /* BAReportViewController.m in Sources */,
+				F23405921F29E7FB006D6EE7 /* UIImageView+ZJRadius.m in Sources */,
 				F222A4641F0B44D000E70ADA /* LOTGroupLayerView.m in Sources */,
 				38A5A0EF1EE2C6C000CFF645 /* BABasicInfoModel.m in Sources */,
 			);

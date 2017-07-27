@@ -11,7 +11,7 @@
 
 @implementation UIImageView (ZJRadius)
 static bool _needClipsToBounds;
-static UIImage *_image;
+
 
 + (void)load{
     
@@ -47,7 +47,7 @@ static UIImage *_image;
         } else {
             method_exchangeImplementations(originalMethod2, swizzledMethod2);
         }
-         
+        
     });
 }
 
@@ -55,13 +55,15 @@ static UIImage *_image;
 - (void)ZJ_setClipsToBounds:(BOOL)clipsToBounds{
     _needClipsToBounds = clipsToBounds;
     
-    if (self.layer.cornerRadius <= 0) { //若圆角为0 则允许maskT‚‚oBounds
+    if (self.layer.cornerRadius <= 0) { //若圆角为0 则允许maskToBounds
         [self ZJ_setClipsToBounds:clipsToBounds];
     }
 }
 
 
 - (void)ZJ_setImage:(UIImage *)image{
+    
+    if ([self.image isEqual:image]) return;
     
     if (self.layer.cornerRadius > 0 && _needClipsToBounds) {
         [self ZJ_clipsImage:image];
@@ -73,24 +75,43 @@ static UIImage *_image;
 
 - (void)ZJ_clipsImage:(UIImage *)image{
     
+    //创建一个的layer显示
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        UIImageView *imageView;
+        for (UIView *subView in self.subviews) {
+            if (subView.tag == 1024) {
+                imageView = (UIImageView *)subView;
+                break;
+            }
+        }
+        
+        if (!imageView) {
+            imageView = [[UIImageView alloc] initWithFrame:self.bounds];
+            imageView.userInteractionEnabled = NO;
+            imageView.tag = 1024; //标记
+            
+            [self addSubview:imageView];
+        }
         
         CGSize size = CGSizeMake(self.layer.cornerRadius * 2, self.layer.cornerRadius * 2);
         CGRect rect = CGRectMake(0, 0, size.width, size.height);
-    
+        
         UIGraphicsBeginImageContextWithOptions(size, NO, 0);
-
+        
         UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:rect];
         [path addClip];
         
         [image drawInRect:rect];
         
-        UIImage *drawImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
         
         UIGraphicsEndImageContext();
         
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [self ZJ_setImage:drawImage];
+        [self ZJ_setImage:image];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            imageView.image = image;
         });
     });
 }

@@ -137,4 +137,8 @@
 }
 
 
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application{
+    NSLog(@"%s", __func__);
+}
+
 @end
