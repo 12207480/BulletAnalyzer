@@ -146,7 +146,7 @@
             _shareImg = [BATool combineImages:images];
             
             self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(dismiss)];
-            //self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
+            self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
             self.screenshot = NO;
             self.title = @"分析报告";
             [_scrollView setContentOffset:CGPointMake(1, 0) animated:NO];
@@ -167,7 +167,7 @@
     self.view.layer.contents = (id)[UIImage new].CGImage;
     self.title = @"分析报告";
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(dismiss)];
-    //self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
 }
 
 
@@ -402,6 +402,10 @@
 #pragma mark - share
 - (void)shareBtnClicked{
     
+    NSData *imageData = UIImageJPEGRepresentation(_shareImg,1);
+    
+    NSLog(@"%f", (CGFloat)[imageData length]/1024);
+    
 //    NSArray *activityItems = @[_shareImg];
 //    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
 //    [self presentViewController:activityVC animated:YES completion:nil];
@@ -422,7 +426,7 @@
     //创建图片内容对象
     UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
     //如果有缩略图，则设置缩略图
-    shareObject.thumbImage = [UIImage imageNamed:@"AppIcon"];
+    //shareObject.thumbImage = [UIImage imageNamed:@"AppIcon"];
     [shareObject setShareImage:_shareImg];
     
     //分享消息对象设置分享内容对象

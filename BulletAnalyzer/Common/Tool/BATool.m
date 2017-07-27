@@ -116,7 +116,7 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
     
     UIImage *image = [images firstObject];
     CGFloat width = image.size.width;
-    CGFloat height = image.size.height * 5;
+    CGFloat height = image.size.height * images.count;
     CGSize offScreenSize = CGSizeMake(width, height);
     
     UIGraphicsBeginImageContext(offScreenSize);

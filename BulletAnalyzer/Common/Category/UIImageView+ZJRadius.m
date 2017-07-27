@@ -55,7 +55,7 @@ static UIImage *_image;
 - (void)ZJ_setClipsToBounds:(BOOL)clipsToBounds{
     _needClipsToBounds = clipsToBounds;
     
-    if (self.layer.cornerRadius <= 0) { //若圆角为0 则允许maskToBounds
+    if (self.layer.cornerRadius <= 0) { //若圆角为0 则允许maskT‚‚oBounds
         [self ZJ_setClipsToBounds:clipsToBounds];
     }
 }
@@ -85,12 +85,12 @@ static UIImage *_image;
         
         [image drawInRect:rect];
         
-        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+        UIImage *drawImage = UIGraphicsGetImageFromCurrentImageContext();
         
         UIGraphicsEndImageContext();
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self ZJ_setImage:image];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self ZJ_setImage:drawImage];
         });
     });
 }
