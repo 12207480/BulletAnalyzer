@@ -75,12 +75,14 @@ static bool _needClipsToBounds;
 
 - (void)ZJ_clipsImage:(UIImage *)image{
     
+    [self ZJ_setImage:nil];
+    
     //创建一个的layer显示
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         
         UIImageView *imageView;
         for (UIView *subView in self.subviews) {
-            if (subView.tag == 1024) {
+            if (subView.tag == 10241024) {
                 imageView = (UIImageView *)subView;
                 break;
             }
@@ -89,7 +91,7 @@ static bool _needClipsToBounds;
         if (!imageView) {
             imageView = [[UIImageView alloc] initWithFrame:self.bounds];
             imageView.userInteractionEnabled = NO;
-            imageView.tag = 1024; //标记
+            imageView.tag = 10241024; //标记
             
             [self addSubview:imageView];
         }
