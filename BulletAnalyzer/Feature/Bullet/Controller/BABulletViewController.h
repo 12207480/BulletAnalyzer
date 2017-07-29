@@ -6,11 +6,11 @@
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
-#import "BAViewController.h"
+#import <UIKit/UIKit.h>
 
 @class BAReportModel;
 
-@interface BABulletViewController : BAViewController
+@interface BABulletViewController : UIViewController
 
 /**
  传入分析数据模型

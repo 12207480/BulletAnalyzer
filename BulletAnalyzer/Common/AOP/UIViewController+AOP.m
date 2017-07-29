@@ -1,0 +1,40 @@
+//
+//  UIViewController+AOP.m
+//  BulletAnalyzer
+//
+//  Created by Zj on 17/7/29.
+//  Copyright © 2017年 Zj. All rights reserved.
+//
+
+#import "UIViewController+AOP.h"
+#import "Aspects.h"
+
+@implementation UIViewController (AOP)
+
++ (void)load{
+
+    [self aspect_hookSelector:@selector(viewDidLoad) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> aspectInfo) {
+        
+        if ([aspectInfo.instance isKindOfClass:[UITableViewController class]]) {
+            
+            UITableViewController *viewContoller = (UITableViewController *)aspectInfo.instance;
+            viewContoller.view.layer.contents = (id)[UIImage imageNamed:@"backgroundView"].CGImage;
+            viewContoller.tableView.showsVerticalScrollIndicator = NO;
+            viewContoller.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            
+        } else if ([aspectInfo.instance isKindOfClass:[UINavigationController class]]) {
+            
+            
+        } else if ([aspectInfo.instance isKindOfClass:[UITabBarController class]]) {
+            
+            
+        } else {
+            
+            UIViewController *viewContoller = (UIViewController *)aspectInfo.instance;
+            viewContoller.view.layer.contents = (id)[UIImage imageNamed:@"backgroundView"].CGImage;
+        }
+        
+    } error:NULL];
+}
+
+@end

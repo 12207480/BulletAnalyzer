@@ -6,8 +6,8 @@
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
-#import "BAViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface BAMainViewController : BAViewController
+@interface BAMainViewController : UIViewController
 
 @end

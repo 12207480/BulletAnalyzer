@@ -1,13 +1,13 @@
 //
-//  BAViewController.h
+//  UIViewController+AOP.h
 //  BulletAnalyzer
 //
-//  Created by Zj on 17/6/1.
+//  Created by Zj on 17/7/29.
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface BAViewController : UIViewController
+@interface UIViewController (AOP)
 
 @end

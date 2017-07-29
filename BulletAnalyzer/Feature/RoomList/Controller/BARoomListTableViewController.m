@@ -10,6 +10,7 @@
 #import "BARoomListCell.h"
 #import "BARoomModel.h"
 #import "UIViewController+MMDrawerController.h"
+#import "MJRefresh.h"
 
 static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
 
