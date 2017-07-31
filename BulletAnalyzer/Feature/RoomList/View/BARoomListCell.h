@@ -6,11 +6,11 @@
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
-#import "BATableViewCell.h"
+#import <UIKit/UIKit.h>
 
 @class BARoomModel;
 
-@interface BARoomListCell : BATableViewCell
+@interface BARoomListCell : UITableViewCell
 
 /**
  传入直播间数据

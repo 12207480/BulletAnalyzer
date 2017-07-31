@@ -6,11 +6,11 @@
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
-#import "BATableViewCell.h"
+#import <UIKit/UIKit.h>
 
 @class BAUserModel;
 
-@interface BAGiftUserCell : BATableViewCell
+@interface BAGiftUserCell : UITableViewCell
 
 /**
  传入用户数据

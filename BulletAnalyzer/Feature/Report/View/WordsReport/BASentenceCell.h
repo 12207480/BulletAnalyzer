@@ -6,11 +6,11 @@
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
-#import "BATableViewCell.h"
+#import <UIKit/UIKit.h>
 
 @class BASentenceModel;
 
-@interface BASentenceCell : BATableViewCell
+@interface BASentenceCell : UITableViewCell
 
 @property (nonatomic, strong) BASentenceModel *sentenceModel;
 

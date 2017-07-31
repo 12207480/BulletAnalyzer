@@ -216,12 +216,12 @@
 		F2382E0F1EF3ADE600BE5446 /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E0E1EF3ADE600BE5446 /* NSDate+Category.m */; };
 		F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */; };
 		F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */; };
+		F25F90951F2EBF7400FBFE87 /* UITableViewCell+AOP.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F90941F2EBF7400FBFE87 /* UITableViewCell+AOP.m */; };
 		F299E4571F259BDD008A5CC3 /* BASentenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4561F259BDD008A5CC3 /* BASentenceCell.m */; };
 		F299E45A1F25D82B008A5CC3 /* BAGiftUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4591F25D82B008A5CC3 /* BAGiftUserCell.m */; };
 		F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */; };
 		F2A8BE8A1F1470FC00DC9B3C /* BASearchHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE891F1470FC00DC9B3C /* BASearchHistoryCell.m */; };
 		F2DA672F1F174BF3003BD66A /* BATransition.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DA672E1F174BF3003BD66A /* BATransition.m */; };
-		F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79CE1EE501F200927776 /* BATableViewCell.m */; };
 		F2DF79D21EE5022D00927776 /* BARoomListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DF79D11EE5022D00927776 /* BARoomListCell.m */; };
 		F2EF75581F20753D00B0D70B /* BAReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75571F20753D00B0D70B /* BAReportViewController.m */; };
 		F2EF75671F2082FD00B0D70B /* BAGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF75661F2082FD00B0D70B /* BAGradientView.m */; };
@@ -693,6 +693,8 @@
 		F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+Category.m"; sourceTree = "<group>"; };
 		F2587C0D1EFB93B00026DFF5 /* BASentenceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceModel.h; sourceTree = "<group>"; };
 		F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceModel.m; sourceTree = "<group>"; };
+		F25F90931F2EBF7400FBFE87 /* UITableViewCell+AOP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+AOP.h"; sourceTree = "<group>"; };
+		F25F90941F2EBF7400FBFE87 /* UITableViewCell+AOP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+AOP.m"; sourceTree = "<group>"; };
 		F299E4551F259BDD008A5CC3 /* BASentenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceCell.h; sourceTree = "<group>"; };
 		F299E4561F259BDD008A5CC3 /* BASentenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceCell.m; sourceTree = "<group>"; };
 		F299E4581F25D82B008A5CC3 /* BAGiftUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftUserCell.h; sourceTree = "<group>"; };
@@ -703,8 +705,6 @@
 		F2A8BE891F1470FC00DC9B3C /* BASearchHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASearchHistoryCell.m; sourceTree = "<group>"; };
 		F2DA672D1F174BF3003BD66A /* BATransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATransition.h; sourceTree = "<group>"; };
 		F2DA672E1F174BF3003BD66A /* BATransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATransition.m; sourceTree = "<group>"; };
-		F2DF79CD1EE501F200927776 /* BATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATableViewCell.h; sourceTree = "<group>"; };
-		F2DF79CE1EE501F200927776 /* BATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATableViewCell.m; sourceTree = "<group>"; };
 		F2DF79D01EE5022D00927776 /* BARoomListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARoomListCell.h; sourceTree = "<group>"; };
 		F2DF79D11EE5022D00927776 /* BARoomListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BARoomListCell.m; sourceTree = "<group>"; };
 		F2EF75561F20753D00B0D70B /* BAReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAReportViewController.h; sourceTree = "<group>"; };
@@ -818,6 +818,8 @@
 			children = (
 				38340C981F2C441300659490 /* UIViewController+AOP.h */,
 				38340C991F2C441300659490 /* UIViewController+AOP.m */,
+				F25F90931F2EBF7400FBFE87 /* UITableViewCell+AOP.h */,
+				F25F90941F2EBF7400FBFE87 /* UITableViewCell+AOP.m */,
 			);
 			name = "AOP(方法拦截)";
 			path = AOP;
@@ -1225,8 +1227,6 @@
 		388AFF801EE042100031DE53 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				F2DF79CD1EE501F200927776 /* BATableViewCell.h */,
-				F2DF79CE1EE501F200927776 /* BATableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2304,6 +2304,7 @@
 				F21BD4231EE7F77C0079312C /* BAReportModel.m in Sources */,
 				38A5A0DE1EE2AA6800CFF645 /* MJProperty.m in Sources */,
 				38A5A0DC1EE2AA6800CFF645 /* MJExtensionConst.m in Sources */,
+				F25F90951F2EBF7400FBFE87 /* UITableViewCell+AOP.m in Sources */,
 				F222A4831F0B44D000E70ADA /* LOTShapeRectangle.m in Sources */,
 				F222A47B1F0B44D000E70ADA /* LOTComposition.m in Sources */,
 				388A86441EE43EA400A0BC5B /* View+MASAdditions.m in Sources */,
@@ -2327,7 +2328,6 @@
 				380ECF1A1F236FA100D26CF6 /* BAFansChartXYView.m in Sources */,
 				38A5A0C01EE2615A00CFF645 /* NSData+HexExtension.m in Sources */,
 				F21BD4401EEF77490079312C /* BABulletViewController.m in Sources */,
-				F2DF79CF1EE501F200927776 /* BATableViewCell.m in Sources */,
 				388A863C1EE43EA400A0BC5B /* MASCompositeConstraint.m in Sources */,
 				388A85E71EE4108C00A0BC5B /* BABulletCycle.m in Sources */,
 				388AFFE31EE045F90031DE53 /* DDAbstractDatabaseLogger.m in Sources */,

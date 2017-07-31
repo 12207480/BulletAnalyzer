@@ -6,13 +6,13 @@
 //  Copyright © 2017年 Zj. All rights reserved.
 //
 
-#import "BATableViewCell.h"
+#import <UIKit/UIKit.h>
 
 typedef void(^returnBlock)(NSInteger tag);
 
 @class BABulletModel;
 
-@interface BABulletListCell : BATableViewCell
+@interface BABulletListCell : UITableViewCell
 
 /**
  传入弹幕

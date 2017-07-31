@@ -13,11 +13,12 @@
 
 + (void)load{
 
-    [self aspect_hookSelector:@selector(viewDidLoad) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> aspectInfo) {
+    [self aspect_hookSelector:@selector(viewDidLoad) withOptions:AspectPositionBefore usingBlock:^(id<AspectInfo> aspectInfo) {
         
         if ([aspectInfo.instance isKindOfClass:[UITableViewController class]]) {
             
             UITableViewController *viewContoller = (UITableViewController *)aspectInfo.instance;
+            
             viewContoller.view.layer.contents = (id)[UIImage imageNamed:@"backgroundView"].CGImage;
             viewContoller.tableView.showsVerticalScrollIndicator = NO;
             viewContoller.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -31,7 +32,11 @@
         } else {
             
             UIViewController *viewContoller = (UIViewController *)aspectInfo.instance;
-            viewContoller.view.layer.contents = (id)[UIImage imageNamed:@"backgroundView"].CGImage;
+            
+            CALayer *bgLayer = [CALayer layer];
+            bgLayer.frame = viewContoller.view.bounds;
+            bgLayer.contents = (id)[UIImage imageNamed:@"backgroundView"].CGImage;
+            [viewContoller.view.layer addSublayer:bgLayer];
         }
         
     } error:NULL];
