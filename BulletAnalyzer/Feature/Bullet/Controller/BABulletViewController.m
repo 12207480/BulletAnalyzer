@@ -14,6 +14,7 @@
 #import "BAReportModel.h"
 #import "BAAnalyzerCenter.h"
 #import "BASocketTool.h"
+#import "UIImage+ZJExtension.h"
 
 @interface BABulletViewController () <UIScrollViewDelegate>
 //弹幕列表
@@ -176,7 +177,7 @@
 
 
 - (void)setupNavigationBar{
-    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage createImageWithColor:[BAWhiteColor colorWithAlphaComponent:0.2]] forBarMetrics:UIBarMetricsDefault];
 }
 
 

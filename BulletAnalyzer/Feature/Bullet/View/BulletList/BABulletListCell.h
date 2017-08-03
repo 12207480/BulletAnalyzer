@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^returnBlock)(NSInteger tag);
+typedef void(^returnBlock)();
 
 @class BABulletModel;
 

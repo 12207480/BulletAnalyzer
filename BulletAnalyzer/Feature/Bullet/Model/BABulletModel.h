@@ -76,13 +76,18 @@
 @property (nonatomic, copy) NSString *iconBig;
 
 /**
- 弹幕cell是否被选中
- */
-@property (nonatomic, assign, getter=isBulletCellSelect) BOOL bulletCellSelect;
-
-/**
  该用户是否被关注了
  */
 @property (nonatomic, assign) NSInteger noticeCount;
+
+/**
+ 弹幕内容
+ */
+@property (nonatomic, copy) NSAttributedString *bulletContent;
+
+/**
+ 弹幕内容高度
+ */
+@property (nonatomic, assign) CGFloat bulletContentHeight;
 
 @end

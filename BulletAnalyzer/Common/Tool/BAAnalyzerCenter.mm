@@ -495,6 +495,52 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     //结巴分词
     NSArray *wordsArray = [self stringCutByJieba:bulletModel.txt];
     
+    //词频计算
+    [self caculateWords:wordsArray bullet:bulletModel];
+    
+    //语义分析
+    //忽略纯数字
+    if ([self isSentenceIgnore:bulletModel.txt]) return;
+    
+    //构造一个句子对象
+    BASentenceModel *newSentence = [BASentenceModel sentenceWithText:bulletModel.txt words:wordsArray];
+    
+    //将句子与之前每一个句子进行对比
+    __block BOOL similar = NO;
+    [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *sentence, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        CGFloat percent = [self similarityPercentWithSentenceA:sentence sentenceB:newSentence];
+        
+        //测试
+        //CGFloat percent2 = [self similarPercentWithStringA:bulletModel.txt andStringB:sentence.text];
+//        if (percent > 0.7) {
+//            NSLog(@"\n*******************\n%@\n%@\n近似度余弦法:%f\n*******************", bulletModel.txt, sentence.text, percent);
+//        }
+        
+        if (percent > self.similarity) { //7成相似 则合并
+            *stop = YES;
+            similar = YES;
+            sentence.count += 1;
+            sentence.realCount += 1;
+        }
+    }];
+    
+    //若没有相似度高的句子则添加容器 并新增
+    if (!similar) {
+        newSentence.container = _sentenceArray;
+        [_sentenceArray addObject:newSentence];
+        [_popSentenceArray addObject:newSentence];
+    }
+    //NSArray *countTotal = [_sentenceArray valueForKeyPath:@"@unionOfObjects.count"];
+    //NSNumber *sumCount = [countTotal valueForKeyPath:@"@sum.integerValue"];
+    //NSLog(@"_bulletsArray:%zd--_sentenceArray:%zd--_sentence:%@", _bulletsArray.count, _sentenceArray.count, sumCount);
+}
+
+
+/**
+ 词频分析
+ */
+- (void)caculateWords:(NSArray *)wordsArray bullet:(BABulletModel *)bulletModel{
     //词频分析
     [wordsArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop2) {
         
@@ -525,98 +571,21 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             dispatch_semaphore_signal(semaphore);
         }
     }];
-    
-    if ([self isSentenceIgnore:bulletModel.txt]) return; //忽略纯数字
-    
-    //语义分析
-    BASentenceModel *newSentence = [BASentenceModel new];
-    newSentence.text = bulletModel.txt;
-    newSentence.wordsArray = wordsArray;
-    newSentence.count = 1;
-    newSentence.realCount = 1;
-    
-    __block NSMutableDictionary *wordsDic = [NSMutableDictionary dictionary];
-    [wordsArray enumerateObjectsUsingBlock:^(NSString *obj1, NSUInteger idx1, BOOL * _Nonnull stop1) {
-        
-        //若字典中已有这个词的词频 则停止计算
-        if ([[wordsDic objectForKey:obj1] integerValue]) {
-            *stop1 = YES;
-        } else {
-            __block NSInteger count = 1;
-            [wordsArray enumerateObjectsUsingBlock:^(NSString *obj2, NSUInteger idx2, BOOL * _Nonnull stop2) {
-                if ([obj1 isEqualToString:obj2] && idx1 != idx2) {
-                    count += 1;
-                }
-            }];
-            
-            [wordsDic setObject:@(count) forKey:obj1];
-        }
-    }];
-    
-    newSentence.wordsDic = wordsDic.copy;
-    
-    __block BOOL similar = NO;
-    [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *sentence, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        //计算余弦角度
-        //两个向量内积
-        //两个向量模长乘积
-        __block NSInteger A = 0; //两个向量内积
-        __block NSInteger B = 0; //第一个句子的模长乘积的平方
-        __block NSInteger C = 0; //第二个句子的模长乘积的平方
-        [sentence.wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key1, NSNumber *value1, BOOL * _Nonnull stop) {
-            
-            NSNumber *value2 = [wordsDic objectForKey:key1];
-            if (value2.integerValue) {
-                A += (value1.integerValue * value2.integerValue);
-            } else {
-                A += 0;
-            }
-            
-            B += value1.integerValue * value1.integerValue;
-        }];
-        
-        [wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key2, NSNumber *value2, BOOL * _Nonnull stop) {
-            
-            C += value2.integerValue * value2.integerValue;
-        }];
-        
-        CGFloat percent = A / (sqrt(B) * sqrt(C));
-        
-        //测试
-        //CGFloat percent2 = [self similarPercentWithStringA:bulletModel.txt andStringB:sentence.text];
-//        if (percent > 0.7) {
-//            NSLog(@"\n*******************\n%@\n%@\n近似度余弦法:%f\n*******************", bulletModel.txt, sentence.text, percent);
-//        }
-        
-        if (percent > self.similarity) { //7成相似 则合并
-            *stop = YES;
-            similar = YES;
-            sentence.count += 1;
-            sentence.realCount += 1;
-        }
-    }];
-    
-    if (!similar) {
-        newSentence.container = _sentenceArray;
-        [_sentenceArray addObject:newSentence];
-        [_popSentenceArray addObject:newSentence];
-    }
-    //NSArray *countTotal = [_sentenceArray valueForKeyPath:@"@unionOfObjects.count"];
-    //NSNumber *sumCount = [countTotal valueForKeyPath:@"@sum.integerValue"];
-    //NSLog(@"_bulletsArray:%zd--_sentenceArray:%zd--_sentence:%@", _bulletsArray.count, _sentenceArray.count, sumCount);
 }
 
 
 /**
  特殊过滤词语
- */
+  */
 - (BOOL)isIgnore:(NSString *)string{
     //过滤小于2的词, 过滤表情
     return string.length < 2 || [string containsString:@"emot"] || [string containsString:@"dy"] || [string isEqualToString:@"666"];
 }
 
 
+/**
+ 忽略纯数字句子
+ */
 - (BOOL)isSentenceIgnore:(NSString *)string{
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
     if(string.length > 0) {
@@ -647,6 +616,37 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     NSArray *wordsArray = [relustString componentsSeparatedByString:@","];
     
     return wordsArray;
+}
+
+
+/**
+ 余弦夹角算法计算句子近似度
+ */
+- (CGFloat)similarityPercentWithSentenceA:(BASentenceModel *)sentenceA sentenceB:(BASentenceModel *)sentenceB{
+    //计算余弦角度
+    //两个向量内积
+    //两个向量模长乘积
+    __block NSInteger A = 0; //两个向量内积
+    __block NSInteger B = 0; //第一个句子的模长乘积的平方
+    __block NSInteger C = 0; //第二个句子的模长乘积的平方
+    [sentenceA.wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key1, NSNumber *value1, BOOL * _Nonnull stop) {
+        
+        NSNumber *value2 = [sentenceB.wordsDic objectForKey:key1];
+        if (value2.integerValue) {
+            A += (value1.integerValue * value2.integerValue);
+        }
+        
+        B += value1.integerValue * value1.integerValue;
+    }];
+    
+    [sentenceB.wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key2, NSNumber *value2, BOOL * _Nonnull stop) {
+        
+        C += value2.integerValue * value2.integerValue;
+    }];
+    
+    CGFloat percent = A / (sqrt(B) * sqrt(C));
+   
+    return percent;
 }
 
 
@@ -702,7 +702,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     
     //记录用户发言次数
     __block BOOL contained1 = NO;
-    [_userBulletCountArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
+    [_userBulletCountArray.copy enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
         contained1 = [bulletModel.uid isEqualToString:userModel.uid];
         if (contained1) {
@@ -907,6 +907,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
 
 #pragma mark - dataLocolize
+/**
+ 从本地数据库取出报告
+ */
 - (void)updateReportLocolized{
     
     [_dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
@@ -1015,6 +1018,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 }
 
 
+/**
+ 将报告存在本地
+ */
 - (void)saveReportLocolized{
     
     dispatch_async(self.analyzingQueue, ^{
@@ -1044,6 +1050,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 }
 
 
+/**
+ 删除本地报告
+ */
 - (void)delReport:(BAReportModel *)report{
     
     dispatch_async(self.analyzingQueue, ^{
@@ -1076,6 +1085,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 }
 
 
+/**
+ 添加关注
+ */
 - (void)addNotice:(BABulletModel *)bulletModel{
     
     dispatch_async(self.analyzingQueue, ^{
@@ -1120,6 +1132,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 }
 
 
+/**
+ 删除关注
+ */
 - (void)delNotice:(BABulletModel *)bulletModel{
     
     dispatch_async(self.analyzingQueue, ^{
@@ -1149,6 +1164,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 }
 
 
+/**
+ 添加搜索历史记录
+ */
 - (void)addSearchHistory:(BARoomModel *)roomModel{
     
     dispatch_async(self.analyzingQueue, ^{
@@ -1175,6 +1193,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 }
 
 
+/**
+ 清空搜索历史记录
+ */
 - (void)clearSearchHistory{
     
     dispatch_async(self.analyzingQueue, ^{

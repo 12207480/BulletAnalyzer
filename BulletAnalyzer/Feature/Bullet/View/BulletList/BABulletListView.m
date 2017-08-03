@@ -16,8 +16,6 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
 @interface BABulletListView() <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *bulletArray;
 @property (nonatomic, assign, getter=isScrollEnabled) BOOL scrollEnable;
-@property (nonatomic, strong) NSMutableArray *openCellArray;
-@property (nonatomic, assign) NSInteger openCellCount;
 @property (nonatomic, strong) UIButton *downBtn;
 
 @end
@@ -36,12 +34,9 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
 
 #pragma mark - userInteraction
 - (void)downBtnClicked{
-    [_openCellArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        obj.bulletCellSelect = NO;
-        self.openCellCount = 0;
-    }];
+
     
-    [self reloadData];
+    
 }
 
 
@@ -75,7 +70,6 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
     [self registerClass:[BABulletListCell class] forCellReuseIdentifier:BABulletListCellReusedId];
     
     _bulletArray = [NSMutableArray array];
-    _openCellArray = [NSMutableArray array];
     
     self.backgroundColor = [UIColor clearColor];
     self.showsVerticalScrollIndicator = NO;
@@ -92,28 +86,6 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
 }
 
 
-- (void)setOpenCellCount:(NSInteger)openCellCount{
-    _openCellCount = openCellCount;
-    
-    if (_openCellCount == 0) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (_openCellCount == 0) {
-                _downBtn.hidden = YES;
-                _downBtn.transform = CGAffineTransformMakeScale(0.1, 0.1);
-            }
-            _scrollEnable = _openCellCount == 0;
-        });
-    } else {
-        _scrollEnable = NO;
-        
-        _downBtn.hidden = NO;
-        [UIView animateWithDuration:0.3 animations:^{
-            _downBtn.transform = CGAffineTransformIdentity;
-        }];
-    }
-}
-
-
 #pragma mark -tableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return _bulletArray.count;
@@ -127,7 +99,7 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     BABulletModel *bulletModel = _bulletArray[indexPath.section];
-    return bulletModel.isBulletCellSelect ? BABulletListCellHeight + 36 : BABulletListCellHeight;
+    return bulletModel.bulletContentHeight + 22;
 }
 
 
@@ -136,59 +108,29 @@ static NSString *const BABulletListCellReusedId = @"BABulletListCellReusedId";
     BABulletModel *bulletModel = _bulletArray[indexPath.section];
     BABulletListCell *cell = [tableView dequeueReusableCellWithIdentifier:BABulletListCellReusedId forIndexPath:indexPath];
     cell.bulletModel = bulletModel;
-    cell.btnClicked = ^(NSInteger tag){
-    
-        switch (tag) {
-            case 0: //关注
-                
-                [[BAAnalyzerCenter defaultCenter] addNotice:bulletModel];
-                
-                break;
-                
-            default: //取消关注
-                
-                [[BAAnalyzerCenter defaultCenter] delNotice:bulletModel];
-                
-                break;
-        }
+    cell.btnClicked = ^(){
+
         
-        bulletModel.bulletCellSelect = NO;
-        [_openCellArray removeObject:bulletModel];
-        selfWeak.openCellCount -= 1;
-        [selfWeak reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     };
     
     return cell;
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 6;
-}
-
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    return [UIView new];
-}
-
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     BABulletModel *bulletModel = _bulletArray[indexPath.section];
-    bulletModel.bulletCellSelect = !bulletModel.isBulletCellSelect;
-    self.openCellCount = bulletModel.isBulletCellSelect ? _openCellCount + 1 : _openCellCount - 1;
-    if (bulletModel.isBulletCellSelect) {
-        [_openCellArray addObject:bulletModel];
-    }
     
-    [UIView performWithoutAnimation:^{
-        [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }];
 }
 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     _downBtn.y = BAScreenHeight - BABulletMenuHeight - 57 + scrollView.contentOffset.y;
+}
+
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    _scrollEnable = NO;
 }
 
 @end

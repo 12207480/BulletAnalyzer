@@ -9,6 +9,11 @@
 #import "BABulletModel.h"
 #import "MJExtension.h"
 
+@interface BABulletModel()
+@property (nonatomic, assign, getter=isStatusReady) BOOL statusReady;
+
+@end
+
 @implementation BABulletModel
 
 MJExtensionCodingImplementation
@@ -35,5 +40,58 @@ MJExtensionCodingImplementation
     BABulletModel *bulletModel = (BABulletModel *)object;
     return [self.ic isEqualToString:bulletModel.ic];
 }
+
+
+- (void)setNn:(NSString *)nn{
+    _nn = nn;
+    
+    if (nn.length) {
+        self.statusReady = _txt.length;
+    }
+}
+
+
+- (void)setTxt:(NSString *)txt{
+    _txt = txt;
+    
+    if (txt.length) {
+        self.statusReady = _nn.length;
+    }
+}
+
+
+- (void)setStatusReady:(BOOL)statusReady{
+    _statusReady = statusReady;
+    
+    if (statusReady) {
+        
+        NSAttributedString *nameAttr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: ", _nn] attributes:@{
+                                                                                                                 NSFontAttributeName : [UIFont systemFontOfSize:13],
+                                                                                                                 NSForegroundColorAttributeName : [BAWhiteColor colorWithAlphaComponent:0.4],
+                                                                                                                 NSBaselineOffsetAttributeName : @0.5
+                                                                                                                 }];
+        
+        NSAttributedString *textAttr = [[NSAttributedString alloc] initWithString:_txt attributes:@{
+                                                                                                   NSFontAttributeName : [UIFont systemFontOfSize:15],
+                                                                                                   NSForegroundColorAttributeName : BAWhiteColor
+                                                                                                   }];
+        
+        NSMutableAttributedString *contentAttr = [[NSMutableAttributedString alloc] init];
+        [contentAttr appendAttributedString:nameAttr];
+        [contentAttr appendAttributedString:textAttr];
+        
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineSpacing:5];
+        [contentAttr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [contentAttr length])];
+        
+        _bulletContent = contentAttr;
+        
+        CGRect contentLabelRect = [contentAttr boundingRectWithSize:CGSizeMake(BAScreenWidth - 70, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+        
+        _bulletContentHeight = contentLabelRect.size.height;
+    }
+}
+
+
 
 @end

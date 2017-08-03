@@ -217,6 +217,7 @@
 		F2382E121EF3AFE300BE5446 /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */; };
 		F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */; };
 		F25F90951F2EBF7400FBFE87 /* UITableViewCell+AOP.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F90941F2EBF7400FBFE87 /* UITableViewCell+AOP.m */; };
+		F25F91021F33037800FBFE87 /* UIImage+ZJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F91011F33037800FBFE87 /* UIImage+ZJExtension.m */; };
 		F299E4571F259BDD008A5CC3 /* BASentenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4561F259BDD008A5CC3 /* BASentenceCell.m */; };
 		F299E45A1F25D82B008A5CC3 /* BAGiftUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4591F25D82B008A5CC3 /* BAGiftUserCell.m */; };
 		F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */; };
@@ -695,6 +696,8 @@
 		F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceModel.m; sourceTree = "<group>"; };
 		F25F90931F2EBF7400FBFE87 /* UITableViewCell+AOP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+AOP.h"; sourceTree = "<group>"; };
 		F25F90941F2EBF7400FBFE87 /* UITableViewCell+AOP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+AOP.m"; sourceTree = "<group>"; };
+		F25F91001F33037800FBFE87 /* UIImage+ZJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZJExtension.h"; sourceTree = "<group>"; };
+		F25F91011F33037800FBFE87 /* UIImage+ZJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZJExtension.m"; sourceTree = "<group>"; };
 		F299E4551F259BDD008A5CC3 /* BASentenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceCell.h; sourceTree = "<group>"; };
 		F299E4561F259BDD008A5CC3 /* BASentenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceCell.m; sourceTree = "<group>"; };
 		F299E4581F25D82B008A5CC3 /* BAGiftUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftUserCell.h; sourceTree = "<group>"; };
@@ -1375,6 +1378,8 @@
 		38A5A0BD1EE2614900CFF645 /* Category(分类) */ = {
 			isa = PBXGroup;
 			children = (
+				F25F91001F33037800FBFE87 /* UIImage+ZJExtension.h */,
+				F25F91011F33037800FBFE87 /* UIImage+ZJExtension.m */,
 				F2382E101EF3AFE300BE5446 /* NSDateFormatter+Category.h */,
 				F2382E111EF3AFE300BE5446 /* NSDateFormatter+Category.m */,
 				F2382E0D1EF3ADE600BE5446 /* NSDate+Category.h */,
@@ -2209,6 +2214,7 @@
 				38A5A0E01EE2AA6800CFF645 /* MJPropertyType.m in Sources */,
 				F222A46E1F0B44D000E70ADA /* LOTAnimatableScaleValue.m in Sources */,
 				388A86C41EE4424600A0BC5B /* MJRefreshConst.m in Sources */,
+				F25F91021F33037800FBFE87 /* UIImage+ZJExtension.m in Sources */,
 				F2EF75701F218FE700B0D70B /* BAMenuBtn.m in Sources */,
 				388A85C61EE40C2B00A0BC5B /* AFSecurityPolicy.m in Sources */,
 				F231C7B31EE509F700EB0F79 /* SDWebImageManager.m in Sources */,

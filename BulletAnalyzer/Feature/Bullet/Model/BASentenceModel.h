@@ -50,4 +50,13 @@
  */
 - (void)decrease;
 
+/**
+ 快速构造句子对象
+
+ @param text 句子
+ @param wordsArray 句子分词数组
+ @return 构造好的对象
+ */
++ (BASentenceModel *)sentenceWithText:(NSString *)text words:(NSArray *)wordsArray;
+
 @end
