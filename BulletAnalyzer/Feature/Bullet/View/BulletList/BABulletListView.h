@@ -13,6 +13,6 @@
 /**
  传入新的弹幕
  */
-- (void)addBullets:(NSArray *)bulletsArray;
+- (void)addStatus:(NSArray *)statusArray;
 
 @end

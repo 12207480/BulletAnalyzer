@@ -13,38 +13,43 @@ typedef void(^returnBlock)();
 @interface BABulletMenu : UIView
 
 /**
- 菜单被触碰
+ 菜单被触控了
  */
 @property (nonatomic, copy) returnBlock menuTouched;
 
 /**
  结束按钮被点击
  */
-@property (nonatomic, copy) returnBlock endBtnClicked;
+@property (nonatomic, copy) returnBlock leftBtnClicked;
 
 /**
  详细设置被点击
  */
-@property (nonatomic, copy) returnBlock moreBtnClicked;
+@property (nonatomic, copy) returnBlock middleBtnClicked;
 
 /**
  报告按钮被点击
  */
-@property (nonatomic, copy) returnBlock reportBtnClicked;
+@property (nonatomic, copy) returnBlock rightBtnClicked;
 
 /**
  更多
  */
-@property (nonatomic, strong) UIButton *moreBtn;
+@property (nonatomic, strong) UIButton *middleBtn;
 
 /**
  结束
  */
-@property (nonatomic, strong) UIButton *endBtn;
+@property (nonatomic, strong) UIButton *leftBtn;
 
 /**
  报告
  */
-@property (nonatomic, strong) UIButton *reportBtn;
+@property (nonatomic, strong) UIButton *rightBtn;
+
+/**
+ 回复中间按钮状态
+ */
+- (void)close;
 
 @end

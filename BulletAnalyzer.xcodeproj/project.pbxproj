@@ -128,7 +128,6 @@
 		38B54CDB1EEA94720092C76B /* iosjieba.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 38B54CD81EEA94720092C76B /* iosjieba.bundle */; };
 		38B54CDC1EEA94720092C76B /* Segmentor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 38B54CD91EEA94720092C76B /* Segmentor.mm */; };
 		38D775E01F24F284005371D4 /* BACountTimeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D775D51F24F284005371D4 /* BACountTimeModel.m */; };
-		38D775E11F24F284005371D4 /* BAGiftModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D775D71F24F284005371D4 /* BAGiftModel.m */; };
 		38D775E21F24F284005371D4 /* BAGiftValueModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D775D91F24F284005371D4 /* BAGiftValueModel.m */; };
 		38D775E31F24F284005371D4 /* BAReplyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D775DB1F24F284005371D4 /* BAReplyModel.m */; };
 		38D775E41F24F284005371D4 /* BAUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D775DD1F24F284005371D4 /* BAUserModel.m */; };
@@ -218,6 +217,9 @@
 		F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F2587C0E1EFB93B00026DFF5 /* BASentenceModel.m */; };
 		F25F90951F2EBF7400FBFE87 /* UITableViewCell+AOP.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F90941F2EBF7400FBFE87 /* UITableViewCell+AOP.m */; };
 		F25F91021F33037800FBFE87 /* UIImage+ZJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F91011F33037800FBFE87 /* UIImage+ZJExtension.m */; };
+		F25F91051F34177B00FBFE87 /* BABulletListGiftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F91041F34177B00FBFE87 /* BABulletListGiftCell.m */; };
+		F25F91081F341BA700FBFE87 /* BAGiftModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F91071F341BA700FBFE87 /* BAGiftModel.m */; };
+		F25F910B1F342C6C00FBFE87 /* UIButton+AOP.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F910A1F342C6C00FBFE87 /* UIButton+AOP.m */; };
 		F299E4571F259BDD008A5CC3 /* BASentenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4561F259BDD008A5CC3 /* BASentenceCell.m */; };
 		F299E45A1F25D82B008A5CC3 /* BAGiftUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4591F25D82B008A5CC3 /* BAGiftUserCell.m */; };
 		F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */; };
@@ -517,8 +519,6 @@
 		38B54CDA1EEA94720092C76B /* Segmentor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Segmentor.h; sourceTree = "<group>"; };
 		38D775D41F24F284005371D4 /* BACountTimeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACountTimeModel.h; sourceTree = "<group>"; };
 		38D775D51F24F284005371D4 /* BACountTimeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountTimeModel.m; sourceTree = "<group>"; };
-		38D775D61F24F284005371D4 /* BAGiftModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftModel.h; sourceTree = "<group>"; };
-		38D775D71F24F284005371D4 /* BAGiftModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGiftModel.m; sourceTree = "<group>"; };
 		38D775D81F24F284005371D4 /* BAGiftValueModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftValueModel.h; sourceTree = "<group>"; };
 		38D775D91F24F284005371D4 /* BAGiftValueModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGiftValueModel.m; sourceTree = "<group>"; };
 		38D775DA1F24F284005371D4 /* BAReplyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAReplyModel.h; sourceTree = "<group>"; };
@@ -698,6 +698,12 @@
 		F25F90941F2EBF7400FBFE87 /* UITableViewCell+AOP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+AOP.m"; sourceTree = "<group>"; };
 		F25F91001F33037800FBFE87 /* UIImage+ZJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZJExtension.h"; sourceTree = "<group>"; };
 		F25F91011F33037800FBFE87 /* UIImage+ZJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZJExtension.m"; sourceTree = "<group>"; };
+		F25F91031F34177B00FBFE87 /* BABulletListGiftCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletListGiftCell.h; sourceTree = "<group>"; };
+		F25F91041F34177B00FBFE87 /* BABulletListGiftCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletListGiftCell.m; sourceTree = "<group>"; };
+		F25F91061F341BA700FBFE87 /* BAGiftModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftModel.h; sourceTree = "<group>"; };
+		F25F91071F341BA700FBFE87 /* BAGiftModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGiftModel.m; sourceTree = "<group>"; };
+		F25F91091F342C6C00FBFE87 /* UIButton+AOP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+AOP.h"; sourceTree = "<group>"; };
+		F25F910A1F342C6C00FBFE87 /* UIButton+AOP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+AOP.m"; sourceTree = "<group>"; };
 		F299E4551F259BDD008A5CC3 /* BASentenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceCell.h; sourceTree = "<group>"; };
 		F299E4561F259BDD008A5CC3 /* BASentenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceCell.m; sourceTree = "<group>"; };
 		F299E4581F25D82B008A5CC3 /* BAGiftUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftUserCell.h; sourceTree = "<group>"; };
@@ -823,6 +829,8 @@
 				38340C991F2C441300659490 /* UIViewController+AOP.m */,
 				F25F90931F2EBF7400FBFE87 /* UITableViewCell+AOP.h */,
 				F25F90941F2EBF7400FBFE87 /* UITableViewCell+AOP.m */,
+				F25F91091F342C6C00FBFE87 /* UIButton+AOP.h */,
+				F25F910A1F342C6C00FBFE87 /* UIButton+AOP.m */,
 			);
 			name = "AOP(方法拦截)";
 			path = AOP;
@@ -895,6 +903,8 @@
 		388A85D61EE4108C00A0BC5B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F25F91061F341BA700FBFE87 /* BAGiftModel.h */,
+				F25F91071F341BA700FBFE87 /* BAGiftModel.m */,
 				388A85D71EE4108C00A0BC5B /* BABulletModel.h */,
 				388A85D81EE4108C00A0BC5B /* BABulletModel.m */,
 				F2587C0D1EFB93B00026DFF5 /* BASentenceModel.h */,
@@ -931,6 +941,8 @@
 				388A85E31EE4108C00A0BC5B /* BABulletListView.m */,
 				F21BD4491EEF7D150079312C /* BABulletListCell.h */,
 				F21BD44A1EEF7D150079312C /* BABulletListCell.m */,
+				F25F91031F34177B00FBFE87 /* BABulletListGiftCell.h */,
+				F25F91041F34177B00FBFE87 /* BABulletListGiftCell.m */,
 			);
 			name = "BulletList(弹幕列表)";
 			path = BulletList;
@@ -1632,8 +1644,6 @@
 			children = (
 				38D775D41F24F284005371D4 /* BACountTimeModel.h */,
 				38D775D51F24F284005371D4 /* BACountTimeModel.m */,
-				38D775D61F24F284005371D4 /* BAGiftModel.h */,
-				38D775D71F24F284005371D4 /* BAGiftModel.m */,
 				38D775D81F24F284005371D4 /* BAGiftValueModel.h */,
 				38D775D91F24F284005371D4 /* BAGiftValueModel.m */,
 				38D775DA1F24F284005371D4 /* BAReplyModel.h */,
@@ -2165,6 +2175,7 @@
 				388A86431EE43EA400A0BC5B /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				388A86411EE43EA400A0BC5B /* MASViewConstraint.m in Sources */,
 				388A86BB1EE4424600A0BC5B /* MJRefreshAutoNormalFooter.m in Sources */,
+				F25F910B1F342C6C00FBFE87 /* UIButton+AOP.m in Sources */,
 				38A5A0E11EE2AA6800CFF645 /* NSObject+MJClass.m in Sources */,
 				F222A4751F0B44D000E70ADA /* CALayer+Compat.m in Sources */,
 				38A5A0DD1EE2AA6800CFF645 /* MJFoundation.m in Sources */,
@@ -2234,7 +2245,6 @@
 				38A5A0E51EE2AA6800CFF645 /* NSString+MJExtension.m in Sources */,
 				F222A4851F0B44D000E70ADA /* LOTShapeTransform.m in Sources */,
 				388A85F61EE4163200A0BC5B /* UIViewController+MMDrawerController.m in Sources */,
-				38D775E11F24F284005371D4 /* BAGiftModel.m in Sources */,
 				380ECF171F23661100D26CF6 /* BAFansChartPartView.m in Sources */,
 				F231C7B21EE509F700EB0F79 /* SDWebImageDownloaderOperation.m in Sources */,
 				F222A4811F0B44D000E70ADA /* LOTShapeGroup.m in Sources */,
@@ -2289,6 +2299,7 @@
 				F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */,
 				388A860A1EE419D000A0BC5B /* UIBarButtonItem+ZJExtension.m in Sources */,
 				388A86B81EE4424600A0BC5B /* MJRefreshFooter.m in Sources */,
+				F25F91051F34177B00FBFE87 /* BABulletListGiftCell.m in Sources */,
 				F231C7AF1EE509F700EB0F79 /* SDWebImageCompat.m in Sources */,
 				F222A4721F0B44D000E70ADA /* CGGeometry+LOTAdditions.m in Sources */,
 				F222A4791F0B44D000E70ADA /* LOTAsset.m in Sources */,
@@ -2326,6 +2337,7 @@
 				F222A46B1F0B44D000E70ADA /* LOTAnimatableColorValue.m in Sources */,
 				F222A4701F0B44D000E70ADA /* LOTAnimationCache.m in Sources */,
 				388A86BF1EE4424600A0BC5B /* MJRefreshBackStateFooter.m in Sources */,
+				F25F91081F341BA700FBFE87 /* BAGiftModel.m in Sources */,
 				F231C7BB1EE509F700EB0F79 /* UIView+WebCacheOperation.m in Sources */,
 				388A86C21EE4424600A0BC5B /* MJRefreshStateHeader.m in Sources */,
 				F222A4621F0B44D000E70ADA /* LOTCompositionLayer.m in Sources */,

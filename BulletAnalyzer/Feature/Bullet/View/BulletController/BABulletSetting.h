@@ -23,4 +23,19 @@ typedef void(^speedChangedBlock)(CGFloat speed);
  */
 @property (nonatomic, copy) speedChangedBlock speedChanged;
 
+/**
+ 是否显示了
+ */
+@property (nonatomic, assign, getter=isAlreadyShow) BOOL alreadyShow;
+
+/**
+ 显示
+ */
+- (void)show;
+
+/**
+ 隐藏
+ */
+- (void)hide;
+
 @end

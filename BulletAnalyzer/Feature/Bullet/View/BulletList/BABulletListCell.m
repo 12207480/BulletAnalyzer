@@ -24,6 +24,8 @@
         
         self.backgroundColor = [UIColor clearColor];
         
+        self.layer.masksToBounds = YES;
+        
         [self setupSubViews];
     }
     return self;
@@ -42,17 +44,39 @@
     
     _contentLabel.attributedText = bulletModel.bulletContent;
     _contentLabel.height = bulletModel.bulletContentHeight;
+
+    if (bulletModel.level.integerValue < 10) {
+        
+        _levelBgView.image = [UIImage imageNamed:@"lv1"];
+        
+    } else if (bulletModel.level.integerValue < 20) {
+        
+        _levelBgView.image = [UIImage imageNamed:@"lv2"];
+        
+    } else if (bulletModel.level.integerValue < 30) {
+        
+        _levelBgView.image = [UIImage imageNamed:@"lv3"];
+        
+    } else if (bulletModel.level.integerValue < 40) {
+        
+        _levelBgView.image = [UIImage imageNamed:@"lv4"];
+        
+    } else {
+        
+        _levelBgView.image = [UIImage imageNamed:@"lv5"];
+    }
+    _levelLabel.text = bulletModel.level;
 }
 
 
 #pragma mark - private
 - (void)setupSubViews{
     
-    _levelBgView = [UIImageView imageViewWithFrame:CGRectMake(BAPadding * 1.5, 13.5, 30, 13) image:nil];
+    _levelBgView = [UIImageView imageViewWithFrame:CGRectMake(BAPadding * 1.5, 14, 30, 13) image:nil];
     
     [self.contentView addSubview:_levelBgView];
     
-    _levelLabel = [UILabel labelWithFrame:CGRectMake(BAPadding * 1.5, 13.5, 28, 13) text:nil color:BAWhiteColor font:BABlodFont(BASmallTextFontSize) textAlignment:NSTextAlignmentRight];
+    _levelLabel = [UILabel labelWithFrame:CGRectMake(BAPadding * 2.65, 14, 18, 13) text:nil color:BAWhiteColor font:BABlodFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [self.contentView addSubview:_levelLabel];
     

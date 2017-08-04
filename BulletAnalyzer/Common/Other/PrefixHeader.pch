@@ -52,8 +52,8 @@
 #define BAReportCellWidth (BAScreenWidth - 8 * BAPadding)
 #define BAReportCellHeight (BAScreenHeight * 3 / 5)
 #define BABulletListCellHeight 80
-#define BABulletSettingHeight 150
-#define BABulletMenuHeight 70
+#define BABulletSettingHeight 90
+#define BABulletMenuHeight 49
 #define BABulletActiveCellHeight (BAScreenHeight - 2 * BAPadding) / 10
 #define BAFansReportDrawViewWidth (BAScreenWidth - 100 - 5 * BAPadding)
 #define BAFansReportDrawViewHeight (130 - 4 * BAPadding)

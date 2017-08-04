@@ -193,10 +193,12 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     if (_analyzingReportModel) {
         _analyzingReportModel.interruptAnalyzing = NO;
         _analyzingReportModel.end = [NSDate date];
-        [_reportModelArray addObject:_analyzingReportModel];
         
-        //存入本地
-        [self saveReportLocolized];
+        //存入本地(分析三分钟以上的报告)
+        if (_analyzingReportModel.duration > 3) {
+            [_reportModelArray addObject:_analyzingReportModel];
+            [self saveReportLocolized];
+        }
     }
     
     if (_analyzingReportModel) {
@@ -503,7 +505,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     if ([self isSentenceIgnore:bulletModel.txt]) return;
     
     //构造一个句子对象
-    BASentenceModel *newSentence = [BASentenceModel sentenceWithText:bulletModel.txt words:wordsArray];
+    BASentenceModel *newSentence = [BASentenceModel sentenceWithText:bulletModel.txt words:wordsArray.copy];
     
     //将句子与之前每一个句子进行对比
     __block BOOL similar = NO;
@@ -550,7 +552,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
             //记录词的出现频率
             __block BOOL contained = NO;
-            [_wordsArray.mutableCopy enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+            [_wordsArray.copy enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
                 
                 contained = [wordsModel isEqual:words];
                 if (contained) {

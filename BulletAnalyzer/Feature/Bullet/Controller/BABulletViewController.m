@@ -9,12 +9,15 @@
 
 #import "BABulletViewController.h"
 #import "BABulletListView.h"
+#import "BAReportViewController.h"
 #import "BABulletMenu.h"
 #import "BABulletSetting.h"
 #import "BAReportModel.h"
 #import "BAAnalyzerCenter.h"
 #import "BASocketTool.h"
 #import "UIImage+ZJExtension.h"
+#import "UIBarButtonItem+ZJExtension.h"
+#import "NSDate+Category.h"
 
 @interface BABulletViewController () <UIScrollViewDelegate>
 //弹幕列表
@@ -50,6 +53,8 @@
     
     [self setupNavigationBar];
     
+    [self addNotificationObserver];
+    
     self.getSpeed = 0.5;
 }
 
@@ -57,7 +62,12 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    //[UIApplication sharedApplication].statusBarHidden = YES;
+    [self larger];
+}
+
+
+- (void)dealloc{
+    [BANotificationCenter removeObserver:self];
 }
 
 
@@ -65,35 +75,27 @@
 - (void)smaller{
     [_hideTimer invalidate];
     _hideTimer = nil;
-    _bulletSetting.hidden = YES;
-    _bulletListView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [_bulletMenu close];
     [UIView animateWithDuration:0.3 animations:^{
-        _bulletMenu.frame = CGRectMake(0, BAScreenHeight - BABulletMenuHeight + 20, BAScreenWidth, BABulletMenuHeight - 20);
-        _bulletMenu.moreBtn.centerY = _bulletMenu.height / 2;
-        _bulletMenu.endBtn.centerY = _bulletMenu.height / 2;
-        _bulletMenu.reportBtn.centerY = _bulletMenu.height / 2;
-        
-    }];
+        _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69);
+    } completion:nil];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+
 }
 
 
 - (void)larger{
     [self beginTimer];
-    _bulletListView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
     [UIView animateWithDuration:0.3 animations:^{
-        _bulletMenu.frame = CGRectMake(0, BAScreenHeight - BABulletMenuHeight, BAScreenWidth, BABulletMenuHeight);
-        _bulletMenu.moreBtn.centerY = _bulletMenu.height / 2;
-        _bulletMenu.endBtn.centerY = _bulletMenu.height / 2;
-        _bulletMenu.reportBtn.centerY = _bulletMenu.height / 2;    } completion:^(BOOL finished) {
-        _bulletSetting.hidden = !(BOOL)_bulletSetting.tag;
-    }];
+        _bulletListView.frame = CGRectMake(0, 64, BAScreenWidth, BAScreenHeight - 113);
+    } completion:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 
 #pragma mark - userInteraction
-- (void)roomCollect{
+- (void)backBtnClicked{
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -103,14 +105,19 @@
     [_hideTimer invalidate];
     _hideTimer = nil;
     
-    _repeatDuration = 5.f;
+    _repeatDuration = 8.f;
     _hideTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatDuration target:self selector:@selector(smaller) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_hideTimer forMode:NSRunLoopCommonModes];
 }
 
 
+- (void)addNotificationObserver{
+    [BANotificationCenter addObserver:self selector:@selector(gift:) name:BANotificationGift object:nil];
+}
+
+
 - (void)setupBulletListView{
-    _bulletListView = [[BABulletListView alloc] initWithFrame:CGRectMake(0, 0, BAScreenWidth, BAScreenHeight - 50)];
+    _bulletListView = [[BABulletListView alloc] init];
 
     [self.view addSubview:_bulletListView];
 }
@@ -118,32 +125,38 @@
 
 - (void)setupBulletConroller{
     WeakObj(self);
-    _bulletMenu = [[BABulletMenu alloc] initWithFrame:CGRectMake(0, BAScreenHeight - BABulletMenuHeight + 20, BAScreenWidth, BABulletMenuHeight - 20)];
+    _bulletMenu = [[BABulletMenu alloc] initWithFrame:CGRectMake(0, BAScreenHeight - BABulletMenuHeight, BAScreenWidth, BABulletMenuHeight)];
     _bulletMenu.menuTouched = ^{
-        if (selfWeak.bulletMenu.height == BABulletMenuHeight) {
-            [selfWeak smaller];
-        } else {
-            [selfWeak larger];
-        }
+       
+        [selfWeak larger];
     };
-    _bulletMenu.moreBtnClicked = ^{
-        if (selfWeak.bulletMenu.height == BABulletMenuHeight) {
-            selfWeak.bulletSetting.hidden = !selfWeak.bulletSetting.isHidden;
-            selfWeak.bulletSetting.tag = selfWeak.bulletSetting.isHidden ? 0 : 1;
-        } else {
-            [selfWeak larger];
-            selfWeak.bulletSetting.tag = 1;
-        }
-    };
-    _bulletMenu.endBtnClicked = ^{
+    _bulletMenu.middleBtnClicked = ^{
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否结束分析?" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [selfWeak larger];
+        
+        if (selfWeak.bulletSetting.isAlreadyShow) {
+            [selfWeak.bulletSetting hide];
+        } else {
+            [selfWeak.bulletSetting show];
+        }
+    };
+    _bulletMenu.leftBtnClicked = ^{
+        
+        [selfWeak larger];
+        
+        CGFloat duration = [[NSDate date] minutesAfterDate:selfWeak.reportModel.begin];
+        
+        NSString *message = @"断开后将自动保存分析报告";
+        if (duration < 3) {
+            message = @"连接不满三分钟, 将不会保存报告";
+        }
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否结束分析?" message:message preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"结束" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             
-
-
             [[BASocketTool defaultSocket] cutOff];
+            [selfWeak backBtnClicked];
         }];
         UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
         
@@ -152,32 +165,48 @@
         
         [selfWeak presentViewController:alert animated:YES completion:nil];
     };
-    _bulletMenu.reportBtnClicked = ^{
+    _bulletMenu.rightBtnClicked = ^{
         
-        [UIView animateWithDuration:1 delay:0 usingSpringWithDamping:0.9 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut animations:^{
-           
-            
-            
-        } completion:nil];
+        [selfWeak larger];
+        
+        CGFloat duration = [[NSDate date] minutesAfterDate:selfWeak.reportModel.begin];
+        
+        if (duration < 3) {
+            [BATool showHUDWithText:@"查看报告需要连接三分钟以上!" ToView:BAKeyWindow];
+            return;
+        }
+        
+        BAReportViewController *bulletVC = [[BAReportViewController alloc] init];
+        bulletVC.reportModel = selfWeak.reportModel;
+        
+        BANavigationViewController *navigationVc = [[BANavigationViewController alloc] initWithRootViewController:bulletVC];
+        [selfWeak presentViewController:navigationVc animated:YES completion:nil];
     };
-    
+
     [self.view addSubview:_bulletMenu];
 
     _bulletSetting = [[BABulletSetting alloc] initWithFrame:CGRectMake(0, BAScreenHeight - BABulletMenuHeight - BABulletSettingHeight, BAScreenWidth, BABulletSettingHeight)];
     _bulletSetting.hidden = YES;
     _bulletSetting.settingTouched = ^{
+        
         [selfWeak larger];
     };
     _bulletSetting.speedChanged = ^(CGFloat speed){
+        
+        [selfWeak larger];
         selfWeak.getSpeed = speed;
     };
     
-    [self.view addSubview:_bulletSetting];
+    [self.view insertSubview:_bulletSetting belowSubview:_bulletMenu];
 }
 
 
 - (void)setupNavigationBar{
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage createImageWithColor:[BAWhiteColor colorWithAlphaComponent:0.2]] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage createImageWithColor:[BAWhiteColor colorWithAlphaComponent:0.3]] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"navShadowImg"]];
+//    self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(backBtnClicked)];
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 
@@ -194,7 +223,6 @@
     
     if (!self.title.length) {
         self.title = _reportModel.name;
-        self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"star" highlightedImg:nil target:self action:@selector(roomCollect)];
         [self larger];
     }
     
@@ -204,7 +232,7 @@
     } else {
         subArray = _reportModel.bulletsArray;
     }
-    [_bulletListView addBullets:subArray];
+    [_bulletListView addStatus:subArray];
 }
 
 
@@ -245,5 +273,11 @@
     [self setupTimer];
 }
 
+
+- (void)gift:(NSNotification *)sender{
+    NSArray *giftArray = sender.userInfo[BAUserInfoKeyGift];
+    
+    [_bulletListView addStatus:giftArray];
+}
 
 @end

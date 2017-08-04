@@ -29,6 +29,9 @@
         } else if ([aspectInfo.instance isKindOfClass:[UITabBarController class]]) {
             
             
+        } else if ([aspectInfo.instance isKindOfClass:[UIAlertController class]]) {
+            
+            
         } else {
             
             UIViewController *viewContoller = (UIViewController *)aspectInfo.instance;

@@ -18,6 +18,10 @@
 
 MJExtensionCodingImplementation
 
++ (NSArray *)mj_ignoredCodingPropertyNames{
+    return @[@"statusReady"];
+}
+
 - (void)setIc:(NSString *)ic{
     _ic = ic;
     
@@ -38,7 +42,7 @@ MJExtensionCodingImplementation
     }
     
     BABulletModel *bulletModel = (BABulletModel *)object;
-    return [self.ic isEqualToString:bulletModel.ic];
+    return [self.nn isEqualToString:bulletModel.nn];
 }
 
 
