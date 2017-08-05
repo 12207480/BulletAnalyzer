@@ -7,16 +7,18 @@
 //
 
 #import "BASentenceView.h"
+#import "BASentenceRateCell.h"
 
-@interface BASentenceView()
+static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId";
+@interface BASentenceView() <UITableViewDelegate, UITableViewDataSource>
 
 @end
 
 @implementation BASentenceView
 
 #pragma mark - lifeCycle
-- (instancetype)initWithFrame:(CGRect)frame{
-    if (self = [super initWithFrame:frame]) {
+- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style{
+    if (self = [super initWithFrame:frame style:style]) {
         
         [self prepare];
     }
@@ -24,9 +26,73 @@
 }
 
 
+#pragma mark - public
+- (void)setStatusArray:(NSMutableArray *)statusArray{
+    _statusArray = statusArray;
+    
+    [self reloadData];
+}
+
+
+- (void)setHidden:(BOOL)hidden{
+    [super setHidden:hidden];
+    
+    NSTimer *timer;
+    [timer invalidate];
+    timer = nil;
+    if (hidden) return;
+    
+    timer = [NSTimer timerWithTimeInterval:10.2f target:self selector:@selector(sortCell) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    [timer fire];
+}
+
+
 #pragma mark - private
 - (void)prepare{
     
+    self.backgroundColor = [BAWhiteColor colorWithAlphaComponent:0.3];
+    
+    [self registerClass:[BASentenceRateCell class] forCellReuseIdentifier:BASentenceRateCellReusedId];
+
+    self.showsVerticalScrollIndicator = NO;
+    self.separatorColor = [BAWhiteColor colorWithAlphaComponent:0.7];
+    self.separatorInset = UIEdgeInsetsMake(0, 2 * BAPadding, 0, 2 * BAPadding);
+    self.delegate = self;
+    self.dataSource = self;
+    self.layer.masksToBounds = YES;
+    self.scrollEnabled = NO;
+    self.rowHeight = 44;
+}
+
+
+- (void)sortCell{
+    [UIView transitionWithView:self duration:0.6f options:UIViewAnimationOptionTransitionCrossDissolve animations:^(void) {
+        [self reloadData];
+    } completion: ^(BOOL isFinished) {
+        
+    }];
+}
+
+
+#pragma mark - tableViewDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _statusArray.count > 5 ? 5 :_statusArray.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    BASentenceRateCell *cell = [tableView dequeueReusableCellWithIdentifier:BASentenceRateCellReusedId forIndexPath:indexPath];
+    cell.idex = indexPath.row;
+    cell.sentenceModel = _statusArray[indexPath.row];
+
+    return cell;
 }
 
 

@@ -26,14 +26,14 @@ MJExtensionCodingImplementation
 
 
 - (void)decrease{
-    self.count -= 1;
+    self.count -= (self.count / 10) + 1;
 }
 
 
 - (void)setCount:(NSInteger)count{
     _count = count;
     
-    if (!count && _container) {
+    if (count <= 0 && _container) {
         [_container removeObject:self];
     }
 }

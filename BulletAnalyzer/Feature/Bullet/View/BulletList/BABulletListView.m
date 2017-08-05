@@ -78,6 +78,7 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.delegate = self;
     self.dataSource = self;
+    self.layer.masksToBounds = YES;
     self.scrollEnable = YES;
     
     _downBtn = [UIButton buttonWithFrame:CGRectMake(BAScreenWidth - 67, self.height - 67, 47, 47) title:nil color:nil font:nil backgroundImage:[UIImage imageNamed:@"down"] target:self action:@selector(downBtnClicked)];

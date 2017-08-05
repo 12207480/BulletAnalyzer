@@ -9,19 +9,23 @@
 #import <UIKit/UIKit.h>
 
 typedef void(^returnBlock)();
-typedef void(^speedChangedBlock)(CGFloat speed);
 
 @interface BABulletSetting : UIView
 
 /**
- 菜单被触碰
+ 结束按钮被点击
  */
-@property (nonatomic, copy) returnBlock settingTouched;
+@property (nonatomic, copy) returnBlock leftBtnClicked;
 
 /**
- 速度改变回调
+ 详细设置被点击
  */
-@property (nonatomic, copy) speedChangedBlock speedChanged;
+@property (nonatomic, copy) returnBlock middleBtnClicked;
+
+/**
+ 报告按钮被点击
+ */
+@property (nonatomic, copy) returnBlock rightBtnClicked;
 
 /**
  是否显示了

@@ -48,8 +48,28 @@ typedef void(^returnBlock)();
 @property (nonatomic, strong) UIButton *rightBtn;
 
 /**
+ 中间按钮是否打开了
+ */
+@property (nonatomic, assign, getter=isOpened) BOOL opened;
+
+/**
  回复中间按钮状态
  */
 - (void)close;
+
+/**
+ 中间按钮旋转为关闭
+ */
+- (void)open;
+
+/**
+ 隐藏阴影
+ */
+- (void)shadowHide;
+
+/**
+ 显示阴影
+ */
+- (void)shadowShow;
 
 @end

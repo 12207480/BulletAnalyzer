@@ -31,7 +31,6 @@
 		388A85D01EE40D0B00A0BC5B /* ZJAFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85CF1EE40D0B00A0BC5B /* ZJAFNetworking.m */; };
 		388A85D31EE40D5700A0BC5B /* BAHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85D21EE40D5700A0BC5B /* BAHttpTool.m */; };
 		388A85E41EE4108C00A0BC5B /* BABulletModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85D81EE4108C00A0BC5B /* BABulletModel.m */; };
-		388A85E71EE4108C00A0BC5B /* BABulletCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85E01EE4108C00A0BC5B /* BABulletCycle.m */; };
 		388A85E81EE4108C00A0BC5B /* BABulletListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85E31EE4108C00A0BC5B /* BABulletListView.m */; };
 		388A85F31EE4163200A0BC5B /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85EB1EE4163200A0BC5B /* MMDrawerBarButtonItem.m */; };
 		388A85F41EE4163200A0BC5B /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85EE1EE4163200A0BC5B /* MMDrawerController.m */; };
@@ -79,7 +78,6 @@
 		388A86C81EE4424600A0BC5B /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A86B41EE4424600A0BC5B /* UIView+MJExtension.m */; };
 		388AFF8F1EE042100031DE53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 388AFF861EE042100031DE53 /* Assets.xcassets */; };
 		388AFF901EE042100031DE53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 388AFF871EE042100031DE53 /* LaunchScreen.storyboard */; };
-		388AFF941EE042700031DE53 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 388AFF8B1EE042100031DE53 /* Info.plist */; };
 		388AFFDF1EE045F90031DE53 /* Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = 388AFFC41EE045F90031DE53 /* Documentation.html */; };
 		388AFFE01EE045F90031DE53 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 388AFFC61EE045F90031DE53 /* GCDAsyncSocket.m */; };
 		388AFFE11EE045F90031DE53 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 388AFFC81EE045F90031DE53 /* GCDAsyncUdpSocket.m */; };
@@ -132,6 +130,8 @@
 		38D775E31F24F284005371D4 /* BAReplyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D775DB1F24F284005371D4 /* BAReplyModel.m */; };
 		38D775E41F24F284005371D4 /* BAUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D775DD1F24F284005371D4 /* BAUserModel.m */; };
 		38D775E51F24F284005371D4 /* BAWordsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D775DF1F24F284005371D4 /* BAWordsModel.m */; };
+		38DA28FA1F354EAA00CD25B6 /* BABulletSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA28F91F354EAA00CD25B6 /* BABulletSliderView.m */; };
+		38DA28FD1F35638D00CD25B6 /* BASentenceRateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA28FC1F35638D00CD25B6 /* BASentenceRateCell.m */; };
 		F21BD41D1EE7F6DE0079312C /* BAReportView.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD41C1EE7F6DE0079312C /* BAReportView.m */; };
 		F21BD4201EE7F7200079312C /* BAReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD41F1EE7F7200079312C /* BAReportCell.m */; };
 		F21BD4231EE7F77C0079312C /* BAReportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD4221EE7F77C0079312C /* BAReportModel.m */; };
@@ -144,9 +144,7 @@
 		F21BD4391EE91DFD0079312C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F21BD4331EE91DFD0079312C /* Info.plist */; };
 		F21BD43B1EE91E320079312C /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F21BD43A1EE91E320079312C /* libsqlite3.0.tbd */; };
 		F21BD4401EEF77490079312C /* BABulletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD43F1EEF77490079312C /* BABulletViewController.m */; };
-		F21BD4481EEF7B080079312C /* BAScrollIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD4471EEF7B080079312C /* BAScrollIndicator.m */; };
 		F21BD44B1EEF7D150079312C /* BABulletListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD44A1EEF7D150079312C /* BABulletListCell.m */; };
-		F222A45F1F0B44D000E70ADA /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = F222A3FD1F0B44D000E70ADA /* .gitkeep */; };
 		F222A4601F0B44D000E70ADA /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = F222A3FF1F0B44D000E70ADA /* .gitkeep */; };
 		F222A4611F0B44D000E70ADA /* LOTAnimatableLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F222A4021F0B44D000E70ADA /* LOTAnimatableLayer.m */; };
 		F222A4621F0B44D000E70ADA /* LOTCompositionLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F222A4041F0B44D000E70ADA /* LOTCompositionLayer.m */; };
@@ -300,8 +298,6 @@
 		388A85D21EE40D5700A0BC5B /* BAHttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAHttpTool.m; sourceTree = "<group>"; };
 		388A85D71EE4108C00A0BC5B /* BABulletModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletModel.h; sourceTree = "<group>"; };
 		388A85D81EE4108C00A0BC5B /* BABulletModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletModel.m; sourceTree = "<group>"; };
-		388A85DF1EE4108C00A0BC5B /* BABulletCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletCycle.h; sourceTree = "<group>"; };
-		388A85E01EE4108C00A0BC5B /* BABulletCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletCycle.m; sourceTree = "<group>"; };
 		388A85E21EE4108C00A0BC5B /* BABulletListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletListView.h; sourceTree = "<group>"; };
 		388A85E31EE4108C00A0BC5B /* BABulletListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletListView.m; sourceTree = "<group>"; };
 		388A85EA1EE4163200A0BC5B /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
@@ -527,6 +523,10 @@
 		38D775DD1F24F284005371D4 /* BAUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAUserModel.m; sourceTree = "<group>"; };
 		38D775DE1F24F284005371D4 /* BAWordsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAWordsModel.h; sourceTree = "<group>"; };
 		38D775DF1F24F284005371D4 /* BAWordsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAWordsModel.m; sourceTree = "<group>"; };
+		38DA28F81F354EAA00CD25B6 /* BABulletSliderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletSliderView.h; sourceTree = "<group>"; };
+		38DA28F91F354EAA00CD25B6 /* BABulletSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletSliderView.m; sourceTree = "<group>"; };
+		38DA28FB1F35638D00CD25B6 /* BASentenceRateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceRateCell.h; sourceTree = "<group>"; };
+		38DA28FC1F35638D00CD25B6 /* BASentenceRateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceRateCell.m; sourceTree = "<group>"; };
 		F21BD41B1EE7F6DE0079312C /* BAReportView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAReportView.h; sourceTree = "<group>"; };
 		F21BD41C1EE7F6DE0079312C /* BAReportView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAReportView.m; sourceTree = "<group>"; };
 		F21BD41E1EE7F7200079312C /* BAReportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAReportCell.h; sourceTree = "<group>"; };
@@ -550,8 +550,6 @@
 		F21BD43A1EE91E320079312C /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		F21BD43E1EEF77490079312C /* BABulletViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletViewController.h; sourceTree = "<group>"; };
 		F21BD43F1EEF77490079312C /* BABulletViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletViewController.m; sourceTree = "<group>"; };
-		F21BD4461EEF7B080079312C /* BAScrollIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAScrollIndicator.h; sourceTree = "<group>"; };
-		F21BD4471EEF7B080079312C /* BAScrollIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAScrollIndicator.m; sourceTree = "<group>"; };
 		F21BD4491EEF7D150079312C /* BABulletListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletListCell.h; sourceTree = "<group>"; };
 		F21BD44A1EEF7D150079312C /* BABulletListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletListCell.m; sourceTree = "<group>"; };
 		F222A3FD1F0B44D000E70ADA /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
@@ -918,20 +916,9 @@
 			children = (
 				38B316701EFDF484003C70AA /* SentenceView(语义列表) */,
 				F21BD44C1EEFC7AB0079312C /* BulletController(弹幕控制) */,
-				F21BD4451EEF7AFA0079312C /* ScrollIndicator(页数指示器) */,
-				388A85DE1EE4108C00A0BC5B /* BulletCycle */,
 				388A85E11EE4108C00A0BC5B /* BulletList(弹幕列表) */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		388A85DE1EE4108C00A0BC5B /* BulletCycle */ = {
-			isa = PBXGroup;
-			children = (
-				388A85DF1EE4108C00A0BC5B /* BABulletCycle.h */,
-				388A85E01EE4108C00A0BC5B /* BABulletCycle.m */,
-			);
-			path = BulletCycle;
 			sourceTree = "<group>";
 		};
 		388A85E11EE4108C00A0BC5B /* BulletList(弹幕列表) */ = {
@@ -1503,6 +1490,8 @@
 			children = (
 				38B316711EFDF4A8003C70AA /* BASentenceView.h */,
 				38B316721EFDF4A8003C70AA /* BASentenceView.m */,
+				38DA28FB1F35638D00CD25B6 /* BASentenceRateCell.h */,
+				38DA28FC1F35638D00CD25B6 /* BASentenceRateCell.m */,
 			);
 			name = "SentenceView(语义列表)";
 			path = SentenceView;
@@ -1675,16 +1664,6 @@
 			path = FMDB;
 			sourceTree = "<group>";
 		};
-		F21BD4451EEF7AFA0079312C /* ScrollIndicator(页数指示器) */ = {
-			isa = PBXGroup;
-			children = (
-				F21BD4461EEF7B080079312C /* BAScrollIndicator.h */,
-				F21BD4471EEF7B080079312C /* BAScrollIndicator.m */,
-			);
-			name = "ScrollIndicator(页数指示器)";
-			path = ScrollIndicator;
-			sourceTree = "<group>";
-		};
 		F21BD44C1EEFC7AB0079312C /* BulletController(弹幕控制) */ = {
 			isa = PBXGroup;
 			children = (
@@ -1694,6 +1673,8 @@
 				F2382DFE1EF27D3300BE5446 /* BABulletSetting.m */,
 				3894FDE31EF2BD180013A4E0 /* BASlider.h */,
 				3894FDE41EF2BD180013A4E0 /* BASlider.m */,
+				38DA28F81F354EAA00CD25B6 /* BABulletSliderView.h */,
+				38DA28F91F354EAA00CD25B6 /* BABulletSliderView.m */,
 			);
 			name = "BulletController(弹幕控制)";
 			path = BulletController;
@@ -2123,14 +2104,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				38A5A0DB1EE2AA6800CFF645 /* Info.plist in Resources */,
-				388AFF941EE042700031DE53 /* Info.plist in Resources */,
 				388A863B1EE43EA400A0BC5B /* Info.plist in Resources */,
 				388AFF8F1EE042100031DE53 /* Assets.xcassets in Resources */,
 				388AFFE21EE045F90031DE53 /* Info.plist in Resources */,
 				F222A4911F0B673400E70ADA /* servishero_loading.json in Resources */,
 				38B54CDB1EEA94720092C76B /* iosjieba.bundle in Resources */,
 				388AFFDF1EE045F90031DE53 /* Documentation.html in Resources */,
-				F222A45F1F0B44D000E70ADA /* .gitkeep in Resources */,
 				388AFFEB1EE045F90031DE53 /* README.txt in Resources */,
 				F222A4931F0B680F00E70ADA /* empty_status.json in Resources */,
 				F21BD4391EE91DFD0079312C /* Info.plist in Resources */,
@@ -2188,6 +2167,7 @@
 				388A86C51EE4424600A0BC5B /* NSBundle+MJRefresh.m in Sources */,
 				F222A4651F0B44D000E70ADA /* LOTLayerView.m in Sources */,
 				F21BD4201EE7F7200079312C /* BAReportCell.m in Sources */,
+				38DA28FD1F35638D00CD25B6 /* BASentenceRateCell.m in Sources */,
 				387020461F2242490047B94B /* BACountChart.m in Sources */,
 				F21BD41D1EE7F6DE0079312C /* BAReportView.m in Sources */,
 				388A86C01EE4424600A0BC5B /* MJRefreshGifHeader.m in Sources */,
@@ -2236,7 +2216,6 @@
 				F231C7B11EE509F700EB0F79 /* SDWebImageDownloader.m in Sources */,
 				388A86C81EE4424600A0BC5B /* UIView+MJExtension.m in Sources */,
 				F231C7B81EE509F700EB0F79 /* UIImage+WebP.m in Sources */,
-				F21BD4481EEF7B080079312C /* BAScrollIndicator.m in Sources */,
 				388A86451EE43EA400A0BC5B /* ViewController+MASAdditions.m in Sources */,
 				F21BD4381EE91DFD0079312C /* FMResultSet.m in Sources */,
 				388AFFE91EE045F90031DE53 /* DDDispatchQueueLogFormatter.m in Sources */,
@@ -2298,6 +2277,7 @@
 				F222A4681F0B44D000E70ADA /* LOTShapeLayerView.m in Sources */,
 				F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */,
 				388A860A1EE419D000A0BC5B /* UIBarButtonItem+ZJExtension.m in Sources */,
+				38DA28FA1F354EAA00CD25B6 /* BABulletSliderView.m in Sources */,
 				388A86B81EE4424600A0BC5B /* MJRefreshFooter.m in Sources */,
 				F25F91051F34177B00FBFE87 /* BABulletListGiftCell.m in Sources */,
 				F231C7AF1EE509F700EB0F79 /* SDWebImageCompat.m in Sources */,
@@ -2347,7 +2327,6 @@
 				38A5A0C01EE2615A00CFF645 /* NSData+HexExtension.m in Sources */,
 				F21BD4401EEF77490079312C /* BABulletViewController.m in Sources */,
 				388A863C1EE43EA400A0BC5B /* MASCompositeConstraint.m in Sources */,
-				388A85E71EE4108C00A0BC5B /* BABulletCycle.m in Sources */,
 				388AFFE31EE045F90031DE53 /* DDAbstractDatabaseLogger.m in Sources */,
 				F222A4841F0B44D000E70ADA /* LOTShapeStroke.m in Sources */,
 				F231C7B41EE509F700EB0F79 /* SDWebImagePrefetcher.m in Sources */,

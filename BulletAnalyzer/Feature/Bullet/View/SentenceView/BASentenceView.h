@@ -8,13 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class BAReportModel;
-
-@interface BASentenceView : UIView
+@interface BASentenceView : UITableView
 
 /**
- 传入报告
+ 传入数据
  */
-@property (nonatomic, strong) BAReportModel *reportModel;
+@property (nonatomic, strong) NSMutableArray *statusArray;
 
 @end

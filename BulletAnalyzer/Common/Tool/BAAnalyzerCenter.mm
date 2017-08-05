@@ -270,7 +270,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             //根据上面的数据计算在线人数, 粉丝数量绘图坐标数组
             [_onlineTimePointArray removeAllObjects];
             [_fansTimePointArray removeAllObjects];
-            [_countTimeArray enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [_countTimeArray.copy enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 
                 CGPoint point1 = CGPointMake(BAReportFansChartPartWidth * (CGFloat)idx / (_countTimeArray.count - 1), BAReportFansChartPartHeight * (1 - ((CGFloat)(obj.online.integerValue - _analyzingReportModel.minOnlineCount) / (_analyzingReportModel.maxOnlineCount - _analyzingReportModel.minOnlineCount))));
                 [_onlineTimePointArray addObject:[NSValue valueWithCGPoint:point1]];
@@ -297,6 +297,15 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 }
 
 
+/**
+ 异步任务
+ */
+- (void)dispatch_block:(dispatch_block_t)block{
+    
+    dispatch_async(self.analyzingQueue, block);
+}
+
+
 #pragma mark - giftAnalyzer
 /**
  获取到礼物
@@ -317,8 +326,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 - (void)giftClassify:(NSArray *)giftModelArray{
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
-
-    dispatch_async(self.analyzingQueue, ^{
+    
+    [self dispatch_block:^{
+        
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         
         [giftModelArray enumerateObjectsUsingBlock:^(BAGiftModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -391,7 +401,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             }
         }];
         dispatch_semaphore_signal(semaphore);
-    });
+    }];
 }
 
 
@@ -402,7 +412,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
     //送鱼丸次数
     __block BOOL contained = NO;
-    [_userFishBallCountArray.copy enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+    NSArray *userFishBallCountArray = [NSArray arrayWithArray:_userFishBallCountArray];
+    [userFishBallCountArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop3) {
         
         contained = [fishBall isEqual:userModel];
         if (contained) {
@@ -422,11 +433,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)dealWithGift:(BAGiftModel *)giftModel giftValue:(BAGiftValueModel *)giftValue{
     
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    
     __block BOOL contained = NO;
-    [giftValue.userModelArray.copy enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+    NSArray *userModelArrayTemp = [NSArray arrayWithArray:giftValue.userModelArray];
+    [userModelArrayTemp enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop3) {
         
         contained = [giftModel isEqual:userModel];
         if (contained) {
@@ -438,7 +447,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         BAUserModel *newUserModel = [BAUserModel userModelWithGift:giftModel];
         [giftValue.userModelArray addObject:newUserModel];
     }
-    dispatch_semaphore_signal(semaphore);
 }
 
 
@@ -471,21 +479,19 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)bulletClassify:(NSArray *)bulletsArray{
     
-    dispatch_async(self.analyzingQueue, ^{
-        [bulletsArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop1) {
-            
-            if (!_analyzingReportModel.roomId.length) {
-                _analyzingReportModel.roomId = bulletModel.rid;
-                [self getRoomInfo];
-            }
-            
-            //分析单词及语义
-            [self analyzingWords:bulletModel];
-            
-            //分析发送人
-            [self analyzingUser:bulletModel];
-        }];
-    });
+    [bulletsArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop1) {
+        
+        if (!_analyzingReportModel.roomId.length) {
+            _analyzingReportModel.roomId = bulletModel.rid;
+            [self getRoomInfo];
+        }
+        
+        //分析单词及语义
+        [self analyzingWords:bulletModel];
+        
+        //分析发送人
+        [self analyzingUser:bulletModel];
+    }];
 }
 
 
@@ -494,48 +500,49 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)analyzingWords:(BABulletModel *)bulletModel{
     
-    //结巴分词
-    NSArray *wordsArray = [self stringCutByJieba:bulletModel.txt];
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
     
-    //词频计算
-    [self caculateWords:wordsArray bullet:bulletModel];
-    
-    //语义分析
-    //忽略纯数字
-    if ([self isSentenceIgnore:bulletModel.txt]) return;
-    
-    //构造一个句子对象
-    BASentenceModel *newSentence = [BASentenceModel sentenceWithText:bulletModel.txt words:wordsArray.copy];
-    
-    //将句子与之前每一个句子进行对比
-    __block BOOL similar = NO;
-    [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *sentence, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self dispatch_block:^{
         
-        CGFloat percent = [self similarityPercentWithSentenceA:sentence sentenceB:newSentence];
+        //结巴分词
+        NSArray *wordsArray = [self stringCutByJieba:bulletModel.txt];
         
-        //测试
-        //CGFloat percent2 = [self similarPercentWithStringA:bulletModel.txt andStringB:sentence.text];
-//        if (percent > 0.7) {
-//            NSLog(@"\n*******************\n%@\n%@\n近似度余弦法:%f\n*******************", bulletModel.txt, sentence.text, percent);
-//        }
+        //词频计算
+        [self caculateWords:wordsArray bullet:bulletModel];
         
-        if (percent > self.similarity) { //7成相似 则合并
-            *stop = YES;
-            similar = YES;
-            sentence.count += 1;
-            sentence.realCount += 1;
+        //语义分析
+        //忽略纯数字
+        if ([self isSentenceIgnore:bulletModel.txt]) return;
+        
+        //构造一个句子对象
+        BASentenceModel *newSentence = [BASentenceModel sentenceWithText:bulletModel.txt words:wordsArray.copy];
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        
+        //将句子与之前每一个句子进行对比
+        __block BOOL similar = NO;
+        NSArray *sentenceArrayTemp = [NSArray arrayWithArray:_sentenceArray];
+        [sentenceArrayTemp enumerateObjectsUsingBlock:^(BASentenceModel *sentence, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            CGFloat percent = [self similarityPercentWithSentenceA:sentence sentenceB:newSentence];
+            
+            if (percent > self.similarity) { //7成相似 则合并
+                *stop = YES;
+                similar = YES;
+                sentence.count += 1;
+                sentence.realCount += 1;
+            }
+        }];
+        
+        //若没有相似度高的句子则添加容器 并新增
+        if (!similar) {
+            newSentence.container = _sentenceArray;
+            [_sentenceArray addObject:newSentence];
+            [_popSentenceArray addObject:newSentence];
         }
+        
+        dispatch_semaphore_signal(semaphore);
     }];
-    
-    //若没有相似度高的句子则添加容器 并新增
-    if (!similar) {
-        newSentence.container = _sentenceArray;
-        [_sentenceArray addObject:newSentence];
-        [_popSentenceArray addObject:newSentence];
-    }
-    //NSArray *countTotal = [_sentenceArray valueForKeyPath:@"@unionOfObjects.count"];
-    //NSNumber *sumCount = [countTotal valueForKeyPath:@"@sum.integerValue"];
-    //NSLog(@"_bulletsArray:%zd--_sentenceArray:%zd--_sentence:%@", _bulletsArray.count, _sentenceArray.count, sumCount);
 }
 
 
@@ -543,35 +550,43 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  词频分析
  */
 - (void)caculateWords:(NSArray *)wordsArray bullet:(BABulletModel *)bulletModel{
-    //词频分析
-    [wordsArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop2) {
+    
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
+    
+    [self dispatch_block:^{
         
-        if (![self isIgnore:words]) { //筛选
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+      
+        NSArray *wordsArrayTemp = [NSArray arrayWithArray:_wordsArray];
+        //词频分析
+        [wordsArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop2) {
             
-            dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-            //记录词的出现频率
-            __block BOOL contained = NO;
-            [_wordsArray.copy enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+            if (![self isIgnore:words]) { //筛选
                 
-                contained = [wordsModel isEqual:words];
-                if (contained) {
-                    *stop3 = YES;
-                    wordsModel.count = BAStringWithInteger(wordsModel.count.integerValue + 1);
-                    [wordsModel.bulletArray addObject:bulletModel];
+                //记录词的出现频率
+                __block BOOL contained = NO;
+                [wordsArrayTemp enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+                    
+                    contained = [wordsModel isEqual:words];
+                    if (contained) {
+                        *stop3 = YES;
+                        wordsModel.count = BAStringWithInteger(wordsModel.count.integerValue + 1);
+                        [wordsModel.bulletArray addObject:bulletModel];
+                    }
+                }];
+                if (!contained) {
+                    BAWordsModel *newWordsModel = [BAWordsModel new];
+                    newWordsModel.words = words;
+                    newWordsModel.count = BAStringWithInteger(1);
+                    newWordsModel.bulletArray = [NSMutableArray array];
+                    [newWordsModel.bulletArray addObject:bulletModel];
+                    
+                    [_wordsArray addObject:newWordsModel];
                 }
-            }];
-            if (!contained) {
-                BAWordsModel *newWordsModel = [BAWordsModel new];
-                newWordsModel.words = words;
-                newWordsModel.count = BAStringWithInteger(1);
-                newWordsModel.bulletArray = [NSMutableArray array];
-                [newWordsModel.bulletArray addObject:bulletModel];
-                
-                [_wordsArray addObject:newWordsModel];
             }
-            dispatch_semaphore_signal(semaphore);
-        }
+        }];
+        
+        dispatch_semaphore_signal(semaphore);
     }];
 }
 
@@ -700,77 +715,86 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 - (void)analyzingUser:(BABulletModel *)bulletModel{
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
-    //记录用户发言次数
-    __block BOOL contained1 = NO;
-    [_userBulletCountArray.copy enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self dispatch_block:^{
         
-        contained1 = [bulletModel.uid isEqualToString:userModel.uid];
-        if (contained1) {
-            *stop = YES;
-            userModel.count = BAStringWithInteger(userModel.count.integerValue + 1);
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        
+        //记录用户发言次数
+        __block BOOL contained1 = NO;
+        NSArray *userBulletCountArrayTemp = [NSArray arrayWithArray:_userBulletCountArray];
+        [userBulletCountArrayTemp enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            contained1 = [bulletModel.uid isEqualToString:userModel.uid];
+            if (contained1) {
+                *stop = YES;
+                userModel.count = BAStringWithInteger(userModel.count.integerValue + 1);
+                [userModel.bulletArray addObject:bulletModel];
+            }
+        }];
+        
+        if (!contained1) {
+            BAUserModel *userModel = [BAUserModel userModelWithBullet:bulletModel];
             [userModel.bulletArray addObject:bulletModel];
+            
+            [_userBulletCountArray addObject:userModel];
         }
-    }];
-    
-    if (!contained1) {
-        BAUserModel *userModel = [BAUserModel userModelWithBullet:bulletModel];
-        [userModel.bulletArray addObject:bulletModel];
         
-        [_userBulletCountArray addObject:userModel];
-    }
-    
-    //记录用户发言(鱼丸)
-    [_userFishBallCountArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        BOOL contained = [bulletModel.uid isEqualToString:userModel.uid];
-        if (contained) {
-            *stop = YES;
-            [userModel.bulletArray addObject:bulletModel];
-        } else {
-            *stop = idx == 49;
-        }
-    }];
-    
-    //记录用户发言(礼物)
-    [_giftValueArray enumerateObjectsUsingBlock:^(BAGiftValueModel *giftValueModel, NSUInteger idx1, BOOL * _Nonnull stop1) {
-        [giftValueModel.userModelArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx2, BOOL * _Nonnull stop2) {
+        //记录用户发言(鱼丸)
+        NSArray *userFishBallCountArrayTemp = [NSArray arrayWithArray:_userBulletCountArray];
+        [userFishBallCountArrayTemp enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
             
             BOOL contained = [bulletModel.uid isEqualToString:userModel.uid];
             if (contained) {
-                *stop2 = YES;
+                *stop = YES;
                 [userModel.bulletArray addObject:bulletModel];
             } else {
-                *stop2 = idx2 == 49;
+                *stop = idx == 49;
             }
         }];
+        
+        //记录用户发言(礼物)
+        NSArray *giftValueArrayTemp = [NSArray arrayWithArray:_giftValueArray];
+        [giftValueArrayTemp enumerateObjectsUsingBlock:^(BAGiftValueModel *giftValueModel, NSUInteger idx1, BOOL * _Nonnull stop1) {
+            
+            NSArray *userModelArrayTemp = [NSArray arrayWithArray:giftValueModel.userModelArray];
+            [userModelArrayTemp enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx2, BOOL * _Nonnull stop2) {
+                
+                BOOL contained = [bulletModel.uid isEqualToString:userModel.uid];
+                if (contained) {
+                    *stop2 = YES;
+                    [userModel.bulletArray addObject:bulletModel];
+                } else {
+                    *stop2 = idx2 == 49;
+                }
+            }];
+        }];
+        
+        //记录用户等级分布
+        if (bulletModel.level.integerValue <= 5) {
+            _levelCountArray[0] = @([_levelCountArray[0] integerValue] + 1);
+        } else if (bulletModel.level.integerValue <= 10) {
+            _levelCountArray[1] = @([_levelCountArray[1] integerValue] + 1);
+        } else if (bulletModel.level.integerValue <= 15) {
+            _levelCountArray[2] = @([_levelCountArray[2] integerValue] + 1);
+        } else if (bulletModel.level.integerValue <= 20) {
+            _levelCountArray[3] = @([_levelCountArray[3] integerValue] + 1);
+        } else if (bulletModel.level.integerValue <= 25) {
+            _levelCountArray[4] = @([_levelCountArray[4] integerValue] + 1);
+        } else if (bulletModel.level.integerValue <= 30) {
+            _levelCountArray[5] = @([_levelCountArray[5] integerValue] + 1);
+        } else if (bulletModel.level.integerValue <= 35) {
+            _levelCountArray[6] = @([_levelCountArray[6] integerValue] + 1);
+        } else {
+            _levelCountArray[7] = @([_levelCountArray[7] integerValue] + 1);
+        }
+        
+        //计算总等级以及总用户量, 用以计算平均等级
+        _analyzingReportModel.levelSum += bulletModel.level.integerValue;
+        _analyzingReportModel.levelCount += 1;
+        
+        dispatch_semaphore_signal(semaphore);
     }];
-    
-    dispatch_semaphore_signal(semaphore);
-    
-    //记录用户等级分布
-    if (bulletModel.level.integerValue <= 5) {
-        _levelCountArray[0] = @([_levelCountArray[0] integerValue] + 1);
-    } else if (bulletModel.level.integerValue <= 10) {
-        _levelCountArray[1] = @([_levelCountArray[1] integerValue] + 1);
-    } else if (bulletModel.level.integerValue <= 15) {
-        _levelCountArray[2] = @([_levelCountArray[2] integerValue] + 1);
-    } else if (bulletModel.level.integerValue <= 20) {
-        _levelCountArray[3] = @([_levelCountArray[3] integerValue] + 1);
-    } else if (bulletModel.level.integerValue <= 25) {
-        _levelCountArray[4] = @([_levelCountArray[4] integerValue] + 1);
-    } else if (bulletModel.level.integerValue <= 30) {
-        _levelCountArray[5] = @([_levelCountArray[5] integerValue] + 1);
-    } else if (bulletModel.level.integerValue <= 35) {
-        _levelCountArray[6] = @([_levelCountArray[6] integerValue] + 1);
-    } else {
-        _levelCountArray[7] = @([_levelCountArray[7] integerValue] + 1);
-    }
-    
-    //计算总等级以及总用户量, 用以计算平均等级
-    _analyzingReportModel.levelSum += bulletModel.level.integerValue;
-    _analyzingReportModel.levelCount += 1;
 }
 
 
@@ -781,7 +805,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     //计算等级分布图的坐标
     NSMutableArray *tempCountPointArray = [NSMutableArray array];
     NSInteger maxLevelCount = [[_levelCountArray valueForKeyPath:@"@max.integerValue"] integerValue];
-    [_levelCountArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSArray *levelCountArrayTemp = [NSArray arrayWithArray:_levelCountArray];
+    [levelCountArrayTemp enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         CGPoint point = CGPointMake(BAReportFansChartPartWidth * (CGFloat)idx / (_levelCountArray.count - 1), BAReportFansChartPartHeight * (1 - ((CGFloat)obj.integerValue / maxLevelCount)));
         [tempCountPointArray addObject:[NSValue valueWithCGPoint:point]];
@@ -801,10 +826,13 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 - (void)sortData{
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
+    
+    
     _timeRepeatCount += 1;
-    dispatch_async(self.analyzingQueue, ^{
+    [self dispatch_block:^{
        
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        
         //根据用户发言的次数排序
         NSInteger params = 5;
         if ((CGFloat)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //5秒处理一次用户/用户等级/句子/鱼丸/其他礼物
@@ -821,19 +849,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             //去掉排序400之后的词
             if (_wordsArray.count > 700) {
                 [_wordsArray removeObjectsInRange:NSMakeRange(400, _wordsArray.count - 400)];
-            }
-            
-            //句子数量全部减一
-            [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                [obj decrease];
-            }];
-            
-            //说的多的句子排名 保留30个
-            [_popSentenceArray sortUsingComparator:^NSComparisonResult(BASentenceModel *obj1, BASentenceModel *obj2) {
-                return obj1.realCount > obj2.realCount ? NSOrderedAscending : NSOrderedDescending;
-            }];
-            if (_popSentenceArray.count > 50) {
-                [_popSentenceArray removeObjectsInRange:NSMakeRange(30, _popSentenceArray.count - 30)];
             }
             
             //赠送鱼丸排序
@@ -859,7 +874,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         }
         
         //根据用户发言的次数排序
-        params = 20;
+        params = 10;
         if ((CGFloat)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //20秒处理一次用户/用户等级
             
             [_userBulletCountArray sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
@@ -872,9 +887,26 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             if (_userBulletCountArray.count > 200) {
                 [_userBulletCountArray removeObjectsInRange:NSMakeRange(100, _userBulletCountArray.count - 100)];
             }
+            
+            //句子数量全部减一
+            [_sentenceArray sortUsingComparator:^NSComparisonResult(BASentenceModel *obj1, BASentenceModel *obj2) {
+                return obj1.count > obj2.count ? NSOrderedAscending : NSOrderedDescending;
+            }];
+            
+            [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [obj decrease];
+            }];
+            
+            //说的多的句子排名 保留30个
+            [_popSentenceArray sortUsingComparator:^NSComparisonResult(BASentenceModel *obj1, BASentenceModel *obj2) {
+                return obj1.realCount > obj2.realCount ? NSOrderedAscending : NSOrderedDescending;
+            }];
+            if (_popSentenceArray.count > 50) {
+                [_popSentenceArray removeObjectsInRange:NSMakeRange(30, _popSentenceArray.count - 30)];
+            }
         }
         
-        params = 30;
+        params = 20;
         if ((CGFloat)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //30秒处理弹幕数量 以及当前观看人数 主播体重 等级分布
             
             //新建弹幕信息与时间关系的模型
@@ -894,7 +926,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             //计算弹幕数量与时间的坐标
             
             [_countTimePointArray removeAllObjects];
-            [_countTimeArray enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSArray *countTimeArrayTemp = [NSArray arrayWithArray:_countTimeArray];
+            [countTimeArrayTemp enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 
                 CGPoint point = CGPointMake(BAReportCountChartWidth * (CGFloat)idx / (_countTimeArray.count - 1), BAReportCountChartHeight * (1 - ((CGFloat)obj.count.integerValue / _analyzingReportModel.maxBulletCount)));
                 [_countTimePointArray addObject:[NSValue valueWithCGPoint:point]];
@@ -904,7 +937,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         }
         
         dispatch_semaphore_signal(semaphore);
-    });
+    }];
 }
 
 
@@ -1102,7 +1135,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 [tempArray addObject:obj]; //遍历 获取这个用户被标记次数
             }
         }];
-        
         
         [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
             BOOL open = [db open];

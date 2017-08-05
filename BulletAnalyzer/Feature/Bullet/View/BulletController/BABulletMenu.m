@@ -33,7 +33,35 @@
 
 #pragma mark - public
 - (void)close{
-    [self btnClicked:_middleBtn];
+    [UIView animateWithDuration:0.3 animations:^{
+        _addImgView.transform = CGAffineTransformIdentity;
+    }];
+}
+
+
+- (void)open{
+    [UIView animateWithDuration:0.3 animations:^{
+        _addImgView.transform = CGAffineTransformMakeRotation(M_PI / 4);
+    }];
+}
+
+
+- (void)shadowHide{
+    [UIView animateWithDuration:0.3 animations:^{
+        _shadowImgView.alpha = 0;
+    }];
+}
+
+
+- (void)shadowShow{
+    [UIView animateWithDuration:0.3 animations:^{
+        _shadowImgView.alpha = 1;
+    }];
+}
+
+
+- (BOOL)isOpened{
+    return CGAffineTransformEqualToTransform(_addImgView.transform, CGAffineTransformMakeRotation(M_PI / 4));
 }
 
 
@@ -52,10 +80,6 @@
             
         case 1: {
             _middleBtnClicked();
-            [UIView animateWithDuration:0.3 animations:^{
-                _addImgView.transform = CGAffineTransformEqualToTransform(_addImgView.transform, CGAffineTransformIdentity) ? CGAffineTransformMakeRotation(M_PI / 4) : CGAffineTransformIdentity;
-            }];
-        
             break;
         }
         case 2:

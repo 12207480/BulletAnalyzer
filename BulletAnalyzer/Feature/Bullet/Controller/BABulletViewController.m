@@ -12,6 +12,8 @@
 #import "BAReportViewController.h"
 #import "BABulletMenu.h"
 #import "BABulletSetting.h"
+#import "BABulletSliderView.h"
+#import "BASentenceView.h"
 #import "BAReportModel.h"
 #import "BAAnalyzerCenter.h"
 #import "BASocketTool.h"
@@ -21,23 +23,29 @@
 
 @interface BABulletViewController () <UIScrollViewDelegate>
 //弹幕列表
-@property (nonatomic, strong) BABulletListView *bulletListView;
-@property (nonatomic, strong) BABulletMenu *bulletMenu;
-@property (nonatomic, strong) BABulletSetting *bulletSetting;
-@property (nonatomic, strong) NSTimer *hideTimer;
-@property (nonatomic, assign) CGFloat repeatDuration;
+@property (nonatomic, strong) BABulletListView *bulletListView; //弹幕列表
+@property (nonatomic, strong) BABulletMenu *bulletMenu;    //底部按钮
+@property (nonatomic, strong) BABulletSetting *bulletSetting;  //弹出的三个按钮
+@property (nonatomic, strong) BABulletSliderView *bulletSliderView; //弹幕速度滑块
+@property (nonatomic, strong) BASentenceView *sentenceView; //相似弹幕
+@property (nonatomic, strong) UIView *settingMask; //遮盖
+@property (nonatomic, strong) NSTimer *hideTimer; //隐藏倒计时
+@property (nonatomic, assign) CGFloat repeatDuration; //倒计时时间
+@property (nonatomic, assign, getter=isMidBtnClose) BOOL midBtnClose; //中间按钮 NO表示回证 YES保持不回正
 
 //控制速度
 @property (nonatomic, strong) NSTimer *timer; //抓取弹幕
 @property (nonatomic, assign) CGFloat getSpeed; //0-1之间 频率
-@property (nonatomic, assign) CGFloat getDuration;
-@property (nonatomic, assign) NSInteger getCount;
+@property (nonatomic, assign) CGFloat getDuration; //抓取间隔
+@property (nonatomic, assign) NSInteger getCount; //抓取数量
 
-//等级筛选
-@property (nonatomic, assign) NSInteger level;
 
-//移动端/web端 0都看, 1只看移动端, 2只看web端
-@property (nonatomic, assign) NSInteger source;
+/*以下功能未实现*/
+////等级筛选
+//@property (nonatomic, assign) NSInteger level;
+//
+////移动端/web端 0都看, 1只看移动端, 2只看web端
+//@property (nonatomic, assign) NSInteger source;
 
 @end
 
@@ -49,18 +57,19 @@
     
     [self setupBulletListView];
     
-    [self setupBulletConroller];
+    [self setupBulletMenu];
+    
+    [self setupBulletSetting];
+    
+    [self setupBulletSlider];
+    
+    [self setupSentenceView];
     
     [self setupNavigationBar];
     
     [self addNotificationObserver];
     
     self.getSpeed = 0.5;
-}
-
-
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
     
     [self larger];
 }
@@ -73,15 +82,29 @@
 
 #pragma mark - animation
 - (void)smaller{
+    
+    //底部按钮旋转正
+    if (!_midBtnClose) {
+        [_bulletMenu close];
+        
+        //弹幕列表尺寸变化
+        [UIView animateWithDuration:0.3 animations:^{
+            _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69);
+        } completion:nil];
+    }
+  
+    //收回三个圆形按钮
+    if (self.bulletSetting.isAlreadyShow) {
+        [self.bulletSetting hide];
+        self.settingMask.hidden = YES;
+    }
+
+    //收起导航栏
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    //关闭定时器
     [_hideTimer invalidate];
     _hideTimer = nil;
-    [_bulletMenu close];
-    [UIView animateWithDuration:0.3 animations:^{
-        _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69);
-    } completion:nil];
-    
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-
 }
 
 
@@ -94,9 +117,62 @@
 }
 
 
+- (void)sliderShow{
+    _bulletSliderView.transform = CGAffineTransformMakeTranslation(0, _bulletSliderView.height + _bulletMenu.height);
+    _bulletSliderView.hidden = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        _bulletSliderView.transform = CGAffineTransformIdentity;
+        _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69 - _bulletSliderView.height);
+    } completion:^(BOOL finished) {
+        [_bulletMenu shadowHide];
+    }];
+}
+
+
+- (void)sliderHide{
+    _bulletSliderView.transform = CGAffineTransformIdentity;
+    [UIView animateWithDuration:0.3 animations:^{
+        _bulletSliderView.transform = CGAffineTransformMakeTranslation(0, _bulletSliderView.height + _bulletMenu.height);
+        _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69);
+    } completion:^(BOOL finished) {
+        [_bulletMenu shadowShow];
+        _bulletSliderView.hidden = YES;
+    }];
+}
+
+
+- (void)sentenceShow{
+    _sentenceView.transform = CGAffineTransformMakeTranslation(0, _sentenceView.height + _bulletMenu.height);
+    _sentenceView.hidden = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        _sentenceView.transform = CGAffineTransformIdentity;
+        _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69 - _sentenceView.height);
+    } completion:^(BOOL finished) {
+        [_bulletMenu shadowHide];
+    }];
+}
+
+
+- (void)sentenceHide{
+    _sentenceView.transform = CGAffineTransformIdentity;
+    [UIView animateWithDuration:0.3 animations:^{
+        _sentenceView.transform = CGAffineTransformMakeTranslation(0, _sentenceView.height + _bulletMenu.height);
+        _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69);
+    } completion:^(BOOL finished) {
+        [_bulletMenu shadowShow];
+        _sentenceView.hidden = YES;
+    }];
+}
+
+
 #pragma mark - userInteraction
 - (void)backBtnClicked{
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)filterTypeBtnClicked{
+
 }
 
 
@@ -105,7 +181,7 @@
     [_hideTimer invalidate];
     _hideTimer = nil;
     
-    _repeatDuration = 8.f;
+    _repeatDuration = 3.f;
     _hideTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatDuration target:self selector:@selector(smaller) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_hideTimer forMode:NSRunLoopCommonModes];
 }
@@ -123,27 +199,51 @@
 }
 
 
-- (void)setupBulletConroller{
+- (void)setupBulletMenu{
     WeakObj(self);
     _bulletMenu = [[BABulletMenu alloc] initWithFrame:CGRectMake(0, BAScreenHeight - BABulletMenuHeight, BAScreenWidth, BABulletMenuHeight)];
     _bulletMenu.menuTouched = ^{
        
-        [selfWeak larger];
+        if (!selfWeak.midBtnClose) {
+            [selfWeak larger];
+        }
     };
     _bulletMenu.middleBtnClicked = ^{
         
+        if (selfWeak.midBtnClose) {
+            
+            if (!selfWeak.bulletSliderView.isHidden) {
+        
+                [selfWeak sliderHide];
+            } else {
+                
+                [selfWeak sentenceHide];
+            }
+            
+            [selfWeak.bulletMenu close];
+            selfWeak.midBtnClose = NO;
+            return;
+        }
         [selfWeak larger];
+        if (selfWeak.bulletMenu.isOpened) {
+            [selfWeak.bulletMenu close];
+        } else {
+            [selfWeak.bulletMenu open];
+        }
         
         if (selfWeak.bulletSetting.isAlreadyShow) {
             [selfWeak.bulletSetting hide];
+            selfWeak.settingMask.hidden = YES;
         } else {
             [selfWeak.bulletSetting show];
+            selfWeak.settingMask.hidden = NO;
         }
     };
     _bulletMenu.leftBtnClicked = ^{
         
-        [selfWeak larger];
-        
+        if (!selfWeak.midBtnClose) {
+            [selfWeak larger];
+        }
         CGFloat duration = [[NSDate date] minutesAfterDate:selfWeak.reportModel.begin];
         
         NSString *message = @"断开后将自动保存分析报告";
@@ -167,8 +267,9 @@
     };
     _bulletMenu.rightBtnClicked = ^{
         
-        [selfWeak larger];
-        
+        if (!selfWeak.midBtnClose) {
+            [selfWeak larger];
+        }
         CGFloat duration = [[NSDate date] minutesAfterDate:selfWeak.reportModel.begin];
         
         if (duration < 3) {
@@ -184,27 +285,73 @@
     };
 
     [self.view addSubview:_bulletMenu];
+}
 
+
+- (void)setupBulletSetting{
+    
+    WeakObj(self);
     _bulletSetting = [[BABulletSetting alloc] initWithFrame:CGRectMake(0, BAScreenHeight - BABulletMenuHeight - BABulletSettingHeight, BAScreenWidth, BABulletSettingHeight)];
     _bulletSetting.hidden = YES;
-    _bulletSetting.settingTouched = ^{
+    _bulletSetting.leftBtnClicked = ^{
         
-        [selfWeak larger];
+        selfWeak.settingMask.hidden = YES;
+        selfWeak.midBtnClose = NO;
+        [selfWeak smaller];
     };
-    _bulletSetting.speedChanged = ^(CGFloat speed){
+    _bulletSetting.middleBtnClicked = ^{
         
-        [selfWeak larger];
-        selfWeak.getSpeed = speed;
+        [selfWeak sentenceShow];
+        selfWeak.settingMask.hidden = YES;
+        selfWeak.midBtnClose = YES;
+        [selfWeak smaller];
+    };
+    _bulletSetting.rightBtnClicked = ^{
+        
+        [selfWeak sliderShow];
+        selfWeak.settingMask.hidden = YES;
+        selfWeak.midBtnClose = YES;
+        [selfWeak smaller];
     };
     
     [self.view insertSubview:_bulletSetting belowSubview:_bulletMenu];
+    
+    _settingMask = [[UIView alloc] initWithFrame:self.view.bounds];
+    _settingMask.backgroundColor = [BABlackColor colorWithAlphaComponent:0.4];
+    _settingMask.hidden = YES;
+    
+    [self.view insertSubview:_settingMask belowSubview:_bulletSetting];
+}
+
+
+- (void)setupBulletSlider{
+    
+    WeakObj(self);
+    _bulletSliderView = [[BABulletSliderView alloc] initWithFrame:_bulletSetting.frame];
+    _bulletSliderView.speedChanged = ^(CGFloat speed){
+        
+        selfWeak.getSpeed = speed;
+    };
+    _bulletSliderView.hidden = YES;
+    
+    [self.view insertSubview:_bulletSliderView belowSubview:_bulletMenu];
+}
+
+
+- (void)setupSentenceView{
+    
+    _sentenceView = [[BASentenceView alloc] initWithFrame:CGRectMake(0, _bulletMenu.y - BASentenceViewHeight, BAScreenWidth, BASentenceViewHeight) style:UITableViewStylePlain];
+    _sentenceView.statusArray = _reportModel.sentenceArray;
+    _sentenceView.hidden = YES;
+    
+    [self.view insertSubview:_sentenceView belowSubview:_bulletMenu];
 }
 
 
 - (void)setupNavigationBar{
     [self.navigationController.navigationBar setBackgroundImage:[UIImage createImageWithColor:[BAWhiteColor colorWithAlphaComponent:0.3]] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"navShadowImg"]];
-//    self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(backBtnClicked)];
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"筛选" target:self action:@selector(filterTypeBtnClicked)];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
 }

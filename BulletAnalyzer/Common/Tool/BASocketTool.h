@@ -28,7 +28,7 @@ typedef struct postPack PostPack;
 static const int BAReadTimeOut = -1;
 static const unsigned int BAPostCode = 0x2b1;
 static const unsigned int BAEndCode = 0;
-static const int BAServicePort = 8601; //8602
+static const int BAServicePort = 8602; //8602
 static NSString *const BAServiceAddress = @"openbarrage.douyutv.com";
 
 @interface BASocketTool : NSObject <GCDAsyncSocketDelegate>

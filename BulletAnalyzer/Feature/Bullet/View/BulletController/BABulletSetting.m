@@ -15,14 +15,6 @@
 @property (nonatomic, strong) UIButton *speedBtn;
 @property (nonatomic, strong) UIButton *sentenceBtn;
 
-@property (nonatomic, strong) UIView *filterView;
-
-@property (nonatomic, strong) UIView *speedView;
-@property (nonatomic, strong) BASlider *silder;
-@property (nonatomic, strong) UILabel *tipsLabel;
-
-@property (nonatomic, strong) UIView *quitDisabledView;
-
 @end
 
 @implementation BABulletSetting {
@@ -111,52 +103,25 @@
 
 
 #pragma mark - userInteraction
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    CGPoint point = [[touches anyObject] locationInView:self];
-    
-//    if (![_quitDisabledView.layer containsPoint:point]) {
-//        [self swichTo:_firstView];
-//    }
-//    
-//    if (_settingTouched) {
-//        _settingTouched();
-//    }
-}
-
-
-- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-//    if (_settingTouched) {
-//        _settingTouched();
-//    }
-}
-
-
 - (void)btnClicked:(UIButton *)sender{
+    
+    [self hide];
+    
     switch (sender.tag) {
         case 0:
-            //[self swichTo:_filterView];
+            _leftBtnClicked();
             break;
             
         case 1:
-            //[self swichTo:_speedView];
+            _middleBtnClicked();
             break;
             
         case 2:
-            //[self swichTo:_speedView];
+            _rightBtnClicked();
             break;
             
         default:
             break;
-    }
-}
-
-
-- (void)valueChanged{
-    if (_settingTouched) {
-        _settingTouched();
-    }
-    if (_speedChanged) {
-        _speedChanged(_silder.value);
     }
 }
 
@@ -213,40 +178,6 @@
     [_firstView addSubview:_speedBtn];
 
     _btnHidePosition = CGPointMake(BAScreenWidth / 2, self.height + 45);
-    
-//    _filterView = [[UIView alloc] initWithFrame:self.bounds];
-//    _filterView.transform = CGAffineTransformMakeScale(0.1, 0.1);
-//    _filterView.alpha = 0;
-//    
-//    [self addSubview:_filterView];
-//    
-//    
-//    
-//    _speedView = [[UIView alloc] initWithFrame:self.bounds];
-//    _speedView.transform = CGAffineTransformMakeScale(0.1, 0.1);
-//    _speedView.alpha = 0;
-//    
-//    [self addSubview:_speedView];
-//    
-//    _silder = [[BASlider alloc] initWithFrame:CGRectMake(2 * BAPadding, self.height / 2 - 6, BAScreenWidth - 4 * BAPadding , 12)];
-//    _silder.maximumValue = 1.0;
-//    _silder.minimumValue = 0.0;
-//    _silder.value = 0.5;
-//    _silder.maximumTrackTintColor = BALightTextColor;
-//    [_silder setThumbImage:[UIImage imageNamed:@"silderItem"] forState:UIControlStateNormal];
-//    _silder.tintColor = BAThemeColor;
-//    [_silder addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    [_speedView addSubview:_silder];
-//    
-//    _tipsLabel = [UILabel labelWithFrame:CGRectMake(_silder.x + BAPadding, _silder.bottom + BAPadding, _silder.width, 30) text:@"tip:调整弹幕速度不影响分析报告" color:BALightTextColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentLeft];
-//    
-//    [_speedView addSubview:_tipsLabel];
-//    
-//    _quitDisabledView = [[UIView alloc] initWithFrame:CGRectMake(BAPadding, 25, BAScreenWidth - 2 * BAPadding, 100)];
-//    _quitDisabledView.userInteractionEnabled = NO;
-//    
-//    [_speedView addSubview:_quitDisabledView];
 }
 
 @end
