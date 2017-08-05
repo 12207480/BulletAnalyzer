@@ -25,8 +25,11 @@ static NSString *const BAAnalyzingReport = @"AnalyzingReport"; //进行表
 static NSString *const BAReportID = @"reportID";  //ID
 static NSString *const BAReportData = @"reportData"; //数据
 static NSString *const BANotice = @"notice"; //关注表
-static NSString *const BANoticeID = @"noticeID"; //关注表ID
 static NSString *const BANoticeData = @"noticeData"; //关注表数据
+static NSString *const BAUserIngnore = @"userIngnore"; //屏蔽表
+static NSString *const BAUserIngnoreData = @"userIngnoreData"; //屏蔽表数据
+static NSString *const BAWordsIngnore = @"wordsIngnore"; //关键词屏蔽表
+static NSString *const BAWordsIngnoreData = @"wordsIngnoreData"; //关键词屏蔽表数据
 static NSString *const BASearchHistory = @"searchHistory"; //搜索历史表
 static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历史表数据
 
@@ -38,7 +41,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
 @property (nonatomic, strong) NSMutableArray *bulletsArray; //弹幕数组 只保留前100个
 @property (nonatomic, strong) NSMutableArray *wordsArray;   //单词数组 保留500个 频次低的不保留
-@property (nonatomic, strong) NSMutableArray *userBulletCountArray;   //根据发言次数排序的用户数组 保留100个
+@property (nonatomic, strong) NSMutableArray *userBulletCountArray;   //根据发言次数排序的用户数组 保留50个
 @property (nonatomic, strong) NSMutableArray *levelCountArray;   //用户等级与数量关系的数组
 @property (nonatomic, strong) NSMutableArray *countTimeArray;   //弹幕数量与时间关系的数组
 @property (nonatomic, strong) BACountTimeModel *timeCountModel; //当前处理的时间有关模型
@@ -232,6 +235,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 - (void)endObserving{
     [BANotificationCenter removeObserver:self];
     
+    [_noticeArray removeAllObjects];
     [_cleanTimer invalidate];
     _cleanTimer = nil;
 }
@@ -285,6 +289,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 }
 
 
+#pragma mark - GCD
 /**
  常驻线程, 避免反复创建消耗性能
  */
@@ -302,7 +307,18 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)dispatch_block:(dispatch_block_t)block{
     
-    dispatch_async(self.analyzingQueue, block);
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
+    
+    dispatch_block_t semaphoreBlock = ^{
+    
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        
+        block();
+        
+        dispatch_semaphore_signal(semaphore);
+    };
+    
+    dispatch_async(self.analyzingQueue, semaphoreBlock);
 }
 
 
@@ -325,11 +341,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)giftClassify:(NSArray *)giftModelArray{
     
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
-    
     [self dispatch_block:^{
-        
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         
         [giftModelArray enumerateObjectsUsingBlock:^(BAGiftModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
             
@@ -400,7 +412,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                     break;
             }
         }];
-        dispatch_semaphore_signal(semaphore);
     }];
 }
 
@@ -412,8 +423,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
     //送鱼丸次数
     __block BOOL contained = NO;
-    NSArray *userFishBallCountArray = [NSArray arrayWithArray:_userFishBallCountArray];
-    [userFishBallCountArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+    [_userFishBallCountArray.copy enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop3) {
         
         contained = [fishBall isEqual:userModel];
         if (contained) {
@@ -434,8 +444,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 - (void)dealWithGift:(BAGiftModel *)giftModel giftValue:(BAGiftValueModel *)giftValue{
     
     __block BOOL contained = NO;
-    NSArray *userModelArrayTemp = [NSArray arrayWithArray:giftValue.userModelArray];
-    [userModelArrayTemp enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+    [giftValue.userModelArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop3) {
         
         contained = [giftModel isEqual:userModel];
         if (contained) {
@@ -500,8 +509,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)analyzingWords:(BABulletModel *)bulletModel{
     
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
-    
     [self dispatch_block:^{
         
         //结巴分词
@@ -517,12 +524,11 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         //构造一个句子对象
         BASentenceModel *newSentence = [BASentenceModel sentenceWithText:bulletModel.txt words:wordsArray.copy];
         
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        //dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         
         //将句子与之前每一个句子进行对比
         __block BOOL similar = NO;
-        NSArray *sentenceArrayTemp = [NSArray arrayWithArray:_sentenceArray];
-        [sentenceArrayTemp enumerateObjectsUsingBlock:^(BASentenceModel *sentence, NSUInteger idx, BOOL * _Nonnull stop) {
+        [_sentenceArray.copy enumerateObjectsUsingBlock:^(BASentenceModel *sentence, NSUInteger idx, BOOL * _Nonnull stop) {
             
             CGFloat percent = [self similarityPercentWithSentenceA:sentence sentenceB:newSentence];
             
@@ -540,8 +546,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             [_sentenceArray addObject:newSentence];
             [_popSentenceArray addObject:newSentence];
         }
-        
-        dispatch_semaphore_signal(semaphore);
     }];
 }
 
@@ -551,13 +555,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)caculateWords:(NSArray *)wordsArray bullet:(BABulletModel *)bulletModel{
     
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
-    
     [self dispatch_block:^{
         
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-      
-        NSArray *wordsArrayTemp = [NSArray arrayWithArray:_wordsArray];
         //词频分析
         [wordsArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop2) {
             
@@ -565,7 +564,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 
                 //记录词的出现频率
                 __block BOOL contained = NO;
-                [wordsArrayTemp enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+                [_wordsArray.copy enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
                     
                     contained = [wordsModel isEqual:words];
                     if (contained) {
@@ -585,8 +584,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 }
             }
         }];
-        
-        dispatch_semaphore_signal(semaphore);
     }];
 }
 
@@ -603,7 +600,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 /**
  忽略纯数字句子
  */
-- (BOOL)isSentenceIgnore:(NSString *)string{
+- (NSInteger)isSentenceIgnore:(NSString *)string{
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
     if(string.length > 0) {
         return NO;
@@ -714,16 +711,11 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)analyzingUser:(BABulletModel *)bulletModel{
     
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
-    
     [self dispatch_block:^{
-        
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         
         //记录用户发言次数
         __block BOOL contained1 = NO;
-        NSArray *userBulletCountArrayTemp = [NSArray arrayWithArray:_userBulletCountArray];
-        [userBulletCountArrayTemp enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
+        [_userBulletCountArray.copy enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
             
             contained1 = [bulletModel.uid isEqualToString:userModel.uid];
             if (contained1) {
@@ -741,8 +733,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         }
         
         //记录用户发言(鱼丸)
-        NSArray *userFishBallCountArrayTemp = [NSArray arrayWithArray:_userBulletCountArray];
-        [userFishBallCountArrayTemp enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
+        [_userBulletCountArray.copy enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
             
             BOOL contained = [bulletModel.uid isEqualToString:userModel.uid];
             if (contained) {
@@ -754,8 +745,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         }];
         
         //记录用户发言(礼物)
-        NSArray *giftValueArrayTemp = [NSArray arrayWithArray:_giftValueArray];
-        [giftValueArrayTemp enumerateObjectsUsingBlock:^(BAGiftValueModel *giftValueModel, NSUInteger idx1, BOOL * _Nonnull stop1) {
+        [_giftValueArray.copy enumerateObjectsUsingBlock:^(BAGiftValueModel *giftValueModel, NSUInteger idx1, BOOL * _Nonnull stop1) {
             
             NSArray *userModelArrayTemp = [NSArray arrayWithArray:giftValueModel.userModelArray];
             [userModelArrayTemp enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx2, BOOL * _Nonnull stop2) {
@@ -792,8 +782,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         //计算总等级以及总用户量, 用以计算平均等级
         _analyzingReportModel.levelSum += bulletModel.level.integerValue;
         _analyzingReportModel.levelCount += 1;
-        
-        dispatch_semaphore_signal(semaphore);
     }];
 }
 
@@ -805,8 +793,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     //计算等级分布图的坐标
     NSMutableArray *tempCountPointArray = [NSMutableArray array];
     NSInteger maxLevelCount = [[_levelCountArray valueForKeyPath:@"@max.integerValue"] integerValue];
-    NSArray *levelCountArrayTemp = [NSArray arrayWithArray:_levelCountArray];
-    [levelCountArrayTemp enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    
+    [_levelCountArray.copy enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         CGPoint point = CGPointMake(BAReportFansChartPartWidth * (CGFloat)idx / (_levelCountArray.count - 1), BAReportFansChartPartHeight * (1 - ((CGFloat)obj.integerValue / maxLevelCount)));
         [tempCountPointArray addObject:[NSValue valueWithCGPoint:point]];
@@ -825,20 +813,15 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)sortData{
     
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
-    
-    
     _timeRepeatCount += 1;
     [self dispatch_block:^{
-       
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         
         //根据用户发言的次数排序
         NSInteger params = 5;
         if ((CGFloat)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //5秒处理一次用户/用户等级/句子/鱼丸/其他礼物
         
             //只保留最新100个弹幕
-            if (_bulletsArray.count > 200) {
+            if (_bulletsArray.count > 300) {
                 [_bulletsArray removeObjectsInRange:NSMakeRange(0, _bulletsArray.count - 100)];
             }
             
@@ -847,8 +830,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 return wordsModel1.count.integerValue > wordsModel2.count.integerValue ? NSOrderedAscending : NSOrderedDescending;
             }];
             //去掉排序400之后的词
-            if (_wordsArray.count > 700) {
-                [_wordsArray removeObjectsInRange:NSMakeRange(400, _wordsArray.count - 400)];
+            if (_wordsArray.count > 800) {
+                [_wordsArray removeObjectsInRange:NSMakeRange(200, _wordsArray.count - 200)];
             }
             
             //赠送鱼丸排序
@@ -856,7 +839,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 return userModel1.fishBallCount.integerValue > userModel2.fishBallCount.integerValue ? NSOrderedAscending : NSOrderedDescending;
             }];
             
-            if (_userFishBallCountArray.count > 100) {
+            //去掉排名50后的
+            if (_userFishBallCountArray.count > 400) {
                 [_userFishBallCountArray removeObjectsInRange:NSMakeRange(50, _userFishBallCountArray.count - 50)];
             }
             
@@ -867,7 +851,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                     return userModel1.giftCount.integerValue > userModel2.giftCount.integerValue ? NSOrderedAscending : NSOrderedDescending;
                 }];
                 
-                if (giftValueModel.userModelArray.count > 100) {
+                if (giftValueModel.userModelArray.count > 200) {
                     [giftValueModel.userModelArray removeObjectsInRange:NSMakeRange(50, giftValueModel.userModelArray.count - 50)];
                 }
             }
@@ -883,9 +867,9 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             BAUserModel *userModel = [_userBulletCountArray firstObject];
             _analyzingReportModel.maxActiveCount = userModel.count.integerValue;
             
-            //去掉发言数排名100名之后的人
-            if (_userBulletCountArray.count > 200) {
-                [_userBulletCountArray removeObjectsInRange:NSMakeRange(100, _userBulletCountArray.count - 100)];
+            //去掉发言数排名50名之后的人
+            if (_userBulletCountArray.count > 500) {
+                [_userBulletCountArray removeObjectsInRange:NSMakeRange(50, _userBulletCountArray.count - 50)];
             }
             
             //句子数量全部减一
@@ -926,8 +910,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             //计算弹幕数量与时间的坐标
             
             [_countTimePointArray removeAllObjects];
-            NSArray *countTimeArrayTemp = [NSArray arrayWithArray:_countTimeArray];
-            [countTimeArrayTemp enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [_countTimeArray.copy enumerateObjectsUsingBlock:^(BACountTimeModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 
                 CGPoint point = CGPointMake(BAReportCountChartWidth * (CGFloat)idx / (_countTimeArray.count - 1), BAReportCountChartHeight * (1 - ((CGFloat)obj.count.integerValue / _analyzingReportModel.maxBulletCount)));
                 [_countTimePointArray addObject:[NSValue valueWithCGPoint:point]];
@@ -935,8 +918,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             
             _bulletsCount = 0;
         }
-        
-        dispatch_semaphore_signal(semaphore);
     }];
 }
 
@@ -950,8 +931,10 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     [_dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         
         NSMutableArray *tempArray = [NSMutableArray array];
-        NSMutableArray *noticeTempArray = [NSMutableArray array];
         NSMutableArray *searchHistoryTempArray = [NSMutableArray array];
+        //NSMutableArray *noticeTempArray;
+        NSMutableArray *userIgnoreTempArray;
+        NSMutableArray *wordsIgnoreTempArray;
         BOOL open = [db open];
         if (open) {
             //创表(若无) 1.完成分析表
@@ -996,28 +979,27 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                     [tempArray addObject:reportModel];
                 }
             }
-            
-            //关注表
-            NSString *execute3 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ integer, %@ Blob)", BANotice, BANoticeID, BANoticeData];
-            BOOL createNoticeTable = [db executeUpdate:execute3];
-            if (createNoticeTable) {
-                NSLog(@"noticeTable创表成功");
-            } else {
-                NSLog(@"noticeTable创表失败");
-            }
-            
-            //再取出关注表来里的数据解档
-            NSString *select3 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID DESC", BANotice];
-            FMResultSet *result3 = [db executeQuery:select3];
-            while (result3.next) {
-                
-                NSData *noticeData = [result3 dataForColumn:BANoticeData];
-                BABulletModel *bulletModel = [NSKeyedUnarchiver unarchiveObjectWithData:noticeData];
-                
-                if (bulletModel) {
-                    [noticeTempArray addObject:bulletModel];
-                }
-            }
+
+//暂时关注表不存本地
+//            //关注表
+//            NSString *execute3 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ Blob)", BANotice, BANoticeData];
+//            BOOL createNoticeTable = [db executeUpdate:execute3];
+//            if (createNoticeTable) {
+//                NSLog(@"noticeTable创表成功");
+//            } else {
+//                NSLog(@"noticeTable创表失败");
+//            }
+//            
+//            //再取出关注表来里的数据解档
+//            NSString *select3 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID DESC", BANotice];
+//            FMResultSet *result3 = [db executeQuery:select3];
+//            while (result3.next) {
+//                
+//                NSData *noticeData = [result3 dataForColumn:BANoticeData];
+//                NSArray *userNameArray = [NSKeyedUnarchiver unarchiveObjectWithData:noticeData];
+//                
+//                noticeTempArray = userNameArray.mutableCopy;
+//            }
             
             //搜索历史表
             NSString *execute4 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ Blob)", BASearchHistory, BASearchHistoryData];
@@ -1028,7 +1010,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 NSLog(@"searchHistoryTable创表失败");
             }
             
-            //再取出关注表来里的数据解档
+            //再取出历史表来里的数据解档
             NSString *select4 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID ASC", BASearchHistory];
             FMResultSet *result4 = [db executeQuery:select4];
             while (result4.next) {
@@ -1041,11 +1023,53 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 }
             }
             
+            //用户屏蔽表
+            NSString *execute5 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ Blob)", BAUserIngnore, BAUserIngnoreData];
+            BOOL createUserIgnoreTable = [db executeUpdate:execute5];
+            if (createUserIgnoreTable) {
+                NSLog(@"userIgnoreTable创表成功");
+            } else {
+                NSLog(@"userIgnoreTable创表失败");
+            }
+            
+            //再取出用户屏蔽表来里的数据解档
+            NSString *select5 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID ASC", BAUserIngnore];
+            FMResultSet *result5 = [db executeQuery:select5];
+            while (result5.next) {
+                
+                NSData *userIgnoreData = [result5 dataForColumn:BAUserIngnoreData];
+                NSArray *userNameArray = [NSKeyedUnarchiver unarchiveObjectWithData:userIgnoreData];
+                
+                userIgnoreTempArray = userNameArray.mutableCopy;
+            }
+            
+            //用户屏蔽表
+            NSString *execute6 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ Blob)", BAWordsIngnore, BAWordsIngnoreData];
+            BOOL createWordsIgnoreTable = [db executeUpdate:execute6];
+            if (createWordsIgnoreTable) {
+                NSLog(@"wordsIgnoreTable创表成功");
+            } else {
+                NSLog(@"wordsIgnoreTable创表失败");
+            }
+            
+            //再取出用户屏蔽表来里的数据解档
+            NSString *select6 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID ASC", BAWordsIngnore];
+            FMResultSet *result6 = [db executeQuery:select6];
+            while (result6.next) {
+                
+                NSData *wordsIgnoreData = [result6 dataForColumn:BAWordsIngnoreData];
+                NSArray *wordsArray = [NSKeyedUnarchiver unarchiveObjectWithData:wordsIgnoreData];
+                
+                wordsIgnoreTempArray = wordsArray.mutableCopy;
+            }
+            
             [db close];
         }
         _reportModelArray = tempArray;
-        _noticeArray = noticeTempArray;
+        //_noticeArray = noticeTempArray;
         _searchHistoryArray = searchHistoryTempArray;
+        _userIgnoreArray = userIgnoreTempArray;
+        _wordsIgnoreArray = wordsIgnoreTempArray;
         
         [BANotificationCenter postNotificationName:BANotificationDataUpdateComplete object:nil userInfo:@{BAUserInfoKeyReportModelArray : _reportModelArray,
                                                                                                           BAUserInfoKeySearchHistoryArray : _searchHistoryArray}];
@@ -1123,16 +1147,55 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 /**
  添加关注
  */
-- (void)addNotice:(BABulletModel *)bulletModel{
+- (void)addNotice:(NSString *)notice{
     
     dispatch_async(self.analyzingQueue, ^{
         
         //先添加入数组
-        [_noticeArray addObject:bulletModel];
-        NSMutableArray *tempArray = [NSMutableArray array];
-        [_noticeArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (bulletModel.uid.integerValue == obj.uid.integerValue) {
-                [tempArray addObject:obj]; //遍历 获取这个用户被标记次数
+        [_noticeArray addObject:notice];
+//暂时关注不存本地
+//        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+//            BOOL open = [db open];
+//            if (open) {
+//                
+//                //删除这个用户所有的标记
+//                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BANotice];
+//                BOOL success = [db executeUpdate:del];
+//                if (!success) {
+//                    NSLog(@"删除失败");
+//                } else {
+//          
+//                    //存入表单
+//                    NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BANotice, BANoticeData];
+//                    NSData *noticeData = [NSKeyedArchiver archivedDataWithRootObject:_noticeArray];
+//                    BOOL success = [db executeUpdate:insert, noticeData];
+//                    if (!success) {
+//                        NSLog(@"储存失败");
+//                    }
+//                }
+//                
+//                [db close];
+//            }
+//        }];
+    });
+}
+
+
+/**
+ 删除关注
+ */
+- (void)delNotice:(NSString *)notice{
+    
+    if (!_noticeArray) {
+        _noticeArray = [NSMutableArray array];
+    }
+    
+    dispatch_async(self.analyzingQueue, ^{
+        
+        [_noticeArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if ([obj isEqualToString:notice]) {
+                [_noticeArray removeObject:obj];
             }
         }];
         
@@ -1141,22 +1204,19 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             if (open) {
                 
                 //删除这个用户所有的标记
-                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BANotice, BANoticeID];
-                BOOL success = [db executeUpdate:del, @(bulletModel.uid.integerValue)];
+                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BANotice];
+                BOOL success = [db executeUpdate:del];
                 if (!success) {
                     NSLog(@"删除失败");
                 } else {
-                    //写入这个用户被标记次数并存入表格
-                    [tempArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                        obj.noticeCount = tempArray.count;
-                        //存入表单
-                        NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BANotice, BANoticeID, BANoticeData];
-                        NSData *noticeData = [NSKeyedArchiver archivedDataWithRootObject:obj];
-                        BOOL success = [db executeUpdate:insert, @(obj.uid.integerValue), noticeData];
-                        if (!success) {
-                            NSLog(@"储存失败");
-                        }
-                    }];
+                    
+                    //存入表单
+                    NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BANotice, BANoticeData];
+                    NSData *noticeData = [NSKeyedArchiver archivedDataWithRootObject:_noticeArray];
+                    BOOL success = [db executeUpdate:insert, noticeData];
+                    if (!success) {
+                        NSLog(@"储存失败");
+                    }
                 }
                 
                 [db close];
@@ -1167,30 +1227,232 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
 
 /**
- 删除关注
+ 清除关注表
  */
-- (void)delNotice:(BABulletModel *)bulletModel{
+- (void)clearNotice{
     
     dispatch_async(self.analyzingQueue, ^{
         
-        bulletModel.noticeCount = 0;
+        //先删除
+        [_noticeArray removeAllObjects];
+//暂时关注不存本地
+//        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+//            BOOL open = [db open];
+//            if (open) {
+//                
+//                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BANotice];
+//                BOOL success = [db executeUpdate:del];
+//                if (!success) {
+//                    NSLog(@"删除失败");
+//                }
+//                
+//                [db close];
+//            }
+//        }];
+    });
+}
+
+
+/**
+ 添加用户屏蔽
+ */
+- (void)ingnoreUserName:(NSString *)userName{
+    
+    dispatch_async(self.analyzingQueue, ^{
+        
+        //先添加入数组
+        [_userIgnoreArray addObject:userName];
+
+        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL open = [db open];
+            if (open) {
+                
+                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BAUserIngnore];
+                BOOL success = [db executeUpdate:del];
+                if (!success) {
+                    NSLog(@"删除失败");
+                } else {
+          
+                    //存入表单
+                    NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BAUserIngnore, BAUserIngnoreData];
+                    NSData *userIgnoreData = [NSKeyedArchiver archivedDataWithRootObject:_userIgnoreArray];
+                    BOOL success = [db executeUpdate:insert, userIgnoreData];
+                    if (!success) {
+                        NSLog(@"储存失败");
+                    }
+                }
+                
+                [db close];
+            }
+        }];
+    });
+}
+
+
+
+/**
+ 删除用户屏蔽
+ */
+- (void)uningnoreUserName:(NSString *)userName{
+    
+    dispatch_async(self.analyzingQueue, ^{
+        
+        //先删除
+        [_userIgnoreArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isEqualToString:userName]) {
+                [_userIgnoreArray removeObject:obj];
+            }
+        }];
         
         [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
             BOOL open = [db open];
             if (open) {
                 
-                //删除
-                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = (?)", BANotice, BANoticeID];
-                BOOL success = [db executeUpdate:del, @(bulletModel.uid.integerValue)];
+                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BAUserIngnore];
+                BOOL success = [db executeUpdate:del];
                 if (!success) {
                     NSLog(@"删除失败");
                 } else {
-                    [_noticeArray enumerateObjectsUsingBlock:^(BABulletModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                        if ([obj.uid isEqualToString:bulletModel.uid]) {
-                            [_noticeArray removeObject:obj];
-                        }
-                    }];
+                    
+                    //存入表单
+                    NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BAUserIngnore, BAUserIngnoreData];
+                    NSData *userIgnoreData = [NSKeyedArchiver archivedDataWithRootObject:_userIgnoreArray];
+                    BOOL success = [db executeUpdate:insert, userIgnoreData];
+                    if (!success) {
+                        NSLog(@"储存失败");
+                    }
                 }
+                
+                [db close];
+            }
+        }];
+    });
+}
+
+
+/**
+ 清除用户屏蔽
+ */
+- (void)clearIngnoreUserName{
+    
+    dispatch_async(self.analyzingQueue, ^{
+        
+        //先删除
+        [_userIgnoreArray removeAllObjects];
+        
+        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL open = [db open];
+            if (open) {
+                
+                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BAUserIngnore];
+                BOOL success = [db executeUpdate:del];
+                if (!success) {
+                    NSLog(@"删除失败");
+                }
+                
+                [db close];
+            }
+        }];
+    });
+}
+
+
+/**
+ 添加单词屏蔽
+ */
+- (void)ingnoreWords:(NSString *)words{
+    
+    dispatch_async(self.analyzingQueue, ^{
+        
+        //先添加入数组
+        [_wordsIgnoreArray addObject:words];
+        
+        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL open = [db open];
+            if (open) {
+                
+                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BAWordsIngnore];
+                BOOL success = [db executeUpdate:del];
+                if (!success) {
+                    NSLog(@"删除失败");
+                } else {
+                    
+                    //存入表单
+                    NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BAWordsIngnore, BAWordsIngnoreData];
+                    NSData *userIgnoreData = [NSKeyedArchiver archivedDataWithRootObject:_wordsIgnoreArray];
+                    BOOL success = [db executeUpdate:insert, userIgnoreData];
+                    if (!success) {
+                        NSLog(@"储存失败");
+                    }
+                }
+                
+                [db close];
+            }
+        }];
+    });
+}
+
+
+/**
+ 删除单词屏蔽
+ */
+- (void)uningnoreWords:(NSString *)words{
+    
+    dispatch_async(self.analyzingQueue, ^{
+        
+        //先删除
+        [_wordsIgnoreArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isEqualToString:words]) {
+                [_wordsIgnoreArray removeObject:obj];
+            }
+        }];
+        
+        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL open = [db open];
+            if (open) {
+                
+                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BAWordsIngnore];
+                BOOL success = [db executeUpdate:del];
+                if (!success) {
+                    NSLog(@"删除失败");
+                } else {
+                    
+                    //存入表单
+                    NSString *insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (?)", BAWordsIngnore, BAWordsIngnoreData];
+                    NSData *userIgnoreData = [NSKeyedArchiver archivedDataWithRootObject:_wordsIgnoreArray];
+                    BOOL success = [db executeUpdate:insert, userIgnoreData];
+                    if (!success) {
+                        NSLog(@"储存失败");
+                    }
+                }
+                
+                [db close];
+            }
+        }];
+    });
+}
+
+
+/**
+ 清除单词屏蔽
+ */
+- (void)clearIngnoreWords{
+    
+    dispatch_async(self.analyzingQueue, ^{
+        
+        //先删除
+        [_wordsArray removeAllObjects];
+        
+        [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL open = [db open];
+            if (open) {
+                
+                NSString *del = [NSString stringWithFormat:@"DELETE FROM %@", BAWordsIngnore];
+                BOOL success = [db executeUpdate:del];
+                if (!success) {
+                    NSLog(@"删除失败");
+                }
+                
                 [db close];
             }
         }];

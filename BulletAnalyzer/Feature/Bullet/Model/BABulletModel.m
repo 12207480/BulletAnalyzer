@@ -47,7 +47,7 @@ MJExtensionCodingImplementation
 
 
 - (void)setNn:(NSString *)nn{
-    _nn = nn;
+    _nn = [nn stringByReplacingOccurrencesOfString:@"@S" withString:@"/"];
     
     if (nn.length) {
         self.statusReady = _txt.length;
@@ -93,11 +93,6 @@ MJExtensionCodingImplementation
         CGRect contentLabelRect = [contentAttr boundingRectWithSize:CGSizeMake(BAScreenWidth - 70, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
         
         _bulletContentHeight = contentLabelRect.size.height;
-        
-        if (_bulletContentHeight > 45) {
-            
-            NSLog(@"name:%@----text:%@----height:%f", _nn, _txt, _bulletContentHeight);
-        }
     }
 }
 

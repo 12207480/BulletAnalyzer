@@ -39,7 +39,7 @@
     NSMutableAttributedString *countAttr = [[NSMutableAttributedString alloc] initWithString:countStr attributes:@{NSForegroundColorAttributeName : BAWhiteColor,
                                                                                                                NSStrokeColorAttributeName : BAColor(255, 241, 127),
                                                                                                                NSFontAttributeName : [UIFont systemFontOfSize:18 weight:UIFontWeightBold],
-                                                                                                               NSStrokeWidthAttributeName : @-2.5}];
+                                                                                                               NSStrokeWidthAttributeName : @-3.0}];
     
     _countLabel.attributedText = countAttr;
 }

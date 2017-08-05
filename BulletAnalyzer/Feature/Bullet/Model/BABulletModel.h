@@ -76,11 +76,6 @@
 @property (nonatomic, copy) NSString *iconBig;
 
 /**
- 该用户是否被关注了
- */
-@property (nonatomic, assign) NSInteger noticeCount;
-
-/**
  弹幕内容
  */
 @property (nonatomic, copy) NSAttributedString *bulletContent;
@@ -89,5 +84,10 @@
  弹幕内容高度
  */
 @property (nonatomic, assign) CGFloat bulletContentHeight;
+
+/**
+ 是否被关注
+ */
+@property (nonatomic, assign, getter=isNoitce) BOOL notice;
 
 @end

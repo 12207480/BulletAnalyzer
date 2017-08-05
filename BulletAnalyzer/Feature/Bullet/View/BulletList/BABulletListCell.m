@@ -13,6 +13,7 @@
 @property (nonatomic, strong) UIImageView *levelBgView;
 @property (nonatomic, strong) UILabel *levelLabel;
 @property (nonatomic, strong) UILabel *contentLabel;
+@property (nonatomic, strong) UIImageView *noticeImgView;
 
 @end
 
@@ -32,6 +33,20 @@
 }
 
 
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    
+    for (UIView *subView in self.subviews) {
+        
+        if ([NSStringFromClass([subView class]) isEqualToString:@"UITableViewCellDeleteConfirmationView"]) {
+            
+            UIView *bgView = (UIView *)[subView.subviews firstObject];
+            bgView.backgroundColor = [BAWhiteColor colorWithAlphaComponent:0.2];
+        }
+    }
+}
+
+
 #pragma mark - userInteraction
 - (void)btnClicked:(UIButton *)sender{
     _btnClicked();
@@ -42,6 +57,7 @@
 - (void)setBulletModel:(BABulletModel *)bulletModel{
     _bulletModel = bulletModel;
     
+    _noticeImgView.hidden = !bulletModel.isNoitce;
     _contentLabel.attributedText = bulletModel.bulletContent;
     _contentLabel.height = bulletModel.bulletContentHeight;
 
@@ -81,9 +97,15 @@
     [self.contentView addSubview:_levelLabel];
     
     _contentLabel = [UILabel labelWithFrame:CGRectMake(_levelBgView.right + BAPadding / 2, 11, BAScreenWidth - 70, 40) text:nil color:nil font:nil textAlignment:NSTextAlignmentLeft];
-    _contentLabel.numberOfLines = 2;
+    _contentLabel.numberOfLines = 0;
+    _contentLabel.lineBreakMode = NSLineBreakByCharWrapping;
     
     [self.contentView addSubview:_contentLabel];
+    
+    _noticeImgView = [UIImageView imageViewWithFrame:CGRectMake(BAScreenWidth - 8 * BAPadding, 5.5, 33, 33) image:[UIImage imageNamed:@"notice"]];
+    _noticeImgView.hidden = YES;
+    
+    [self.contentView addSubview:_noticeImgView];
 }
 
 

@@ -132,6 +132,7 @@
 		38D775E51F24F284005371D4 /* BAWordsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D775DF1F24F284005371D4 /* BAWordsModel.m */; };
 		38DA28FA1F354EAA00CD25B6 /* BABulletSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA28F91F354EAA00CD25B6 /* BABulletSliderView.m */; };
 		38DA28FD1F35638D00CD25B6 /* BASentenceRateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA28FC1F35638D00CD25B6 /* BASentenceRateCell.m */; };
+		38DA29001F35F65600CD25B6 /* BABulletListNavPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA28FF1F35F65600CD25B6 /* BABulletListNavPopView.m */; };
 		F21BD41D1EE7F6DE0079312C /* BAReportView.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD41C1EE7F6DE0079312C /* BAReportView.m */; };
 		F21BD4201EE7F7200079312C /* BAReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD41F1EE7F7200079312C /* BAReportCell.m */; };
 		F21BD4231EE7F77C0079312C /* BAReportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F21BD4221EE7F77C0079312C /* BAReportModel.m */; };
@@ -527,6 +528,8 @@
 		38DA28F91F354EAA00CD25B6 /* BABulletSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletSliderView.m; sourceTree = "<group>"; };
 		38DA28FB1F35638D00CD25B6 /* BASentenceRateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceRateCell.h; sourceTree = "<group>"; };
 		38DA28FC1F35638D00CD25B6 /* BASentenceRateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceRateCell.m; sourceTree = "<group>"; };
+		38DA28FE1F35F65600CD25B6 /* BABulletListNavPopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABulletListNavPopView.h; sourceTree = "<group>"; };
+		38DA28FF1F35F65600CD25B6 /* BABulletListNavPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABulletListNavPopView.m; sourceTree = "<group>"; };
 		F21BD41B1EE7F6DE0079312C /* BAReportView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAReportView.h; sourceTree = "<group>"; };
 		F21BD41C1EE7F6DE0079312C /* BAReportView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAReportView.m; sourceTree = "<group>"; };
 		F21BD41E1EE7F7200079312C /* BAReportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAReportCell.h; sourceTree = "<group>"; };
@@ -1675,6 +1678,8 @@
 				3894FDE41EF2BD180013A4E0 /* BASlider.m */,
 				38DA28F81F354EAA00CD25B6 /* BABulletSliderView.h */,
 				38DA28F91F354EAA00CD25B6 /* BABulletSliderView.m */,
+				38DA28FE1F35F65600CD25B6 /* BABulletListNavPopView.h */,
+				38DA28FF1F35F65600CD25B6 /* BABulletListNavPopView.m */,
 			);
 			name = "BulletController(弹幕控制)";
 			path = BulletController;
@@ -2297,6 +2302,7 @@
 				388A85FE1EE417BA00A0BC5B /* BANavigationViewController.m in Sources */,
 				F2382DFF1EF27D3300BE5446 /* BABulletSetting.m in Sources */,
 				388AFFE81EE045F90031DE53 /* DDContextFilterLogFormatter.m in Sources */,
+				38DA29001F35F65600CD25B6 /* BABulletListNavPopView.m in Sources */,
 				388AFFE61EE045F90031DE53 /* DDLog.m in Sources */,
 				F21BD4231EE7F77C0079312C /* BAReportModel.m in Sources */,
 				38A5A0DE1EE2AA6800CFF645 /* MJProperty.m in Sources */,

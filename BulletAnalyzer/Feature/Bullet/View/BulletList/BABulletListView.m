@@ -45,10 +45,31 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
 - (void)addStatus:(NSArray *)statusArray{
     if (!statusArray.count) return;
 
+    NSArray *userIgnoreArray = [BAAnalyzerCenter defaultCenter].userIgnoreArray.copy;
+    NSArray *wordsIgnoreArray = [BAAnalyzerCenter defaultCenter].wordsIgnoreArray.copy;
+    
     if (self.isScrollEnabled) {
         [statusArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL * _Nonnull stop) {
             
-            if (![_statusArray containsObject:obj]) {
+            __block BOOL ignore = NO;
+            
+            if ([obj isKindOfClass:[BABulletModel class]]) {
+                BABulletModel *bulletModel = (BABulletModel *)obj;
+                
+                ignore = [userIgnoreArray containsObject:bulletModel];
+                if (!ignore) {
+                    [wordsIgnoreArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop) {
+                        ignore = [bulletModel.txt containsString:words];
+                        *stop = ignore;
+                    }];
+                }
+                
+            } else {
+                BAGiftModel *giftModel = (BAGiftModel *)obj;
+                ignore = [userIgnoreArray containsObject:giftModel];
+            }
+            
+            if (![_statusArray containsObject:obj] && !ignore) {
                 [_statusArray addObject:obj];
                 if (_statusArray.count > 200) {
                     [_statusArray removeObjectsInRange:NSMakeRange(0, _statusArray.count - 100)];
@@ -125,6 +146,7 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
             
             
         };
+        
         return cell;
     } else {
         
@@ -150,23 +172,43 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
             cell.bgType = BAGiftCellBgTypeTop;
         }
         
-        
-        
-        
         return cell;
     }
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     
-    //BABulletModel *bulletModel = _statusArray[indexPath.section];
+    id statusModel = _statusArray[indexPath.section];
     
+    if ([statusModel isKindOfClass:[BABulletModel class]]) {
+        BABulletModel *bulletModel = _statusArray[indexPath.section];
+        //屏蔽
+        [[BAAnalyzerCenter defaultCenter] ingnoreUserName:bulletModel.nn];
+        
+    } else {
+        BAGiftModel *giftModel = _statusArray[indexPath.section];
+        //关注
+        [[BAAnalyzerCenter defaultCenter] addNotice:giftModel.nn];
+    }
+}
+
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    id statusModel = _statusArray[indexPath.section];
+    
+    if ([statusModel isKindOfClass:[BABulletModel class]]) {
+        return @"屏蔽";
+    } else {
+        return @"关注";
+    }
 }
 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    _downBtn.y = self.height - 67 + scrollView.contentOffset.y;
+    _downBtn.y = self.height - 67 + self.contentOffset.y;
 }
 
 

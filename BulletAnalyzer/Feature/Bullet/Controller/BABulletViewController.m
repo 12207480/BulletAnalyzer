@@ -13,6 +13,7 @@
 #import "BABulletMenu.h"
 #import "BABulletSetting.h"
 #import "BABulletSliderView.h"
+#import "BABulletListNavPopView.h"
 #import "BASentenceView.h"
 #import "BAReportModel.h"
 #import "BAAnalyzerCenter.h"
@@ -28,6 +29,7 @@
 @property (nonatomic, strong) BABulletSetting *bulletSetting;  //弹出的三个按钮
 @property (nonatomic, strong) BABulletSliderView *bulletSliderView; //弹幕速度滑块
 @property (nonatomic, strong) BASentenceView *sentenceView; //相似弹幕
+@property (nonatomic, strong) BABulletListNavPopView *popView; //筛选弹框
 @property (nonatomic, strong) UIView *settingMask; //遮盖
 @property (nonatomic, strong) NSTimer *hideTimer; //隐藏倒计时
 @property (nonatomic, assign) CGFloat repeatDuration; //倒计时时间
@@ -38,7 +40,7 @@
 @property (nonatomic, assign) CGFloat getSpeed; //0-1之间 频率
 @property (nonatomic, assign) CGFloat getDuration; //抓取间隔
 @property (nonatomic, assign) NSInteger getCount; //抓取数量
-
+@property (nonatomic, assign) NSInteger filterTag; //0只显示弹幕, 1只显示礼物, 2弹幕礼物同时显示
 
 /*以下功能未实现*/
 ////等级筛选
@@ -66,6 +68,8 @@
     [self setupSentenceView];
     
     [self setupNavigationBar];
+    
+    [self setupPopView];
     
     [self addNotificationObserver];
     
@@ -172,7 +176,32 @@
 
 
 - (void)filterTypeBtnClicked{
-
+    
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    });
+    
+    if (_hideTimer) {
+        [_hideTimer invalidate];
+        _hideTimer = nil;
+    
+        _popView.hidden = NO;
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            _popView.alpha = 1;
+        }];
+    } else {
+        [self beginTimer];
+    
+        [UIView animateWithDuration:0.3 animations:^{
+         
+            _popView.alpha = 0;
+        } completion:^(BOOL finished) {
+        
+            _popView.hidden = NO;
+        }];
+    }
 }
 
 
@@ -348,6 +377,20 @@
 }
 
 
+- (void)setupPopView{
+    WeakObj(self);
+    _popView = [[BABulletListNavPopView alloc] initWithFrame:CGRectMake(BAScreenWidth - 100, 64, 100, 105)];
+    _popView.alpha = 0;
+    _popView.hidden = YES;
+    _popView.btnClicked = ^(NSInteger tag) {
+        selfWeak.filterTag = tag;
+        [selfWeak filterTypeBtnClicked];
+    };
+    
+    [self.view addSubview:_popView];
+}
+
+
 - (void)setupNavigationBar{
     [self.navigationController.navigationBar setBackgroundImage:[UIImage createImageWithColor:[BAWhiteColor colorWithAlphaComponent:0.3]] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"navShadowImg"]];
@@ -367,6 +410,8 @@
 
 
 - (void)getTimeUp{
+    
+    if (_filterTag == 1) return;
     
     if (!self.title.length) {
         self.title = _reportModel.name;
@@ -422,8 +467,9 @@
 
 
 - (void)gift:(NSNotification *)sender{
-    NSArray *giftArray = sender.userInfo[BAUserInfoKeyGift];
+    if (_filterTag == 0) return;
     
+    NSArray *giftArray = sender.userInfo[BAUserInfoKeyGift];
     [_bulletListView addStatus:giftArray];
 }
 

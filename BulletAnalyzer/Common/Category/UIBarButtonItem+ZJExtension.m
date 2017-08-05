@@ -16,6 +16,7 @@
     [textBtn setTitle:title forState:UIControlStateNormal];
     textBtn.titleLabel.font = [UIFont systemFontOfSize:BACommonTextFontSize];
     [textBtn setTitleColor:BAWhiteColor forState:UIControlStateNormal];
+    [textBtn setTitleColor:BAWhiteColor forState:UIControlStateHighlighted];
     [textBtn setTitleColor:BADisabledColor forState:UIControlStateDisabled];
     
     CGSize btnSize = [title sizeWithAttributes:@{NSFontAttributeName : textBtn.titleLabel.font}];

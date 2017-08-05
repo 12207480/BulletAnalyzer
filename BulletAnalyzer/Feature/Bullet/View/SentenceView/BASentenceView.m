@@ -10,7 +10,9 @@
 #import "BASentenceRateCell.h"
 
 static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId";
+
 @interface BASentenceView() <UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, strong) UIImageView *shadowImgView;
 
 @end
 
@@ -51,6 +53,11 @@ static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId
 #pragma mark - private
 - (void)prepare{
     
+    _shadowImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -5, BAScreenWidth, 5)];
+    _shadowImgView.image = [UIImage imageNamed:@"tabShadowImg"];
+    
+    [self addSubview:_shadowImgView];
+    
     self.backgroundColor = [BAWhiteColor colorWithAlphaComponent:0.3];
     
     [self registerClass:[BASentenceRateCell class] forCellReuseIdentifier:BASentenceRateCellReusedId];
@@ -60,7 +67,7 @@ static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId
     self.separatorInset = UIEdgeInsetsMake(0, 2 * BAPadding, 0, 2 * BAPadding);
     self.delegate = self;
     self.dataSource = self;
-    self.layer.masksToBounds = YES;
+    self.layer.masksToBounds = NO;
     self.scrollEnabled = NO;
     self.rowHeight = 44;
 }

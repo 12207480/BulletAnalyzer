@@ -32,6 +32,20 @@
 }
 
 
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    
+    for (UIView *subView in self.subviews) {
+        
+        if ([NSStringFromClass([subView class]) isEqualToString:@"UITableViewCellDeleteConfirmationView"]) {
+            
+            UIView *bgView = (UIView *)[subView.subviews firstObject];
+            bgView.backgroundColor = [BAWhiteColor colorWithAlphaComponent:0.45];
+        }
+    }
+}
+
+
 #pragma mark - userInteraction
 - (void)btnClicked:(UIButton *)sender{
     _btnClicked();

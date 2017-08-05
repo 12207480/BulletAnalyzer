@@ -23,6 +23,16 @@
 @property (nonatomic, strong) NSMutableArray *searchHistoryArray;
 
 /**
+ 用户屏蔽列表
+ */
+@property (nonatomic, strong) NSMutableArray *userIgnoreArray;
+
+/**
+ 关键词屏蔽表
+ */
+@property (nonatomic, strong) NSMutableArray *wordsIgnoreArray;
+
+/**
  是否正在分析
  */
 @property (nonatomic, assign, getter=isAnalyzing) BOOL analyzing;
@@ -70,12 +80,47 @@
 /**
  添加关注对象
  */
-- (void)addNotice:(BABulletModel *)bulletModel;
+- (void)addNotice:(NSString *)notice;
 
 /**
  删除关注对象
  */
-- (void)delNotice:(BABulletModel *)bulletModel;
+- (void)delNotice:(NSString *)notice;
+
+/**
+ 清除关注对象
+ */
+- (void)clearNotice;
+
+/**
+ 添加用户屏蔽
+ */
+- (void)ingnoreUserName:(NSString *)userName;
+
+/**
+ 删除用户屏蔽
+ */
+- (void)uningnoreUserName:(NSString *)userName;
+
+/**
+ 清除用户屏蔽
+ */
+- (void)clearIngnoreUserName;
+
+/**
+ 删除单词屏蔽
+ */
+- (void)uningnoreWords:(NSString *)words;
+
+/**
+ 添加单词屏蔽
+ */
+- (void)ingnoreWords:(NSString *)words;
+
+/**
+ 清除单词屏蔽
+ */
+- (void)clearIngnoreWords;
 
 /**
  添加连接历史

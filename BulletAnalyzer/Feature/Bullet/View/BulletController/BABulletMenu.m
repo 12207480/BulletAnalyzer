@@ -142,7 +142,7 @@
     
     [self addSubview:_addImgView];
     
-    
+
     _middleBtnLabel = [UILabel labelWithFrame:CGRectMake(_middleBtn.x, _leftBtnLabel.y, _middleBtn.width, 16) text:@"工具" color:BAColor(211, 133, 211) font:BABlodFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [self addSubview:_middleBtnLabel];

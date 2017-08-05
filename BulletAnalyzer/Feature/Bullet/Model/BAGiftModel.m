@@ -129,13 +129,17 @@ MJCodingImplementation
     if ([object isKindOfClass:[BABulletModel class]]) return NO;
     
     if ([object isKindOfClass:[BAUserModel class]]) {
-        BAUserModel *userModel = (BAUserModel *)object;
         
+        BAUserModel *userModel = (BAUserModel *)object;
         return [self.nn isEqual:userModel.nn];
+        
+    } else if ([object isKindOfClass:[NSString class]]) {
+        
+        NSString *string = (NSString *)object;
+        return [self.nn isEqual:string];
     } else {
         
         BAGiftModel *giftModel = (BAGiftModel *)object;
-        
         return [self.nn isEqual:giftModel.nn];
     }
 }
