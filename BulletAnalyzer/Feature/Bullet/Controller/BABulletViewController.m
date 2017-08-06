@@ -74,6 +74,7 @@
     [self addNotificationObserver];
     
     self.getSpeed = 0.5;
+    self.filterTag = 2;
     
     [self larger];
 }
@@ -177,6 +178,8 @@
 
 - (void)filterTypeBtnClicked{
     
+    if (_bulletSetting.isAlreadyShow) return;
+    
     self.navigationItem.rightBarButtonItem.enabled = NO;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.navigationItem.rightBarButtonItem.enabled = YES;
@@ -187,20 +190,30 @@
         _hideTimer = nil;
     
         _popView.hidden = NO;
+        _settingMask.hidden = NO;
         [UIView animateWithDuration:0.3 animations:^{
-            
             _popView.alpha = 1;
         }];
     } else {
         [self beginTimer];
-    
+        
+        _settingMask.hidden = YES;
         [UIView animateWithDuration:0.3 animations:^{
-         
             _popView.alpha = 0;
         } completion:^(BOOL finished) {
-        
             _popView.hidden = NO;
         }];
+    }
+}
+
+
+- (void)maskTapped{
+    if (!_popView.isHidden) {
+        [self filterTypeBtnClicked];
+    }
+    
+    if (_bulletSetting.isAlreadyShow) {
+        [self smaller];
     }
 }
 
@@ -348,8 +361,10 @@
     _settingMask = [[UIView alloc] initWithFrame:self.view.bounds];
     _settingMask.backgroundColor = [BABlackColor colorWithAlphaComponent:0.4];
     _settingMask.hidden = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(maskTapped)];
+    [_settingMask addGestureRecognizer:tap];
     
-    [self.view insertSubview:_settingMask belowSubview:_bulletSetting];
+    [self.view insertSubview:_settingMask aboveSubview:_bulletListView];
 }
 
 
@@ -467,6 +482,7 @@
 
 
 - (void)gift:(NSNotification *)sender{
+    
     if (_filterTag == 0) return;
     
     NSArray *giftArray = sender.userInfo[BAUserInfoKeyGift];

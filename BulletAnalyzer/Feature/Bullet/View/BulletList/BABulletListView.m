@@ -49,7 +49,7 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
     NSArray *wordsIgnoreArray = [BAAnalyzerCenter defaultCenter].wordsIgnoreArray.copy;
     
     if (self.isScrollEnabled) {
-        [statusArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [statusArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL * _Nonnull stop1) {
             
             __block BOOL ignore = NO;
             
@@ -58,12 +58,15 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
                 
                 ignore = [userIgnoreArray containsObject:bulletModel];
                 if (!ignore) {
-                    [wordsIgnoreArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop) {
+                    [wordsIgnoreArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop2) {
                         ignore = [bulletModel.txt containsString:words];
-                        *stop = ignore;
+                        *stop2 = ignore;
                     }];
                 }
                 
+                if (ignore) {
+                    NSLog(@"%@", bulletModel.nn);
+                }
             } else {
                 BAGiftModel *giftModel = (BAGiftModel *)obj;
                 ignore = [userIgnoreArray containsObject:giftModel];
@@ -142,20 +145,13 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
         BABulletModel *bulletModel = _statusArray[indexPath.section];
         BABulletListCell *cell = [tableView dequeueReusableCellWithIdentifier:BABulletListCellReusedId forIndexPath:indexPath];
         cell.bulletModel = bulletModel;
-        cell.btnClicked = ^(){
-            
-            
-        };
-        
+
         return cell;
     } else {
         
         BAGiftModel *giftModel = _statusArray[indexPath.section];
         BABulletListGiftCell *cell = [tableView dequeueReusableCellWithIdentifier:BABulletListGiftCellReusedId forIndexPath:indexPath];
-        cell.giftModel = giftModel;cell.btnClicked = ^(){
-            
-            
-        };
+        cell.giftModel = giftModel;
         cell.bgType = BAGiftCellBgTypeWhole;
         
         NSInteger statusCount = _statusArray.count;
@@ -186,12 +182,25 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
     if ([statusModel isKindOfClass:[BABulletModel class]]) {
         BABulletModel *bulletModel = _statusArray[indexPath.section];
         //屏蔽
+        if ([BAAnalyzerCenter defaultCenter].noticeArray.count > 200) {
+            
+            [BATool showHUDWithText:@"屏蔽失败\n最多屏蔽200个人" ToView:self];
+            return;
+        }
+        
         [[BAAnalyzerCenter defaultCenter] ingnoreUserName:bulletModel.nn];
+        [BATool showHUDWithText:@"屏蔽成功\n该用户发言将被屏蔽" ToView:self];
         
     } else {
         BAGiftModel *giftModel = _statusArray[indexPath.section];
         //关注
+        if ([BAAnalyzerCenter defaultCenter].noticeArray.count > 30) {
+            
+            [BATool showHUDWithText:@"关注失败\n最多关注30个人" ToView:self];
+            return;
+        }
         [[BAAnalyzerCenter defaultCenter] addNotice:giftModel.nn];
+        [BATool showHUDWithText:@"关注成功\n该用户发言将被标记" ToView:self];
     }
 }
 

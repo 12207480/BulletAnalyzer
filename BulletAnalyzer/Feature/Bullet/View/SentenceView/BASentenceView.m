@@ -13,6 +13,7 @@ static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId
 
 @interface BASentenceView() <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UIImageView *shadowImgView;
+@property (nonatomic, strong) NSMutableArray *orginStatusArray;
 
 @end
 
@@ -30,7 +31,8 @@ static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId
 
 #pragma mark - public
 - (void)setStatusArray:(NSMutableArray *)statusArray{
-    _statusArray = statusArray;
+    _orginStatusArray = statusArray;
+    _statusArray = statusArray.copy;
     
     [self reloadData];
 }
@@ -74,6 +76,7 @@ static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId
 
 
 - (void)sortCell{
+    _statusArray = _orginStatusArray.copy;
     [UIView transitionWithView:self duration:0.6f options:UIViewAnimationOptionTransitionCrossDissolve animations:^(void) {
         [self reloadData];
     } completion: ^(BOOL isFinished) {

@@ -71,7 +71,7 @@ MJCodingImplementation
     _sn = sn;
     
     if (sn.length) {
-        _nn = sn;
+        self.nn = sn;
     }
 }
 
@@ -116,11 +116,13 @@ MJCodingImplementation
 
 
 - (void)setNn:(NSString *)nn{
-    _nn = nn;
-    
-    CGRect nameRect = [[nn stringByAppendingString:@":"] boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : BACommonFont(16)} context:nil];
-    
-    _nameWidth = nameRect.size.width;
+    if (nn.length) {
+        _nn = nn;
+        
+        CGRect nameRect = [[nn stringByAppendingString:@":"] boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : BACommonFont(16)} context:nil];
+        
+        _nameWidth = nameRect.size.width;
+    }
 }
 
 

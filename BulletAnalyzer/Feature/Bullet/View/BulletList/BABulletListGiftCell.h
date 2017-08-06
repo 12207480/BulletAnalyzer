@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^returnBlock)();
-
 typedef NS_ENUM(NSUInteger, BAGiftCellBgType) {
     BAGiftCellBgTypeWhole = 0,
     BAGiftCellBgTypeTop = 1,
@@ -30,10 +28,5 @@ typedef NS_ENUM(NSUInteger, BAGiftCellBgType) {
  背景类型
  */
 @property (nonatomic, assign) BAGiftCellBgType bgType;
-
-/**
- 按钮点击回调
- */
-@property (nonatomic, copy) returnBlock btnClicked;
 
 @end

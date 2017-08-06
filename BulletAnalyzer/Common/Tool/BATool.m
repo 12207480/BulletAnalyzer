@@ -14,9 +14,17 @@
 @implementation BATool
 
 + (void)showHUDWithText:(NSString *)text ToView:(UIView *)view{
+    NSArray *textArray;
+    if ([text containsString:@"\n"]) {
+        textArray = [text componentsSeparatedByString:@"\n"];
+    }
+    
     MBProgressHUD *progressHUD = [MBProgressHUD showHUDAddedTo:view animated:YES];
     progressHUD.mode = MBProgressHUDModeText;
     progressHUD.label.text = text;
+    if (textArray.count > 1) {
+        progressHUD.detailsLabel.text = textArray[1];
+    }
     progressHUD.removeFromSuperViewOnHide = YES;
     progressHUD.alpha = 0.9;
     [progressHUD hideAnimated:YES afterDelay:1.0f];

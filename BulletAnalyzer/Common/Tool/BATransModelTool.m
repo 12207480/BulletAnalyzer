@@ -80,7 +80,7 @@
             
             BABulletModel *bulletModel = [BABulletModel mj_objectWithKeyValues:dic];
             
-            [[BAAnalyzerCenter defaultCenter].noticeArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [[BAAnalyzerCenter defaultCenter].noticeArray.copy enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 if ([bulletModel.nn isEqualToString:obj]) {
                     bulletModel.notice = YES;
                     *stop = YES;

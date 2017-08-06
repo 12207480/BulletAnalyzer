@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^returnBlock)();
-
 @class BABulletModel;
 
 @interface BABulletListCell : UITableViewCell
@@ -18,10 +16,5 @@ typedef void(^returnBlock)();
  传入弹幕
  */
 @property (nonatomic, strong) BABulletModel *bulletModel;
-
-/**
- 按钮点击回调
- */
-@property (nonatomic, copy) returnBlock btnClicked;
 
 @end

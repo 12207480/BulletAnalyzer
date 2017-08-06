@@ -47,12 +47,6 @@
 }
 
 
-#pragma mark - userInteraction
-- (void)btnClicked:(UIButton *)sender{
-    _btnClicked();
-}
-
-
 #pragma mark - public
 - (void)setBulletModel:(BABulletModel *)bulletModel{
     _bulletModel = bulletModel;
@@ -87,6 +81,10 @@
 
 #pragma mark - private
 - (void)setupSubViews{
+    _noticeImgView = [UIImageView imageViewWithFrame:CGRectMake(BAScreenWidth - 2 * BAPadding - 33, 5.5, 33, 33) image:[UIImage imageNamed:@"notice"]];
+    _noticeImgView.hidden = YES;
+    
+    [self.contentView addSubview:_noticeImgView];
     
     _levelBgView = [UIImageView imageViewWithFrame:CGRectMake(BAPadding * 1.5, 14, 30, 13) image:nil];
     
@@ -101,11 +99,6 @@
     _contentLabel.lineBreakMode = NSLineBreakByCharWrapping;
     
     [self.contentView addSubview:_contentLabel];
-    
-    _noticeImgView = [UIImageView imageViewWithFrame:CGRectMake(BAScreenWidth - 8 * BAPadding, 5.5, 33, 33) image:[UIImage imageNamed:@"notice"]];
-    _noticeImgView.hidden = YES;
-    
-    [self.contentView addSubview:_noticeImgView];
 }
 
 

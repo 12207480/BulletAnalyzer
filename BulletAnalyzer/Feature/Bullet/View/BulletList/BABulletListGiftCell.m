@@ -46,12 +46,6 @@
 }
 
 
-#pragma mark - userInteraction
-- (void)btnClicked:(UIButton *)sender{
-    _btnClicked();
-}
-
-
 #pragma mark - public
 - (void)setGiftModel:(BAGiftModel *)giftModel{
     _giftModel = giftModel;
