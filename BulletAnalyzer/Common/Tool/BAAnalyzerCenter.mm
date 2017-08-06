@@ -515,7 +515,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
             //记录词的出现频率
             __block BOOL contained = NO;
-            [_wordsArray.mutableCopy enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
+            [_wordsArray.copy enumerateObjectsUsingBlock:^(BAWordsModel *wordsModel, NSUInteger idx, BOOL * _Nonnull stop3) {
                 
                 contained = [wordsModel isEqual:words];
                 if (contained) {
@@ -836,15 +836,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 [_bulletsArray removeObjectsInRange:NSMakeRange(0, _bulletsArray.count - 100)];
             }
             
-            //根据词出现的频次排序
-            [_wordsArray sortUsingComparator:^NSComparisonResult(BAWordsModel *wordsModel1, BAWordsModel *wordsModel2) {
-                return wordsModel1.count.integerValue > wordsModel2.count.integerValue ? NSOrderedAscending : NSOrderedDescending;
-            }];
-            //去掉排序400之后的词
-            if (_wordsArray.count > 700) {
-                [_wordsArray removeObjectsInRange:NSMakeRange(400, _wordsArray.count - 400)];
-            }
-            
             //说的多的句子排名 保留30个
             [_sentenceArray sortUsingComparator:^NSComparisonResult(BASentenceModel *obj1, BASentenceModel *obj2) {
                 return obj1.count > obj2.count ? NSOrderedAscending : NSOrderedDescending;
@@ -902,6 +893,15 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         
         params = 30;
         if ((CGFloat)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //30秒处理弹幕数量 以及当前观看人数 主播体重 等级分布
+            
+            //根据词出现的频次排序
+            [_wordsArray sortUsingComparator:^NSComparisonResult(BAWordsModel *wordsModel1, BAWordsModel *wordsModel2) {
+                return wordsModel1.count.integerValue > wordsModel2.count.integerValue ? NSOrderedAscending : NSOrderedDescending;
+            }];
+            //去掉排序400之后的词
+            if (_wordsArray.count > 700) {
+                [_wordsArray removeObjectsInRange:NSMakeRange(400, _wordsArray.count - 400)];
+            }
             
             //新建弹幕信息与时间关系的模型
             BACountTimeModel *countTimeModel = [BACountTimeModel new];
@@ -1296,7 +1296,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 }
 
 
-
 /**
  删除用户屏蔽
  */
@@ -1448,7 +1447,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     dispatch_async(self.analyzingQueue, ^{
         
         //先删除
-        [_wordsArray removeAllObjects];
+        [_wordsIgnoreArray removeAllObjects];
         
         [self.dataBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
             BOOL open = [db open];
