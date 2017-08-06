@@ -726,7 +726,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     
     //记录用户发言次数
     __block BOOL contained1 = NO;
-    [_userBulletCountArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
+    [_userBulletCountArray.copy enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
         contained1 = [bulletModel.uid isEqualToString:userModel.uid];
         if (contained1) {
@@ -744,7 +744,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     }
     
     //记录用户发言(鱼丸)
-    [_userFishBallCountArray enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
+    [_userFishBallCountArray.copy enumerateObjectsUsingBlock:^(BAUserModel *userModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
         BOOL contained = [bulletModel.uid isEqualToString:userModel.uid];
         if (contained) {
