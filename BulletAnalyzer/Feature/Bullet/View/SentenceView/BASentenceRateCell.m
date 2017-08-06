@@ -64,7 +64,7 @@
     
     [self addSubview:_countLabel];
     
-    _bulletLabel = [UILabel labelWithFrame:CGRectMake(_rateIcon.right + 1.5 * BAPadding, 0, _countLabel.x - _rateIcon.right - 1.5 * BAPadding, 44) text:nil color:BAWhiteColor font:BACommonFont(16) textAlignment:NSTextAlignmentLeft];
+    _bulletLabel = [UILabel labelWithFrame:CGRectMake(_rateIcon.right + 1.5 * BAPadding, 0, _countLabel.x - _rateIcon.right - 1.5 * BAPadding, 44) text:nil color:BAWhiteColor font:BACommonFont(15) textAlignment:NSTextAlignmentLeft];
     
     [self addSubview:_bulletLabel];
 }

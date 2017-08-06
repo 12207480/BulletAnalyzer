@@ -46,7 +46,7 @@ static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId
     timer = nil;
     if (hidden) return;
     
-    timer = [NSTimer timerWithTimeInterval:10.2f target:self selector:@selector(sortCell) userInfo:nil repeats:YES];
+    timer = [NSTimer timerWithTimeInterval:5.1f target:self selector:@selector(sortCell) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     [timer fire];
 }
