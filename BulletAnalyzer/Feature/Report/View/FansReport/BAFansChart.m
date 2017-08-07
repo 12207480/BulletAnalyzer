@@ -42,6 +42,13 @@
 }
 
 
+- (void)quickShow{
+    [_onlinePart quickShow];
+    [_attentionPart quickShow];
+    [_levelPart quickShow];
+}
+
+
 - (void)animation{
     [_onlinePart animation];
     [_attentionPart animation];

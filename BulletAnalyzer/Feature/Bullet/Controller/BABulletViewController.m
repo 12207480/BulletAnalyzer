@@ -180,6 +180,8 @@
 #pragma mark - userInteraction
 - (void)backBtnClicked{
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [_timer invalidate];
+    _timer = nil;
 }
 
 
@@ -511,18 +513,18 @@
     
     if (getSpeed > 1) { //设为1为最快速度 预留
         
-        self.getDuration = 0.05;
-        self.getCount = 50;
+        _getDuration = 0.05;
+        _getCount = 30;
         
     } else if (getSpeed > 0.8) {
         
-        _getDuration = 0.05;
-        _getCount = 30;
+        _getDuration = 0.1;
+        _getCount = 20;
         
     } else if (getSpeed > 0.6) {
         
         _getDuration = 0.1;
-        _getCount = 5;
+        _getCount = 2;
         
     } else if (getSpeed > 0.4) {
         

@@ -19,6 +19,12 @@
 @implementation BAFansChartPartView
 
 #pragma mark - public
+- (void)quickShow{
+    _shapeLayer.hidden = NO;
+    _borderShapeLayer.hidden = NO;
+}
+
+
 - (void)animation{
     
 //    _shapeLayer.hidden = NO;

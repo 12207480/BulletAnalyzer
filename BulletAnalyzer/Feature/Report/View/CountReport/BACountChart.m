@@ -46,6 +46,12 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
 }
 
 
+- (void)quickShow{
+    _bulletBorderLayer.hidden = NO;
+    _bulletLayer.hidden = NO;
+}
+
+
 - (void)animation{
     _bulletBorderLayer.hidden = NO;
     

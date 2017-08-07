@@ -19,6 +19,7 @@
 #import "BAFansInfoView.h"
 #import "BAGiftChart.h"
 #import "BAGiftInfoView.h"
+#import "BAShareView.h"
 #import <UShareUI/UShareUI.h>
 
 @interface BAReportViewController () <UIScrollViewDelegate>
@@ -98,7 +99,34 @@
 }
 
 
-- (void)share{
+- (void)save{
+    
+    BAShareView *shareView = [[BAShareView alloc] initWithFrame:BAKeyWindow.bounds];
+    WeakObj(shareView);
+    WeakObj(self);
+    shareView.btnClicked = ^(NSInteger tag){
+        
+        switch (tag) {
+            case 0: {
+                UIImageWriteToSavedPhotosAlbum(selfWeak.shareImg, nil, nil, nil);
+                [BATool showHUDWithText:@"已保存在手机相册" ToView:BAKeyWindow];
+                break;
+            }
+            case 1:
+                [selfWeak shareBtnClicked];
+                break;
+                
+            case 2:
+                
+                [shareViewWeak removeFromSuperview];
+                break;
+                
+            default:
+                break;
+        }
+    };
+    
+    [BAKeyWindow addSubview:shareView];
     
     if (!_shareImg) {
         
@@ -106,17 +134,21 @@
         self.navigationItem.rightBarButtonItem = nil;
         self.screenshot = YES;
         
-        [_countChart animation];
-        [_wordsChart animation];
-        [_fansChart animation];
-        [_giftChart animation];
+        [_scrollView setContentOffset:CGPointMake(0, 0) animated:NO];
         
-        __block NSMutableArray *images = [NSMutableArray array];
-        UIImage *menuPage = [BATool captureScreen:BAKeyWindow];
-        [images addObject:menuPage];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_countChart quickShow];
+        [_wordsChart quickShow];
+        [_fansChart quickShow];
+        [_giftChart quickShow];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            __block NSMutableArray *images = [NSMutableArray array];
+            UIImage *menuPage = [BATool captureScreen:self.navigationController.view];
+            [images addObject:menuPage];
             
             for (NSInteger i = 2; i < 6; i++) {
+                
                 [_scrollView setContentOffset:CGPointMake(BAScreenWidth * (i - 1) - 1, 0) animated:NO];
                 [_scrollView setContentOffset:CGPointMake(BAScreenWidth * (i - 1), 0) animated:YES];
                 switch (i) {
@@ -140,23 +172,23 @@
                         break;
                 }
                 
-                UIImage *currentPage = [BATool captureScreen:BAKeyWindow];
+                UIImage *currentPage = [BATool captureScreen:self.navigationController.view];
                 [images addObject:currentPage];
             }
             _shareImg = [BATool combineImages:images];
             
-            self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(dismiss)];
-            self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
             self.screenshot = NO;
             self.title = @"分析报告";
             [_scrollView setContentOffset:CGPointMake(1, 0) animated:NO];
             [_scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
-            
-            [self shareBtnClicked];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(dismiss)];
+                self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"保存" target:self action:@selector(save)];
+                shareView.reportImg = _shareImg;
+            });
         });
     } else {
-        
-        [self shareBtnClicked];
+        shareView.reportImg = _shareImg;
     }
 }
 
@@ -167,7 +199,7 @@
     self.view.layer.contents = (id)[UIImage new].CGImage;
     self.title = @"分析报告";
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(dismiss)];
-    self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(share)];
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"保存" target:self action:@selector(save)];
 }
 
 
@@ -401,10 +433,12 @@
 
 #pragma mark - share
 - (void)shareBtnClicked{
-    
-    NSData *imageData = UIImageJPEGRepresentation(_shareImg,1);
-    
-    NSLog(@"%f", (CGFloat)[imageData length]/1024);
+//    
+//    NSData *imageData = UIImageJPEGRepresentation(_shareImg, 0.99);
+//    NSData *imageData2 = UIImageJPEGRepresentation(_shareImg, 1);
+//    NSData *imageData3 = UIImagePNGRepresentation(_shareImg);
+//    
+//    NSLog(@"%f---%f---%f", (CGFloat)[imageData length]/1024, (CGFloat)[imageData2 length]/1024, (CGFloat)[imageData3 length]/1024);
     
 //    NSArray *activityItems = @[_shareImg];
 //    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
@@ -426,7 +460,7 @@
     //创建图片内容对象
     UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
     //如果有缩略图，则设置缩略图
-    //shareObject.thumbImage = [UIImage imageNamed:@"AppIcon"];
+    shareObject.thumbImage = [UIImage imageNamed:@"Icon-Small"];
     [shareObject setShareImage:_shareImg];
     
     //分享消息对象设置分享内容对象

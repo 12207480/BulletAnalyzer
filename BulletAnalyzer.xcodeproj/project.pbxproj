@@ -21,6 +21,7 @@
 		387020461F2242490047B94B /* BACountChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 387020411F2242490047B94B /* BACountChart.m */; };
 		387020471F2242490047B94B /* BACountInfoBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 387020431F2242490047B94B /* BACountInfoBlock.m */; };
 		387020481F2242490047B94B /* BACountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 387020451F2242490047B94B /* BACountInfoView.m */; };
+		3873CCAC1F384BEF0007BA79 /* BAShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3873CCAB1F384BEF0007BA79 /* BAShareView.m */; };
 		388A00011EE04A030031DE53 /* BASocketTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A00001EE04A030031DE53 /* BASocketTool.m */; };
 		388A85C41EE40C2B00A0BC5B /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85B81EE40C2B00A0BC5B /* AFHTTPSessionManager.m */; };
 		388A85C51EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85BB1EE40C2B00A0BC5B /* AFNetworkReachabilityManager.m */; };
@@ -279,6 +280,8 @@
 		387020431F2242490047B94B /* BACountInfoBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountInfoBlock.m; sourceTree = "<group>"; };
 		387020441F2242490047B94B /* BACountInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACountInfoView.h; sourceTree = "<group>"; };
 		387020451F2242490047B94B /* BACountInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountInfoView.m; sourceTree = "<group>"; };
+		3873CCAA1F384BEF0007BA79 /* BAShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAShareView.h; sourceTree = "<group>"; };
+		3873CCAB1F384BEF0007BA79 /* BAShareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAShareView.m; sourceTree = "<group>"; };
 		388A00001EE04A030031DE53 /* BASocketTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASocketTool.m; sourceTree = "<group>"; };
 		388A85B71EE40C2B00A0BC5B /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		388A85B81EE40C2B00A0BC5B /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPSessionManager.m; sourceTree = "<group>"; };
@@ -849,6 +852,16 @@
 			);
 			name = "CountReport(弹幕数量页)";
 			path = CountReport;
+			sourceTree = "<group>";
+		};
+		3873CCA91F384BDC0007BA79 /* ShareView(分享页面) */ = {
+			isa = PBXGroup;
+			children = (
+				3873CCAA1F384BEF0007BA79 /* BAShareView.h */,
+				3873CCAB1F384BEF0007BA79 /* BAShareView.m */,
+			);
+			name = "ShareView(分享页面)";
+			path = ShareView;
 			sourceTree = "<group>";
 		};
 		388A85B61EE40C2B00A0BC5B /* AFNetworking */ = {
@@ -1945,6 +1958,7 @@
 		F2EF75551F20752300B0D70B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3873CCA91F384BDC0007BA79 /* ShareView(分享页面) */,
 				380ECF071F22ED3700D26CF6 /* FansReport(粉丝分析) */,
 				380ECF081F22ED3700D26CF6 /* GiftReport(礼物分析) */,
 				380ECEFA1F22ED2500D26CF6 /* WordsReport(关键词分析) */,
@@ -2280,6 +2294,7 @@
 				F231C7BA1EE509F700EB0F79 /* UIImageView+WebCache.m in Sources */,
 				3894FDE51EF2BD180013A4E0 /* BASlider.m in Sources */,
 				F222A4681F0B44D000E70ADA /* LOTShapeLayerView.m in Sources */,
+				3873CCAC1F384BEF0007BA79 /* BAShareView.m in Sources */,
 				F2587C0F1EFB93B00026DFF5 /* BASentenceModel.m in Sources */,
 				388A860A1EE419D000A0BC5B /* UIBarButtonItem+ZJExtension.m in Sources */,
 				38DA28FA1F354EAA00CD25B6 /* BABulletSliderView.m in Sources */,

@@ -65,7 +65,7 @@ static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId
     [self registerClass:[BASentenceRateCell class] forCellReuseIdentifier:BASentenceRateCellReusedId];
 
     self.showsVerticalScrollIndicator = NO;
-    self.separatorColor = [BAWhiteColor colorWithAlphaComponent:0.7];
+    self.separatorColor = [BAWhiteColor colorWithAlphaComponent:0.1];
     self.separatorInset = UIEdgeInsetsMake(0, 2 * BAPadding, 0, 2 * BAPadding);
     self.layer.masksToBounds = NO;
     self.delegate = self;

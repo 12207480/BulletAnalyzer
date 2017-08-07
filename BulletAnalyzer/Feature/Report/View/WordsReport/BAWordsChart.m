@@ -42,6 +42,14 @@
 }
 
 
+- (void)quickShow{
+    for (NSInteger i = 0; i < 10; i++) {
+        CAShapeLayer *layer = _barLayerArray[9 - i];
+        layer.hidden = NO;
+    }
+}
+
+
 - (void)animation{
     for (NSInteger i = 0; i < 10; i++) {
         CAShapeLayer *layer = _barLayerArray[9 - i];

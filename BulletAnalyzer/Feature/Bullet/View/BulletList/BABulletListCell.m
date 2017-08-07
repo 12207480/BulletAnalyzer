@@ -33,20 +33,6 @@
 }
 
 
-- (void)layoutSubviews{
-    [super layoutSubviews];
-    
-    for (UIView *subView in self.subviews) {
-        
-        if ([NSStringFromClass([subView class]) isEqualToString:@"UITableViewCellDeleteConfirmationView"]) {
-            
-            UIView *bgView = (UIView *)[subView.subviews firstObject];
-            bgView.backgroundColor = [BAWhiteColor colorWithAlphaComponent:0.2];
-        }
-    }
-}
-
-
 #pragma mark - public
 - (void)setBulletModel:(BABulletModel *)bulletModel{
     _bulletModel = bulletModel;

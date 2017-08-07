@@ -101,6 +101,7 @@
 
 - (void)openBtnClicked:(NSNotification *)sender{
     BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyMainCellOpenBtnClicked];
+    reportModel.newReport = NO;
     CGRect rect = [sender.userInfo[BAUserInfoKeyMainCellOpenBtnFrame] CGRectValue];
     
     BAReportViewController *bulletVC = [[BAReportViewController alloc] init];

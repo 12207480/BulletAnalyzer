@@ -225,4 +225,9 @@
  */
 @property (nonatomic, assign, getter=isInterruptAnalyzing) BOOL interruptAnalyzing;
 
+/**
+ 是不是新报告
+ */
+@property (nonatomic, assign, getter=isNewReport) BOOL newReport;
+
 @end

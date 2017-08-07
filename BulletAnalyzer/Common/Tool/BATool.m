@@ -112,7 +112,7 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
 
 
 + (UIImage *)captureScreen:(UIView *)viewToCapture {
-    UIGraphicsBeginImageContextWithOptions(viewToCapture.bounds.size, NO, 0.0);
+    UIGraphicsBeginImageContextWithOptions(viewToCapture.bounds.size, YES, [UIScreen mainScreen].scale);
     [viewToCapture.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -127,7 +127,7 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
     CGFloat height = image.size.height * images.count;
     CGSize offScreenSize = CGSizeMake(width, height);
     
-    UIGraphicsBeginImageContext(offScreenSize);
+    UIGraphicsBeginImageContextWithOptions(offScreenSize, YES, [UIScreen mainScreen].scale);
     
     CGRect rect = CGRectMake(0, 0, width, image.size.height);
     

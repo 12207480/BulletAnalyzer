@@ -23,6 +23,11 @@
 - (void)animation;
 
 /**
+ 快速展示
+ */
+- (void)quickShow;
+
+/**
  隐藏
  */
 - (void)hide;

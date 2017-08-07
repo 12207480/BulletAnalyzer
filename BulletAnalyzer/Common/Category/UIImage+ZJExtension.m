@@ -133,6 +133,17 @@
 }
 
 
++ (UIImage *)reSizeImage:(UIImage *)image toSize:(CGSize)reSize{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(reSize.width, reSize.height), NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, reSize.width, reSize.height)];
+    UIImage *reSizeImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return reSizeImage;
+    
+}
+
+
 - (UIImage *)imageWithCornerRadius:(CGFloat)radius{
     
     CGRect rect = (CGRect){0.f,0.f,self.size};

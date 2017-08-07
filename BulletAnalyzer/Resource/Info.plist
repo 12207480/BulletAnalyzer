@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>斗鱼伴侣需要您的同意才能将照片存往相册</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

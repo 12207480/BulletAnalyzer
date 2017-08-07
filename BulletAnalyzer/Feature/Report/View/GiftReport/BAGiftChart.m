@@ -59,6 +59,22 @@
 }
 
 
+- (void)quickShow{
+    NSInteger i = 0;
+    for (CAShapeLayer *pieLayer in _pieArray) {
+        CAShapeLayer *inPieLayer = _inPieArray[i];
+        CALayer *bedgeLayer = _bedgeArray[i];
+        CAShapeLayer *lineLayer = _lineArray[i];
+        pieLayer.hidden = NO;
+        inPieLayer.hidden = NO;
+        bedgeLayer.hidden = NO;
+        lineLayer.hidden = NO;
+        
+        i++;
+    }
+}
+
+
 - (void)animation{
     NSInteger i = 0;
     CGFloat delay = 0;

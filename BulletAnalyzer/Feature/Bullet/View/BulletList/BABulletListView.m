@@ -35,6 +35,11 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
 }
 
 
+- (void)dealloc{
+    NSLog(@"%s", __func__);
+}
+
+
 #pragma mark - userInteraction
 - (void)downBtnClicked{
     self.scrollEnable = YES;
@@ -49,6 +54,7 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
     NSArray *wordsIgnoreArray = [BAAnalyzerCenter defaultCenter].wordsIgnoreArray.copy;
     
     if (self.isScrollEnabled) {
+        
         [statusArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL * _Nonnull stop1) {
             
             __block BOOL ignore = NO;
@@ -64,9 +70,6 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
                     }];
                 }
                 
-                if (ignore) {
-                    NSLog(@"%@", bulletModel.nn);
-                }
             } else {
                 BAGiftModel *giftModel = (BAGiftModel *)obj;
                 ignore = [userIgnoreArray containsObject:giftModel];
@@ -80,8 +83,10 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
                 
                 [self reloadData];
                 [self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:_statusArray.count - 1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                
             }
         }];
+      
     } else {
         
         //暂停滚动后的数据未处理
@@ -177,14 +182,40 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
 }
 
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-
-    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     id statusModel = _statusArray[indexPath.section];
     
-    if ([statusModel isKindOfClass:[BABulletModel class]]) {
+    BOOL isBulletCell = [statusModel isKindOfClass:[BABulletModel class]];
+
+    UITableViewRowAction *noticeRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"关注" handler:^(UITableViewRowAction *action,NSIndexPath *indexPath) {
+
+        NSString *name;
+        if (isBulletCell) {
+            BABulletModel *bulletModel = _statusArray[indexPath.section];
+            name = bulletModel.nn;
+        } else {
+            BAGiftModel *giftModel = _statusArray[indexPath.section];
+            name = giftModel.nn;
+        }
+        
+        //关注
+        if ([BAAnalyzerCenter defaultCenter].noticeArray.count > 30) {
+            
+            [BATool showHUDWithText:@"关注失败\n最多关注30个人" ToView:self];
+            return;
+        }
+        [[BAAnalyzerCenter defaultCenter] addNotice:name];
+        [BATool showHUDWithText:@"关注成功\n该用户发言将被标记" ToView:self];
+        
+        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+    noticeRowAction.backgroundColor = BAColor(232, 131, 247);
+    
+    UITableViewRowAction *filterAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"屏蔽" handler:^(UITableViewRowAction *action,NSIndexPath *indexPath) {
+        
         BABulletModel *bulletModel = _statusArray[indexPath.section];
+        
         //屏蔽
         if ([BAAnalyzerCenter defaultCenter].noticeArray.count > 200) {
             
@@ -195,27 +226,14 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
         [[BAAnalyzerCenter defaultCenter] ingnoreUserName:bulletModel.nn];
         [BATool showHUDWithText:@"屏蔽成功\n该用户发言将被屏蔽" ToView:self];
         
-    } else {
-        BAGiftModel *giftModel = _statusArray[indexPath.section];
-        //关注
-        if ([BAAnalyzerCenter defaultCenter].noticeArray.count > 30) {
-            
-            [BATool showHUDWithText:@"关注失败\n最多关注30个人" ToView:self];
-            return;
-        }
-        [[BAAnalyzerCenter defaultCenter] addNotice:giftModel.nn];
-        [BATool showHUDWithText:@"关注成功\n该用户发言将被标记" ToView:self];
-    }
-}
-
-
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
-    id statusModel = _statusArray[indexPath.section];
+        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+    filterAction.backgroundColor = BAColor(172, 111, 255);
     
-    if ([statusModel isKindOfClass:[BABulletModel class]]) {
-        return @"屏蔽";
+    if (isBulletCell) {
+        return @[noticeRowAction, filterAction];
     } else {
-        return @"关注";
+        return @[noticeRowAction];
     }
 }
 

@@ -118,28 +118,33 @@
  更换线路
  */
 - (void)changeLine:(NSInteger)line{
-    if (line == _line) return;
-    _line = line;
-    
-    // 1. 与服务器的socket链接起来
-    NSError *error = nil;
-    NSInteger servicePort = _line == 1 ? BAServicePort1 : BAServicePort2;
-    BOOL result = [self.socket connectToHost:BAServiceAddress onPort:servicePort error:&error];
-    
-    // 2. 判断端口号是否开放成功
-    if (result) {
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        NSLog(@"客户端连接服务器成功");
+        if (line == _line) return;
+        _line = line;
         
-        _serviceConnected = YES;
+        // 1. 与服务器的socket链接起来
+        NSError *error = nil;
+        NSInteger servicePort = _line == 1 ? BAServicePort1 : BAServicePort2;
         
-        [self connectRoom];
-        
-    } else {
-        NSLog(@"客户端连接服务器失败");
-        
-        _serviceConnected = NO;
-    }
+        BOOL result = [self.socket connectToHost:BAServiceAddress onPort:servicePort error:&error];
+        // 2. 判断端口号是否开放成功
+        if (result) {
+            
+            NSLog(@"客户端连接服务器成功");
+            
+            _serviceConnected = YES;
+            
+            [self connectRoom];
+            
+        } else {
+            NSLog(@"客户端连接服务器失败");
+            
+            _serviceConnected = NO;
+        }
+
+    });
 }
 
 

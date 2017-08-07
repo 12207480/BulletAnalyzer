@@ -42,7 +42,7 @@ MJExtensionCodingImplementation
     }
     
     BABulletModel *bulletModel = (BABulletModel *)object;
-    return [self.nn isEqualToString:bulletModel.nn];
+    return [self.txt isEqualToString:bulletModel.txt];
 }
 
 

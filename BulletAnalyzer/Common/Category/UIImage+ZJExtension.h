@@ -72,6 +72,15 @@
 + (UIImage *)reSizeImageData:(UIImage *)sourceImage maxImageSize:(CGFloat)maxImageSize maxSizeWithKB:(CGFloat)maxSize;
 
 /**
+ 调整图像的size
+
+ @param image 原图
+ @param reSize 尺寸
+ @return 调整后的图片
+ */
++ (UIImage *)reSizeImage:(UIImage *)image toSize:(CGSize)reSize;
+
+/**
  生成圆角图片
 
  @param radius 图片圆角半径
