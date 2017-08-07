@@ -16,6 +16,7 @@
 #import "BAUserModel.h"
 #import "BACountTimeModel.h"
 #import "BARoomModel.h"
+#import "BASocketTool.h"
 #import "Segmentor.h"
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
@@ -68,6 +69,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 @property (nonatomic, assign) NSInteger timeRepeatCount; //时钟重复次数
 @property (nonatomic, assign) NSInteger bulletsCount;   //弹幕次数/在采样时间内
 @property (nonatomic, assign) CGFloat repeatTime; //单词重复时间
+@property (nonatomic, assign, getter=isBeginAnalyzing) BOOL beginAnalyzing; //开始分析
 
 @end
 
@@ -171,8 +173,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     
     [self beginObserving];
 
-    //发出通知 开始分析
-    [BANotificationCenter postNotificationName:BANotificationBeginAnalyzing object:nil userInfo:@{BAUserInfoKeyReportModel : _analyzingReportModel}];
+    _beginAnalyzing = YES;
 }
 
 
@@ -256,6 +257,15 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     
     //获取房间信息
     [BAHttpTool getRoomInfoWithParams:params success:^(BARoomModel *roomModel) {
+        
+        if (roomModel.room_status.integerValue == 2) {
+    
+            [BATool showHUDWithText:@"主播已下播" ToView:BAKeyWindow];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [[BASocketTool defaultSocket] cutOff];
+            });
+            return;
+        }
         
         _analyzingReportModel.fansCount = roomModel.fans_num;
         _analyzingReportModel.weight = roomModel.owner_weight;
@@ -456,6 +466,12 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  获取到弹幕
  */
 - (void)bullet:(NSNotification *)sender{
+    //发出通知 开始分析
+    if (self.isBeginAnalyzing) {
+        [BANotificationCenter postNotificationName:BANotificationBeginAnalyzing object:nil userInfo:@{BAUserInfoKeyReportModel : _analyzingReportModel}];
+        _beginAnalyzing = NO;
+    }
+    
     //取出弹幕
     NSArray *bulletModelArray = sender.userInfo[BAUserInfoKeyBullet];
     
@@ -836,23 +852,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 [_bulletsArray removeObjectsInRange:NSMakeRange(0, _bulletsArray.count - 100)];
             }
             
-            //说的多的句子排名 保留30个
-            [_sentenceArray sortUsingComparator:^NSComparisonResult(BASentenceModel *obj1, BASentenceModel *obj2) {
-                return obj1.count > obj2.count ? NSOrderedAscending : NSOrderedDescending;
-            }];
-            //句子数量全部减一
-            [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                [obj decrease];
-            }];
-            
-            //说的多的句子排名 保留30个
-            [_popSentenceArray sortUsingComparator:^NSComparisonResult(BASentenceModel *obj1, BASentenceModel *obj2) {
-                return obj1.realCount > obj2.realCount ? NSOrderedAscending : NSOrderedDescending;
-            }];
-            if (_popSentenceArray.count > 50) {
-                [_popSentenceArray removeObjectsInRange:NSMakeRange(30, _popSentenceArray.count - 30)];
-            }
-            
             //赠送鱼丸排序
             [_userFishBallCountArray sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
                 return userModel1.fishBallCount.integerValue > userModel2.fishBallCount.integerValue ? NSOrderedAscending : NSOrderedDescending;
@@ -878,6 +877,22 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         //根据用户发言的次数排序
         params = 20;
         if ((CGFloat)_timeRepeatCount/params - _timeRepeatCount/params == 0) { //20秒处理一次用户/用户等级
+            //说的多的句子排名 保留30个
+            [_sentenceArray sortUsingComparator:^NSComparisonResult(BASentenceModel *obj1, BASentenceModel *obj2) {
+                return obj1.count > obj2.count ? NSOrderedAscending : NSOrderedDescending;
+            }];
+            //句子数量全部减一
+            [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [obj decrease];
+            }];
+            
+            //说的多的句子排名 保留30个
+            [_popSentenceArray sortUsingComparator:^NSComparisonResult(BASentenceModel *obj1, BASentenceModel *obj2) {
+                return obj1.realCount > obj2.realCount ? NSOrderedAscending : NSOrderedDescending;
+            }];
+            if (_popSentenceArray.count > 50) {
+                [_popSentenceArray removeObjectsInRange:NSMakeRange(30, _popSentenceArray.count - 30)];
+            }
             
             [_userBulletCountArray sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
                 return userModel1.count.integerValue > userModel2.count.integerValue ? NSOrderedAscending : NSOrderedDescending;
@@ -958,15 +973,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 NSLog(@"completedReport创表失败");
             }
             
-            //未完成分析表
-            NSString *execute2 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ integer, %@ Blob)", BAAnalyzingReport, BAReportID, BAReportData];
-            BOOL createAnalyzingReportTable = [db executeUpdate:execute2];
-            if (createAnalyzingReportTable) {
-                NSLog(@"AnalyzingReportTable创表成功");
-            } else {
-                NSLog(@"AnalyzingReportTable创表失败");
-            }
-            
             //先取出完成表来里的数据解档
             NSString *select1 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID DESC", BACompletedReport];
             FMResultSet *result1 = [db executeQuery:select1];
@@ -979,18 +985,27 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 }
             }
             
-            //再取出未完成表来里的数据解档
-            NSString *select2 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID DESC", BAAnalyzingReport];
-            FMResultSet *result2 = [db executeQuery:select2];
-            while (result2.next) {
-                
-                NSData *reportData = [result2 dataForColumn:BAReportData];
-                BAReportModel *reportModel = [NSKeyedUnarchiver unarchiveObjectWithData:reportData];
-                
-                if (reportModel) {
-                    [tempArray addObject:reportModel];
-                }
-            }
+//            //未完成分析表
+//            NSString *execute2 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ integer, %@ Blob)", BAAnalyzingReport, BAReportID, BAReportData];
+//            BOOL createAnalyzingReportTable = [db executeUpdate:execute2];
+//            if (createAnalyzingReportTable) {
+//                NSLog(@"AnalyzingReportTable创表成功");
+//            } else {
+//                NSLog(@"AnalyzingReportTable创表失败");
+//            }
+//            
+//            //再取出未完成表来里的数据解档
+//            NSString *select2 = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY ID DESC", BAAnalyzingReport];
+//            FMResultSet *result2 = [db executeQuery:select2];
+//            while (result2.next) {
+//                
+//                NSData *reportData = [result2 dataForColumn:BAReportData];
+//                BAReportModel *reportModel = [NSKeyedUnarchiver unarchiveObjectWithData:reportData];
+//                
+//                if (reportModel) {
+//                    [tempArray addObject:reportModel];
+//                }
+//            }
 
             //关注表
             NSString *execute3 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (ID integer primary key autoincrement, %@ Blob)", BANotice, BANoticeData];

@@ -46,7 +46,7 @@ static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId
     timer = nil;
     if (hidden) return;
     
-    timer = [NSTimer timerWithTimeInterval:5.1f target:self selector:@selector(sortCell) userInfo:nil repeats:YES];
+    timer = [NSTimer timerWithTimeInterval:10.1f target:self selector:@selector(sortCell) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     [timer fire];
 }
@@ -67,6 +67,7 @@ static NSString *const BASentenceRateCellReusedId = @"BASentenceRateCellReusedId
     self.showsVerticalScrollIndicator = NO;
     self.separatorColor = [BAWhiteColor colorWithAlphaComponent:0.7];
     self.separatorInset = UIEdgeInsetsMake(0, 2 * BAPadding, 0, 2 * BAPadding);
+    self.layer.masksToBounds = NO;
     self.delegate = self;
     self.dataSource = self;
     self.layer.masksToBounds = NO;

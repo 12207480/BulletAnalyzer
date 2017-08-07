@@ -29,7 +29,8 @@
 @property (nonatomic, strong) BABulletSetting *bulletSetting;  //弹出的三个按钮
 @property (nonatomic, strong) BABulletSliderView *bulletSliderView; //弹幕速度滑块
 @property (nonatomic, strong) BASentenceView *sentenceView; //相似弹幕
-@property (nonatomic, strong) BABulletListNavPopView *popView; //筛选弹框
+@property (nonatomic, strong) BABulletListNavPopView *filterPopView; //筛选弹框
+@property (nonatomic, strong) BABulletListNavPopView *linePopView; //线路弹框
 @property (nonatomic, strong) UIView *settingMask; //遮盖
 @property (nonatomic, strong) NSTimer *hideTimer; //隐藏倒计时
 @property (nonatomic, assign) CGFloat repeatDuration; //倒计时时间
@@ -95,6 +96,7 @@
         //弹幕列表尺寸变化
         [UIView animateWithDuration:0.3 animations:^{
             _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69);
+            [_bulletListView frameChanged];
         } completion:nil];
     }
   
@@ -117,6 +119,7 @@
     [self beginTimer];
     [UIView animateWithDuration:0.3 animations:^{
         _bulletListView.frame = CGRectMake(0, 64, BAScreenWidth, BAScreenHeight - 113);
+        [_bulletListView frameChanged];
     } completion:nil];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
@@ -128,6 +131,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         _bulletSliderView.transform = CGAffineTransformIdentity;
         _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69 - _bulletSliderView.height);
+        [_bulletListView frameChanged];
     } completion:^(BOOL finished) {
         [_bulletMenu shadowHide];
     }];
@@ -139,6 +143,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         _bulletSliderView.transform = CGAffineTransformMakeTranslation(0, _bulletSliderView.height + _bulletMenu.height);
         _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69);
+        [_bulletListView frameChanged];
     } completion:^(BOOL finished) {
         [_bulletMenu shadowShow];
         _bulletSliderView.hidden = YES;
@@ -152,6 +157,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         _sentenceView.transform = CGAffineTransformIdentity;
         _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69 - _sentenceView.height);
+        [_bulletListView frameChanged];
     } completion:^(BOOL finished) {
         [_bulletMenu shadowHide];
     }];
@@ -163,6 +169,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         _sentenceView.transform = CGAffineTransformMakeTranslation(0, _sentenceView.height + _bulletMenu.height);
         _bulletListView.frame = CGRectMake(0, 20, BAScreenWidth, BAScreenHeight - 69);
+        [_bulletListView frameChanged];
     } completion:^(BOOL finished) {
         [_bulletMenu shadowShow];
         _sentenceView.hidden = YES;
@@ -177,8 +184,8 @@
 
 
 - (void)filterTypeBtnClicked{
-    
-    if (_bulletSetting.isAlreadyShow) return;
+
+    if (_bulletSetting.isAlreadyShow || !_linePopView.isHidden) return;
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -189,31 +196,67 @@
         [_hideTimer invalidate];
         _hideTimer = nil;
     
-        _popView.hidden = NO;
+        _filterPopView.hidden = NO;
         _settingMask.hidden = NO;
         [UIView animateWithDuration:0.3 animations:^{
-            _popView.alpha = 1;
+            _filterPopView.alpha = 1;
         }];
     } else {
         [self beginTimer];
         
         _settingMask.hidden = YES;
         [UIView animateWithDuration:0.3 animations:^{
-            _popView.alpha = 0;
+            _filterPopView.alpha = 0;
         } completion:^(BOOL finished) {
-            _popView.hidden = NO;
+            _filterPopView.hidden = YES;
         }];
     }
 }
 
 
 - (void)maskTapped{
-    if (!_popView.isHidden) {
+    
+    if (!_filterPopView.isHidden) {
         [self filterTypeBtnClicked];
+    }
+    
+    if (!_linePopView.isHidden) {
+        [self lineBtnClicked];
     }
     
     if (_bulletSetting.isAlreadyShow) {
         [self smaller];
+    }
+}
+
+
+- (void)lineBtnClicked{
+    
+    if (_bulletSetting.isAlreadyShow || !_filterPopView.isHidden) return;
+    
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.navigationItem.leftBarButtonItem.enabled = YES;
+    });
+    
+    if (_hideTimer) {
+        [_hideTimer invalidate];
+        _hideTimer = nil;
+        
+        _linePopView.hidden = NO;
+        _settingMask.hidden = NO;
+        [UIView animateWithDuration:0.3 animations:^{
+            _linePopView.alpha = 1;
+        }];
+    } else {
+        [self beginTimer];
+        
+        _settingMask.hidden = YES;
+        [UIView animateWithDuration:0.3 animations:^{
+            _linePopView.alpha = 0;
+        } completion:^(BOOL finished) {
+            _linePopView.hidden = YES;
+        }];
     }
 }
 
@@ -231,11 +274,19 @@
 
 - (void)addNotificationObserver{
     [BANotificationCenter addObserver:self selector:@selector(gift:) name:BANotificationGift object:nil];
+    [BANotificationCenter addObserver:self selector:@selector(backBtnClicked) name:BANotificationEndAnalyzing object:nil];
 }
 
 
 - (void)setupBulletListView{
+    WeakObj(self);
     _bulletListView = [[BABulletListView alloc] init];
+    _bulletListView.scrollViewTouched = ^{
+        if (!selfWeak.isMidBtnClose) {
+            
+            [selfWeak larger];
+        }
+    };
 
     [self.view addSubview:_bulletListView];
 }
@@ -245,7 +296,7 @@
     WeakObj(self);
     _bulletMenu = [[BABulletMenu alloc] initWithFrame:CGRectMake(0, BAScreenHeight - BABulletMenuHeight, BAScreenWidth, BABulletMenuHeight)];
     _bulletMenu.menuTouched = ^{
-       
+        
         if (!selfWeak.midBtnClose) {
             [selfWeak larger];
         }
@@ -394,15 +445,26 @@
 
 - (void)setupPopView{
     WeakObj(self);
-    _popView = [[BABulletListNavPopView alloc] initWithFrame:CGRectMake(BAScreenWidth - 100, 64, 100, 105)];
-    _popView.alpha = 0;
-    _popView.hidden = YES;
-    _popView.btnClicked = ^(NSInteger tag) {
+    _filterPopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(BAScreenWidth - 100, 64, 100, 105) titles:@[@"弹幕", @"礼物", @"弹幕&礼物"]];
+    _filterPopView.alpha = 0;
+    _filterPopView.hidden = YES;
+    _filterPopView.btnClicked = ^(NSInteger tag) {
         selfWeak.filterTag = tag;
         [selfWeak filterTypeBtnClicked];
     };
     
-    [self.view addSubview:_popView];
+    [self.view addSubview:_filterPopView];
+    
+    _linePopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(0, 64, 100, 70) titles:@[@"线路一", @"线路二"]];
+    _linePopView.alpha = 0;
+    _linePopView.hidden = YES;
+    _linePopView.btnClicked = ^(NSInteger tag) {
+        
+        [selfWeak lineBtnClicked];
+        [[BASocketTool defaultSocket] changeLine:tag];
+    };
+    
+    [self.view addSubview:_linePopView];
 }
 
 
@@ -410,6 +472,7 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage createImageWithColor:[BAWhiteColor colorWithAlphaComponent:0.3]] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"navShadowImg"]];
     self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"筛选" target:self action:@selector(filterTypeBtnClicked)];
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"线路" target:self action:@selector(lineBtnClicked)];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
 }

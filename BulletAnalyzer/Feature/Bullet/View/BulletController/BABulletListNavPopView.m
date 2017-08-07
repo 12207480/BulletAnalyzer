@@ -9,58 +9,59 @@
 #import "BABulletListNavPopView.h"
 
 @interface BABulletListNavPopView()
-@property (nonatomic, strong) UIButton *bulletBtn;
-@property (nonatomic, strong) UIButton *giftBtn;
-@property (nonatomic, strong) UIButton *bulletGiftBtn;
+@property (nonatomic, strong) NSMutableArray *btns;
+@property (nonatomic, strong) NSArray *titles;
 
 @end
 
 @implementation BABulletListNavPopView
 
 #pragma mark - lifeCycle
-- (instancetype)initWithFrame:(CGRect)frame{
-    if (self = [super initWithFrame:frame]) {
-        
-        [self setupSubViews];
-    }
-    return self;
++ (instancetype)popViewWithFrame:(CGRect)frame titles:(NSArray *)titles{
+    
+    BABulletListNavPopView *popView = [[BABulletListNavPopView alloc] initWithFrame:frame];
+    popView.titles = titles;
+    
+    return popView;
 }
 
 
 #pragma mark - userInteraction
 - (void)btnClicked:(UIButton *)sender{
-    _bulletBtn.selected = NO;
-    _giftBtn.selected = NO;
-    _bulletGiftBtn.selected = NO;
-    sender.selected = YES;
+    for (UIButton *btn in _btns) {
+        btn.selected = [btn isEqual:sender];
+    }
     
     _btnClicked(sender.tag);
 }
 
 
 #pragma mark - private
+- (void)setTitles:(NSArray *)titles{
+    _titles = titles;
+    
+    [self setupSubViews];
+}
+
+
 - (void)setupSubViews{
     
-    CGFloat height = self.height / 3;
+    CGFloat height = self.height / _titles.count;
     CGFloat width = self.width;
-    _bulletBtn = [UIButton buttonWithFrame:CGRectMake(0, 0, width, height) title:@"弹幕" color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:[BAWhiteColor colorWithAlphaComponent:0.45]] target:self action:@selector(btnClicked:)];
-    _bulletBtn.tag = 0;
-    [_bulletBtn setBackgroundImage:[UIImage imageWithColor:[BAWhiteColor colorWithAlphaComponent:0.3]] forState:UIControlStateSelected];
     
-    [self addSubview:_bulletBtn];
-    
-    _giftBtn = [UIButton buttonWithFrame:CGRectMake(0, _bulletBtn.bottom, width, height) title:@"礼物" color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:[BAWhiteColor colorWithAlphaComponent:0.45]] target:self action:@selector(btnClicked:)];
-    _giftBtn.tag = 1;
-    [_giftBtn setBackgroundImage:[UIImage imageWithColor:[BAWhiteColor colorWithAlphaComponent:0.3]] forState:UIControlStateSelected];
-    
-    [self addSubview:_giftBtn];
-    
-    _bulletGiftBtn = [UIButton buttonWithFrame:CGRectMake(0, _giftBtn.bottom, width, height) title:@"弹幕&礼物" color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:[BAWhiteColor colorWithAlphaComponent:0.45]] target:self action:@selector(btnClicked:)];
-    _bulletGiftBtn.tag = 2;
-    [_bulletGiftBtn setBackgroundImage:[UIImage imageWithColor:[BAWhiteColor colorWithAlphaComponent:0.3]] forState:UIControlStateSelected];
-    _bulletGiftBtn.selected = YES;
-    
-    [self addSubview:_bulletGiftBtn];
+    _btns = [NSMutableArray array];
+    [_titles enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL * _Nonnull stop) {
+       
+        UIButton *btn = [UIButton buttonWithFrame:CGRectMake(0, idx * height, width, height) title:title color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:[BAWhiteColor colorWithAlphaComponent:0.45]] target:self action:@selector(btnClicked:)];
+        btn.tag = idx;
+        [btn setBackgroundImage:[UIImage imageWithColor:[BAWhiteColor colorWithAlphaComponent:0.3]] forState:UIControlStateSelected];
+        
+        [_btns addObject:btn];
+        [self addSubview:btn];
+        if (idx == _titles.count - 1) {
+            [btn setSelected:YES];
+        }
+    }];
 }
 
 @end

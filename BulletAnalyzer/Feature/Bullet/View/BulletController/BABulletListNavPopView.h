@@ -17,4 +17,9 @@ typedef void(^btnClicked)(NSInteger tag);
  */
 @property (nonatomic, copy) btnClicked btnClicked;
 
+/**
+ 快速创建
+ */
++ (instancetype)popViewWithFrame:(CGRect)frame titles:(NSArray *)titles;
+
 @end

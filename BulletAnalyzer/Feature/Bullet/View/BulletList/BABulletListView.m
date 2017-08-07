@@ -90,6 +90,11 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
 }
 
 
+- (void)frameChanged{
+    _downBtn.y = self.height - 67 + self.contentOffset.y;
+}
+
+
 #pragma mark - private
 - (void)prepared{
     [self registerClass:[BABulletListCell class] forCellReuseIdentifier:BABulletListCellReusedId];
@@ -138,7 +143,6 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    WeakObj(self);
     id statusModel = _statusArray[indexPath.section];
     
     if ([statusModel isKindOfClass:[BABulletModel class]]) {
@@ -223,6 +227,7 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     self.scrollEnable = NO;
+    _scrollViewTouched();
 }
 
 

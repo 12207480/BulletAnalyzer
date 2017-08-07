@@ -18,6 +18,7 @@
     BOOL _serviceConnected;
     BOOL _roomConnected;
     NSMutableData *_contentData;
+    NSInteger _line;
 }
 
 #pragma mark - service
@@ -34,7 +35,7 @@
     
     // 1. 与服务器的socket链接起来
     NSError *error = nil;
-    BOOL result = [self.socket connectToHost:BAServiceAddress onPort:BAServicePort error:&error];
+    BOOL result = [self.socket connectToHost:BAServiceAddress onPort:BAServicePort2 error:&error];
     
     // 2. 判断端口号是否开放成功
     if (result) {
@@ -104,12 +105,41 @@
 - (void)cutOff{
     
     NSLog(@"断开链接");
-    
+    _line = 0;
     NSData *pack = [self packDataWith:[NSString stringWithFormat:@"type@=logout/"]];
     [self.socket writeData:pack withTimeout:BAReadTimeOut tag:1];
     [[BAAnalyzerCenter defaultCenter] endAnalyzing];
     [_heartbeatTimer invalidate];
     [_socket disconnect];
+}
+
+
+/**
+ 更换线路
+ */
+- (void)changeLine:(NSInteger)line{
+    if (line == _line) return;
+    _line = line;
+    
+    // 1. 与服务器的socket链接起来
+    NSError *error = nil;
+    NSInteger servicePort = _line == 1 ? BAServicePort1 : BAServicePort2;
+    BOOL result = [self.socket connectToHost:BAServiceAddress onPort:servicePort error:&error];
+    
+    // 2. 判断端口号是否开放成功
+    if (result) {
+        
+        NSLog(@"客户端连接服务器成功");
+        
+        _serviceConnected = YES;
+        
+        [self connectRoom];
+        
+    } else {
+        NSLog(@"客户端连接服务器失败");
+        
+        _serviceConnected = NO;
+    }
 }
 
 
@@ -137,9 +167,11 @@
     
     if ([replayModel.type isEqualToString:BAInfoTypeLoginReplay]) { //登录消息则入组 并开启心跳包
         [self joinGroup];
-        [[BAAnalyzerCenter defaultCenter] beginAnalyzing];
         [self startHeartbeat];
-    } 
+        if (![BAAnalyzerCenter defaultCenter].isAnalyzing) {
+            [[BAAnalyzerCenter defaultCenter] beginAnalyzing];
+        }
+    }
 }
 
 
