@@ -41,8 +41,12 @@ MJExtensionCodingImplementation
         return [self.nn isEqualToString:object];
     }
     
-    BABulletModel *bulletModel = (BABulletModel *)object;
-    return [self.txt isEqualToString:bulletModel.txt];
+    if ([object isKindOfClass:[BABulletModel class]]) {
+        BABulletModel *bulletModel = (BABulletModel *)object;
+        return [self.txt isEqualToString:bulletModel.txt];
+    }
+    
+    return NO;
 }
 
 
