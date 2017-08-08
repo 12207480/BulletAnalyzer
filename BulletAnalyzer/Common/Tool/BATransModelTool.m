@@ -91,11 +91,6 @@
             
         } else if ([dic[@"type"] isEqualToString:BAInfoTypeSmallGift] || [dic[@"type"] isEqualToString:BAInfoTypeDeserveGift] || [dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
             
-//            if ([dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
-//                
-//                NSLog(@"%@---%@----%@", dic[@"dn"], dic[@"sn"] ,dic.description);
-//            }
-            
             BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
             
             if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && (giftModel.giftType == BAGiftTypeRocket || giftModel.giftType == BAGiftTypePlane))) { //别的房间火箭广播消息过滤掉
@@ -109,7 +104,10 @@
             BAReplyModel *replayModel = [BAReplyModel mj_objectWithKeyValues:dic];
             [replayArray addObject:replayModel];
         }
+        
+        dic = nil;
     }];
+    contents = nil;
     
     complete(bulletArray, BAModelTypeBullet);
     complete(giftArray, BAModelTypeGift);
@@ -132,6 +130,9 @@
             [keyValues setValue:value forKey:key];
         }
     }];
+    
+    string = nil;
+    strArray = nil;
     
     return keyValues;
 }

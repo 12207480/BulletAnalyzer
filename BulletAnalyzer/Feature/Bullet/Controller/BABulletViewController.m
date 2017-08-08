@@ -562,8 +562,8 @@
         subArray = _reportModel.bulletsArray;
     }
     
-    NSArray *userIgnoreArray = [BAAnalyzerCenter defaultCenter].userIgnoreArray.copy;
-    NSArray *wordsIgnoreArray = [BAAnalyzerCenter defaultCenter].wordsIgnoreArray.copy;
+    __block NSArray *userIgnoreArray = [BAAnalyzerCenter defaultCenter].userIgnoreArray.copy;
+    __block NSArray *wordsIgnoreArray = [BAAnalyzerCenter defaultCenter].wordsIgnoreArray.copy;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
@@ -593,6 +593,8 @@
             if (!ignore) [filtedBulltetArray addObject:bulletModel];
         }];
         
+        userIgnoreArray = nil;
+        wordsIgnoreArray = nil;
         dispatch_sync(dispatch_get_main_queue(), ^{
             [_bulletListView addStatus:filtedBulltetArray];
         });
