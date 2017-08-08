@@ -114,6 +114,7 @@ static NSString *const BAAddReportCellReusedId = @"BAAddReportCellReusedId";
         
         NSInteger item = [[_collectionView indexPathForCell:obj] item];
         if (item == _currentIndex + 1) { // 中间一个
+            [_collectionView bringSubviewToFront:obj];
             CGAffineTransform transform = CGAffineTransformMakeTranslation(0, fabs(deltaIndex - 1) * 2 * BAPadding);
             obj.transform = CGAffineTransformScale(transform, zoomScale, zoomScale);
         } else if (item == _currentIndex) { // 左边一个

@@ -26,13 +26,33 @@
 }
 
 
+#pragma mark - public
+- (void)clickBtn:(NSInteger)tag{
+    for (UIButton *btn in _btns) {
+        if (btn.tag == tag) {
+            btn.selected = !btn.isSelected;
+        }
+    }
+}
+
+
 #pragma mark - userInteraction
 - (void)btnClicked:(UIButton *)sender{
     for (UIButton *btn in _btns) {
-        btn.selected = [btn isEqual:sender];
+        if ([btn isEqual:sender]) {
+            if (self.isMultipleEnable) {
+                btn.selected = !btn.isSelected;
+            } else {
+                btn.selected = YES;
+            }
+        } else {
+            if (!self.isMultipleEnable) {
+                btn.selected = NO;
+            }
+        }
     }
     
-    _btnClicked(sender.tag);
+    _btnClicked(sender);
 }
 
 
@@ -52,15 +72,12 @@
     _btns = [NSMutableArray array];
     [_titles enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL * _Nonnull stop) {
        
-        UIButton *btn = [UIButton buttonWithFrame:CGRectMake(0, idx * height, width, height) title:title color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageWithColor:[BAWhiteColor colorWithAlphaComponent:0.45]] target:self action:@selector(btnClicked:)];
+        UIButton *btn = [UIButton buttonWithFrame:CGRectMake(0, idx * height, width, height) title:title color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage imageNamed:@"filterBg"] target:self action:@selector(btnClicked:)];
         btn.tag = idx;
-        [btn setBackgroundImage:[UIImage imageWithColor:[BAWhiteColor colorWithAlphaComponent:0.3]] forState:UIControlStateSelected];
+        [btn setBackgroundImage:[UIImage imageNamed:@"filterBgSel"] forState:UIControlStateSelected];
         
         [_btns addObject:btn];
         [self addSubview:btn];
-        if (idx == _titles.count - 1) {
-            [btn setSelected:YES];
-        }
     }];
 }
 

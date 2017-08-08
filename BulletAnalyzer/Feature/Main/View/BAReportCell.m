@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UILabel *bulletLabel;
 @property (nonatomic, strong) UILabel *giftLabel;
 @property (nonatomic, strong) UIButton *openBtn;
+@property (nonatomic, strong) UIImageView *neImgView;
 
 @end
 
@@ -66,6 +67,7 @@
     _timeLabel.text = _reportModel.timeDescription;
     [self setInfoWithBulletCount:[NSString stringWithFormat:@" %zd", _reportModel.totalBulletCount] giftCount:[NSString stringWithFormat:@" %zd", _reportModel.giftsArray.count]];
     [_imgView sd_setImageWithURL:[NSURL URLWithString:_reportModel.avatar] placeholderImage:BAPlaceHolderImg];
+    _neImgView.hidden = !_reportModel.isNewReport;
 }
 
 
@@ -139,6 +141,11 @@
     _openBtn.adjustsImageWhenHighlighted = NO;
     
     [self.contentView addSubview:_openBtn];
+    
+    _neImgView = [UIImageView imageViewWithFrame:CGRectMake(-9.5, -10.5, 80.5, 80.5) image:[UIImage imageNamed:@"new"]];
+    _neImgView.hidden = YES;
+    
+    [self.contentView addSubview:_neImgView];
 }
 
 @end

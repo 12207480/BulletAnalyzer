@@ -35,11 +35,6 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
 }
 
 
-- (void)dealloc{
-    NSLog(@"%s", __func__);
-}
-
-
 #pragma mark - userInteraction
 - (void)downBtnClicked{
     self.scrollEnable = YES;
@@ -48,37 +43,18 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
 
 #pragma mark - public
 - (void)addStatus:(NSArray *)statusArray{
+    
     if (!statusArray.count) return;
-
-    NSArray *userIgnoreArray = [BAAnalyzerCenter defaultCenter].userIgnoreArray.copy;
-    NSArray *wordsIgnoreArray = [BAAnalyzerCenter defaultCenter].wordsIgnoreArray.copy;
     
     if (self.isScrollEnabled) {
         
         [statusArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL * _Nonnull stop1) {
             
-            __block BOOL ignore = NO;
-            
-            if ([obj isKindOfClass:[BABulletModel class]]) {
-                BABulletModel *bulletModel = (BABulletModel *)obj;
+            if (![_statusArray containsObject:obj]) {
                 
-                ignore = [userIgnoreArray containsObject:bulletModel];
-                if (!ignore) {
-                    [wordsIgnoreArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop2) {
-                        ignore = [bulletModel.txt containsString:words];
-                        *stop2 = ignore;
-                    }];
-                }
-                
-            } else {
-                BAGiftModel *giftModel = (BAGiftModel *)obj;
-                ignore = [userIgnoreArray containsObject:giftModel];
-            }
-            
-            if (![_statusArray containsObject:obj] && !ignore) {
                 [_statusArray addObject:obj];
-                if (_statusArray.count > 200) {
-                    [_statusArray removeObjectsInRange:NSMakeRange(0, _statusArray.count - 100)];
+                if (_statusArray.count > 300) {
+                    [_statusArray removeObjectsInRange:NSMakeRange(0, _statusArray.count - 250)];
                 }
                 
                 [self reloadData];
@@ -223,7 +199,7 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
             return;
         }
         
-        [[BAAnalyzerCenter defaultCenter] ingnoreUserName:bulletModel.nn];
+        [[BAAnalyzerCenter defaultCenter] addIngnoreUserName:bulletModel.nn];
         [BATool showHUDWithText:@"屏蔽成功\n该用户发言将被屏蔽" ToView:self];
         
         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];

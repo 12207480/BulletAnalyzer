@@ -10,12 +10,15 @@
 #import "BABulletViewController.h"
 #import "BABulletListView.h"
 #import "BAReportViewController.h"
+#import "BAFilterViewController.h"
 #import "BABulletMenu.h"
 #import "BABulletSetting.h"
 #import "BABulletSliderView.h"
 #import "BABulletListNavPopView.h"
 #import "BASentenceView.h"
 #import "BAReportModel.h"
+#import "BAGiftModel.h"
+#import "BABulletModel.h"
 #import "BAAnalyzerCenter.h"
 #import "BASocketTool.h"
 #import "UIImage+ZJExtension.h"
@@ -41,7 +44,8 @@
 @property (nonatomic, assign) CGFloat getSpeed; //0-1之间 频率
 @property (nonatomic, assign) CGFloat getDuration; //抓取间隔
 @property (nonatomic, assign) NSInteger getCount; //抓取数量
-@property (nonatomic, assign) NSInteger filterTag; //0只显示弹幕, 1只显示礼物, 2弹幕礼物同时显示
+@property (nonatomic, assign) NSInteger bulletFilterTag; //0:全部弹幕, 1:10级以上弹幕 -1:不显示
+@property (nonatomic, assign) NSInteger giftFilterTag; //0:全部礼物 1:超级礼物 -1:不显示
 
 /*以下功能未实现*/
 ////等级筛选
@@ -75,7 +79,8 @@
     [self addNotificationObserver];
     
     self.getSpeed = 0.5;
-    self.filterTag = 2;
+    self.bulletFilterTag = 0;
+    self.giftFilterTag  = 0;
     
     [self larger];
 }
@@ -268,7 +273,7 @@
     [_hideTimer invalidate];
     _hideTimer = nil;
     
-    _repeatDuration = 3.f;
+    _repeatDuration = 5.f;
     _hideTimer = [NSTimer scheduledTimerWithTimeInterval:_repeatDuration target:self selector:@selector(smaller) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_hideTimer forMode:NSRunLoopCommonModes];
 }
@@ -393,6 +398,10 @@
         selfWeak.settingMask.hidden = YES;
         selfWeak.midBtnClose = NO;
         [selfWeak smaller];
+        
+        BAFilterViewController *filterVC = [[BAFilterViewController alloc] init];
+        BANavigationViewController *naviVC = [[BANavigationViewController alloc] initWithRootViewController:filterVC];
+        [selfWeak.navigationController presentViewController:naviVC animated:YES completion:nil];
     };
     _bulletSetting.middleBtnClicked = ^{
         
@@ -411,7 +420,7 @@
     
     [self.view insertSubview:_bulletSetting belowSubview:_bulletMenu];
     
-    _settingMask = [[UIView alloc] initWithFrame:self.view.bounds];
+    _settingMask = [[UIView alloc] initWithFrame:CGRectMake(0, 64, BAScreenWidth, BAScreenHeight - 64)];
     _settingMask.backgroundColor = [BABlackColor colorWithAlphaComponent:0.4];
     _settingMask.hidden = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(maskTapped)];
@@ -447,23 +456,70 @@
 
 - (void)setupPopView{
     WeakObj(self);
-    _filterPopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(BAScreenWidth - 100, 64, 100, 105) titles:@[@"弹幕", @"礼物", @"弹幕&礼物"]];
+    _filterPopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(BAScreenWidth - 100, 64, 100, 140) titles:@[@" 全部弹幕", @" 高级弹幕", @" 全部礼物", @" 超级礼物"]];
+    _filterPopView.multipleEnable = YES;
+    [_filterPopView clickBtn:0];
+    [_filterPopView clickBtn:2];
     _filterPopView.alpha = 0;
     _filterPopView.hidden = YES;
-    _filterPopView.btnClicked = ^(NSInteger tag) {
-        selfWeak.filterTag = tag;
-        [selfWeak filterTypeBtnClicked];
+    _filterPopView.btnClicked = ^(UIButton *sender) {
+        
+        [selfWeak.hideTimer invalidate];
+        selfWeak.hideTimer = nil;
+        
+        switch (sender.tag) {
+            case 0:
+                [selfWeak.filterPopView clickBtn:1];
+                if (sender.isSelected) {
+                    selfWeak.bulletFilterTag = 0;
+                } else {
+                    selfWeak.bulletFilterTag = -1;
+                }
+                break;
+                
+            case 1:
+                [selfWeak.filterPopView clickBtn:0];
+                if (sender.isSelected) {
+                    selfWeak.bulletFilterTag = 1;
+                } else {
+                    selfWeak.bulletFilterTag = -1;
+                }
+                break;
+                
+            case 2:
+                [selfWeak.filterPopView clickBtn:3];
+                if (sender.isSelected) {
+                    selfWeak.giftFilterTag = 0;
+                } else {
+                    selfWeak.giftFilterTag = -1;
+                }
+                break;
+                
+            case 3:
+                [selfWeak.filterPopView clickBtn:2];
+                if (sender.isSelected) {
+                    selfWeak.giftFilterTag = 1;
+                } else {
+                    selfWeak.giftFilterTag = -1;
+                }
+                break;
+                
+            default:
+                break;
+        }
     };
     
     [self.view addSubview:_filterPopView];
     
-    _linePopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(0, 64, 100, 70) titles:@[@"线路一", @"线路二"]];
+    _linePopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(0, 64, 100, 70) titles:@[@" 线路一", @" 线路二"]];
+    _linePopView.multipleEnable = NO;
+    [_linePopView clickBtn:1];
     _linePopView.alpha = 0;
     _linePopView.hidden = YES;
-    _linePopView.btnClicked = ^(NSInteger tag) {
+    _linePopView.btnClicked = ^(UIButton *sender) {
         
         [selfWeak lineBtnClicked];
-        [[BASocketTool defaultSocket] changeLine:tag];
+        [[BASocketTool defaultSocket] changeLine:sender.tag];
     };
     
     [self.view addSubview:_linePopView];
@@ -471,7 +527,7 @@
 
 
 - (void)setupNavigationBar{
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage createImageWithColor:[BAWhiteColor colorWithAlphaComponent:0.3]] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage createImageWithColor:BAColor(123, 125, 244)] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"navShadowImg"]];
     self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"筛选" target:self action:@selector(filterTypeBtnClicked)];
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"线路" target:self action:@selector(lineBtnClicked)];
@@ -490,8 +546,9 @@
 
 
 - (void)getTimeUp{
+    //0:全部弹幕, 1:10级以上弹幕 -1:不显示
     
-    if (_filterTag == 1) return;
+    if (_bulletFilterTag == -1) return;
     
     if (!self.title.length) {
         self.title = _reportModel.name;
@@ -504,7 +561,42 @@
     } else {
         subArray = _reportModel.bulletsArray;
     }
-    [_bulletListView addStatus:subArray];
+    
+    NSArray *userIgnoreArray = [BAAnalyzerCenter defaultCenter].userIgnoreArray.copy;
+    NSArray *wordsIgnoreArray = [BAAnalyzerCenter defaultCenter].wordsIgnoreArray.copy;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        __block BOOL ignore = NO;
+        NSMutableArray *filtedBulltetArray = [NSMutableArray array];
+        [subArray enumerateObjectsUsingBlock:^(BABulletModel *bulletModel, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if (_bulletFilterTag == 1 && bulletModel.level.integerValue < 10) { //只显示10级以上弹幕筛选
+                ignore = YES;
+            }
+            
+            if (!ignore) {
+                //忽略屏蔽用户
+                [userIgnoreArray enumerateObjectsUsingBlock:^(NSString *userName, NSUInteger idx, BOOL * _Nonnull stop3) {
+                    ignore = [userName isEqualToString:bulletModel.nn];
+                    *stop3 = ignore;
+                }];
+            }
+            if (!ignore) { //如果不是屏蔽用户
+                //忽略屏蔽关键词
+                [wordsIgnoreArray enumerateObjectsUsingBlock:^(NSString *words, NSUInteger idx, BOOL * _Nonnull stop2) {
+                    ignore = [bulletModel.txt containsString:words];
+                    *stop2 = ignore;
+                }];
+            }
+            
+            if (!ignore) [filtedBulltetArray addObject:bulletModel];
+        }];
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [_bulletListView addStatus:filtedBulltetArray];
+        });
+    });
 }
 
 
@@ -548,10 +640,34 @@
 
 - (void)gift:(NSNotification *)sender{
     
-    if (_filterTag == 0) return;
-    
     NSArray *giftArray = sender.userInfo[BAUserInfoKeyGift];
-    [_bulletListView addStatus:giftArray];
+    
+    switch (_giftFilterTag) {
+        case -1:
+            return;
+            break;
+            
+        case 0:
+            [_bulletListView addStatus:giftArray];
+            break;
+            
+        case 1: {
+            
+            NSMutableArray *superGiftArray = [NSMutableArray array];
+            [giftArray enumerateObjectsUsingBlock:^(BAGiftModel *giftModel, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (giftModel.giftType == BAGiftTypePlane || giftModel.giftType == BAGiftTypeRocket) {
+                    [superGiftArray addObject:giftModel];
+                }
+            }];
+            [_bulletListView addStatus:superGiftArray];
+            
+            break;
+        }
+        default:
+            break;
+    }
+    
+    
 }
 
 @end

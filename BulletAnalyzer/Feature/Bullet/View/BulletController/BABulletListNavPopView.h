@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^btnClicked)(NSInteger tag);
+typedef void(^btnClicked)(UIButton *sender);
 
 @interface BABulletListNavPopView : UIView
+
+/**
+ 是否多选
+ */
+@property (nonatomic, assign, getter=isMultipleEnable) BOOL multipleEnable;
 
 /**
  按钮点击回调
@@ -21,5 +26,10 @@ typedef void(^btnClicked)(NSInteger tag);
  快速创建
  */
 + (instancetype)popViewWithFrame:(CGRect)frame titles:(NSArray *)titles;
+
+/**
+ 点击按钮
+ */
+- (void)clickBtn:(NSInteger)tag;
 
 @end

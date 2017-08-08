@@ -89,7 +89,7 @@
 #pragma mark - 每次push之后生成返回按钮
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
     if (self.viewControllers.count > 0) {
-        viewController.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_black"  highlightedImg:nil target:self action:@selector(popViewController)];
+        viewController.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white" highlightedImg:nil target:self action:@selector(popViewController)];
         viewController.hidesBottomBarWhenPushed = YES;
         viewController.edgesForExtendedLayout = UIRectEdgeNone;
         viewController.automaticallyAdjustsScrollViewInsets = NO;
@@ -108,7 +108,7 @@
 - (void)setViewControllers:(NSArray<UIViewController *> *)viewControllers animated:(BOOL)animated{
     for (UIViewController *viewController in viewControllers) {
         if (viewController != [viewControllers firstObject]) {
-            viewController.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_black"  highlightedImg:nil target:self action:@selector(popViewController)];
+            viewController.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white" highlightedImg:nil target:self action:@selector(popViewController)];
             viewController.hidesBottomBarWhenPushed = YES;
             viewController.edgesForExtendedLayout = UIRectEdgeNone;
             viewController.automaticallyAdjustsScrollViewInsets = NO;

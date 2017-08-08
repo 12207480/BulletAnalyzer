@@ -35,21 +35,6 @@ MJExtensionCodingImplementation
 }
 
 
-- (BOOL)isEqual:(id)object{
-    
-    if ([object isKindOfClass:[NSString class]]) {
-        return [self.nn isEqualToString:object];
-    }
-    
-    if ([object isKindOfClass:[BABulletModel class]]) {
-        BABulletModel *bulletModel = (BABulletModel *)object;
-        return [self.txt isEqualToString:bulletModel.txt];
-    }
-    
-    return NO;
-}
-
-
 - (void)setNn:(NSString *)nn{
     _nn = [nn stringByReplacingOccurrencesOfString:@"@S" withString:@"/"];
     

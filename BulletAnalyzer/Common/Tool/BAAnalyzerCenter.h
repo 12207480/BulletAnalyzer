@@ -95,12 +95,12 @@
 /**
  添加用户屏蔽
  */
-- (void)ingnoreUserName:(NSString *)userName;
+- (void)addIngnoreUserName:(NSString *)userName;
 
 /**
  删除用户屏蔽
  */
-- (void)uningnoreUserName:(NSString *)userName;
+- (void)delIngnoreUserName:(NSString *)userName;
 
 /**
  清除用户屏蔽
@@ -110,12 +110,12 @@
 /**
  删除单词屏蔽
  */
-- (void)uningnoreWords:(NSString *)words;
+- (void)delIngnoreWords:(NSString *)words;
 
 /**
  添加单词屏蔽
  */
-- (void)ingnoreWords:(NSString *)words;
+- (void)addIngnoreWords:(NSString *)words;
 
 /**
  清除单词屏蔽
