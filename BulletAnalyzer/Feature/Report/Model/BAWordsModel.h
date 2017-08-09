@@ -20,9 +20,4 @@
  */
 @property (nonatomic, copy) NSString *count;
 
-/**
- 包含改词的弹幕
- */
-@property (nonatomic, strong) NSMutableArray *bulletArray;
-
 @end

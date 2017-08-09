@@ -53,8 +53,8 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
             if (![_statusArray containsObject:obj]) {
                 
                 [_statusArray addObject:obj];
-                if (_statusArray.count > 300) {
-                    [_statusArray removeObjectsInRange:NSMakeRange(0, _statusArray.count - 250)];
+                if (_statusArray.count > 200) {
+                    [_statusArray removeObjectsInRange:NSMakeRange(0, _statusArray.count - 50)];
                 }
                 
                 [self reloadData];

@@ -37,6 +37,7 @@
     [self addSubview:_contentLabel];
     
     _delBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _delBtn.frame = CGRectMake(BAScreenWidth - 2 * BAPadding - 40, 0, 40, 40);
     [_delBtn setTitle:@"删除" forState:UIControlStateNormal];
     [_delBtn setTitleColor:BAColor(248, 120, 168) forState:UIControlStateNormal];
     [_delBtn addTarget:self action:@selector(btnClicked) forControlEvents:UIControlEventTouchUpInside];

@@ -304,11 +304,21 @@
     _bulletMenu = [[BABulletMenu alloc] initWithFrame:CGRectMake(0, BAScreenHeight - BABulletMenuHeight, BAScreenWidth, BABulletMenuHeight)];
     _bulletMenu.menuTouched = ^{
         
+        if (!selfWeak.settingMask.isHidden) {
+            [selfWeak maskTapped];
+            return;
+        }
+        
         if (!selfWeak.midBtnClose) {
             [selfWeak larger];
         }
     };
     _bulletMenu.middleBtnClicked = ^{
+        
+        if (!selfWeak.settingMask.isHidden) {
+            [selfWeak maskTapped];
+            return;
+        }
         
         if (selfWeak.midBtnClose) {
             
@@ -341,6 +351,11 @@
     };
     _bulletMenu.leftBtnClicked = ^{
         
+        if (!selfWeak.settingMask.isHidden) {
+            [selfWeak maskTapped];
+            return;
+        }
+        
         if (!selfWeak.midBtnClose) {
             [selfWeak larger];
         }
@@ -366,6 +381,11 @@
         [selfWeak presentViewController:alert animated:YES completion:nil];
     };
     _bulletMenu.rightBtnClicked = ^{
+        
+        if (!selfWeak.settingMask.isHidden) {
+            [selfWeak maskTapped];
+            return;
+        }
         
         if (!selfWeak.midBtnClose) {
             [selfWeak larger];
@@ -456,7 +476,7 @@
 
 - (void)setupPopView{
     WeakObj(self);
-    _filterPopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(BAScreenWidth - 100, 64, 100, 140) titles:@[@" 全部弹幕", @" 高级弹幕", @" 全部礼物", @" 超级礼物"]];
+    _filterPopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(BAScreenWidth - 100, 64, 100, 140) titles:@[@" 全部弹幕", @" 高级弹幕", @" 全部礼物", @" 高级礼物"]];
     _filterPopView.multipleEnable = YES;
     [_filterPopView clickBtn:0];
     [_filterPopView clickBtn:2];
@@ -469,8 +489,10 @@
         
         switch (sender.tag) {
             case 0:
-                [selfWeak.filterPopView clickBtn:1];
                 if (sender.isSelected) {
+                    if (selfWeak.bulletFilterTag == 1) {
+                        [selfWeak.filterPopView clickBtn:1];
+                    }
                     selfWeak.bulletFilterTag = 0;
                 } else {
                     selfWeak.bulletFilterTag = -1;
@@ -478,8 +500,10 @@
                 break;
                 
             case 1:
-                [selfWeak.filterPopView clickBtn:0];
                 if (sender.isSelected) {
+                    if (selfWeak.bulletFilterTag == 0) {
+                        [selfWeak.filterPopView clickBtn:0];
+                    }
                     selfWeak.bulletFilterTag = 1;
                 } else {
                     selfWeak.bulletFilterTag = -1;
@@ -487,8 +511,10 @@
                 break;
                 
             case 2:
-                [selfWeak.filterPopView clickBtn:3];
                 if (sender.isSelected) {
+                    if (selfWeak.giftFilterTag == 1) {
+                        [selfWeak.filterPopView clickBtn:3];
+                    }
                     selfWeak.giftFilterTag = 0;
                 } else {
                     selfWeak.giftFilterTag = -1;
@@ -496,8 +522,10 @@
                 break;
                 
             case 3:
-                [selfWeak.filterPopView clickBtn:2];
                 if (sender.isSelected) {
+                    if (selfWeak.giftFilterTag == 0) {
+                        [selfWeak.filterPopView clickBtn:2];
+                    }
                     selfWeak.giftFilterTag = 1;
                 } else {
                     selfWeak.giftFilterTag = -1;
@@ -657,7 +685,7 @@
             
             NSMutableArray *superGiftArray = [NSMutableArray array];
             [giftArray enumerateObjectsUsingBlock:^(BAGiftModel *giftModel, NSUInteger idx, BOOL * _Nonnull stop) {
-                if (giftModel.giftType == BAGiftTypePlane || giftModel.giftType == BAGiftTypeRocket) {
+                if (giftModel.giftType > 2) {
                     [superGiftArray addObject:giftModel];
                 }
             }];

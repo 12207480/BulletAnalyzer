@@ -8,6 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^block)(NSString *);
+
 @interface BAFilterInputView : UIView
+
+/**
+ 点击回调
+ */
+@property (nonatomic, copy) block btnClicked;
+
+/**
+ 标题
+ */
+@property (nonatomic, copy) NSString *title;
 
 @end

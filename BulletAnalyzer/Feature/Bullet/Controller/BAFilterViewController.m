@@ -9,6 +9,7 @@
 #import "BAFilterViewController.h"
 #import "BAAnalyzerCenter.h"
 #import "BAFilterCell.h"
+#import "BAFilterInputView.h"
 #import "UIImage+ZJExtension.h"
 
 static NSString *const BAFilterCellReusedId = @"BAFilterCellReusedId";
@@ -77,19 +78,39 @@ static NSString *const BAFilterCellReusedId = @"BAFilterCellReusedId";
 
 
 - (void)addBtnClicked{
+    
+    BAFilterInputView *inputView = [[BAFilterInputView alloc] initWithFrame:CGRectMake(BAScreenWidth / 2 - 265 / 2, BAScreenHeight / 2 - 177 / 2, 265, 177)];
+
+    [self.view addSubview:inputView];
+    WeakObj(self);
     switch (_nowType) {
-        case 0:
-            
+        case 0: {
+            inputView.btnClicked = ^(NSString *string) {
+                [selfWeak.statusArray addObject:string];
+                [selfWeak.tableView reloadData];
+                [[BAAnalyzerCenter defaultCenter] addIngnoreUserName:string];
+            };
+            inputView.title = @"屏蔽昵称";
             break;
-            
-        case 1:
-            
+        }
+        case 1: {
+            inputView.btnClicked = ^(NSString *string) {
+                [selfWeak.statusArray addObject:string];
+                [selfWeak.tableView reloadData];
+                [[BAAnalyzerCenter defaultCenter] addIngnoreWords:string];
+            };
+            inputView.title = @"屏蔽关键词";
             break;
-            
-        case 2:
-            
+        }
+        case 2: {
+            inputView.btnClicked = ^(NSString *string) {
+                [selfWeak.statusArray addObject:string];
+                [selfWeak.tableView reloadData];
+                [[BAAnalyzerCenter defaultCenter] addNotice:string];
+            };
+            inputView.title = @"关注昵称";
             break;
-            
+        }
         default:
             break;
     }
@@ -130,14 +151,15 @@ static NSString *const BAFilterCellReusedId = @"BAFilterCellReusedId";
 #pragma mark - private
 - (void)setupSegmentedControl{
     
-    _segmentedControl = [[UIImageView alloc] initWithFrame:CGRectMake(0, 64, BAScreenWidth, 50)];
+    _segmentedControl = [[UIImageView alloc] initWithFrame:CGRectMake(0, 60, BAScreenWidth, 54)];
+    _segmentedControl.userInteractionEnabled = YES;
     _segmentedControl.layer.shadowOffset = CGSizeMake(0, -3);
     _segmentedControl.layer.shadowColor = [BABlackColor colorWithAlphaComponent:0.3].CGColor;
     _segmentedControl.image = [UIImage imageNamed:@"filterNaviBg"];
     _segmentedControl.contentMode = UIViewContentModeScaleToFill;
     
     CGFloat width = BAScreenWidth - 4 * BAPadding;
-    UIView *radiusView = [[UIView alloc] initWithFrame:CGRectMake(2 * BAPadding, BAPadding, width, 24)];
+    UIView *radiusView = [[UIView alloc] initWithFrame:CGRectMake(2 * BAPadding, BAPadding, width, 28)];
     radiusView.layer.cornerRadius = 3;
     radiusView.layer.masksToBounds = YES;
     radiusView.layer.borderColor = BAWhiteColor.CGColor;
@@ -146,7 +168,7 @@ static NSString *const BAFilterCellReusedId = @"BAFilterCellReusedId";
     [_segmentedControl addSubview:radiusView];
     
     CGFloat btnWidth = (width + 2) / 3;
-    _segmentedBtn1 = [UIButton buttonWithFrame:CGRectMake(0, 0, btnWidth, 24) title:@"用户屏蔽" color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage createImageWithColor:[UIColor clearColor]] target:self action:@selector(segmentedControlClicked:)];
+    _segmentedBtn1 = [UIButton buttonWithFrame:CGRectMake(0, 0, btnWidth, 28) title:@"用户屏蔽" color:BAWhiteColor font:BACommonFont(BACommonTextFontSize) backgroundImage:[UIImage createImageWithColor:[UIColor clearColor]] target:self action:@selector(segmentedControlClicked:)];
     _segmentedBtn1.layer.borderColor = BAWhiteColor.CGColor;
     _segmentedBtn1.layer.borderWidth = 1;
     [_segmentedBtn1 setTitleColor:BAColor(124, 102, 233) forState:UIControlStateSelected];
@@ -178,7 +200,7 @@ static NSString *const BAFilterCellReusedId = @"BAFilterCellReusedId";
 
 
 - (void)setupTableview{
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 110, BAScreenWidth, BAScreenHeight - 108) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 50, BAScreenWidth, BAScreenHeight - 50) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorColor = BASpratorColor;

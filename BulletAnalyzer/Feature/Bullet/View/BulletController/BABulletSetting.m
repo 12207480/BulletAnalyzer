@@ -42,10 +42,10 @@
     _isHideAnimation = NO;
     
     [self animate:_filterBtn withDuration:0.4 angle:M_PI * 2 position:_btnHidePosition toPosition:_filterBtn.center];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self animate:_sentenceBtn withDuration:0.4 angle:M_PI * 2 position:_btnHidePosition toPosition:_sentenceBtn.center];
     });
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self animate:_speedBtn withDuration:0.4 angle:M_PI * 2 position:_btnHidePosition toPosition:_speedBtn.center];
     });
 }
@@ -55,10 +55,10 @@
     _isHideAnimation = YES;
     
     [self animate:_filterBtn withDuration:0.4 angle:M_PI * 2 position:_filterBtn.center toPosition:_btnHidePosition];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self animate:_sentenceBtn withDuration:0.4 angle:M_PI * 2 position:_sentenceBtn.center toPosition:_btnHidePosition];
     });
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self animate:_speedBtn withDuration:0.4 angle:M_PI * 2 position:_speedBtn.center toPosition:_btnHidePosition];
     });
 }
