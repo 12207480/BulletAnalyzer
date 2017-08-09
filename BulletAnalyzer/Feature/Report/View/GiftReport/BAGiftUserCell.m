@@ -44,7 +44,13 @@
     if (self.isActiveCell) {
         _infoLabel.text = [NSString stringWithFormat:@"%@次发言", userModel.count];
     } else {
-        _infoLabel.text = [NSString stringWithFormat:@"%@个礼物", userModel.giftCount];
+        if (userModel.count) {
+            
+            _infoLabel.text = [NSString stringWithFormat:@"%@个礼物, %@次发言", userModel.giftCount, userModel.count];
+        } else {
+        
+            _infoLabel.text = [NSString stringWithFormat:@"%@个礼物", userModel.giftCount];
+        }
     }
 }
 
@@ -60,7 +66,7 @@
     
     [self addSubview:_userIcon];
     
-    _infoLabel = [UILabel labelWithFrame:CGRectMake(BAScreenWidth - 2 * BAPadding - 100, height / 2 - 10, 100, 20) text:nil color:BALightTextColor font:BACommonFont(BACommonTextFontSize) textAlignment:NSTextAlignmentRight];
+    _infoLabel = [UILabel labelWithFrame:CGRectMake(BAScreenWidth - 2 * BAPadding - 120, height / 2 - 10, 120, 20) text:nil color:BALightTextColor font:BACommonFont(BASmallTextFontSize) textAlignment:NSTextAlignmentRight];
     
     [self addSubview:_infoLabel];
     

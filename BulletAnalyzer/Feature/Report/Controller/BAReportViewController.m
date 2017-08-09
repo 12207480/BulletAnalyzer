@@ -7,6 +7,7 @@
 //
 
 #import "BAReportViewController.h"
+#import "BAUserBulletViewController.h"
 #import "BAGradientView.h"
 #import "BAInfoView.h"
 #import "BAMenuView.h"
@@ -51,9 +52,12 @@
 @property (nonatomic, strong) BAGiftInfoView *giftInfoView;
 
 //二维码
-@property (nonatomic, strong) UIImageView *CIFilterView;
 @property (nonatomic, assign, getter=isScreenshot) BOOL screenshot;
-@property (nonatomic, strong) UIImage *shareImg;
+@property (nonatomic, strong) UIImage *longImg; //长图
+@property (nonatomic, strong) UIImage *shotImg; //小图
+
+//彩蛋
+@property (nonatomic, strong) UILabel *luckLabel;
 
 @end
 
@@ -84,8 +88,6 @@
     [self setupFansReport];
     
     [self setupGiftReport];
-    
-    [self setupCIFilterView];
 }
 
 
@@ -108,7 +110,7 @@
         
         switch (tag) {
             case 0: {
-                UIImageWriteToSavedPhotosAlbum(selfWeak.shareImg, nil, nil, nil);
+                UIImageWriteToSavedPhotosAlbum(selfWeak.longImg, nil, nil, nil);
                 [BATool showHUDWithText:@"已保存在手机相册" ToView:BAKeyWindow];
                 break;
             }
@@ -128,7 +130,7 @@
     
     [BAKeyWindow addSubview:shareView];
     
-    if (!_shareImg) {
+    if (!_longImg) {
         
         self.navigationItem.leftBarButtonItem = nil;
         self.navigationItem.rightBarButtonItem = nil;
@@ -175,7 +177,8 @@
                 UIImage *currentPage = [BATool captureScreen:self.navigationController.view];
                 [images addObject:currentPage];
             }
-            _shareImg = [BATool combineImages:images];
+            [images addObject:[self getReportShareQrImg]];
+            _longImg = [BATool combineImages:images];
             
             self.screenshot = NO;
             self.title = @"分析报告";
@@ -184,11 +187,11 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"back_white"  highlightedImg:nil target:self action:@selector(dismiss)];
                 self.navigationItem.rightBarButtonItem = [UIBarButtonItem BarButtonItemWithTitle:@"保存" target:self action:@selector(save)];
-                shareView.reportImg = _shareImg;
+                shareView.reportImg = _longImg;
             });
         });
     } else {
-        shareView.reportImg = _shareImg;
+        shareView.reportImg = _longImg;
     }
 }
 
@@ -226,6 +229,11 @@
     _scrollView.delegate = self;
     
     [self.view addSubview:_scrollView];
+    
+    _luckLabel = [UILabel labelWithFrame:CGRectMake(BAScreenWidth * 5 + 100, 0, 20, BAScreenHeight / 2) text:@"还\n想\n看\n什\n么\n.\n.\n." color:[BALightTextColor colorWithAlphaComponent:0.5] font:BAThinFont(BACommonTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _luckLabel.numberOfLines = 0;
+    
+    [_scrollView addSubview:_luckLabel];
 }
 
 
@@ -328,12 +336,18 @@
     
     _giftInfoView = [[BAGiftInfoView alloc] initWithFrame:CGRectMake(BAScreenWidth * 4, _indicator.bottom, BAScreenWidth, BAScreenHeight * 0.4)];
     _giftInfoView.reportModel = _reportModel;
+    _giftInfoView.cellClicked = ^(BAUserModel *userModel) {
+        BAUserBulletViewController *bulletVC = [[BAUserBulletViewController alloc] init];
+        bulletVC.userModel = userModel;
+        
+        [selfWeak presentViewController:bulletVC animated:YES completion:nil];
+    };
     
     [_scrollView addSubview:_giftInfoView];
 }
 
 
-- (void)setupCIFilterView{
+- (UIImage *)createQRImg{
     // 1. 创建一个二维码滤镜实例(CIFilter)
     CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
     // 滤镜恢复默认设置
@@ -347,14 +361,9 @@
     
     // 3. 生成二维码
     CIImage *image = [filter outputImage];
-    UIImage *result = [BATool createNonInterpolatedUIImageFormCIImage:image withSize:BAScreenWidth / 3];
-    result = [BATool imageBlackToTransparent:result withRed:249 andGreen:118 andBlue:143];
+    UIImage *result = [BATool createNonInterpolatedUIImageFormCIImage:image withSize:350 / 3];
     
-    // 4. 显示二维码
-    _CIFilterView = [[UIImageView alloc] initWithImage:result];
-    _CIFilterView.center = self.view.center;
-    _CIFilterView.hidden = YES;
-    [self.view addSubview:_CIFilterView];
+    return result;
 }
 
 
@@ -407,6 +416,65 @@
 }
 
 
+- (UIImage *)getAppShareImg{
+    
+    UIImage *QRImg = [self createQRImg];
+    UIImage *appShareImg = [UIImage imageNamed:@"appShare"];
+    
+    CGFloat width = 350;
+    CGFloat height = 667;
+    CGSize offScreenSize = CGSizeMake(width, height);
+    
+    UIGraphicsBeginImageContextWithOptions(offScreenSize, YES, [UIScreen mainScreen].scale);
+    
+    CGRect rect = CGRectMake(0, 0, width, height);
+    [appShareImg drawInRect:rect];
+    rect = CGRectMake(width / 2 - width / 6, height - width / 3 - 80, width / 3, width / 3);
+    [QRImg drawInRect:rect];
+    
+    UIImage *imagez = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return imagez;
+}
+
+
+- (UIImage *)getReportShareQrImg{
+    
+    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, BAScreenWidth, BAScreenHeight / 3)];
+    bottomView.backgroundColor = BAWhiteColor;
+    
+    UIImage *QRImg = [self createQRImg];
+    UIImageView *QRImgView = [[UIImageView alloc] initWithFrame:CGRectMake(BAScreenWidth / 2 - 58, BAScreenHeight / 6 - 68, 116, 116)];
+    QRImgView.image = QRImg;
+    [bottomView addSubview:QRImgView];
+    
+    UIImageView *iconImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon-Small"]];
+    iconImgView.layer.cornerRadius = 3;
+    iconImgView.layer.masksToBounds = YES;
+    iconImgView.layer.borderColor = BASpratorColor.CGColor;
+    iconImgView.layer.borderWidth = 0.5;
+    iconImgView.frame = CGRectMake(46.4, 46.4, 23.2, 23.2);
+    [QRImgView addSubview:iconImgView];
+    
+    UILabel *nameLabel = [UILabel labelWithFrame:CGRectMake(0, QRImgView.bottom + BAPadding, BAScreenWidth, 30) text:@"斗鱼伴侣" color:BACommonTextColor font:[UIFont fontWithName:@"Zapfino" size:BALargeTextFontSize] textAlignment:NSTextAlignmentCenter];
+    [bottomView addSubview:nameLabel];
+    
+    CGFloat width = bottomView.width;
+    CGFloat height = bottomView.height;
+    CGSize offScreenSize = CGSizeMake(width, height);
+    
+    UIGraphicsBeginImageContextWithOptions(offScreenSize, YES, [UIScreen mainScreen].scale);
+    
+    [bottomView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    UIImage *imagez = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return imagez;
+}
+
+
 #pragma mark - scrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGFloat offsetX = scrollView.contentOffset.x;
@@ -428,21 +496,23 @@
         _contentBgView.frame = CGRectMake(0, BAScreenHeight * 0.6, BAScreenWidth, BAScreenHeight * 0.4);
         _indicator.alpha = 1;
     }
+    
+    if (offsetX > (BAScreenWidth * 4 + 100)) {
+        [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(showValue) object:nil];
+        [self performSelector:@selector(showValue) withObject:nil afterDelay:1.f inModes:@[NSRunLoopCommonModes]];
+    } else {
+        [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(showValue) object:nil];
+    }
+}
+
+
+- (void)showValue{
+    [_giftChart showValue];
 }
 
 
 #pragma mark - share
 - (void)shareBtnClicked{
-//    
-//    NSData *imageData = UIImageJPEGRepresentation(_shareImg, 0.99);
-//    NSData *imageData2 = UIImageJPEGRepresentation(_shareImg, 1);
-//    NSData *imageData3 = UIImagePNGRepresentation(_shareImg);
-//    
-//    NSLog(@"%f---%f---%f", (CGFloat)[imageData length]/1024, (CGFloat)[imageData2 length]/1024, (CGFloat)[imageData3 length]/1024);
-    
-//    NSArray *activityItems = @[_shareImg];
-//    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-//    [self presentViewController:activityVC animated:YES completion:nil];
     
     [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_WechatTimeLine),@(UMSocialPlatformType_QQ),@(UMSocialPlatformType_Qzone),@(UMSocialPlatformType_Sina)]];
     //显示分享面板
@@ -459,9 +529,11 @@
     
     //创建图片内容对象
     UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
+    
     //如果有缩略图，则设置缩略图
     shareObject.thumbImage = [UIImage imageNamed:@"Icon-Small"];
-    [shareObject setShareImage:_shareImg];
+    
+    [shareObject setShareImage:[self getAppShareImg]];
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;

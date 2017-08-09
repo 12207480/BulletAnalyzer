@@ -398,7 +398,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     
     //送鱼丸次数
     BOOL contained = NO;
-    //NSArray *userFishBallCountArrayTemp = _userFishBallCountArray.copy;
     for (BAUserModel *userModel in _userFishBallCountArray) {
        
         contained = [fishBall.nn isEqual:userModel.nn];
@@ -419,7 +418,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  处理其他礼物
  */
 - (void)dealWithGift:(BAGiftModel *)giftModel giftValue:(BAGiftValueModel *)giftValue{
-    
     
     BOOL contained = NO;
     for (BAUserModel *userModel in giftValue.userModelArray) {
@@ -697,17 +695,13 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     
     //记录用户发言次数
     BOOL contained1 = NO;
-    NSInteger idx = 0;
     for (BAUserModel *userModel in _userBulletCountArray) {
         contained1 = [bulletModel.uid isEqualToString:userModel.uid];
         if (contained1) {
             userModel.count = BAStringWithInteger(userModel.count.integerValue + 1);
             [userModel.bulletArray addObject:bulletModel];
             break;
-        } else if (idx == 20) {
-            break;
         }
-        idx++;
     }
     
     if (!contained1) {
@@ -718,31 +712,24 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     }
     
     //记录用户发言(鱼丸)
-    idx = 0;
     for (BAUserModel *userModel in _userFishBallCountArray) {
         BOOL contained = [bulletModel.uid isEqualToString:userModel.uid];
         if (contained) {
+            userModel.count = BAStringWithInteger(userModel.count.integerValue + 1);
             [userModel.bulletArray addObject:bulletModel];
             break;
-        } else if (idx == 20) {
-            break;
         }
-        idx++;
     }
     
     //记录用户发言(礼物)
     for (BAGiftValueModel *giftValueModel in _giftValueArray) {
-        idx = 0;
-        //NSArray *userModelArrayTemp = giftValueModel.userModelArray.copy;
         for (BAUserModel *userModel in giftValueModel.userModelArray) {
             BOOL contained = [bulletModel.uid isEqualToString:userModel.uid];
             if (contained) {
+                userModel.count = BAStringWithInteger(userModel.count.integerValue + 1);
                 [userModel.bulletArray addObject:bulletModel];
                 break;
-            } else if (idx == 20) {
-                break;
             }
-            idx++;
         }
     }
     
@@ -825,11 +812,13 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             //礼物赠送数量排序
             for (BAGiftValueModel *giftValueModel in _giftValueArray) {
                 
+                BOOL isSuperGift = giftValueModel.giftType == BAGiftTypePlane || giftValueModel.giftType == BAGiftTypeRocket;
+                
                 [giftValueModel.userModelArray sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
                     return userModel1.giftCount.integerValue > userModel2.giftCount.integerValue ? NSOrderedAscending : NSOrderedDescending;
                 }];
                 
-                if (giftValueModel.userModelArray.count > 30) {
+                if (giftValueModel.userModelArray.count > 30 && !isSuperGift) {
                     [giftValueModel.userModelArray removeObjectsInRange:NSMakeRange(20, giftValueModel.userModelArray.count - 20)];
                 }
             }

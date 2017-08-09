@@ -9,6 +9,7 @@
 #import "BAGiftChart.h"
 #import "BAReportModel.h"
 #import "BAGiftValueModel.h"
+#import <CoreText/CoreText.h>
 
 @interface BAGiftChart()
 @property (nonatomic, assign) CGFloat maxValue; //礼物总价值
@@ -29,11 +30,13 @@
 @property (nonatomic, strong) CALayer *deserve2Icon; //二级酬勤
 @property (nonatomic, strong) CALayer *deserve1Icon; //一级酬勤
 @property (nonatomic, strong) CALayer *costIcon; //道具礼物(非免费)
+@property (nonatomic, strong) CAShapeLayer *maxValueLayer; //礼物总价值
 
 @property (nonatomic, assign) CGFloat pieRadius; //外圈半径(中点)
 @property (nonatomic, assign) CGFloat inPieRadius; //内圈半径(中点)
 @property (nonatomic, assign) CGPoint pieCenter; //(圆心)
 @property (nonatomic, assign, getter=isFishBallClicked) BOOL fishBallClicked; //鱼丸是否点击了
+
 
 @end
 
@@ -192,6 +195,83 @@
     if (self.isFishBallClicked) {
         [self animationFishBall];
     }
+}
+
+
+- (void)showValue{
+    if (_maxValueLayer) return;
+    
+    UIBezierPath *path = [self transformToBezierPath:[NSString stringWithFormat:@"总价值%.0f鱼翅", _maxValue] font:[UIFont systemFontOfSize:14]];
+    
+    _maxValueLayer = [CAShapeLayer layer];
+    _maxValueLayer.path = path.CGPath;
+    _maxValueLayer.lineWidth = 0.4f;
+    _maxValueLayer.strokeColor = BAWhiteColor.CGColor;
+    _maxValueLayer.fillColor = [UIColor clearColor].CGColor;
+    _maxValueLayer.geometryFlipped = YES;
+    
+    CGRect rect = _maxValueLayer.frame;
+    rect.origin.x = self.width - 120;
+    rect.origin.y = 76;
+    _maxValueLayer.frame = rect;
+    
+    [self.layer addSublayer:_maxValueLayer];
+    
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    animation.fromValue = @(0);
+    animation.toValue = @(1);
+    animation.duration = 3;
+    
+    [_maxValueLayer addAnimation:animation forKey:nil];
+}
+
+
+- (UIBezierPath *)transformToBezierPath:(NSString *)string font:(UIFont *)font{
+    
+    CTFontRef cfFont = CTFontCreateWithName((CFStringRef)font.fontName, font.pointSize, NULL);
+    CGMutablePathRef letters = CGPathCreateMutable();
+    
+    //这里设置画线的字体和大小
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)cfFont, kCTFontAttributeName, nil];
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:string
+                                                                     attributes:attrs];
+    CTLineRef line = CTLineCreateWithAttributedString((CFAttributedStringRef)attrString);
+    CFArrayRef runArray = CTLineGetGlyphRuns(line);
+    
+    // for each RUN
+    for (CFIndex runIndex = 0; runIndex < CFArrayGetCount(runArray); runIndex++)
+    {
+        // Get FONT for this run
+        CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(runArray, runIndex);
+        CTFontRef runFont = CFDictionaryGetValue(CTRunGetAttributes(run), kCTFontAttributeName);
+        
+        // for each GLYPH in run
+        for (CFIndex runGlyphIndex = 0; runGlyphIndex < CTRunGetGlyphCount(run); runGlyphIndex++)
+        {
+            CFRange thisGlyphRange = CFRangeMake(runGlyphIndex, 1);
+            CGGlyph glyph;
+            CGPoint position;
+            CTRunGetGlyphs(run, thisGlyphRange, &glyph);
+            CTRunGetPositions(run, thisGlyphRange, &position);
+            
+            {
+                CGPathRef letter = CTFontCreatePathForGlyph(runFont, glyph, NULL);
+                CGAffineTransform t = CGAffineTransformMakeTranslation(position.x, position.y);
+                CGPathAddPath(letters, &t, letter);
+                CGPathRelease(letter);
+            }
+        }
+    }
+    CFRelease(line);
+    
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointZero];
+    [path appendPath:[UIBezierPath bezierPathWithCGPath:letters]];
+    
+    CGPathRelease(letters);
+    CFRelease(cfFont);
+    
+    return path;
 }
 
 

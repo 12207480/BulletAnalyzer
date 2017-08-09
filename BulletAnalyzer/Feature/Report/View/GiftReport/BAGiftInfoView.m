@@ -165,4 +165,14 @@ static NSString *const BAGiftUserCellReusedId = @"BAGiftUserCellReusedId";
 }
 
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    BAUserModel *userModel = _statusArray[indexPath.row];
+    NSArray *bulletArray = userModel.bulletArray;
+    if (bulletArray.count) {
+        _cellClicked(userModel);
+    } else {
+        [BATool showHUDWithText:@"暂无发言" ToView:BAKeyWindow];
+    }
+}
+
 @end

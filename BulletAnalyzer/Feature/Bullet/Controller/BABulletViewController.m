@@ -290,7 +290,7 @@
     _bulletListView = [[BABulletListView alloc] init];
     _bulletListView.scrollViewTouched = ^{
         if (!selfWeak.isMidBtnClose) {
-            
+
             [selfWeak larger];
         }
     };

@@ -9,8 +9,8 @@
 #define UMAppkey @"581c2823677baa4a270018f0"
 #define SinaAppKey @"1718006107"
 #define SinaAppSecret @"d2c0aad092b14af7c0d9427b61b98fe4"
-#define WeiXinAppKey @"wxdcc698cd0924dd05"
-#define WeiXinAppSecret @"a99a5f5be27811f138c95d55edb5673a"
+#define WeiXinAppKey @"wx4057bc3d143b92ce"
+#define WeiXinAppSecret @"914e5f06f27128af0296504aab43f430"
 #define QQAppID @"1106313590"
 #define QQAppKey @"CdgNZRgrdEHqzXyU"
 

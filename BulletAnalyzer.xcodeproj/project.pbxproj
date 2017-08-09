@@ -220,6 +220,7 @@
 		F25F91051F34177B00FBFE87 /* BABulletListGiftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F91041F34177B00FBFE87 /* BABulletListGiftCell.m */; };
 		F25F91081F341BA700FBFE87 /* BAGiftModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F91071F341BA700FBFE87 /* BAGiftModel.m */; };
 		F25F910B1F342C6C00FBFE87 /* UIButton+AOP.m in Sources */ = {isa = PBXBuildFile; fileRef = F25F910A1F342C6C00FBFE87 /* UIButton+AOP.m */; };
+		F2873C4C1F3AD68E00C8DCD7 /* BAUserBulletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2873C4B1F3AD68E00C8DCD7 /* BAUserBulletViewController.m */; };
 		F299E4571F259BDD008A5CC3 /* BASentenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4561F259BDD008A5CC3 /* BASentenceCell.m */; };
 		F299E45A1F25D82B008A5CC3 /* BAGiftUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F299E4591F25D82B008A5CC3 /* BAGiftUserCell.m */; };
 		F2A8BE871F14523500DC9B3C /* BAAddReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A8BE861F14523500DC9B3C /* BAAddReportCell.m */; };
@@ -711,6 +712,8 @@
 		F25F91071F341BA700FBFE87 /* BAGiftModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGiftModel.m; sourceTree = "<group>"; };
 		F25F91091F342C6C00FBFE87 /* UIButton+AOP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+AOP.h"; sourceTree = "<group>"; };
 		F25F910A1F342C6C00FBFE87 /* UIButton+AOP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+AOP.m"; sourceTree = "<group>"; };
+		F2873C4A1F3AD68E00C8DCD7 /* BAUserBulletViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAUserBulletViewController.h; sourceTree = "<group>"; };
+		F2873C4B1F3AD68E00C8DCD7 /* BAUserBulletViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAUserBulletViewController.m; sourceTree = "<group>"; };
 		F299E4551F259BDD008A5CC3 /* BASentenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASentenceCell.h; sourceTree = "<group>"; };
 		F299E4561F259BDD008A5CC3 /* BASentenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASentenceCell.m; sourceTree = "<group>"; };
 		F299E4581F25D82B008A5CC3 /* BAGiftUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGiftUserCell.h; sourceTree = "<group>"; };
@@ -1975,6 +1978,8 @@
 			children = (
 				F2EF75561F20753D00B0D70B /* BAReportViewController.h */,
 				F2EF75571F20753D00B0D70B /* BAReportViewController.m */,
+				F2873C4A1F3AD68E00C8DCD7 /* BAUserBulletViewController.h */,
+				F2873C4B1F3AD68E00C8DCD7 /* BAUserBulletViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2265,6 +2270,7 @@
 				380ECF061F22ED2500D26CF6 /* BAWordsInfoView.m in Sources */,
 				F21BD44B1EEF7D150079312C /* BABulletListCell.m in Sources */,
 				38A5A0E51EE2AA6800CFF645 /* NSString+MJExtension.m in Sources */,
+				F2873C4C1F3AD68E00C8DCD7 /* BAUserBulletViewController.m in Sources */,
 				F222A4851F0B44D000E70ADA /* LOTShapeTransform.m in Sources */,
 				388A85F61EE4163200A0BC5B /* UIViewController+MMDrawerController.m in Sources */,
 				380ECF171F23661100D26CF6 /* BAFansChartPartView.m in Sources */,

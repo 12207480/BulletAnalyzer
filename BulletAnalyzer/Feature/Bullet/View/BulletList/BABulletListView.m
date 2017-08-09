@@ -221,7 +221,9 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     self.scrollEnable = NO;
-    _scrollViewTouched();
+    if (_scrollViewTouched) {
+        _scrollViewTouched();
+    }
 }
 
 
@@ -233,7 +235,7 @@ static NSString *const BABulletListGiftCellReusedId = @"BABulletListGiftCellReus
         _downBtn.hidden = YES;
     } else {
         
-        _downBtn.hidden = NO;
+        _downBtn.hidden = _downBtnHidden;
         [UIView animateWithDuration:0.1 animations:^{
             
             _downBtn.transform = CGAffineTransformIdentity;

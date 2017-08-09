@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "BAGiftModel.h"
 
-@class BAReportModel;
+@class BAReportModel, BAUserModel;
+
+typedef void(^cellBlock)(BAUserModel *userModel);
 
 @interface BAGiftInfoView : UIView
 
@@ -22,5 +24,10 @@
  选中礼物类型
  */
 @property (nonatomic, assign) BAGiftType selectedGiftType;
+
+/**
+ 选中人
+ */
+@property (nonatomic, copy) cellBlock cellClicked;
 
 @end

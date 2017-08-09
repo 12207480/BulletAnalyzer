@@ -90,11 +90,11 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
             ptr[2] = green;
             ptr[1] = blue;
         }
-        else
-        {
-            uint8_t* ptr = (uint8_t*)pCurPtr;
-            ptr[0] = 0;
-        }
+//        else
+//        {
+//            uint8_t* ptr = (uint8_t*)pCurPtr;
+//            ptr[0] = 0;
+//        }
     }
     // 输出图片
     CGDataProviderRef dataProvider = CGDataProviderCreateWithData(NULL, rgbImageBuf, bytesPerRow * imageHeight, ProviderReleaseData);
@@ -124,17 +124,20 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
     
     UIImage *image = [images firstObject];
     CGFloat width = image.size.width;
-    CGFloat height = image.size.height * images.count;
+    CGFloat height = 0;
+    for (UIImage *image in images) {
+        height += image.size.height;
+    }
     CGSize offScreenSize = CGSizeMake(width, height);
     
     UIGraphicsBeginImageContextWithOptions(offScreenSize, YES, [UIScreen mainScreen].scale);
     
-    CGRect rect = CGRectMake(0, 0, width, image.size.height);
-    
+    CGFloat y = 0;
     for (UIImage *image in images) {
         
+        CGRect rect = CGRectMake(0, y, width, image.size.height);
         [image drawInRect:rect];
-        rect.origin.y += image.size.height;
+        y += image.size.height;
     }
     
     UIImage *imagez = UIGraphicsGetImageFromCurrentImageContext();

@@ -18,6 +18,11 @@ typedef void(^returnBlock)();
 @property (nonatomic, copy) returnBlock scrollViewTouched;
 
 /**
+ 按钮隐藏
+ */
+@property (nonatomic, assign, getter=isDownBtnHidden) BOOL downBtnHidden;
+
+/**
  传入新的弹幕
  */
 - (void)addStatus:(NSArray *)statusArray;

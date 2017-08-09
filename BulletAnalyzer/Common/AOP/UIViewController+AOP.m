@@ -7,6 +7,7 @@
 //
 
 #import "UIViewController+AOP.h"
+#import "BAReportViewController.h"
 #import "Aspects.h"
 
 @implementation UIViewController (AOP)
@@ -32,7 +33,10 @@
         } else if ([aspectInfo.instance isKindOfClass:[UIAlertController class]]) {
             
             
-        } else {
+        } else if ([aspectInfo.instance isKindOfClass:[BAReportViewController class]]) {
+            
+            
+        } else  {
             
             UIViewController *viewContoller = (UIViewController *)aspectInfo.instance;
             

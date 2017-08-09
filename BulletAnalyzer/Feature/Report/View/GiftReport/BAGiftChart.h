@@ -40,4 +40,9 @@ typedef void(^giftPieClicked)(BAGiftType giftType);
  */
 - (void)hide;
 
+/**
+ 显示礼物总价值
+ */
+- (void)showValue;
+
 @end
