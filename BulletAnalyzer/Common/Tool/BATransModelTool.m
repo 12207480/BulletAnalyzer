@@ -104,10 +104,7 @@
             BAReplyModel *replayModel = [BAReplyModel mj_objectWithKeyValues:dic];
             [replayArray addObject:replayModel];
         }
-        
-        dic = nil;
     }];
-    contents = nil;
     
     complete(bulletArray, BAModelTypeBullet);
     complete(giftArray, BAModelTypeGift);

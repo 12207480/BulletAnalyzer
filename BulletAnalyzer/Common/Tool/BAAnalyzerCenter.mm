@@ -308,7 +308,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     
     [self giftClassify:giftModelArray];
     
-    [_giftsArray addObjectsFromArray:giftModelArray];
+    //[_giftsArray addObjectsFromArray:giftModelArray];
 }
 
 
@@ -457,7 +457,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     _bulletsCount += bulletModelArray.count;
     _analyzingReportModel.totalBulletCount += bulletModelArray.count;
 }
-
 
 
 /**
@@ -1072,7 +1071,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 } else {
                     insert = [NSString stringWithFormat:@"INSERT INTO %@ (%@, %@) VALUES (?, ?)", BACompletedReport, BAReportID, BAReportData];
                 }
-                _analyzingReportModel.newReport = NO;
                 NSData *reportData = [NSKeyedArchiver archivedDataWithRootObject:_analyzingReportModel];
                 BOOL success = [db executeUpdate:insert, @(_analyzingReportModel.timeID), reportData];
                 if (!success) {
