@@ -100,7 +100,7 @@ typedef void(^completeBlock)(CAShapeLayer *borderShapeLayer, CAShapeLayer *shape
     
     [_XValues enumerateObjectsUsingBlock:^(UILabel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        NSDate *date = [_reportModel.begin dateByAddingMinutes:idx * duration / 4];
+        NSDate *date = [_reportModel.begin dateByAddingMinutes:idx * duration / 3];
         obj.text = [formatter stringFromDate:date];
     }];
 }
