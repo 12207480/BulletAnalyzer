@@ -27,7 +27,7 @@
     }
     progressHUD.removeFromSuperViewOnHide = YES;
     progressHUD.alpha = 0.9;
-    [progressHUD hideAnimated:YES afterDelay:1.0f];
+    [progressHUD hideAnimated:YES afterDelay:1.2f];
 }
 
 

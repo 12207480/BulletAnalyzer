@@ -22,8 +22,9 @@
 #import "BAGiftInfoView.h"
 #import "BAShareView.h"
 #import <UShareUI/UShareUI.h>
+#import <StoreKit/StoreKit.h>
 
-@interface BAReportViewController () <UIScrollViewDelegate>
+@interface BAReportViewController () <UIScrollViewDelegate, SKStoreProductViewControllerDelegate>
 //结构
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) BAGradientView *gradientView;
@@ -88,6 +89,21 @@
     [self setupFansReport];
     
     [self setupGiftReport];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+ 
+    NSNumber *reportOpenCount = [[NSUserDefaults standardUserDefaults] objectForKey:@"reportOpenCount"];
+    [[NSUserDefaults standardUserDefaults] setObject:@(reportOpenCount.integerValue + 1) forKey:@"reportOpenCount"];
+    
+    if ((reportOpenCount.integerValue + 1) == 5) { //第五次打开会出现邀请评价
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            [self inviteRateApp];
+        });
+    }
 }
 
 
@@ -197,6 +213,37 @@
 
 
 #pragma mark - private
+- (void)inviteRateApp{
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"支持作者" message:@"无偿开发, 请给个好评, 谢谢~!\nps:此弹窗只会出现一次, 放心用~" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"支持" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        
+        SKStoreProductViewController *storeProductVC = [[SKStoreProductViewController alloc] init];
+        storeProductVC.delegate = self;
+        
+        NSDictionary *dict = [NSDictionary dictionaryWithObject:@"1269539591" forKey:SKStoreProductParameterITunesItemIdentifier];
+        [storeProductVC loadProductWithParameters:dict completionBlock:^(BOOL result, NSError *error) {
+            if (result) {
+                [self presentViewController:storeProductVC animated:YES completion:nil];
+            }
+        }];
+    }];
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    
+    [alert addAction:action1];
+    [alert addAction:action2];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+
+#pragma mark - SKStoreProductViewControllerDelegate
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)storeProductVC {
+    [storeProductVC dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 - (void)prepare{
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.layer.contents = (id)[UIImage new].CGImage;
@@ -354,7 +401,7 @@
     [filter setDefaults];
     
     // 2. 给滤镜添加数据
-    NSString *string = @"https://itunes.apple.com/app/id1194998642";
+    NSString *string = @"https://itunes.apple.com/app/id1269539591";
     NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
     // 使用KVC的方式给filter赋值
     [filter setValue:data forKeyPath:@"inputMessage"];

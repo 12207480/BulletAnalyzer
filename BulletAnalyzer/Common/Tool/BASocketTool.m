@@ -11,6 +11,7 @@
 #import "BATransModelTool.h"
 #import "BAAnalyzerCenter.h"
 #import "NSData+HexExtension.h"
+#import "Reachability.h"
 
 @implementation BASocketTool {
     NSTimer *_heartbeatTimer;
@@ -19,6 +20,9 @@
     BOOL _roomConnected;
     NSMutableData *_contentData;
     NSInteger _line;
+    BOOL _isReachable;
+    NSInteger _memoryWarningCount;
+    BOOL _ignoreFreeGift;
 }
 
 #pragma mark - service
@@ -42,7 +46,11 @@
         
         NSLog(@"客户端连接服务器成功");
         
+        [BANotificationCenter addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+        
         _serviceConnected = YES;
+        _memoryWarningCount = 0;
+        _ignoreFreeGift = NO;
         
         [self connectRoom];
         
@@ -53,6 +61,30 @@
     }
 }
 
+
+/**
+ 处理网络状态变化
+ */
+- (void)reachabilityChanged:(NSNotification *)notification{
+    Reachability *reach = [notification object];
+    if([reach isKindOfClass:[Reachability class]]){
+        NetworkStatus status = [reach currentReachabilityStatus];
+        NSParameterAssert([reach isKindOfClass:[Reachability class]]);
+        //如果没有连接到网络就弹出提醒实况
+        if(status == NotReachable){
+            
+            [BATool showHUDWithText:@"网络连接已断开\n网络恢复后会尝试重连" ToView:BAKeyWindow];
+            _isReachable = NO;
+            
+        } else if (status == ReachableViaWiFi || status == ReachableViaWWAN) {
+            
+            NSInteger line = _line;
+            _line = 999;
+            [self changeLine:line];
+            _isReachable = YES;
+        }
+    }
+}
 
 /**
  链接房间弹幕服务器
@@ -190,6 +222,21 @@
 }
 
 
+- (void)receiveMemoryWarning{
+    _memoryWarningCount += 1;
+    if (_memoryWarningCount == 1) {
+        
+        _ignoreFreeGift = YES;
+        NSLog(@"内存占用过高, 将忽略免费礼物");
+        
+    } else if (_memoryWarningCount == 2) {
+        
+        [self cutOff];
+        [BATool showHUDWithText:@"弹幕服务器又炸了" ToView:BAKeyWindow];
+    }
+}
+
+
 #pragma mark - GCDAsyncSocketDelegate
 /**
  连接成功
@@ -248,7 +295,7 @@
         if (endCode == 0) {
             [_contentData appendData:data];
             
-            [BATransModelTool transModelWithData:_contentData complete:^(NSMutableArray *array, BAModelType modelType) {
+            [BATransModelTool transModelWithData:_contentData ignoreFreeGift:_ignoreFreeGift complete:^(NSMutableArray *array, BAModelType modelType) {
                 
                 if (modelType == BAModelTypeBullet) {
                     
@@ -299,6 +346,7 @@ static BASocketTool *defaultSocket = nil;
         if (defaultSocket == nil) {
             defaultSocket = [[self alloc] init];
             defaultSocket.socket = [[GCDAsyncSocket alloc] initWithDelegate:defaultSocket delegateQueue:dispatch_get_main_queue()];
+            [BANotificationCenter addObserver:defaultSocket selector:@selector(receiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         }
     });
     return defaultSocket;

@@ -21,6 +21,7 @@
 #import "MMDrawerController.h"
 #import "BAGuideViewController.h"
 #import "BAAnalyzerCenter.h"
+#import "Reachability.h"
 #import <UMSocialCore/UMSocialCore.h>
 
 @interface AppDelegate ()
@@ -44,8 +45,6 @@
     
     //注册分享
     [self configUSharePlatforms];
-
-    [self confitUShareSettings];
     
     BOOL isGuided = [[NSUserDefaults standardUserDefaults] boolForKey:@"guided"];
     if (0) {
@@ -77,6 +76,11 @@
         BAGuideViewController *guideVC = [[BAGuideViewController alloc] init];
         [_window setRootViewController:guideVC];
     }
+    
+    //监听网络变化
+    Reachability *reach = [Reachability reachabilityWithHostname:@"www.baidu.com"];
+
+    [reach startNotifier];
     
     //初始化分析库
     [BAAnalyzerCenter defaultCenter];

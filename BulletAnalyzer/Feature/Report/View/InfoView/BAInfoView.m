@@ -87,7 +87,7 @@
     _nameLabel.text = _reportModel.name;
     _roomNameLabel.text = _reportModel.roomName;
     _roomNumLabel.text = [NSString stringWithFormat:@"房间号: %@", _reportModel.roomId];
-    [self setInfoWithBulletCount:[NSString stringWithFormat:@" %zd", _reportModel.totalBulletCount] giftCount:[NSString stringWithFormat:@" %zd", _reportModel.giftsArray.count]];
+    [self setInfoWithBulletCount:[NSString stringWithFormat:@" %zd", _reportModel.totalBulletCount] giftCount:[NSString stringWithFormat:@" %zd", _reportModel.giftsTotalCount]];
 }
 
 

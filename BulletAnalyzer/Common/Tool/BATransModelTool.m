@@ -32,7 +32,7 @@
 
 
 #pragma mark - socket数据解析
-+ (void)transModelWithData:(NSData *)data complete:(transCompleteBlock)complete{
++ (void)transModelWithData:(NSData *)data ignoreFreeGift:(BOOL)ignore complete:(transCompleteBlock)complete{
    
     NSMutableArray *contents = [NSMutableArray array];
     NSData *subData = data.copy;
@@ -61,13 +61,13 @@
         
     } while (_loction < data.length && subData.length > 12);
 
-    [self transModelWithContents:contents complete:^(NSMutableArray *array, BAModelType modelType) {
+    [self transModelWithContents:contents ignoreFreeGift:ignore complete:^(NSMutableArray *array, BAModelType modelType) {
         complete(array, modelType);
     }];
 }
 
 
-+ (void)transModelWithContents:(NSArray *)contents complete:(transCompleteBlock)complete{
++ (void)transModelWithContents:(NSArray *)contents ignoreFreeGift:(BOOL)ignore complete:(transCompleteBlock)complete{
     
     __block NSMutableArray *bulletArray = [NSMutableArray array];
     __block NSMutableArray *giftArray = [NSMutableArray array];
@@ -94,8 +94,17 @@
             BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
             
             if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && (giftModel.giftType == BAGiftTypeRocket || giftModel.giftType == BAGiftTypePlane))) { //别的房间火箭广播消息过滤掉
+               
                 if (giftModel.nn.length) { //没有用户名的礼物 放弃
-                    [giftArray addObject:giftModel];
+                    
+                    if (!ignore) { //若不忽略免费礼物
+                        
+                        [giftArray addObject:giftModel];
+                        
+                    } else if (giftModel.giftType != BAGiftTypeFreeGift) { //忽略免费礼物
+                        
+                        [giftArray addObject:giftModel];
+                    }
                 }
             }
         

@@ -65,7 +65,7 @@
     _nameLabel.text = _reportModel.name;
     _titleLabel.text = _reportModel.roomName;
     _timeLabel.text = _reportModel.timeDescription;
-    [self setInfoWithBulletCount:[NSString stringWithFormat:@" %zd", _reportModel.totalBulletCount] giftCount:[NSString stringWithFormat:@" %zd", _reportModel.giftsArray.count]];
+    [self setInfoWithBulletCount:[NSString stringWithFormat:@" %zd", _reportModel.totalBulletCount] giftCount:[NSString stringWithFormat:@" %zd", _reportModel.giftsTotalCount]];
     [_imgView sd_setImageWithURL:[NSURL URLWithString:_reportModel.avatar] placeholderImage:BAPlaceHolderImg];
     _neImgView.hidden = !_reportModel.isNewReport;
 }

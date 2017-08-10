@@ -26,7 +26,7 @@ typedef void(^transModelCompleteBlock)(id obj);
  @param data 服务器返回的数据
  @param complete 解析回调
  */
-+ (void)transModelWithData:(NSData *)data complete:(transCompleteBlock)complete;
++ (void)transModelWithData:(NSData *)data ignoreFreeGift:(BOOL)ignore complete:(transCompleteBlock)complete;
 
 
 /**

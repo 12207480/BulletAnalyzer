@@ -50,7 +50,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 @property (nonatomic, strong, readonly) NSMutableArray *fansTimePointArray; //关注数量与时间坐标数组
 @property (nonatomic, strong, readonly) NSMutableArray *levelCountPointArray; //等级与数量的坐标数组
 
-@property (nonatomic, strong, readonly) NSMutableArray *giftsArray; //全部礼物
 @property (nonatomic, strong, readonly) NSMutableArray *userFishBallCountArray; //根据赠送鱼丸数的用户数组
 @property (nonatomic, strong, readonly) NSMutableArray *giftValueArray; //礼物价值分布数组
 @property (nonatomic, strong, readonly) NSMutableArray *giftUserBulletArray; //送礼物的人弹幕的数组
@@ -95,7 +94,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                              ].mutableCopy;
         
         //初始化礼物数组
-        _giftsArray = [NSMutableArray array];
         _userFishBallCountArray = [NSMutableArray array];
         _giftValueArray = [NSMutableArray array];
         _giftUserBulletArray = [NSMutableArray array];
@@ -125,7 +123,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         _analyzingReportModel.maxActiveCount = 1;
         _analyzingReportModel.timeID = (NSInteger)[[NSDate date] timeIntervalSince1970];
         
-        _analyzingReportModel.giftsArray = _giftsArray;
         _analyzingReportModel.userFishBallCountArray = _userFishBallCountArray;
         _analyzingReportModel.giftValueArray = _giftValueArray;
         _analyzingReportModel.giftUserBulletArry = _giftUserBulletArray;
@@ -156,7 +153,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         _fansTimePointArray = _analyzingReportModel.fansTimePointArray;
         _levelCountPointArray = _analyzingReportModel.levelCountPointArray;
         
-        _giftsArray = _analyzingReportModel.giftsArray;
         _userFishBallCountArray = _analyzingReportModel.userFishBallCountArray;
         _giftValueArray = _analyzingReportModel.giftValueArray;
         _giftUserBulletArray = _analyzingReportModel.giftUserBulletArry;
@@ -308,7 +304,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     
     [self giftClassify:giftModelArray];
     
-    //[_giftsArray addObjectsFromArray:giftModelArray];
+    _analyzingReportModel.giftsTotalCount += giftModelArray.count;
 }
 
 
@@ -793,10 +789,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             //只保留最新50个弹幕
             if (_bulletsArray.count > 100) {
                 [_bulletsArray removeObjectsInRange:NSMakeRange(0, _bulletsArray.count - 50)];
-            }
-            
-            if (_giftsArray.count > 100) {
-                [_giftsArray removeObjectsInRange:NSMakeRange(0, _giftsArray.count - 50)];
             }
             
             //赠送鱼丸排序

@@ -16,6 +16,7 @@
 		380ECF141F22ED8C00D26CF6 /* BAGiftInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF131F22ED8C00D26CF6 /* BAGiftInfoView.m */; };
 		380ECF171F23661100D26CF6 /* BAFansChartPartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF161F23661100D26CF6 /* BAFansChartPartView.m */; };
 		380ECF1A1F236FA100D26CF6 /* BAFansChartXYView.m in Sources */ = {isa = PBXBuildFile; fileRef = 380ECF191F236FA100D26CF6 /* BAFansChartXYView.m */; };
+		38223FF41F3C7FA700DC212E /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 38223FF31F3C7FA700DC212E /* Reachability.m */; };
 		38340C9A1F2C441300659490 /* UIViewController+AOP.m in Sources */ = {isa = PBXBuildFile; fileRef = 38340C991F2C441300659490 /* UIViewController+AOP.m */; };
 		387020461F2242490047B94B /* BACountChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 387020411F2242490047B94B /* BACountChart.m */; };
 		387020471F2242490047B94B /* BACountInfoBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 387020431F2242490047B94B /* BACountInfoBlock.m */; };
@@ -289,6 +290,8 @@
 		380ECF161F23661100D26CF6 /* BAFansChartPartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAFansChartPartView.m; sourceTree = "<group>"; };
 		380ECF181F236FA100D26CF6 /* BAFansChartXYView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFansChartXYView.h; sourceTree = "<group>"; };
 		380ECF191F236FA100D26CF6 /* BAFansChartXYView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAFansChartXYView.m; sourceTree = "<group>"; };
+		38223FF21F3C7FA700DC212E /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		38223FF31F3C7FA700DC212E /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		38340C981F2C441300659490 /* UIViewController+AOP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AOP.h"; sourceTree = "<group>"; };
 		38340C991F2C441300659490 /* UIViewController+AOP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+AOP.m"; sourceTree = "<group>"; };
 		387020401F2242490047B94B /* BACountChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACountChart.h; sourceTree = "<group>"; };
@@ -859,6 +862,15 @@
 			path = GiftReport;
 			sourceTree = "<group>";
 		};
+		38223FF11F3C7FA700DC212E /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				38223FF21F3C7FA700DC212E /* Reachability.h */,
+				38223FF31F3C7FA700DC212E /* Reachability.m */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		38340C971F2C43E600659490 /* AOP(方法拦截) */ = {
 			isa = PBXGroup;
 			children = (
@@ -1343,6 +1355,7 @@
 		F2873CB71F3C451C00C8DCD7 /* Lib(第三方库) */ = {
 			isa = PBXGroup;
 			children = (
+				38223FF11F3C7FA700DC212E /* Reachability */,
 				F2873EB21F3C69F900C8DCD7 /* MJRefresh */,
 				F2873CB81F3C451C00C8DCD7 /* AFNetworking */,
 				F2873CC61F3C451C00C8DCD7 /* Aspects */,
@@ -2348,6 +2361,7 @@
 				F2873EA71F3C451C00C8DCD7 /* UIImageView+WebCache.m in Sources */,
 				F2873E5C1F3C451C00C8DCD7 /* LOTComposition.m in Sources */,
 				F2873E531F3C451C00C8DCD7 /* CGGeometry+LOTAdditions.m in Sources */,
+				38223FF41F3C7FA700DC212E /* Reachability.m in Sources */,
 				F2873E421F3C451C00C8DCD7 /* LOTAnimatableLayer.m in Sources */,
 				F25F91021F33037800FBFE87 /* UIImage+ZJExtension.m in Sources */,
 				F2873EED1F3C69F900C8DCD7 /* MJRefreshNormalHeader.m in Sources */,

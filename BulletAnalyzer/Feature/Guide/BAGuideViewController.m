@@ -117,7 +117,7 @@
     
     [_phoneImgView addSubview:_phoneContentMaskView];
     
-    _phoneContentImgView = [UIImageView imageViewWithFrame:CGRectMake(0, 0, _phoneContentWidth * 3, _phoneContentHeight) image:guideContentImg];
+    _phoneContentImgView = [UIImageView imageViewWithFrame:CGRectMake(- 1, 0, _phoneContentWidth * 3, _phoneContentHeight) image:guideContentImg];
     
     [_phoneContentMaskView addSubview:_phoneContentImgView];
     
@@ -179,7 +179,7 @@
         _bgImgView.x = 0;
         _bubbleImgView.x = 0;
         
-        _phoneContentImgView.x = 0;
+        _phoneContentImgView.x = - 1;
         
     } else if (offsetX > BAScreenWidth * 2) {
         
@@ -189,7 +189,7 @@
         _bgImgView.x = - BAScreenWidth * 2;
         _bubbleImgView.x = - BAScreenWidth;
         
-        _phoneContentImgView.x = - 2 * _phoneContentWidth;
+        _phoneContentImgView.x = - 1 - 2 * _phoneContentWidth;
         
     } else {
         
@@ -269,7 +269,7 @@
         }
         
         //手机内容
-        _phoneContentImgView.x = - offsetX * _phoneContentWidth / BAScreenWidth;
+        _phoneContentImgView.x = - 1 - offsetX * _phoneContentWidth / BAScreenWidth;
         
         //广告2
         CGFloat page2Delta = fabs(offsetX - BAScreenWidth);

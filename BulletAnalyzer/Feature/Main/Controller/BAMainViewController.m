@@ -43,7 +43,7 @@
     
     [self addNotificationObserver];
     
-    [self setupLaunchMask];
+    //[self setupLaunchMask];
 }
 
 
@@ -154,10 +154,10 @@
     
     [self.view addSubview:_launchMask];
     
-    _launchAnimation = [LOTAnimationView animationNamed:@"launchAnimation"];
+    _launchAnimation = [LOTAnimationView animationNamed:@"empty_status"];
+    _launchAnimation.cacheEnable = NO;
     _launchAnimation.frame = self.view.bounds;
     _launchAnimation.contentMode = UIViewContentModeScaleAspectFill;
-    //_launchAnimation.loopAnimation = YES;
     
     [_launchMask addSubview:_launchAnimation];
 }

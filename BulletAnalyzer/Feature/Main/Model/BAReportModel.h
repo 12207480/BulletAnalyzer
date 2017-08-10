@@ -198,7 +198,7 @@
 /**
  全部礼物数组
  */
-@property (nonatomic, strong) NSMutableArray *giftsArray;
+@property (nonatomic, assign) NSInteger giftsTotalCount;
 
 /**
  用户赠送鱼丸排序
