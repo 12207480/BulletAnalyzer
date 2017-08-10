@@ -19,6 +19,7 @@
 #import "BARoomListTableViewController.h"
 #import "BANavigationViewController.h"
 #import "MMDrawerController.h"
+#import "BAGuideViewController.h"
 #import "BAAnalyzerCenter.h"
 #import <UMSocialCore/UMSocialCore.h>
 
@@ -46,30 +47,36 @@
 
     [self confitUShareSettings];
     
-    //初始化控制器
-    UIViewController *centerVC = [[BAMainViewController alloc] init];
-    UIViewController *leftVC = [[BARoomListTableViewController alloc] init];
-    
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    [UIApplication sharedApplication].statusBarHidden = NO;
-
-    //初始化导航控制器
-    BANavigationViewController *centerNvaVC = [[BANavigationViewController alloc] initWithRootViewController:centerVC];
-    BANavigationViewController *leftNvaVC = [[BANavigationViewController alloc] initWithRootViewController:leftVC];
-    
-    //使用MMDrawerController
-    _drawerController = [[MMDrawerController alloc] initWithCenterViewController:centerNvaVC leftDrawerViewController:leftNvaVC];
-    _drawerController.showsShadow = NO;
-    
-    //设置打开/关闭抽屉的手势
-    _drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
-    _drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
-    
-    //设置左右两边抽屉显示的多少
-    _drawerController.maximumLeftDrawerWidth = BARoomListViewWidth;
-    
-    //初始化窗口、设置根控制器、显示窗口
-    [_window setRootViewController:_drawerController];
+    BOOL isGuided = [[NSUserDefaults standardUserDefaults] boolForKey:@"guided"];
+    if (0) {
+        //初始化控制器
+        UIViewController *centerVC = [[BAMainViewController alloc] init];
+        UIViewController *leftVC = [[BARoomListTableViewController alloc] init];
+        
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+        [UIApplication sharedApplication].statusBarHidden = NO;
+        
+        //初始化导航控制器
+        BANavigationViewController *centerNvaVC = [[BANavigationViewController alloc] initWithRootViewController:centerVC];
+        BANavigationViewController *leftNvaVC = [[BANavigationViewController alloc] initWithRootViewController:leftVC];
+        
+        //使用MMDrawerController
+        _drawerController = [[MMDrawerController alloc] initWithCenterViewController:centerNvaVC leftDrawerViewController:leftNvaVC];
+        _drawerController.showsShadow = NO;
+        
+        //设置打开/关闭抽屉的手势
+        _drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
+        _drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
+        
+        //设置左右两边抽屉显示的多少
+        _drawerController.maximumLeftDrawerWidth = BARoomListViewWidth;
+        [_window setRootViewController:_drawerController];
+        
+    } else {
+        
+        BAGuideViewController *guideVC = [[BAGuideViewController alloc] init];
+        [_window setRootViewController:guideVC];
+    }
     
     //初始化分析库
     [BAAnalyzerCenter defaultCenter];

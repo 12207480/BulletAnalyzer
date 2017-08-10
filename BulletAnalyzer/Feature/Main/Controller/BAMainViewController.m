@@ -43,7 +43,7 @@
     
     [self addNotificationObserver];
     
-    //[self setupLaunchMask];
+    [self setupLaunchMask];
 }
 
 
@@ -64,7 +64,7 @@
     if (_launchMask && _launchAnimation) {
         [_launchAnimation playWithCompletion:^(BOOL animationFinished) {
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [UIView animateWithDuration:1 animations:^{
                     _launchMask.alpha = 0;
                 } completion:^(BOOL finished) {
@@ -154,10 +154,9 @@
     
     [self.view addSubview:_launchMask];
     
-    _launchAnimation = [LOTAnimationView animationNamed:@"servishero_loading"];
-    _launchAnimation.frame = CGRectMake(0, 0, BAScreenWidth, 300);
-    _launchAnimation.center = self.view.center;
-    _launchAnimation.contentMode = UIViewContentModeScaleAspectFit;
+    _launchAnimation = [LOTAnimationView animationNamed:@"launchAnimation"];
+    _launchAnimation.frame = self.view.bounds;
+    _launchAnimation.contentMode = UIViewContentModeScaleAspectFill;
     //_launchAnimation.loopAnimation = YES;
     
     [_launchMask addSubview:_launchAnimation];
