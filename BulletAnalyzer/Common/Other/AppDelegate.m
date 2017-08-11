@@ -87,24 +87,6 @@
 }
 
 
-- (void)confitUShareSettings{
-    /*
-     * 打开图片水印
-     */
-    //[UMSocialGlobal shareInstance].isUsingWaterMark = YES;
-    
-    /*
-     * 关闭强制验证https，可允许http图片分享，但需要在info.plist设置安全域名
-     <key>NSAppTransportSecurity</key>
-     <dict>
-     <key>NSAllowsArbitraryLoads</key>
-     <true/>
-     </dict>
-     */
-    //[UMSocialGlobal shareInstance].isUsingHttpsWhenShareContent = NO;
-}
-
-
 - (void)configUSharePlatforms{
     /* 设置微信的appKey和appSecret */
     [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:WeiXinAppKey appSecret:WeiXinAppSecret redirectURL:@"http://mobile.umeng.com/social"];

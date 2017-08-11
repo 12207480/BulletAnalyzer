@@ -98,7 +98,7 @@
     NSNumber *reportOpenCount = [[NSUserDefaults standardUserDefaults] objectForKey:@"reportOpenCount"];
     [[NSUserDefaults standardUserDefaults] setObject:@(reportOpenCount.integerValue + 1) forKey:@"reportOpenCount"];
     
-    if ((reportOpenCount.integerValue + 1) == 5) { //第五次打开会出现邀请评价
+    if ((reportOpenCount.integerValue + 1) == 8) { //第八次打开会出现邀请评价
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             [self inviteRateApp];
