@@ -83,6 +83,7 @@
     self.getSpeed = 0.5;
     self.bulletFilterTag = 0;
     self.giftFilterTag  = 0;
+    self.title = @"连接中...";
     
     [self larger];
 }
@@ -585,9 +586,8 @@
     
     if (_bulletFilterTag == -1) return;
     
-    if (!self.title.length) {
+    if (![self.title isEqualToString:_reportModel.name] && _reportModel.name.length) {
         self.title = _reportModel.name;
-        [self larger];
     }
     
     NSArray *subArray;

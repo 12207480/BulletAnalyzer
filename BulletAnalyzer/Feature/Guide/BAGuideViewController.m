@@ -56,16 +56,14 @@
         WeakObj(self);
         [_launchAnimation playWithCompletion:^(BOOL animationFinished) {
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [UIView animateWithDuration:0.5 animations:^{
-                    selfWeak.launchMask.alpha = 0;
-                } completion:^(BOOL finished) {
-                    [selfWeak.launchAnimation removeFromSuperview];
-                    selfWeak.launchAnimation = nil;
-                    [selfWeak.launchMask removeFromSuperview];
-                    selfWeak.launchMask = nil;
-                }];
-            });
+            [UIView animateWithDuration:0.3 animations:^{
+                selfWeak.launchMask.alpha = 0;
+            } completion:^(BOOL finished) {
+                [selfWeak.launchAnimation removeFromSuperview];
+                selfWeak.launchAnimation = nil;
+                [selfWeak.launchMask removeFromSuperview];
+                selfWeak.launchMask = nil;
+            }];
         }];
     }
 }
@@ -114,6 +112,7 @@
     _launchAnimation.cacheEnable = NO;
     _launchAnimation.frame = self.view.bounds;
     _launchAnimation.contentMode = UIViewContentModeScaleToFill;
+    _launchAnimation.animationSpeed = 1.2;
     
     [_launchMask addSubview:_launchAnimation];
 }

@@ -12,7 +12,8 @@
 #import <ImageIO/ImageIO.h>
 
 
-#define Size            130
+#define Width            375
+#define Height           272
 #define FadeDuration    0.15
 #define GifSpeed        0.15
 
@@ -173,15 +174,15 @@ static GiFHUD *instance;
 }
 
 - (instancetype)init {
-    if ((self = [super initWithFrame:CGRectMake(0, 0, Size, Size)])) {
+    if ((self = [super initWithFrame:CGRectMake(0, 0, Width, Height)])) {
         
         [self setAlpha:0];
         [self setCenter:APPDELEGATE.window.center];
         [self setClipsToBounds:NO];
         
-        [self.layer setBackgroundColor:[[UIColor colorWithWhite:0 alpha:0.5] CGColor]];
-        [self.layer setCornerRadius:10];
-        [self.layer setMasksToBounds:YES];
+        //[self.layer setBackgroundColor:[[UIColor colorWithWhite:1 alpha:0.5] CGColor]];
+        //[self.layer setCornerRadius:10];
+        //[self.layer setMasksToBounds:YES];
         
         self.imageView = [[UIImageView alloc] initWithFrame:CGRectInset(self.bounds, 20, 20)];
         [self addSubview:self.imageView];

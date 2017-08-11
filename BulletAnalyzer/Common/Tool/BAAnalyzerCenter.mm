@@ -257,12 +257,17 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             return;
         }
         
+        if (roomModel.online.integerValue > 1000000) {
+            [BASocketTool defaultSocket].ignoreFreeGift = YES;
+        }
+        
         _analyzingReportModel.fansCount = roomModel.fans_num;
         _analyzingReportModel.weight = roomModel.owner_weight;
         _analyzingReportModel.roomName = roomModel.room_name;
         _analyzingReportModel.name = roomModel.owner_name;
         _analyzingReportModel.avatar = roomModel.avatar;
         _analyzingReportModel.photo = roomModel.room_src;
+        
         if (_timeCountModel) {
             //存入当前时刻粉丝数量, 主播体重, 在线人数
             _timeCountModel.fansCount = roomModel.fans_num;

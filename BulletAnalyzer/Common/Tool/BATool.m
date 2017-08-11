@@ -10,6 +10,7 @@
 #import "BATool.h"
 #import "MBProgressHUD.h"
 #import "GiFHUD.h"
+#import "Lottie.h"
 
 @implementation BATool
 
@@ -32,13 +33,34 @@
 
 
 + (void)showGIFHud{
-    [GiFHUD setGifWithImageName:@"house.gif"];
-    [GiFHUD showWithOverlay];
+    UIView *bgView = [[UIView alloc] initWithFrame:BAKeyWindow.bounds];
+    bgView.backgroundColor = [BABlackColor colorWithAlphaComponent:0.5];
+    bgView.tag = -9999;
+    
+    [BAKeyWindow addSubview:bgView];
+    
+    LOTAnimationView *loadAnimation = [LOTAnimationView animationNamed:@"loading"];
+    loadAnimation.cacheEnable = NO;
+    loadAnimation.frame = CGRectMake(BAScreenWidth / 2 - 375 / 2, BAScreenHeight / 2 - 272 / 2, 375, 272);
+    loadAnimation.contentMode = UIViewContentModeScaleToFill;
+    loadAnimation.loopAnimation = YES;
+    [loadAnimation play];
+    
+    [bgView addSubview:loadAnimation];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self hideGIFHud];
+    });
 }
 
 
 + (void)hideGIFHud{
-    [GiFHUD dismiss];
+    [BAKeyWindow.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.tag == -9999) {
+            [obj removeFromSuperview];
+            *stop = YES;
+        }
+    }];
 }
 
 

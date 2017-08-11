@@ -75,17 +75,15 @@
         WeakObj(self);
         [_launchAnimation playWithCompletion:^(BOOL animationFinished) {
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [UIView animateWithDuration:0.5 animations:^{
-                    selfWeak.launchMask.alpha = 0;
-                } completion:^(BOOL finished) {
-                    [selfWeak.launchAnimation removeFromSuperview];
-                    selfWeak.launchAnimation = nil;
-                    [selfWeak.launchMask removeFromSuperview];
-                    selfWeak.launchMask = nil;
-                    [selfWeak setupNavigation];
-                }];
-            });
+            [UIView animateWithDuration:0.3 animations:^{
+                selfWeak.launchMask.alpha = 0;
+            } completion:^(BOOL finished) {
+                [selfWeak.launchAnimation removeFromSuperview];
+                selfWeak.launchAnimation = nil;
+                [selfWeak.launchMask removeFromSuperview];
+                selfWeak.launchMask = nil;
+                [selfWeak setupNavigation];
+            }];
         }];
     }
 }
@@ -135,6 +133,7 @@
 - (void)roomSelected:(NSNotification *)sender{
     BARoomModel *roomModel = sender.userInfo[BAUserInfoKeyRoomListCellClicked];
     
+    [BATool showGIFHud];
     [[BASocketTool defaultSocket] connectSocketWithRoomId:roomModel.room_id];
 }
 
@@ -154,11 +153,13 @@
 
 
 - (void)beginAnalyzing:(NSNotification *)sender{
+    
     BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyReportModel];
     
     BABulletViewController *bulletVC = [[BABulletViewController alloc] init];
     bulletVC.reportModel = reportModel;
     
+    [BATool hideGIFHud];
     BANavigationViewController *navigationVc = [[BANavigationViewController alloc] initWithRootViewController:bulletVC];
     [self presentViewController:navigationVc animated:YES completion:nil];
 }
@@ -183,6 +184,7 @@
     _launchAnimation.cacheEnable = NO;
     _launchAnimation.frame = self.view.bounds;
     _launchAnimation.contentMode = UIViewContentModeScaleToFill;
+    _launchAnimation.animationSpeed = 1.2;
     
     [_launchMask addSubview:_launchAnimation];
 }

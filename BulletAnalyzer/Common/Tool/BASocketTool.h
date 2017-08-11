@@ -34,6 +34,7 @@ static NSString *const BAServiceAddress = @"openbarrage.douyutv.com";
 
 @interface BASocketTool : NSObject <GCDAsyncSocketDelegate>
 @property (nonatomic, strong) GCDAsyncSocket *socket;
+@property (nonatomic, assign, getter=isIgnoreFreeGift) BOOL ignoreFreeGift;
 
 /**
  创建单粒对象

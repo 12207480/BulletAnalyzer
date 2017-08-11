@@ -22,7 +22,6 @@
     NSInteger _line;
     BOOL _isReachable;
     NSInteger _memoryWarningCount;
-    BOOL _ignoreFreeGift;
 }
 
 #pragma mark - service
@@ -225,12 +224,6 @@
 - (void)receiveMemoryWarning{
     _memoryWarningCount += 1;
     if (_memoryWarningCount == 1) {
-        
-        _ignoreFreeGift = YES;
-        NSLog(@"内存占用过高, 将忽略免费礼物");
-        
-    } else if (_memoryWarningCount == 2) {
-        
         [self cutOff];
         [BATool showHUDWithText:@"弹幕服务器又炸了" ToView:BAKeyWindow];
     }
@@ -295,7 +288,7 @@
         if (endCode == 0) {
             [_contentData appendData:data];
             
-            [BATransModelTool transModelWithData:_contentData ignoreFreeGift:_ignoreFreeGift complete:^(NSMutableArray *array, BAModelType modelType) {
+            [BATransModelTool transModelWithData:_contentData ignoreFreeGift:self.isIgnoreFreeGift complete:^(NSMutableArray *array, BAModelType modelType) {
                 
                 if (modelType == BAModelTypeBullet) {
                     
