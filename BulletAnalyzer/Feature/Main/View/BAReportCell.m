@@ -121,7 +121,7 @@
     
     [self.contentView addSubview:_imgView];
     
-    _titleLabel = [UILabel labelWithFrame:CGRectMake(realPadding, _imgView.bottom + 2 * realPadding, BAReportCellWidth - 2 * realPadding, 28) text:nil color:BARoomNameColor font:BACommonFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _titleLabel = [UILabel labelWithFrame:CGRectMake(realPadding, _imgView.bottom + 2 * realPadding, BAReportCellWidth - 2 * realPadding, 28) text:nil color:BARoomNameColor font:[UIFont systemFontOfSize:18 weight:UIFontWeightRegular] textAlignment:NSTextAlignmentCenter];
 
     [self.contentView addSubview:_titleLabel];
     

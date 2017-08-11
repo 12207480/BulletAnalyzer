@@ -71,7 +71,7 @@
 #define BACommonTextColor BAColor(51, 51, 51) //一般文字颜色
 #define BALightTextColor BAColor(153, 153, 153) //浅说明性文字
 #define BADisabledColor BAColor(204, 204, 204) //不可选颜色
-#define BARoomNameColor BAColor(102, 102, 102) //主页房间名颜色
+#define BARoomNameColor BAColor(128, 128, 128) //主页房间名颜色
 #define BARoomInfoColor BAColor(115, 115, 115) //主页房间信息颜色
 #define BASpratorColor BAColor(240, 240, 240) //分隔线颜色
 #define BABulletCellColor BAColor(55, 55, 55) //弹幕背景色

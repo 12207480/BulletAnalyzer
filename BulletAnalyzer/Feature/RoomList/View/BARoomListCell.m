@@ -51,7 +51,7 @@
 #pragma mark - private
 - (void)setupSubViews{
     _bgView = [[UIView alloc] initWithFrame:CGRectMake(BAPadding, 0, BARoomListScreenShotImgWidth, BARoomListViewHeight)];
-    _bgView.layer.cornerRadius = BARadius;
+    _bgView.layer.cornerRadius = BARadius / 2;
     _bgView.backgroundColor = BAWhiteColor;
     _bgView.clipsToBounds = YES;
     
@@ -61,7 +61,7 @@
 
     [_bgView addSubview:_screenShotImgView];
     
-    UIBlurEffect *beffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIBlurEffect *beffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     _beffectView = [[UIVisualEffectView alloc] initWithEffect:beffect];
     _beffectView.frame = _screenShotImgView.frame;
 
@@ -71,19 +71,17 @@
    
     [_bgView addSubview:_anchorNameLabel];
     
-    _roomNameLabel = [UILabel labelWithFrame:_screenShotImgView.bounds text:nil color:BAWhiteColor font:BAThinFont(BALargeTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _roomNameLabel = [UILabel labelWithFrame:_screenShotImgView.bounds text:nil color:BAWhiteColor font:BACommonFont(16) textAlignment:NSTextAlignmentCenter];
     _roomNameLabel.numberOfLines = 2;
     
     [_beffectView addSubview:_roomNameLabel];
     
     _titileBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 15)];
-    _titileBgView.tintColor = BAThemeColor;
-    _titileBgView.image = [[UIImage imageNamed:@"titileBgView"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    _titileBgView.alpha = 1;
+    _titileBgView.image = [UIImage imageNamed:@"titileBgView"];
     
     [_bgView addSubview:_titileBgView];
     
-    _roomTypeLabel = [UILabel labelWithFrame:CGRectMake(0, 0, 70, 15) text:nil color:BAWhiteColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _roomTypeLabel = [UILabel labelWithFrame:CGRectMake(0, 0, 80, 15) text:nil color:BAWhiteColor font:BAThinFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
     
     [_titileBgView addSubview:_roomTypeLabel];
 }

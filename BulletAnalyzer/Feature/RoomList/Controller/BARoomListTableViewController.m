@@ -17,6 +17,7 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
 @interface BARoomListTableViewController ()
 @property (nonatomic, strong) BAHttpParams *params;
 @property (nonatomic, strong) NSMutableArray *roomModelArray;
+@property (nonatomic, assign, getter=isRefresh) BOOL refresh;
 
 @end
 
@@ -30,8 +31,6 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
     self.title = @"房间列表";
     
     [self setupTableView];
-    
-    [self getStatus];
 }
 
 
@@ -41,6 +40,9 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
     CGPoint contentOffset = self.tableView.contentOffset;
     [self.tableView setContentOffset:CGPointMake(contentOffset.x, contentOffset.y - 10) animated:YES];
     [self.tableView setContentOffset:CGPointMake(contentOffset.x, contentOffset.y) animated:YES];
+    
+    self.refresh = YES;
+    [self getStatus];
 }
 
 
@@ -67,6 +69,13 @@ static NSString *const BARoomListCellReusedId = @"BARoomListCellReusedId";
 - (void)getStatus{
     
     [BAHttpTool getAllRoomListWithParams:self.params success:^(NSMutableArray *obj) {
+        
+        if (self.isRefresh) {
+            [_roomModelArray removeAllObjects];
+            _params.offset = @"1";
+            _params.limit = @"30";
+            _refresh = NO;
+        }
         
         if (obj.count) {
             

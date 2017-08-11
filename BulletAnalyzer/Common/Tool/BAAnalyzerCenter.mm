@@ -565,7 +565,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             C += value2.integerValue * value2.integerValue;
         }];
         
-        CGFloat percent = A / (sqrt(B) * sqrt(C));
+        CGFloat percent = 1 - acos(A / (sqrt(B) * sqrt(C))) / M_PI;;
         
         if (percent > self.similarity) { //7成相似 则合并
             *stop = YES;
@@ -832,8 +832,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
             [_popSentenceArray sortUsingComparator:^NSComparisonResult(BASentenceModel *obj1, BASentenceModel *obj2) {
                 return obj1.realCount > obj2.realCount ? NSOrderedAscending : NSOrderedDescending;
             }];
-            if (_popSentenceArray.count > 20) {
-                [_popSentenceArray removeObjectsInRange:NSMakeRange(10, _popSentenceArray.count - 10)];
+            if (_popSentenceArray.count > 30) {
+                [_popSentenceArray removeObjectsInRange:NSMakeRange(20, _popSentenceArray.count - 20)];
             }
             
             [_userBulletCountArray sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {

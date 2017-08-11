@@ -9,6 +9,7 @@
 #import "BAMainViewController.h"
 #import "BABulletViewController.h"
 #import "BAReportViewController.h"
+#import "BAGuideViewController.h"
 #import "BAReportView.h"
 #import "UIViewController+MMDrawerController.h"
 #import "BASocketTool.h"
@@ -24,8 +25,9 @@
 @property (nonatomic, strong) UILabel *dayLabel;
 @property (nonatomic, strong) UIView *timeLine;
 @property (nonatomic, strong) BAReportView *reportView;
-@property (nonatomic, strong) UIView *launchMask;
+@property (nonatomic, strong) UIImageView *launchMask;
 @property (nonatomic, strong) LOTAnimationView *launchAnimation;
+@property (nonatomic, assign) NSInteger titleTappedCount;
 
 @end
 
@@ -39,16 +41,21 @@
     
     [self setupReportView];
     
-    [self setupNavigation];
-    
     [self addNotificationObserver];
     
-    //[self setupLaunchMask];
+    if (self.isShowLaunchAnimation) {
+        [self setupLaunchMask];
+    } else {
+        [self setupNavigation];
+    }
 }
 
 
 - (void)viewWillAppear:(BOOL)animated{
+    
     [super viewWillAppear:animated];
+    
+    _titleTappedCount = 0;
     
     [UIApplication sharedApplication].statusBarHidden = NO;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -61,17 +68,22 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
+    //初始化分析库
+    [BAAnalyzerCenter defaultCenter];
+    
     if (_launchMask && _launchAnimation) {
+        WeakObj(self);
         [_launchAnimation playWithCompletion:^(BOOL animationFinished) {
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [UIView animateWithDuration:1 animations:^{
-                    _launchMask.alpha = 0;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:0.5 animations:^{
+                    selfWeak.launchMask.alpha = 0;
                 } completion:^(BOOL finished) {
-                    [_launchAnimation removeFromSuperview];
-                    _launchAnimation = nil;
-                    [_launchMask removeFromSuperview];
-                    _launchMask = nil;
+                    [selfWeak.launchAnimation removeFromSuperview];
+                    selfWeak.launchAnimation = nil;
+                    [selfWeak.launchMask removeFromSuperview];
+                    selfWeak.launchMask = nil;
+                    [selfWeak setupNavigation];
                 }];
             });
         }];
@@ -127,6 +139,20 @@
 }
 
 
+- (void)titleTapped{
+    _titleTappedCount += 1;
+    if (_titleTappedCount == 1) {
+    
+        [BATool showHUDWithText:@"再次点击标题进入App引导页" ToView:BAKeyWindow];
+    } else if (_titleTappedCount == 2) {
+        
+        BAGuideViewController *guideVC = [[BAGuideViewController alloc] init];
+        guideVC.showLaunchAnimation = NO;
+        [BAKeyWindow setRootViewController:guideVC];
+    }
+}
+
+
 - (void)beginAnalyzing:(NSNotification *)sender{
     BAReportModel *reportModel = sender.userInfo[BAUserInfoKeyReportModel];
     
@@ -149,15 +175,14 @@
 
 #pragma mark - private
 - (void)setupLaunchMask{
-    _launchMask = [[UIView alloc] initWithFrame:self.view.bounds];
-    _launchMask.backgroundColor = BAWhiteColor;
+    _launchMask = [UIImageView imageViewWithFrame:self.view.bounds image:[UIImage imageNamed:@"launchAnimationBg"]];
     
     [self.view addSubview:_launchMask];
     
-    _launchAnimation = [LOTAnimationView animationNamed:@"empty_status"];
+    _launchAnimation = [LOTAnimationView animationNamed:@"launchAnimation"];
     _launchAnimation.cacheEnable = NO;
     _launchAnimation.frame = self.view.bounds;
-    _launchAnimation.contentMode = UIViewContentModeScaleAspectFill;
+    _launchAnimation.contentMode = UIViewContentModeScaleToFill;
     
     [_launchMask addSubview:_launchAnimation];
 }
@@ -186,6 +211,9 @@
     [self.view addSubview:_weekLabel];
     
     _titleLabel = [UILabel labelWithFrame:CGRectMake(BAScreenWidth * 2 / 3 - 2 * BAPadding, _dayLabel.y, BAScreenWidth / 3, _dayLabel.height) text:@"ANALYZER" color:BAWhiteColor font:BABlodFont(20) textAlignment:NSTextAlignmentRight];
+    _titleLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *titleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(titleTapped)];
+    [_titleLabel addGestureRecognizer:titleTap];
     
     [self.view addSubview:_titleLabel];
 }
@@ -200,7 +228,6 @@
 
 - (void)setupNavigation{
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem BarButtonItemWithImg:@"roomList" highlightedImg:nil target:self action:@selector(roomBtnClicked)];
-    
 }
 
 

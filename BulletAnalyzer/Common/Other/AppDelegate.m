@@ -20,7 +20,6 @@
 #import "BANavigationViewController.h"
 #import "MMDrawerController.h"
 #import "BAGuideViewController.h"
-#import "BAAnalyzerCenter.h"
 #import "Reachability.h"
 #import <UMSocialCore/UMSocialCore.h>
 
@@ -47,10 +46,11 @@
     [self configUSharePlatforms];
     
     BOOL isGuided = [[NSUserDefaults standardUserDefaults] boolForKey:@"guided"];
-    if (0) {
+    if (isGuided) {
         //初始化控制器
-        UIViewController *centerVC = [[BAMainViewController alloc] init];
-        UIViewController *leftVC = [[BARoomListTableViewController alloc] init];
+        BAMainViewController *centerVC = [[BAMainViewController alloc] init];
+        centerVC.showLaunchAnimation = YES;
+        BARoomListTableViewController *leftVC = [[BARoomListTableViewController alloc] init];
         
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
         [UIApplication sharedApplication].statusBarHidden = NO;
@@ -74,6 +74,7 @@
     } else {
         
         BAGuideViewController *guideVC = [[BAGuideViewController alloc] init];
+        guideVC.showLaunchAnimation = YES;
         [_window setRootViewController:guideVC];
     }
     
@@ -81,9 +82,6 @@
     Reachability *reach = [Reachability reachabilityWithHostname:@"www.baidu.com"];
 
     [reach startNotifier];
-    
-    //初始化分析库
-    [BAAnalyzerCenter defaultCenter];
     
     return YES;
 }

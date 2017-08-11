@@ -11,6 +11,7 @@
 #import "BAMainViewController.h"
 #import "BARoomListTableViewController.h"
 #import "MMDrawerController.h"
+#import "Lottie.h"
 
 @interface BAGuideViewController () <UIScrollViewDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -24,6 +25,8 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *detailLabel;
 @property (nonatomic, strong) UIButton *startBtn;
+@property (nonatomic, strong) UIImageView *launchMask;
+@property (nonatomic, strong) LOTAnimationView *launchAnimation;
 
 @end
 
@@ -39,6 +42,32 @@
     [super viewDidLoad];
     
     [self setupSubViews];
+    
+    if (self.isShowLaunchAnimation) {
+        [self setupLaunchMask];
+    }
+}
+
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    if (_launchMask && _launchAnimation) {
+        WeakObj(self);
+        [_launchAnimation playWithCompletion:^(BOOL animationFinished) {
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:0.5 animations:^{
+                    selfWeak.launchMask.alpha = 0;
+                } completion:^(BOOL finished) {
+                    [selfWeak.launchAnimation removeFromSuperview];
+                    selfWeak.launchAnimation = nil;
+                    [selfWeak.launchMask removeFromSuperview];
+                    selfWeak.launchMask = nil;
+                }];
+            });
+        }];
+    }
 }
 
 
@@ -46,12 +75,13 @@
 - (void)start{
     [self removeFromParentViewController];
     
-//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"guided"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"guided"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
     //初始化控制器
-    UIViewController *centerVC = [[BAMainViewController alloc] init];
-    UIViewController *leftVC = [[BARoomListTableViewController alloc] init];
+    BAMainViewController *centerVC = [[BAMainViewController alloc] init];
+    centerVC.showLaunchAnimation = NO;
+    BARoomListTableViewController *leftVC = [[BARoomListTableViewController alloc] init];
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [UIApplication sharedApplication].statusBarHidden = NO;
@@ -75,6 +105,20 @@
 
 
 #pragma mark - private
+- (void)setupLaunchMask{
+    _launchMask = [UIImageView imageViewWithFrame:self.view.bounds image:[UIImage imageNamed:@"launchAnimationBg"]];
+    
+    [self.view addSubview:_launchMask];
+    
+    _launchAnimation = [LOTAnimationView animationNamed:@"launchAnimation"];
+    _launchAnimation.cacheEnable = NO;
+    _launchAnimation.frame = self.view.bounds;
+    _launchAnimation.contentMode = UIViewContentModeScaleToFill;
+    
+    [_launchMask addSubview:_launchAnimation];
+}
+
+
 - (void)setupSubViews{
     
     _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];

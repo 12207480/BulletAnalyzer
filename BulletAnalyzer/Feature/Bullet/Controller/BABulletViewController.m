@@ -22,6 +22,7 @@
 #import "BAAnalyzerCenter.h"
 #import "BASocketTool.h"
 #import "UIImage+ZJExtension.h"
+#import "BAAlertView.h"
 #import "UIBarButtonItem+ZJExtension.h"
 #import "NSDate+Category.h"
 
@@ -34,6 +35,7 @@
 @property (nonatomic, strong) BASentenceView *sentenceView; //相似弹幕
 @property (nonatomic, strong) BABulletListNavPopView *filterPopView; //筛选弹框
 @property (nonatomic, strong) BABulletListNavPopView *linePopView; //线路弹框
+@property (nonatomic, strong) BAAlertView *cutOffAlert; //停止
 @property (nonatomic, strong) UIView *settingMask; //遮盖
 @property (nonatomic, strong) NSTimer *hideTimer; //隐藏倒计时
 @property (nonatomic, assign) CGFloat repeatDuration; //倒计时时间
@@ -363,22 +365,27 @@
         
         NSString *message = @"断开后将自动保存分析报告";
         if (duration < 3) {
-            message = @"连接不满三分钟, 将不会保存报告";
+            message = @"连接不满三分钟\n将不会保存分析报告";
         }
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否结束分析?" message:message preferredStyle:UIAlertControllerStyleAlert];
+        [selfWeak.hideTimer invalidate];
+        selfWeak.hideTimer = nil;
         
-        UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"结束" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            
-            [[BASocketTool defaultSocket] cutOff];
-            [selfWeak backBtnClicked];
-        }];
-        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-        
-        [alert addAction:action1];
-        [alert addAction:action2];
-        
-        [selfWeak presentViewController:alert animated:YES completion:nil];
+        if (!selfWeak.cutOffAlert) {
+            selfWeak.cutOffAlert = [[BAAlertView alloc] initWithFrame:BAKeyWindow.bounds];
+            [BAKeyWindow addSubview:selfWeak.cutOffAlert];
+            selfWeak.cutOffAlert.title = @"是否结束分析";
+            selfWeak.cutOffAlert.detail = message;
+            selfWeak.cutOffAlert.btnClicked = ^(NSInteger tag){
+                if (!tag) {
+                    [[BASocketTool defaultSocket] cutOff];
+                    [selfWeak backBtnClicked];
+                }
+                
+                [selfWeak beginTimer];
+                selfWeak.cutOffAlert = nil;
+            };
+        }
     };
     _bulletMenu.rightBtnClicked = ^{
         

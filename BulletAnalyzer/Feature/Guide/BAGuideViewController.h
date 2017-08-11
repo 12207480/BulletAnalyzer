@@ -10,4 +10,9 @@
 
 @interface BAGuideViewController : UIViewController
 
+/**
+ 是否显示启动动画
+ */
+@property (nonatomic, assign, getter=isShowLaunchAnimation) BOOL showLaunchAnimation;
+
 @end

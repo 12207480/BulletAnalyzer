@@ -47,9 +47,7 @@ MJExtensionCodingImplementation
     [wordsArray enumerateObjectsUsingBlock:^(NSString *obj1, NSUInteger idx1, BOOL * _Nonnull stop1) {
         
         //若字典中已有这个词的词频 则停止计算
-        if ([[wordsDic objectForKey:obj1] integerValue]) {
-            *stop1 = YES;
-        } else {
+        if (![[wordsDic objectForKey:obj1] integerValue]) {
             __block NSInteger count = 1;
             [wordsArray enumerateObjectsUsingBlock:^(NSString *obj2, NSUInteger idx2, BOOL * _Nonnull stop2) {
                 if ([obj1 isEqualToString:obj2] && idx1 != idx2) {
