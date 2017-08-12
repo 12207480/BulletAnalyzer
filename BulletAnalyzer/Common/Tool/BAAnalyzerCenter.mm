@@ -188,7 +188,10 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 - (void)endAnalyzing{
     _analyzing = NO;
     [self endObserving];
-
+    
+    //整理数据
+    [self sortData];
+    
     //停止分析
     if (_analyzingReportModel) {
         _analyzingReportModel.interruptAnalyzing = NO;

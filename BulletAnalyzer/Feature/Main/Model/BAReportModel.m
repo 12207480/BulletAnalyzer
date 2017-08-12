@@ -23,6 +23,7 @@ MJExtensionCodingImplementation
     return @[@"newReport"];
 }
 
+
 - (void)setEnd:(NSDate *)end{
     _end = end;
     
