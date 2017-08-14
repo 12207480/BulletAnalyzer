@@ -504,7 +504,7 @@
     iconImgView.frame = CGRectMake(46.4, 46.4, 23.2, 23.2);
     [QRImgView addSubview:iconImgView];
     
-    UILabel *nameLabel = [UILabel labelWithFrame:CGRectMake(0, QRImgView.bottom + BAPadding, BAScreenWidth, 30) text:@"斗鱼伴侣" color:BACommonTextColor font:[UIFont fontWithName:@"Zapfino" size:BALargeTextFontSize] textAlignment:NSTextAlignmentCenter];
+    UILabel *nameLabel = [UILabel labelWithFrame:CGRectMake(0, QRImgView.bottom + BAPadding, BAScreenWidth, 30) text:@"直播伴侣" color:BACommonTextColor font:[UIFont fontWithName:@"Zapfino" size:BALargeTextFontSize] textAlignment:NSTextAlignmentCenter];
     [bottomView addSubview:nameLabel];
     
     CGFloat width = bottomView.width;
